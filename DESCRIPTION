@@ -1,0 +1,41 @@
+Package: rsat
+Type: Package
+Title: Tools for Downloading, Customizing, and Processing Time Series of Satellite Images from Landsat, MODIS, and Sentinel 
+Version: 0.1.3
+Author: U Pérez - Goya [aut, cre] <unai.perez@unavarra.es>,
+        M Montesino - SanMartin [aut] <manuel.montesino@unavarra.es>,
+        A F Militino [aut] <militino@unavarra.es>,
+        M D Ugarte [aut] <lola@unavarra.es>
+Maintainer: U Perez - Goya <unai.perez@unavarra.es>
+Description: Downloading, customizing, and processing time series of satellite images for a region of interest. 'rsat' functions allow a unified access to multispectral images from Landsat, MODIS and Sentinel repositories. 'rsat' also offers capabilities for customizing satellite images, such as tile mosaicking, image cropping and new variables computation. Finally, 'rsat' covers the processing, including cloud masking, compositing and gap-filling/smoothing time series of images (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019 <doi:10.1109/TGRS.2019.2904193>).
+Depends: R (>= 3.5.0), raster, sf, stars
+Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp
+Suggests: rgdal
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Collate: 
+    'api.R'
+    'extent_crs.R'
+    'records.R'
+    'rtoi.R'
+    'cloud_mask.R'
+    'connections.R'
+    'data.R'
+    'derive.R'
+    'download.R'
+    'mosaic.R'
+    'mosaic_fun_SYN.R'
+    'mosaic_fun_ls.R'
+    'mosaic_fun_mod.R'
+    'mosaic_fun_sen2.R'
+    'mosaic_generic.R'
+    'package_tools.R'
+    'plot.R'
+    'preview.R'
+    'search_mod.R'
+    'search_ls.R'
+    'search_sen.R'
+    'search.R'
+    'variables.R'

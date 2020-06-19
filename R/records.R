@@ -1,0 +1,602 @@
+#' Satellite image metadata in R class
+#'
+#' This class sorts the main satellite image metadata attributes
+#' to ease the image preview, download, and data management.
+#'
+#' \code{records} works as vector with multiple parameters, and
+#' accepts usuals R methods used in R as \code{c}, \code{[]},
+#' \code{length}, \code{subset} or \code{unique}.
+#'
+#' All the data in the class can be substracted as \code{dataframe}
+#' using the method \code{as.data.frame}.
+#'
+#'
+#' @slot sat the name of the satellite which the record belongs
+#' @slot name the name of the record
+#' @slot date the date of the record
+#' @slot product the product
+#' @slot path the path of the tile sistem
+#' @slot row the path of the tile sistem
+#' @slot tileid the id of the tile
+#' @slot download the download path of the record
+#' @slot file_path the directory path where the image will be download
+#' @slot preview the url of the preview image of the record
+#' @slot api_name the api name
+#' @slot order boolean slot, defines if the image need to be order or not
+#' @slot extent_crs extent information for projecting and preview the slot
+#'
+#' @include extent_crs.R
+#' @examples
+#' \dontrun{
+#' data(ex.navarre)
+#' # Create a set of records using sat_search function
+#' s2.lvl1.result<-sat_search(region=ex.navarre,
+#'                            product="S2MSI1C",
+#'                            dates=as.Date("2018-01-01")+seq(1,30,1))
+#'
+#' # Create a set of records using sat_search function
+#' s2.lvl2.result<-sat_search(region=ex.navarre,
+#'                           product="S2MSI2A",
+#'                           dates=as.Date("2019-01-01")+seq(1,30,1))
+#' class(s2.lvl2.result)
+#' dates(s2.lvl2.result)
+#' all.records <- c(s2.lvl1.result,s2.lvl2.result)
+#'
+#' print(all.records)
+#' }
+setClass(
+  "records",
+  slots = c(
+    sat = "character",
+    name = "character",
+    date = "Date",
+    product="character",
+    path = "numeric",
+    row = "numeric",
+    tileid = "character",
+    download = "character",# mandatory if path not defined
+    file_path = "character",# mandatory if download not defined to add your own regions as tiles
+    preview = "character",
+    api_name = "character",
+    order = "logical",
+    extent_crs = "extent_crs"
+    ),
+  validity = function(object){
+    if(length(object@path)>1){
+      if(!all(length(object@name)==c(length(object@date),
+                                         length(object@sat),
+                                         length(object@product),
+                                         length(object@path),
+                                         length(object@row),
+                                         length(object@download),
+                                         length(object@file_path),
+                                         length(object@preview),
+                                         length(object@extent_crs)))
+      ){return("All slots must have the same length")}
+    }
+    return(TRUE)
+  }
+)
+
+
+#' Creates a new records
+#'
+#' Creates a records object from scrach
+#'
+#' @param sat the name of the satellite which the record belongs
+#' @param name the name of the record
+#' @param date the date of the record
+#' @param product the product
+#' @param path the path of the tile sistem
+#' @param row the path of the tile sistem
+#' @param tileid the id of the tile
+#' @param download the download path of the record
+#' @param file_path the directory path where the image will be download
+#' @param preview the url of the preview image of the record
+#' @param api_name the api name
+#' @param order boolean slot, defines if the image need to be order or not
+#' @param extent_crs extent information for projecting and preview the slot
+#'
+#' @return records object
+#'
+#' @examples
+#' \dontrun{
+#' a<-new_record(sat="modis",
+#' name="mod09a",
+#' date=as.Date("2011087","%Y%j"),
+#' product="product",
+#' download="url/aaa/download")
+#' }
+setGeneric("new_record", function(sat,name, date,product,download,file_path, path, row,tileid,preview,api_name,order,extent_crs) {
+  standardGeneric("new_record")
+})
+#' @rdname new_record
+#' @aliases new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,extent_crs
+setMethod("new_record",
+          signature(sat="character",
+                    name="character",
+                    date="Date",
+                    product="character",
+                    download="character",
+                    file_path="character",
+                    path="numeric",
+                    row="numeric",
+                    tileid="character",
+                    preview="character",
+                    api_name="character",
+                    order = "logical",
+                    extent_crs = "extent_crs"),
+          function(sat, name,date,product,download,file_path,path,row,tileid,preview,api_name,order,extent_crs) {
+            new("records",
+                sat=sat,
+                name=name,
+                date=as.Date(date),
+                download=download,
+                product=product,
+                file_path=file_path,
+                path=path,
+                row=row,
+                tileid=tileid,
+                preview=preview,
+                api_name=api_name,
+                order=order,
+                extent_crs= extent_crs)
+          })
+
+#' @rdname new_record
+#' @aliases new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing
+setMethod("new_record",
+          signature(sat="character",
+                    name="character",
+                    date="Date",
+                    product="character",
+                    download="character",
+                    file_path="character",
+                    path="numeric",
+                    row="numeric",
+                    tileid="character",
+                    preview="character",
+                    api_name="character",
+                    order = "logical",
+                    extent_crs = "missing"),
+          function(sat, name,date,product,download,file_path,path,row,tileid,preview,api_name,order) {
+            nlen<-length(sat)
+            extent_crs<-new_extent_crs()
+            if(nlen>1){
+              for(x in 2:nlen){extent_crs<-c(extent_crs,new_extent_crs())}
+            }
+            new("records",
+                sat=sat,
+                name=name,
+                date=as.Date(date),
+                download=download,
+                product=product,
+                file_path=file_path,
+                path=path,
+                row=row,
+                preview=preview,
+                order=order,
+                extent_crs= extent_crs)
+          })
+
+#' @rdname print-rtoi-method
+#' @aliases print,records
+#' @export
+setMethod("print",
+          signature(x = "records"),
+          function(x){
+            len=length(x@path)
+            if(len==0){
+              return(cat("Empty records object"))
+            }else if(len==1){
+              str.print<-"Record: \n"
+              slots<-names(getSlots("records"))
+              slots<-slots[!slots%in%c("extent_crs")]
+              for(s in slots){
+                str.print<-paste0(str.print,s,": ",paste0(slot(x, s),collapse = ","),"\n")
+              }
+              return(cat(str.print))
+            }else{
+             print(head(as.data.frame(x)))
+            }
+          })
+
+#' Show an Object
+#'
+#' Display the object, by printing, plotting or whatever suits its class. This function exists to be specialized by methods. The default method calls showDefault.
+#'
+#' Formal methods for show will usually be invoked for automatic printing (see the details).
+#'
+#' @param object Any R Object
+#'
+#' @export
+setMethod(f="show",
+          signature="records",
+          definition=function(object) {
+            print(object)
+          })
+
+#' Coerce to a Data Frame
+#'
+#' Functions to check if an object is a data frame, or coerce it if possible.
+#'
+#' @param x Any R object.
+#'
+#' @export
+setMethod("as.data.frame",
+          signature(x = "records"),
+          function(x){
+            slots<-names(getSlots("records"))
+            df<-data.frame(sat=slot(x, slots[1]))
+            slots<-slots[!slots%in%c("extent_crs")]
+            for(s in slots[-1]){
+              df[s]<-slot(x, s)
+            }
+            return(df)
+            })
+
+#' creates vector
+#'
+#' Creates a vector from x
+#'
+#' @param x records object.
+#'
+#' @export
+setMethod("as.vector",
+          signature(x="records"),
+          function(x) {
+            return(c(x@path,x@row))
+          })
+
+
+#' Combine Values into a Vector or List
+#'
+#' This is a generic function which combines its arguments.
+#'
+#' The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value, and all attributes except names are removed.
+#'
+#' @param x records object.
+#' @param ... additional arguments
+#'
+#' @export
+setMethod(f="c",
+          signature("records"),
+          definition=function(x,...) {
+            args<-list(...)
+
+            for(z in args){
+              if(length(x)==0){
+                x=z
+                next
+              }
+              if(length(z)==0){
+                next
+              }
+              for(s in names(getSlots("records"))){
+                slot(x, s)<-c(slot(x, s),slot(z, s))
+              }
+            }
+            return(x)
+          })
+
+#' Extract or Replace Parts of an Object
+#'
+#' Operators acting on vectors, matrices, arrays and lists to extract or replace parts.
+#'
+#' @param x object from which to extract element(s) or in which to replace element(s)
+#' @param i numeric argument. The the position of the element to select/modify.
+#' @param value records argument. The value for change a records in x.
+#'
+#' @export
+setMethod(f="[", signature="records",
+          definition=function(x, i) {
+            for(s in names(getSlots("records"))){
+              slot(x, s)<-slot(x, s)[i]
+            }
+            return(x)
+          })
+
+# operator ([<-)
+#' @rdname sub-records-ANY-ANY-method
+#' @aliases '[<-',rtoi,records
+setReplaceMethod(f="[",
+                 signature="records",
+                 definition=function(x, i, value) {
+                   for(s in names(getSlots("records"))){
+                     slot(x, s)[i]<-slot(value, s)[i]
+                   }
+                   return(x)
+                 })
+
+#' Length of an Object
+#'
+#' Get or set the length of vectors (including lists) and factors, and of any other R object for which a method has been defined.
+#'
+#' @param x records object to compute its length
+#'
+#' @export
+setMethod(f="length",
+          signature="records",
+          definition=function(x) {
+            return(length(x@path))
+          })
+
+
+#' Create records object from data frame
+#'
+#' @param x data frame with columnos representing the slots of records
+#'
+#' @export
+setGeneric("as.records",function(x){
+  standardGeneric("as.records")
+})
+
+#' @rdname as.records
+#' @aliases as.records,data.frame
+setMethod(f="as.records",
+          signature = "data.frame",
+          definition = function(x){
+            na<-names(getSlots("records"))
+            if(all(names(x)%in%na)){
+              x<-x[na]
+              t<-apply(x,1,FUN = function(x){
+                do.call(new_record, as.list(x))
+                }
+                )
+              return(do.call("c",t))
+            }else{
+              stop(paste0("To create records object the data frame need to include the following names: ",paste(na,collapse = ","),"."))
+            }
+})
+
+#' get satellite name from records or rtoi
+#'
+#' @param x records/rtoi object
+#'
+#' @export
+setGeneric("sat_name", function(x) standardGeneric("sat_name"))
+#' @rdname sat_name
+#' @aliases sat_name,records
+setMethod(f="sat_name",
+          signature = c("records"),
+          definition = function(x){
+            return(x@sat)
+          })
+
+#' get date name from records or rtoi
+#'
+#' @param x records/rtoi object
+#' @param value date argument. The value for change the date o x.
+#'
+#' @export
+setGeneric("dates", function(x) standardGeneric("dates"))
+#' @rdname dates
+#' @aliases dates,records
+setMethod(f="dates",
+          signature = "records",
+          definition = function(x){
+            return(x@date)
+          })
+
+#' @export
+#' @rdname dates
+#' @aliases dates<-,records
+setGeneric("dates<-", function(x, value) standardGeneric("dates<-"))
+#' @rdname dates
+#' @aliases dates<-,records
+setMethod(f="dates<-",
+          signature = "records",
+          definition = function(x,value){
+            x@date<-value
+            return(x)
+          })
+
+
+#' get the product name from records or rtoi
+#'
+#' @param x records/rtoi object
+#'
+#' @export
+setGeneric("product", function(x) standardGeneric("product"))
+#' @rdname product
+#' @aliases product,records
+setMethod(f="product",
+          signature = "records",
+          definition = function(x){
+            return(x@product)
+          })
+
+#' get the path from records or rtoi
+#'
+#' @param x records/rtoi object
+#' @param value character argument. The value for change the direcory of x.
+#'
+#' @export
+setGeneric("get_dir",function(x)  standardGeneric("get_dir"))
+#' @rdname get_dir
+#' @aliases get_dir,records
+setMethod(f="get_dir",
+          signature = "records",
+          definition = function(x){
+            return(file.path(sat_name(x),product(x)))
+          })
+
+
+setGeneric("get_mosaic_dir",function(x,...)  standardGeneric("get_mosaic_dir"))
+setMethod(f="get_mosaic_dir",
+          signature=c(x = "records"),
+          definition = function(x){
+            return(file.path(get_dir(x),"mosaic"))
+          })
+
+
+setGeneric("get_file_path",function(x)  standardGeneric("get_file_path"))
+setMethod(f="get_file_path",
+          signature = "records",
+          definition = function(x){
+            return(x@file_path)
+          })
+
+#' get the order slot from records or rtoi
+#'
+#' @param x records/rtoi object
+#' @param value logical argument. The value for change the value of x.
+#'
+#' @export
+setGeneric("get_order",function(x){standardGeneric("get_order")})
+#' @rdname get_dir
+#' @aliases get_dir,records
+setMethod(f="get_order",
+          signature = "records",
+          definition = function(x){
+            return(x@order)
+          })
+
+#' @rdname get_order
+#' @aliases get_order<-
+#' @export
+setGeneric("get_order<-",function(x,value){standardGeneric("get_order<-")})
+
+#' @rdname get_order
+#' @aliases get_order<-,records
+setMethod(f="get_order<-",
+          signature = "records",
+          definition = function(x,value){
+            x@order<-value
+            return(x)
+          })
+
+
+
+#' get the order slot from records or rtoi
+#'
+#' @param x records/rtoi object
+#' @param subset R object with the value for subsetting
+#' @param select character argument indicating the name of the slot to use in subsetting.
+#'
+#' @export
+setMethod(f="subset",
+          signature="records",
+          definition=function(x, subset, select) {
+            if(inherits(subset,"numeric")){
+                return(x[subset])
+            }
+            records.names<-names(getSlots("records"))
+            if(!select%in%records.names){stop("'select' must be a slot from records class.")}
+            return(x[which(slot(x, select)%in%subset)])
+          })
+
+#' Extract Unique Elements
+#'
+#' unique returns records like x but with duplicate elements/rows removed.
+#'
+#' @param x records object
+#'
+#' @export
+setMethod(f="unique",
+          signature = "records",
+          definition = function(x){
+            return(x[unique(as.numeric(as.factor(x@download)))])
+          })
+
+#' Extract preview url
+#'
+#' get_preview returns a vector of character with the url for previewing the recods.
+#'
+#' @param x records object
+#'
+#' @export
+setGeneric("get_preview", function(x) { standardGeneric("get_preview")})
+#' @rdname get_preview
+#' @aliases get_preview,records
+setMethod(f="get_preview",
+          signature = "records",
+          definition = function(x){
+            return(x@preview)
+          })
+
+#' Extract download url
+#'
+#' get_download returns a vector of character with the url for download the image.
+#'
+#' @param x records object
+#'
+#' @export
+setGeneric("get_download", function(x) { standardGeneric("get_download")})
+#' @rdname get_preview
+#' @aliases get_preview,records
+setMethod(f="get_download",
+          signature = "records",
+          definition = function(x){
+            return(x@download)
+          })
+
+
+#' Gets the name of the object
+#'
+#' Functions to get or set the names of an object.
+#'
+#' @param x rtoi/records object.
+#' @param value character argument. The value for changeing the name of x.
+#'
+#' @return a character vector containing the name of al the elements in x.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data(ex.navarre)
+#' # path where the data will be
+#' rtoi.path <- tempdir()
+#' # path where downloads are stored
+#' db.path <- file.path(tempdir(),"DATABASE")
+#' navarre<-new_rtoi("Navarre",
+#'                   ex.navarre,
+#'                   rtoi.path,
+#'                   db.path)
+#' names(navarre)
+#'
+#' # Create a set of records using sat_search function
+#' s2.lvl2.result<-sat_search(region=ex.navarre,
+#'                           product="S2MSI2A",
+#'                           dates=as.Date("2019-01-01")+seq(1,30,1))
+#' names(s2.lvl2.result)
+#'
+#' names(s2.lvl2.result)<-"New name"
+#' names(s2.lvl2.result)
+#' }
+setMethod(f="names",
+          signature = "records",
+          definition = function(x){
+            return(x@name)
+          })
+
+
+
+setMethod(f="extent",
+          signature="records",
+          definition=function(x) {
+            return(extent(x@extent_crs))
+          })
+
+setMethod(f="crs",
+          signature="records",
+          definition=function(x) {
+            return(crs(x@extent_crs))
+          })
+
+#' Gets the api name of the records
+#'
+#' Functions to get or set the names of an object.
+#'
+#' @param x records object.
+#'
+#' @return a character vector containing the api name of al the elements in x.
+#' @export
+setGeneric("get_api_name", function(x) { standardGeneric("get_api_name")})
+#' @rdname get_api_name
+#' @aliases get_api_name,records
+setMethod(f="get_api_name",
+          signature = "records",
+          definition = function(x){
+            return(x@api_name)
+          })
