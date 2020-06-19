@@ -1,45 +1,3 @@
-deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
-  bjump<-FALSE
-  result<-NULL
-  funargs<-formalArgs(fun)
-  funString<-"result<-fun("
-  #band load and asignation
-  funargs<-formalArgs(fun)
-  for(arg in funargs){
-    band<-bands[names(bands)%in%arg]
-    if(length(band)!=0)
-      band<-layers[grepl(band,layers,ignore.case = TRUE)]
-    if(length(band)==0){
-      if(verbose) warning(paste0("Error reading band ",arg))
-      next
-    }
-    eval(parse( text=paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
-    #eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
-    funString<-paste0(funString,arg,"=",arg,",")
-  }
-  # arguments asignation
-  arguments<-as.list(match.call())
-  arguments<-arguments[names(arguments)%in%funargs&
-                         (!names(arguments)%in%names(layers))]
-  for(arg in names(arguments)){
-    funString<-paste0(funString,arg,"=function.arg$",arg,",")
-  }
-  # complete the function
-  funString<-paste0(substr(funString,1,nchar(funString)-1),")")
-  #if(verbose){message(paste0("Function for evaluation: \n",funString))}
-  tryCatch({
-    eval(parse(text=funString))
-    return(result)
-  },
-  error=function(e) {
-    if(verbose){
-      message(e)
-      message(paste0("Band not found for image ",i,". Check the mosaic of this image."))
-    }
-  })
-  return(result)
-}
-
 #' Compute a remote sensing index from a rtoi
 #'
 #' @param x rtoi object for deriving variables
@@ -203,7 +161,47 @@ deriveBandsData<-function(product){
 }
 
 
-
+deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
+  bjump<-FALSE
+  result<-NULL
+  funargs<-formalArgs(fun)
+  funString<-"result<-fun("
+  #band load and asignation
+  funargs<-formalArgs(fun)
+  for(arg in funargs){
+    band<-bands[names(bands)%in%arg]
+    if(length(band)!=0)
+      band<-layers[grepl(band,layers,ignore.case = TRUE)]
+    if(length(band)==0){
+      if(verbose) warning(paste0("Error reading band ",arg))
+      next
+    }
+    eval(parse( text=paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
+    #eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
+    funString<-paste0(funString,arg,"=",arg,",")
+  }
+  # arguments asignation
+  arguments<-as.list(match.call())
+  arguments<-arguments[names(arguments)%in%funargs&
+                         (!names(arguments)%in%names(layers))]
+  for(arg in names(arguments)){
+    funString<-paste0(funString,arg,"=function.arg$",arg,",")
+  }
+  # complete the function
+  funString<-paste0(substr(funString,1,nchar(funString)-1),")")
+  #if(verbose){message(paste0("Function for evaluation: \n",funString))}
+  tryCatch({
+    eval(parse(text=funString))
+    return(result)
+  },
+  error=function(e) {
+    if(verbose){
+      message(e)
+      message(paste0("Band not found for image ",i,". Check the mosaic of this image."))
+    }
+  })
+  return(result)
+}
 
 
 
