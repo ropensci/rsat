@@ -1,17 +1,15 @@
-#' A Digital Elevation Model (DEM) of the region of Navarre (Spain)
+#' a Digital Elevation Model (DEM) of the region of Navarre (Spain)
 #'
 #' Geographically projected \code{RasterStack} with the digital elevation model
 #'(DEM) of the region of Navarre (Spain). The DEM was obtained from the
 #' \href{http://centrodedescargas.cnig.es/CentroDescargas/locale?request_locale=en#}{National Center for Geographic Information}
 #' of Spain. The DEM is used as a covariable in the Image Mean Anomaly (IMA)
-#' algorithm
-# (\code{\link{genSmoothingCovIMA}}).
+#' algorithm (\code{\link{genSmoothingCovIMA}}).
 #'
 #' @format The \code{RasterStack} contains 6 layers with the same DEM, one for
-#' every image in the time series of the
-#\code{\link{genSmoothingCovIMA}}
-#' example.
-#' The \code{RasterStack} coordinates are in the Sinusoidal projection:
+#' every image in \code{\link{ex.ndvi.navarre}}.
+#'
+#' The \code{RasterStack} coordinates are in the Sinusoidal projection.
 #'
 #' \describe{
 #'   \item{name}{layer names contain the capturing date of the corresponding image in the format "\code{YYYYJJJ}"}.
@@ -22,10 +20,10 @@
 #' @keywords data
 NULL
 
-#' A time series of NDVI of Navarre (Spain)
+#' a time series of NDVI in Navarre (Spain)
 #'
 #' Geographically projected \code{RasterBrick} object of the normalized
-#' difference vegetation index (NDVI) of Navarre.
+#' difference vegetation index (NDVI) in Navarre.
 #'
 #' @format The \code{RasterBrick} contains 6 images, from the 2nd to the 4th of
 #' August in 2017 and 2018. The \code{RasterBrick} coordinates are in the
