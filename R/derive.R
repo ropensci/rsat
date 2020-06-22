@@ -1,17 +1,16 @@
-#' Compute a remote sensing index from a rtoi
+#' compute a remote sensing index from an rtoi
 #'
-#' @param x rtoi object for deriving variables
-#' @param product the name of the dataset for deriving variables.
-#' @param dates a vector with the dates being considered
-#'   for creating cloud masks. This argument is optional.
+#' @param x rtoi object from which the index is computed.
+#' @param products the name of the dataset from which the index is computed.
+#' @param dates a vector with the dates being considered (optional).
 #' @param fun a \code{function} that computes the remote sensing index.
 #' @param overwrite logical argument. If \code{TRUE}, overwrites the existing
 #' images with the same name.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
 #'
-#' @param variable the name of the variable, run "show_variables()"
-#' to check the variables supported by the package
+#' @param variable the name of the variable. Run \code{show_variables()}
+#' to check the variables supported by the package.
 #' @param ... additional argument for variable deriving
 #'
 #' @return nothing. The derived variables will be save in the hard drive.
@@ -36,7 +35,7 @@
 #' navarre<-new_rtoi("Navarre",
 #'                   ex.navarre,
 #'                   rtoi.path,
-#'                   db.path)#'
+#'                   db.path)
 #' #Landsat-5
 #' sat_search(region=navarre,
 #'           product="LANDSAT_TM_C1",
