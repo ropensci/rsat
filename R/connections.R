@@ -87,14 +87,14 @@ setMethod("set_pass",
             connection$password(pass,credential)
           })
 
-#' asigns the credentials for data searching and downloading
+#' saves the credentials for the web services
 #'
 #' @param user character argument. Defines the username of an api platform
-#'  for searching and downloading images
+#'  to search or download images
 #' @param pass character argument. Defines the password of an api platform
-#'  for searching and downloading images
-#' @param credential optional argument. Defines the platform name. earthdata,
-#' scihub, scihubs5p, or ALL are valid credentials
+#'  to search and download images
+#' @param credential optional argument to specify the name of the platform.
+#' Valid names are earthdata, scihub, scihubs5p, or ALL
 #' @export
 #' @examples
 #' print_credentials()
@@ -122,7 +122,7 @@ setMethod("set_credentials",
             connection$password(pass,credential)
           })
 
-#' prints the credentials defined by the user
+#' prints the credentials for the web services
 #'
 #' @param ... additional arguments.
 #'
