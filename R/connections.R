@@ -87,7 +87,7 @@ setMethod("set_pass",
             connection$password(pass,credential)
           })
 
-#' saves the credentials for the web services
+#' Saves the credentials for the web services
 #'
 #' @param user character argument. Defines the username of an api platform
 #'  to search or download images
@@ -122,7 +122,7 @@ setMethod("set_credentials",
             connection$password(pass,credential)
           })
 
-#' prints the credentials for the web services
+#' Prints the credentials for the web services
 #'
 #' @param ... additional arguments.
 #'

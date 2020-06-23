@@ -1,4 +1,4 @@
-#' compute a remote sensing index from an rtoi
+#' Computes a remote sensing index from an rtoi
 #'
 #' @param x rtoi object from which the index is computed.
 #' @param products the name of the dataset from which the index is computed.

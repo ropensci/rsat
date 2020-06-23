@@ -1,4 +1,4 @@
-#' a Digital Elevation Model (DEM) of the region of Navarre (Spain)
+#' A Digital Elevation Model (DEM) of the region of Navarre (Spain)
 #'
 #' Geographically projected \code{RasterStack} with the digital elevation model
 #'(DEM) of the region of Navarre (Spain). The DEM was obtained from the
@@ -20,7 +20,7 @@
 #' @keywords data
 NULL
 
-#' a time series of NDVI in Navarre (Spain)
+#' A time series of NDVI in Navarre (Spain)
 #'
 #' Geographically projected \code{RasterBrick} object of the normalized
 #' difference vegetation index (NDVI) in Navarre.

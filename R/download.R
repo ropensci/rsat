@@ -1,9 +1,9 @@
-#' Downloads the images in the records/rtoi object
+#' Downloads the images from a records/rtoi object
 #'
-#' @param x records or rtoi object.
-#' @param db_path path where the images will be stored downloading rtoi objects.
-#' By default the path is get from the rtoi.
-#' @param out.dir path where the images will be stored downloading records objects
+#' @param x a records or an rtoi object.
+#' @param db_path path where the images will be stored when using an rtoi.
+#' By default, the path is defined by the rtoi.
+#' @param out.dir path where the images will be stored when using a records.
 #' @param ... additional arguments
 #'
 #' @include rtoi.R records.R
@@ -24,7 +24,8 @@
 #' navarre<-new_rtoi("Navarre",
 #'                   ex.navarre,
 #'                   rtoi.path,
-#'                   db.path)#'
+#'                   db.path)
+#'
 #' #Landsat-5
 #' sat_search(region=navarre,
 #'           product="LANDSAT_TM_C1",
