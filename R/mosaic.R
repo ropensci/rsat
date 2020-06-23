@@ -1,6 +1,6 @@
 #' Mosaics the tiles covering the region of interest
 #'
-#' @param x rtoi object with the records that cover the region of interest
+#' @param x an rtoi object with a records that cover the region of interest.
 #' @param y Omitted
 #' @param db_path path where the images will be stored when using an rtoi.
 #' By default, the path is defined by the rtoi.

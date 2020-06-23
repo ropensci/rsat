@@ -58,7 +58,7 @@ setPreviewMap = function(map){
 
 #' Previews a records or an rtoi object
 #'
-#' @param x an rtoi or a records object.
+#' @param x a records or an rtoi object.
 #' @param lpos vector argument. Defines the position of the red-green-blue
 #' layers to enable false color visualization.
 #' @param add.layer logical argument. If \code{TRUE}, the function plots the
