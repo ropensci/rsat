@@ -10,6 +10,7 @@
 #'
 #' @include rtoi.R
 #' @export
+#' @importFrom zip zip_list
 setGeneric("cloud_mask", function(x,...) {standardGeneric("cloud_mask")})
 
 #' @rdname cloud_mask
@@ -22,7 +23,7 @@ setMethod(f="cloud_mask",
               img_dir<-get_mosaic_dir(x,p)
               out_dir<-file.path(dirname(img_dir),"CloudMask")
               dir.create(out_dir,showWarnings = FALSE)
-              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,utils::unzip(x,list=TRUE)$Name)}))
+              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,zip_list(x)$filename)}))
 
               # Modis
               if(grepl("mod09",p)){
@@ -58,6 +59,7 @@ setMethod(f="cloud_mask",
               }
 
             }
+            unlink(out_dir,recursive = TRUE)
           }
 )
 
@@ -80,6 +82,7 @@ modCloudMask<-function(infile, outfile, overwrite = FALSE, verbose = FALSE,...){
     # save the result
     ras.cloud <- r * r_shadow
     writeRaster(ras.cloud,outfile,overwrite=overwrite)
+    add2rtoi(outfile,paste0(dirname(outfile),".zip"))
     return(FALSE)
   }
   return(TRUE)
@@ -102,7 +105,7 @@ lsCloudMask<-function(infile, outfile,cldcl, overwrite = FALSE, verbose = FALSE,
 
     NAvalue(ras.cloud)<-0
     writeRaster(ras.cloud,outfile,overwrite=overwrite)
-    rm(ras.cloud)
+    add2rtoi(outfile,paste0(dirname(outfile),".zip"))
     return(FALSE)
   }
   return(TRUE)
@@ -121,7 +124,7 @@ senCloudMask<-function(infile, outfile, overwrite = FALSE, verbose = FALSE, sens
 
     NAvalue(ras.cloud)<-0
     writeRaster(ras.cloud,outfile,overwrite=overwrite)
-    rm(ras.cloud)
+    add2rtoi(outfile,paste0(dirname(outfile),".zip"))
     return(FALSE)
   }
   return(TRUE)

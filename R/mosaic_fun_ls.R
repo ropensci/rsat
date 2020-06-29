@@ -19,7 +19,7 @@ mosaic_fun_ls<-function(mfiles){
     nodata
   }
 
-  bands<-readfromscrach(mfiles[1])
+  bands<-allfun$readfromscrach(mfiles[1])
   #lvl2 particular change
   qa<-grepl("_qa",bands)
   bands<-gsub(".*_","",bands)

@@ -8,7 +8,16 @@
 \usage{
 \S4method{mosaic}{rtoi,ANY}(x, y, ...)
 
-\S4method{mosaic}{records,ANY}(x, out_path, db_path, bfilter, warp = "extent", region, ...)
+\S4method{mosaic}{records,ANY}(
+  x,
+  out_path,
+  db_path,
+  bfilter,
+  warp = "extent",
+  region,
+  overwrite = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{rtoi object with the records that compose the region of interest}

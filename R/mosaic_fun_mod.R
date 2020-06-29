@@ -11,7 +11,7 @@ mosaic_fun_mod<-function(mfiles){
   allfun$filterchunks<-function(allfiles,bnds){
     allfiles[grepl(pattern=bnds,x=allfiles,perl = T)]
   }
-  bands<-readfromscrach(mfiles[1])
+  bands<-allfun$readfromscrach(mfiles[1])
   bands<-gsub(".*SUBDATASET_.*_NAME=","",bands)
   allfun$bands<-gsub('.*":','',bands)
   allfun$defineNodata<-function(chunks,bnds){

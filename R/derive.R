@@ -55,7 +55,7 @@ setGeneric("derive", function(x,
 
 #' @rdname derive
 #' @aliases derive,rtoi,character
-#' @importFrom utils unzip
+#' @importFrom zip zip_list
 setMethod("derive",
           signature = c("rtoi","character"),
           function(x,
@@ -78,7 +78,7 @@ setMethod("derive",
               fun<-get_var_fun(variable)
             }
             #product =
-            rtoi_products<-basename(list.dirs(list.dirs(x$rtoi_path,recursive = FALSE),recursive = FALSE))
+            rtoi_products<-basename(list.dirs(list.dirs(get_dir(x),recursive = FALSE),recursive = FALSE))
             if(!any(grepl(product,rtoi_products))){
               message(paste0("Product not mosaicked, mosaic the product from you will derive variables."))
               stop(paste0("\nAvailable products: ",paste(rtoi_products, collapse = ", "),"."))
@@ -101,7 +101,7 @@ setMethod("derive",
             images<-list.files(mdir,full.names = TRUE)
             for(i in images){
               message(paste0("Processing image ",basename(i),"."))
-              layers<-file.path("/vsizip",i,unzip(i,list=TRUE)$Name)
+              layers<-file.path("/vsizip",i,zip_list(i)$filename)
               for(size in additional.sizes){
                 out.file<-file.path(out.dir,paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif"))
                 layer.size<-layers[grepl(size, layers,fixed = TRUE)]
@@ -111,12 +111,15 @@ setMethod("derive",
                   if(!is.null(result)){
                     #writeRaster(result,out.file,overwrite=overwrite)
                     write_stars(result,out.file,update=overwrite)
+                    add2rtoi(out.file,paste0(dirname(out.file),".zip"))
                   }
                 }else{
                   message(paste0("File already exists! file: ",out.file))
                 }
               }
+
             }
+            unlink(out.dir,recursive=TRUE)
 
 })
 

@@ -99,7 +99,6 @@ setMethod(f="download",
               for(i in 1:length(x)){
                 out.name<-file.path(out.dir,get_file_path(x[i]))
                 dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
-                print(out.name)
                 if(!file.exists(out.name)){
                   if(!get_order(x[i])){
                     con<-connection$getApi(api_name = get_api_name(x[i]))

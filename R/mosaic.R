@@ -46,7 +46,7 @@
 #' }
 setMethod(f="mosaic",
           signature = c("rtoi"),
-          function(x,  ...){
+          function(x, ...){
             #sat<-"sen2"
             args<-list(...)
             r<-records(x)
@@ -66,12 +66,12 @@ setMethod(f="mosaic",
 
 #' @rdname mosaic-rtoi-ANY-method
 #' @aliases mosaic,records
-#' @importFrom utils untar unzip
+#' @importFrom utils untar
+#' @importFrom zip zip_list
 #' @importFrom sp proj4string
 setMethod(f="mosaic",
           signature = c("records"),
-          function(x, out_path,db_path,bfilter,warp="extent",region,...){
-            #sat<-"sen2"
+          function(x, out_path,db_path,bfilter,warp="extent",region,overwrite=FALSE,...){
             args<-list(...)
             days<-dates(x)
             if(length(unique(product(x)))>1){stop("All the records must be from the same satellite")}
@@ -81,7 +81,16 @@ setMethod(f="mosaic",
               d<-as.Date(d)
               out.dir<-file.path(out_path,get_mosaic_dir(x[1]),paste0(format(d,"%Y%j")))
               out.zip<-paste0(out.dir,".zip")
-              if(!file.exists(out.zip)){
+              if(file.exists(out.zip)){
+                if(overwrite){
+                  file.remove(out.zip)
+                  mosaiced.bands<-NULL
+                }else{
+                  mosaiced.bands<-zip_list(out.zip)$filename
+                }
+              }else{
+                mosaiced.bands<-NULL
+              }
                 dir.create(out.dir,showWarnings = FALSE,recursive = TRUE)
 
                 dr<-x[which(days%in%d)]
@@ -91,7 +100,7 @@ setMethod(f="mosaic",
                   mosaicFunctions<-mosaic_fun_ls(mfiles)
                 }else if("Sentinel-3"==sat_name(dr)[1]){
                   if(product(dr[1])=="SY_2_SYN___"){
-                    mosaicFunctions<-mosaic_fun_SY_2_SYN(mfiles)
+                    mosaicFunctions<-mosaic_fun_SY_2_SYN(mfiles,scratch.tmp=scratch.tmp)
                   }else{
                     message(paste0("Product ",product(dr[1])," not supported"))
                   }
@@ -110,9 +119,8 @@ setMethod(f="mosaic",
 
                 allfiles<-c()
                 for(m in mfiles){
-                  allfiles<-c(allfiles,readfromscrach(m,bands.files))
+                  allfiles<-c(allfiles,readfromscrach(m,bands.files,scratch.tmp=scratch.tmp))
                 }
-
                 ######################################
                 # Bands
                 ######################################
@@ -120,16 +128,22 @@ setMethod(f="mosaic",
                 for(bnds in bands){
                   chunks<-filterchunks(allfiles,bnds)
                   if(length(chunks)>0){
-                    tmpfile<-file.path(tempdir(),paste0(format(d,"%Y%j_"),bnds,"1.vrt"))
-                    cmpfile<-file.path(out.dir,paste0(format(d,"%Y%j_"),bnds,"_tmp.tif"))#gsub(".vrt","_tmp.tif",tmpfile)
+                    #bname<-paste0(format(d,"%Y%j_"),gsub(":","_",bnds))
+                    bname<-gsub(":","_",bnds)
+                    tmpfile<-file.path(tempdir(),paste0(bname,"1.vrt"))
+                    cmpfile<-file.path(out.dir,paste0(bname,"_tmp.tif"))#gsub(".vrt","_tmp.tif",tmpfile)
+                    out.file.name<-gsub("_tmp","",cmpfile)
+                    out.file.name<-gsub("band","B",out.file.name)
+                    if(basename(out.file.name)%in%mosaiced.bands){
+                      next
+                    }
 
                     genMosaicGdalUtils(typechunks=chunks,
                                        temp=tmpfile,
                                        nodata=defineNodata(chunks,bnds),
                                        out.name=cmpfile)
 
-                    out.file.name<-gsub("_tmp","",cmpfile)
-                    out.file.name<-gsub("band","B",out.file.name)
+
                     tryCatch({
                       switch(tolower(warp),
                              "extent"={
@@ -156,14 +170,15 @@ setMethod(f="mosaic",
                       })
 
                   }
+                  add2rtoi(out.file.name,out.zip)
                 }
-                zipr(out.zip,files=list.files(out.dir,full.names = T))
+                #zipr(out.zip,files=list.files(out.dir,full.names = T))
                 unlink(out.dir,recursive = TRUE)
                 #TODO remove all not compressed files in database
-              }else{
-                message(paste0("File for date ",d," exists, not mosaicking..."))
-                message("If you want to override this data use 'overwrite=T' and 'dates' argument")
-              }
+              #}else{
+              #  message(paste0("File for date ",d," exists, not mosaicking..."))
+              #  message("If you want to override this data use 'overwrite=T' and 'dates' argument")
+              #}
             }
           }
 )

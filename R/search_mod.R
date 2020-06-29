@@ -102,7 +102,7 @@ setMethod(f="mod_search",
           function(region,
                    collection=6,
                    ...){
-
+            args<-list(...)
             con <- connection$getApi("nasa_inventory")
             query <- mod_query(server =  con$getServer(),
                                #product = "mod09ga",
@@ -111,7 +111,7 @@ setMethod(f="mod_search",
                                region = region,
                                resType="url",#)
                                ...)
-
+            if("verbose"%in%names(args)) message(query)
             res.download <- con$simpleCall(query)
             res.download <- xmlRoot(xmlNativeTreeParse(res.download))
             res.download <- xmlSApply(res.download,
@@ -128,7 +128,8 @@ setMethod(f="mod_search",
             rw<-as.numeric(substr(pr,5,6))
             bounds<-c()
             for(n in paste0("h:",pt," v:",rw)){
-              bounds<-rbind(bounds,st_bbox(extent(st_transform(mod.tiles[mod.tiles$Name==n,],crs=st_crs(54008)))))
+              bounds<-rbind(bounds,st_bbox(extent(st_transform(mod.tiles[mod.tiles$Name==n,],crs="+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs"#st_crs(54008)
+                                                               ))))
             }
 
             nlen<-length(res.download)

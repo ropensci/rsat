@@ -32,7 +32,7 @@ setMethod(f="plot",
                 bands<-debands$bands
                 files.p<-files[grepl(p,files)]
                 if(length(files.p)>0){
-                  files.p<-file.path("/vsizip",files.p,utils::unzip(files.p,list=TRUE)$Name)
+                  files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
 
                   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
 
@@ -108,7 +108,7 @@ setMethod(f="plot",
                 bands<-debands$bands
                 files.p<-files[grepl(p,files)]
                 if(length(files.p)>0){
-                  files.p<-file.path("/vsizip",files.p,utils::unzip(files.p,list=TRUE)$Name)
+                  files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
 
                   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
 

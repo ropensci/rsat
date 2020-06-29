@@ -1,4 +1,4 @@
-mosaic_fun_SY_2_SYN<-function(mfiles){
+mosaic_fun_SY_2_SYN<-function(mfiles,...){
   #TODO
   #"SY_2_SYN___"
   # if(product(dr[1])="OL_2_LFR___"){
@@ -23,7 +23,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles){
     }else{
       stop("Error reading from scrach.")
     }
-    ext.dir<-file.path(scratch.tmp,gsub(".zip","",basename(m)))
+    ext.dir<-file.path(args$scratch.tmp,gsub(".zip","",basename(m)))
     unzip(m,exdir = ext.dir,junkpaths = TRUE)
     #newpaths<-list.files(ext.dir,full.names = TRUE)
     newpaths<-file.path(ext.dir,paste0(bands.files,".nc"))
@@ -65,12 +65,14 @@ mosaic_fun_SY_2_SYN<-function(mfiles){
       bands.names<-image.data[grepl(".*SUBDATASET_.*_NAME=", image.data)]
       bands.names<-gsub(".*SUBDATASET_.*_NAME=","",bands.names)
       bands.names<-gsub("\"","",bands.names,fixed = T)
-      img.name<-gsub(".nc","",basename(np))
+      img.name<-gsub("\\.nc","",basename(np))
+
       #add projection
       for(b in bands.names){
-        b.tmp.name<-paste0(img.name,"_",basename(b),".vrt")
-        b.name<-paste0(img.name,"_",basename(b),"_",".tif")
+        b.tmp.name<-gsub(":","_",paste0(gsub("\\.","_",basename(b)),".vrt"))
+        b.name<-gsub("\\.vrt",".tif",b.tmp.name)
         out.tmp.file.name<-file.path(ext.dir,b.tmp.name)
+        print(out.tmp.file.name)
         out.file.name<-file.path(ext.dir,b.name)
         if(!file.exists(out.file.name)){
           gdal_utils(util = "translate",
@@ -79,7 +81,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles){
                      options = c("-of","VRT")
           )
           d=readLines(out.tmp.file.name)
-          lines<-c(as.character(d[1:17]),
+          lines<-c(as.character(d[1]),
                    '<metadata domain="GEOLOCATION">',
                    paste0('<mdi key="X_DATASET">',lon,'</mdi>'),
                    '<mdi key="X_BAND">1</mdi>',
@@ -90,7 +92,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles){
                    '<mdi key="PIXEL_STEP">1</mdi>',
                    '<mdi key="LINE_STEP">1</mdi>',
                    '</metadata>',
-                   as.character(d[18:length(d)]))
+                   as.character(d[2:length(d)]))
           fileConn<-file(paste0(out.tmp.file.name))
           writeLines(lines, fileConn)
           close(fileConn)
@@ -141,7 +143,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles){
                         #"Syn_SDR_removed_pixel"
   )
   #TODO band filter
-  npaths<-readfromscrach(mfiles[1],bands.files)
+  npaths<-allfun$readfromscrach(mfiles[1],bands.files=allfun$bands.files,...)
   allfun$bands<-basename(npaths)
   # npaths<-npaths[basename(npaths)%in%paste0(bands.files,".vrt")]
   # npaths<-normalizePath(npaths)
