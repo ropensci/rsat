@@ -1,24 +1,26 @@
-#' Region Time Of Interest (rtoi)
+#' Region and Time Of Interest (rtoi)
 #'
-#' It is a proxy object for managing an spatial region in large time periods
-#' of time and with data from multiple satellites. The rtoi stores all the metadata
-#' of a region of interest to process the region.
+#' It is a proxy object to store the metadata about the satellite imagery
+#' that covers a spatial region over a time period. Images can come from
+#' multiple satellite programs and its purpose is to help managing
+#' heterogeneous datasets.
 #'
-#' An \code{rtoi} object manages two main folders, the database and the rtoi folder.
-#' When \code{download} function is called with an rtoi, all the images will be
-#' stored in the database.
-#' The rtoi folder includes a \code{region.rtoi} file with all the metadata. Once
-#' the \code{mosaic} function is run, multiple folders with the name of the satellites
-#' considered in the rtoi apears. Each folder contais a preproceses version of
-#' each satellite.
+#' An \code{rtoi} object manages two main folders called database and rtoi.
+#' The database is meant to work as a local, generic, and organized archive
+#' of raw satellite images. When the function \code{download} is called
+#' with an rtoi, images go to the database.
+#' In contrast, the rtoi folder contains just the relevant information for
+#' a particular region and time of interest. It contains a \code{region.rtoi}
+#' file which saves all the metadata about that region/time of interest
+#' and satellite imagery available. Also, when the function \code{mosaic} is
+#' run, the relevant images from the database are cropped, mosaicked, and saved
+#' in the rtoi folder.
 #'
-#' @field name character field. Takes the name of the region of interest
-#' @field rtoi_path character field. The path where the rtoi will be stored.
-#' @field region sf field. An sf with the region of interest
-#' @field records records field. The records that presents the images for your
-#' region and time of interest.
-#' @field db_path character field. The directory where the original version
-#' of the images are stored.
+#' @field name a character with the name of the region of interest
+#' @field rtoi_path a character with the path to the rtoi folder.
+#' @field region an sf with the region of interest.
+#' @field records the satellite records available for your region and time of interest.
+#' @field db_path a character with the path to the database.
 #'
 #' @exportClass rtoi
 #' @import sf
@@ -33,10 +35,10 @@
 #'
 #' # path where downloads are stored
 #' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)
+#' navarre<-new_rtoi(name="Navarre",
+#'                   region=ex.navarre,
+#'                   rtoi_path=rtoi.path,
+#'                   db_path=db.path)
 #'
 #' print(navarre)
 #'
@@ -57,11 +59,11 @@ setRefClass("rtoi",
 
 #' Creates a new rtoi object
 #'
-#' @param name the name of the region of interes
-#' @param sfobj sf object.
-#' @param records records object.
-#' @param db_path the directory where the database for creating the rtoi will be located.
-#' @param rtoi_path the directory where the rtoi will be located.
+#' @param name the name of the region of interest.
+#' @param sfobj an sf object.
+#' @param records a records object.
+#' @param db_path the path to the database.
+#' @param rtoi_path the path to the rtoi folder.
 #'
 #' @return the reference of the rtoi object
 #' @exportMethod new_rtoi
@@ -181,15 +183,15 @@ setMethod("get_mosaic_dir",
             return(file.path(dirs,"mosaic"))
           })
 
-#' get the raster of a variable from rtoi object
+#' Loads into R a time series of images regarding an rtoi, satellite product,
+#' and remote sensing index.
 #'
-#' @param x the target rtoi
-#'
-#' @param p character argument. The product name to be extracted.
-#' @param v character argument. The derived variable to be extracted.
+#' @param x an rtoi.
+#' @param p a character with the name of the satellite data product.
+#' @param v a character with the name of the index.
 #' @param ... additional arguments.
 #'
-#' @return a raster stack with the variable and product defined by the user.
+#' @return a raster stack.
 #'
 #' @import raster stars
 #' @export
@@ -210,11 +212,11 @@ setMethod("get_mosaic_dir",
 #' navarre<-new_rtoi("Navarre",
 #'                   ex.navarre,
 #'                   rtoi.path,
-#'                   db.path)#'
+#'                   db.path)
 #' #Landsat-5
 #' sat_search(region=navarre,
-#'           product="LANDSAT_TM_C1",
-#'           dates=as.Date("1988-08-01")+seq(1,35))
+#'            product="LANDSAT_TM_C1",
+#'            dates=as.Date("1988-08-01")+seq(1,35))
 #' download(navarre)
 #'
 #' mosaic(navarre,overwrite=T)
@@ -237,15 +239,15 @@ setMethod("get_raster",
             return(stack(files))
           })
 
-#' get the raster of a variable from rtoi object
+#' Loads into R a time series of images regarding an rtoi, satellite product,
+#' and remote sensing index.
 #'
-#' @param x the target rtoi
-#'
-#' @param p character argument. The product name to be extracted.
-#' @param v character argument. The derived variable to be extracted.
+#' @param x an rtoi.
+#' @param p a character with the name of the satellite data product.
+#' @param v a character with the name of the index.
 #' @param ... additional arguments.
 #'
-#' @return a star object with the variable and product defined by the user.
+#' @return a stars object.
 #'
 #' @export
 #' @examples
@@ -295,11 +297,11 @@ setMethod("get_stars",
            return(unique(product(records(x))))
          })
 
-#' Extract database path
+#' Extracts the path to the database
 #'
-#' get_database returns a character with the database of an rtoi.
+#' extracts the path to the database from an rtoi.
 #'
-#' @param x rtoi object
+#' @param x an rtoi object.
 #'
 #' @export
 setGeneric("get_database",function(x)  standardGeneric("get_database"))
@@ -341,12 +343,12 @@ setMethod("set_database",
             write_rtoi(x)
           })
 
-#' Extract region
+#' Extracts region from an rtoi
 #'
-#' region returns an sf with the region of an rtoi.
+#' gets the sf that specifies the region of an rtoi.
 #'
-#' @param x rtoi object
-#' @param value sf argument. The value for change the region of x.
+#' @param x an rtoi object.
+#' @param value an sf object to define the region in x.
 #'
 #' @export
 setGeneric("region", function(x) {standardGeneric("region")})
@@ -372,12 +374,12 @@ setMethod(f="region<-",
             x
           })
 
-#' Extract records
+#' Extracts the satellite records
 #'
-#' records returns an records object from an rtoi.
+#' returns the object records from an rtoi.
 #'
-#' @param x rtoi object
-#' @param value records argument. The value for change the records of x.
+#' @param x an rtoi object
+#' @param value a records object to be set to x.
 #'
 #' @export
 setGeneric("records", function(x) {standardGeneric("records")})
@@ -436,11 +438,11 @@ setMethod("product",
 #           })
 
 
-#' Print Values
+#' Prints the values
 #'
-#' print prints its argument and returns it invisibly (via invisible(x)). It is a generic function which means that new printing methods can be easily added for new classes.
+#' prints an object and returns it invisibly (via invisible(x)).
 #'
-#' @param x print object.
+#' @param x an object to be printed..
 #' @param ... additional arguments.
 #'
 #' @examples
@@ -489,9 +491,9 @@ setMethod("write_rtoi",
             saveRDS(x, file=file.path(get_dir(x),paste0(names(x),".rtoi")))
           })
 
-#' Reads an rtoi from hard drive
+#' Reads an rtoi from the hard drive
 #'
-#' @param path rtoi object.
+#' @param path an rtoi object.
 #' @param ... additional arguments.
 #'
 #' @export

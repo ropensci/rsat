@@ -1,14 +1,14 @@
-#' Mosaic the tiles composing the region of interest
+#' Mosaics the tiles covering the region of interest
 #'
-#' @param x rtoi object with the records that compose the region of interest
+#' @param x an rtoi object with a records that cover the region of interest.
 #' @param y Omitted
-#' @param db_path path where the images will be stored downloading rtoi objects.
-#' By default the path is get from the rtoi.
-#' @param out_path path where the images will be stored downloading records objects
-#' @param bfilter a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all bands are extracted.
+#' @param db_path path where the images will be stored when using an rtoi.
+#' By default, the path is defined by the rtoi.
+#' @param out.dir path where the images will be stored when using a records.
+#' @param bfilter a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all are extracted.
 #' @param warp character argument. Defines how to warp the resulting tile.
 #' @param region a \code{Spatial*}, projected \code{raster*}, o
-#'   r \code{sf} class object defining the area of interest.
+#'  \code{sf} class object defining the region of interest.
 #'
 #' @param ... additional arguments
 #'

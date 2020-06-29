@@ -1,7 +1,7 @@
-#' Create cloud mask of an rtoi
+#' Create cloud mask from an rtoi
 #'
-#' @param x rtoi object for computing clouds mask.
-#' @param products the name of the dataset to create the cloud mask.
+#' @param x rtoi object from which cloud masks are computed.
+#' @param products the name of the dataset from which cloud masks are computed.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
 #' @param overwrite logical argument. If \code{TRUE}, overwrites the existing

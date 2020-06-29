@@ -1,14 +1,14 @@
-#' Plot a rtoi object
+#' Plots an rtoi object
 #'
-#' Plot (that is, make a map of) the values of rtoi object.
+#' Plot (a map of) the values of an rtoi object.
 #'
-#' @param x the target rtoi
-#' @param y character argument. The product name to be extracted.
+#' @param x an rtoi
+#' @param y character argument. The product name to be plotted.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param xsize the size of x dimensión for subsetting
-#' @param ysize the size of y dimensión for subsetting
-#' @param ... additional arguments
+#' @param xsize the size of x dimension for subsetting.
+#' @param ysize the size of y dimension for subsetting.
+#' @param ... additional arguments.
 #'
 #' @return tmap plot.
 #'

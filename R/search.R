@@ -1,4 +1,4 @@
-#' Search satellite images
+#' Searches satellite images
 #'
 #' Searches satellite images concerning a
 #' particular location, data product and date interval. The function returns a
@@ -26,10 +26,8 @@
 #' Landsat images are searched using the EarthExplorer API concerning
 #' a particular location and date interval.
 #'
-#' @param region a \code{Spatial*}, projected \code{raster*}, o
-#'   r \code{sf} class object defining the area of interest.
-#'
-#' @param product character vector containing the names of the products for downloading
+#' @param region a \code{Spatial*}, projected \code{raster*}, or \code{sf} class object defining the area of interest.
+#' @param product a character vector containing the names of the products to be downloaded.
 #' @param ... additional arguments for searching
 #'
 #' @import sf

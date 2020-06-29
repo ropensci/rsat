@@ -1,40 +1,39 @@
-#' Satellite image metadata in R class
+#' A class object for satellite image metadata
 #'
-#' This class sorts the main satellite image metadata attributes
-#' to ease the image preview, download, and data management.
+#' This class sorts the main attributes of satellite image metadata
+#' to ease previewing, downloading, and managing data.
 #'
 #' \code{records} works as vector with multiple parameters, and
-#' accepts usuals R methods used in R as \code{c}, \code{[]},
+#' accepts usual R methods such as \code{c}, \code{[]},
 #' \code{length}, \code{subset} or \code{unique}.
 #'
-#' All the data in the class can be substracted as \code{dataframe}
-#' using the method \code{as.data.frame}.
+#' The object can be coerced into a \code{data.frame} by
+#' using the command \code{as.data.frame}.
 #'
-#'
-#' @slot sat the name of the satellite which the record belongs
-#' @slot name the name of the record
-#' @slot date the date of the record
-#' @slot product the product
-#' @slot path the path of the tile sistem
-#' @slot row the path of the tile sistem
-#' @slot tileid the id of the tile
-#' @slot download the download path of the record
-#' @slot file_path the directory path where the image will be download
-#' @slot preview the url of the preview image of the record
-#' @slot api_name the api name
-#' @slot order boolean slot, defines if the image need to be order or not
-#' @slot extent_crs extent information for projecting and preview the slot
+#' @slot sat the name of the satellite to which the record belongs.
+#' @slot name the name of the satellite record.
+#' @slot date the date of the satellite record.
+#' @slot product the product.
+#' @slot path the path of the tile system.
+#' @slot row the row of the tile system.
+#' @slot tileid the tile id.
+#' @slot download the url to download the satellite record.
+#' @slot file_path the saving directory for the satellite record.
+#' @slot preview the url of the preview of the satellite record.
+#' @slot api_name the api name.
+#' @slot order boolean, defines if the image must be requested or not.
+#' @slot extent_crs extent (used to project the preview).
 #'
 #' @include extent_crs.R
 #' @examples
 #' \dontrun{
 #' data(ex.navarre)
-#' # Create a set of records using sat_search function
+#' # Create a records of Sentinel-2 Level 1C images
 #' s2.lvl1.result<-sat_search(region=ex.navarre,
 #'                            product="S2MSI1C",
 #'                            dates=as.Date("2018-01-01")+seq(1,30,1))
 #'
-#' # Create a set of records using sat_search function
+#' # Create a records of Sentinel-2 Level 2A images
 #' s2.lvl2.result<-sat_search(region=ex.navarre,
 #'                           product="S2MSI2A",
 #'                           dates=as.Date("2019-01-01")+seq(1,30,1))
@@ -79,23 +78,23 @@ setClass(
 )
 
 
-#' Creates a new records
+#' Creates a new records object
 #'
-#' Creates a records object from scrach
+#' Creates a new records object from scratch
 #'
-#' @param sat the name of the satellite which the record belongs
-#' @param name the name of the record
-#' @param date the date of the record
-#' @param product the product
-#' @param path the path of the tile sistem
-#' @param row the path of the tile sistem
-#' @param tileid the id of the tile
-#' @param download the download path of the record
-#' @param file_path the directory path where the image will be download
-#' @param preview the url of the preview image of the record
-#' @param api_name the api name
-#' @param order boolean slot, defines if the image need to be order or not
-#' @param extent_crs extent information for projecting and preview the slot
+#' @param sat the name of the satellite to which the record belongs.
+#' @param name the name of the satellite record.
+#' @param date the date of the satellite record.
+#' @param product the product.
+#' @param path the path of the tile system.
+#' @param row the row of the tile system.
+#' @param tileid the tile id.
+#' @param download the url to download the satellite record.
+#' @param file_path the saving directory for the satellite record.
+#' @param preview the url of the preview of the satellite record.
+#' @param api_name the api name.
+#' @param order boolean, defines if the image must be requested or not.
+#' @param extent_crs extent (used to project the preview).
 #'
 #' @return records object
 #'
@@ -201,11 +200,14 @@ setMethod("print",
             }
           })
 
-#' Show an Object
+#' Shows an object
 #'
-#' Display the object, by printing, plotting or whatever suits its class. This function exists to be specialized by methods. The default method calls showDefault.
+#' Display the object, by printing, plotting or whatever suits its class.
+#' This function has specialized methods. Use \code{showDefault()} to call
+#' the default method.
 #'
-#' Formal methods for show will usually be invoked for automatic printing (see the details).
+#' Formal methods for the function \code{show} will usually be invoked
+#' automatically (see the details).
 #'
 #' @param object Any R Object
 #'
@@ -216,7 +218,7 @@ setMethod(f="show",
             print(object)
           })
 
-#' Coerce to a Data Frame
+#' Coerces to a Data Frame
 #'
 #' Functions to check if an object is a data frame, or coerce it if possible.
 #'
@@ -235,9 +237,9 @@ setMethod("as.data.frame",
             return(df)
             })
 
-#' creates vector
+#' Creates vector
 #'
-#' Creates a vector from x
+#' Creates a vector from x.
 #'
 #' @param x records object.
 #'
@@ -249,14 +251,14 @@ setMethod("as.vector",
           })
 
 
-#' Combine Values into a Vector or List
+#' Combines values into a vector or list
 #'
 #' This is a generic function which combines its arguments.
 #'
-#' The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value, and all attributes except names are removed.
+#' The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value. All attributes except names are removed.
 #'
 #' @param x records object.
-#' @param ... additional arguments
+#' @param ... additional arguments.
 #'
 #' @export
 setMethod(f="c",
@@ -279,13 +281,13 @@ setMethod(f="c",
             return(x)
           })
 
-#' Extract or Replace Parts of an Object
+#' Extracts or replace parts of an object
 #'
 #' Operators acting on vectors, matrices, arrays and lists to extract or replace parts.
 #'
 #' @param x object from which to extract element(s) or in which to replace element(s)
 #' @param i numeric argument. The the position of the element to select/modify.
-#' @param value records argument. The value for change a records in x.
+#' @param value records argument. The slot of the records to be changed.
 #'
 #' @export
 setMethod(f="[", signature="records",
@@ -308,7 +310,7 @@ setReplaceMethod(f="[",
                    return(x)
                  })
 
-#' Length of an Object
+#' Length of an object
 #'
 #' Get or set the length of vectors (including lists) and factors, and of any other R object for which a method has been defined.
 #'
@@ -322,9 +324,9 @@ setMethod(f="length",
           })
 
 
-#' Create records object from data frame
+#' Creates records object from data frame
 #'
-#' @param x data frame with columnos representing the slots of records
+#' @param x data frame with columns representing the slots of records.
 #'
 #' @export
 setGeneric("as.records",function(x){
@@ -349,9 +351,9 @@ setMethod(f="as.records",
             }
 })
 
-#' get satellite name from records or rtoi
+#' Gets the name of the satellite from a records or an rtoi
 #'
-#' @param x records/rtoi object
+#' @param x a records or an rtoi object.
 #'
 #' @export
 setGeneric("sat_name", function(x) standardGeneric("sat_name"))
@@ -363,10 +365,10 @@ setMethod(f="sat_name",
             return(x@sat)
           })
 
-#' get date name from records or rtoi
+#' Gets the dates from a records or an rtoi
 #'
-#' @param x records/rtoi object
-#' @param value date argument. The value for change the date o x.
+#' @param x a records or an rtoi object.
+#' @param value date argument. The new value for x.
 #'
 #' @export
 setGeneric("dates", function(x) standardGeneric("dates"))
@@ -392,9 +394,9 @@ setMethod(f="dates<-",
           })
 
 
-#' get the product name from records or rtoi
+#' Gets the name of the product from a records or an rtoi
 #'
-#' @param x records/rtoi object
+#' @param x a records or an rtoi object.
 #'
 #' @export
 setGeneric("product", function(x) standardGeneric("product"))
@@ -406,10 +408,10 @@ setMethod(f="product",
             return(x@product)
           })
 
-#' get the path from records or rtoi
+#' Gets the file path of a records or an rtoi
 #'
-#' @param x records/rtoi object
-#' @param value character argument. The value for change the direcory of x.
+#' @param x a records or an rtoi object.
+#' @param value character argument. The new directory of x.
 #'
 #' @export
 setGeneric("get_dir",function(x)  standardGeneric("get_dir"))
@@ -437,10 +439,10 @@ setMethod(f="get_file_path",
             return(x@file_path)
           })
 
-#' get the order slot from records or rtoi
+#' Gets the slot called order from a records or an rtoi
 #'
-#' @param x records/rtoi object
-#' @param value logical argument. The value for change the value of x.
+#' @param x a records or an rtoi object.
+#' @param value logical argument. The new value for x.
 #'
 #' @export
 setGeneric("get_order",function(x){standardGeneric("get_order")})
@@ -468,11 +470,11 @@ setMethod(f="get_order<-",
 
 
 
-#' get the order slot from records or rtoi
+#' Filters the satellite records of a records or an rtoi object
 #'
-#' @param x records/rtoi object
-#' @param subset R object with the value for subsetting
-#' @param select character argument indicating the name of the slot to use in subsetting.
+#' @param x a records or an rtoi object.
+#' @param subset an R object with the value for subsetting.
+#' @param select character argument indicating the name of the slot.
 #'
 #' @export
 setMethod(f="subset",
@@ -486,11 +488,11 @@ setMethod(f="subset",
             return(x[which(slot(x, select)%in%subset)])
           })
 
-#' Extract Unique Elements
+#' Extracts unique elements
 #'
-#' unique returns records like x but with duplicate elements/rows removed.
+#' unique returns a records like x but with duplicate elements/rows removed.
 #'
-#' @param x records object
+#' @param x a records object
 #'
 #' @export
 setMethod(f="unique",
@@ -499,11 +501,11 @@ setMethod(f="unique",
             return(x[unique(as.numeric(as.factor(x@download)))])
           })
 
-#' Extract preview url
+#' Extracts the url of the preview
 #'
 #' get_preview returns a vector of character with the url for previewing the recods.
 #'
-#' @param x records object
+#' @param x a records object
 #'
 #' @export
 setGeneric("get_preview", function(x) { standardGeneric("get_preview")})
@@ -515,11 +517,11 @@ setMethod(f="get_preview",
             return(x@preview)
           })
 
-#' Extract download url
+#' Extracts the url to download a record
 #'
-#' get_download returns a vector of character with the url for download the image.
+#' get_download returns a character with the url to download the image.
 #'
-#' @param x records object
+#' @param x a records object
 #'
 #' @export
 setGeneric("get_download", function(x) { standardGeneric("get_download")})
@@ -536,10 +538,10 @@ setMethod(f="get_download",
 #'
 #' Functions to get or set the names of an object.
 #'
-#' @param x rtoi/records object.
-#' @param value character argument. The value for changeing the name of x.
+#' @param x a records or an rtoi object.
+#' @param value character argument. The new value for x.
 #'
-#' @return a character vector containing the name of al the elements in x.
+#' @return a character vector containing the name of all the names in x.
 #' @export
 #'
 #' @examples
@@ -586,9 +588,9 @@ setMethod(f="crs",
 
 #' Gets the api name of the records
 #'
-#' Functions to get or set the names of an object.
+#' Functions to get or set the api names of an object.
 #'
-#' @param x records object.
+#' @param x a records object.
 #'
 #' @return a character vector containing the api name of al the elements in x.
 #' @export
