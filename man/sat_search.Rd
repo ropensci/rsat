@@ -6,7 +6,7 @@
 \alias{sat_search,rtoi,character}
 \alias{sat_search,sf,character-method}
 \alias{sat_search,sf,character}
-\title{Search satellite images}
+\title{Searches satellite images}
 \usage{
 sat_search(region, product, ...)
 
@@ -15,10 +15,9 @@ sat_search(region, product, ...)
 \S4method{sat_search}{sf,character}(region, product, ...)
 }
 \arguments{
-\item{region}{a \code{Spatial*}, projected \code{raster*}, o
-r \code{sf} class object defining the area of interest.}
+\item{region}{a \code{Spatial*}, projected \code{raster*}, or \code{sf} class object defining the area of interest.}
 
-\item{product}{character vector containing the names of the products for downloading}
+\item{product}{a character vector containing the names of the products to be downloaded.}
 
 \item{...}{additional arguments for searching}
 }

@@ -2,13 +2,13 @@
 % Please edit documentation in R/records.R
 \name{get_download}
 \alias{get_download}
-\title{Extract download url}
+\title{Extracts the url to download a record}
 \usage{
 get_download(x)
 }
 \arguments{
-\item{x}{records object}
+\item{x}{a records object}
 }
 \description{
-get_download returns a vector of character with the url for download the image.
+get_download returns a character with the url to download the image.
 }

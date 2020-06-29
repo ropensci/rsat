@@ -4,7 +4,7 @@
 \alias{c,extent_crs-method}
 \alias{c,extent_crs}
 \alias{c,records-method}
-\title{Combine Values into a Vector or List}
+\title{Combines values into a vector or list}
 \usage{
 \S4method{c}{extent_crs}(x, ...)
 
@@ -13,11 +13,11 @@
 \arguments{
 \item{x}{records object.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments.}
 }
 \description{
 This is a generic function which combines its arguments.
 }
 \details{
-The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value, and all attributes except names are removed.
+The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value. All attributes except names are removed.
 }

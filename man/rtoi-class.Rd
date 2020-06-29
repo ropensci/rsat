@@ -3,35 +3,37 @@
 \docType{class}
 \name{rtoi-class}
 \alias{rtoi-class}
-\title{Region Time Of Interest (rtoi)}
+\title{Region and Time Of Interest (rtoi)}
 \description{
-It is a proxy object for managing an spatial region in large time periods
-of time and with data from multiple satellites. The rtoi stores all the metadata
-of a region of interest to process the region.
+It is a proxy object to store the metadata about the satellite imagery
+that covers a spatial region over a time period. Images can come from
+multiple satellite programs and its purpose is to help managing
+heterogeneous datasets.
 }
 \details{
-An \code{rtoi} object manages two main folders, the database and the rtoi folder.
-When \code{download} function is called with an rtoi, all the images will be
-stored in the database.
-The rtoi folder includes a \code{region.rtoi} file with all the metadata. Once
-the \code{mosaic} function is run, multiple folders with the name of the satellites
-considered in the rtoi apears. Each folder contais a preproceses version of
-each satellite.
+An \code{rtoi} object manages two main folders called database and rtoi.
+The database is meant to work as a local, generic, and organized archive
+of raw satellite images. When the function \code{download} is called
+with an rtoi, images go to the database.
+In contrast, the rtoi folder contains just the relevant information for
+a particular region and time of interest. It contains a \code{region.rtoi}
+file which saves all the metadata about that region/time of interest
+and satellite imagery available. Also, when the function \code{mosaic} is
+run, the relevant images from the database are cropped, mosaicked, and saved
+in the rtoi folder.
 }
 \section{Fields}{
 
 \describe{
-\item{\code{name}}{character field. Takes the name of the region of interest}
+\item{\code{name}}{a character with the name of the region of interest}
 
-\item{\code{rtoi_path}}{character field. The path where the rtoi will be stored.}
+\item{\code{rtoi_path}}{a character with the path to the rtoi folder.}
 
-\item{\code{region}}{sf field. An sf with the region of interest}
+\item{\code{region}}{an sf with the region of interest.}
 
-\item{\code{records}}{records field. The records that presents the images for your
-region and time of interest.}
+\item{\code{records}}{the satellite records available for your region and time of interest.}
 
-\item{\code{db_path}}{character field. The directory where the original version
-of the images are stored.}
+\item{\code{db_path}}{a character with the path to the database.}
 }}
 
 
@@ -44,10 +46,10 @@ rtoi.path <- tempdir()
 
 # path where downloads are stored
 db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)
+navarre<-new_rtoi(name="Navarre",
+                  region=ex.navarre,
+                  rtoi_path=rtoi.path,
+                  db_path=db.path)
 
 print(navarre)
 

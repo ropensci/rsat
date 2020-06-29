@@ -4,7 +4,7 @@
 \alias{derive}
 \alias{derive,rtoi,character-method}
 \alias{derive,rtoi,character}
-\title{Compute a remote sensing index from a rtoi}
+\title{Computes a remote sensing index from an rtoi}
 \usage{
 derive(x, variable, ...)
 
@@ -20,17 +20,14 @@ derive(x, variable, ...)
 )
 }
 \arguments{
-\item{x}{rtoi object for deriving variables}
+\item{x}{rtoi object from which the index is computed.}
 
-\item{variable}{the name of the variable, run "show_variables()"
-to check the variables supported by the package}
+\item{variable}{the name of the variable. Run \code{show_variables()}
+to check the variables supported by the package.}
 
 \item{...}{additional argument for variable deriving}
 
-\item{product}{the name of the dataset for deriving variables.}
-
-\item{dates}{a vector with the dates being considered
-for creating cloud masks. This argument is optional.}
+\item{dates}{a vector with the dates being considered (optional).}
 
 \item{fun}{a \code{function} that computes the remote sensing index.}
 
@@ -39,13 +36,15 @@ images with the same name.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
+
+\item{products}{the name of the dataset from which the index is computed.}
 }
 \value{
 nothing. The derived variables will be save in the hard drive.
 Use get_stars to get the variables.
 }
 \description{
-Compute a remote sensing index from a rtoi
+Computes a remote sensing index from an rtoi
 }
 \examples{
 \dontrun{
@@ -64,7 +63,7 @@ db.path <- file.path(tempdir(),"DATABASE")
 navarre<-new_rtoi("Navarre",
                   ex.navarre,
                   rtoi.path,
-                  db.path)#'
+                  db.path)
 #Landsat-5
 sat_search(region=navarre,
           product="LANDSAT_TM_C1",

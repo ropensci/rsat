@@ -3,7 +3,7 @@
 \docType{data}
 \name{ex.ndvi.navarre}
 \alias{ex.ndvi.navarre}
-\title{A time series of NDVI of Navarre (Spain)}
+\title{A time series of NDVI in Navarre (Spain)}
 \format{
 The \code{RasterBrick} contains 6 images, from the 2nd to the 4th of
 August in 2017 and 2018. The \code{RasterBrick} coordinates are in the
@@ -16,6 +16,6 @@ Sinusoidal projection:
 }
 \description{
 Geographically projected \code{RasterBrick} object of the normalized
-difference vegetation index (NDVI) of Navarre.
+difference vegetation index (NDVI) in Navarre.
 }
 \keyword{data}

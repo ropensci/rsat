@@ -4,7 +4,7 @@
 \alias{length,extent_crs-method}
 \alias{length,extent_crs}
 \alias{length,records-method}
-\title{Length of an Object}
+\title{Length of an object}
 \usage{
 \S4method{length}{extent_crs}(x)
 

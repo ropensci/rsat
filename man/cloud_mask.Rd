@@ -4,18 +4,18 @@
 \alias{cloud_mask}
 \alias{cloud_mask,rtoi-method}
 \alias{cloud_mask,rtoi}
-\title{Create cloud mask of an rtoi}
+\title{Create cloud mask from an rtoi}
 \usage{
 cloud_mask(x, ...)
 
 \S4method{cloud_mask}{rtoi}(x, products = "ALL", verbose = FALSE, overwrite = FALSE, ...)
 }
 \arguments{
-\item{x}{rtoi object for computing clouds mask.}
+\item{x}{rtoi object from which cloud masks are computed.}
 
 \item{...}{additional arguments}
 
-\item{products}{the name of the dataset to create the cloud mask.}
+\item{products}{the name of the dataset from which cloud masks are computed.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
@@ -24,5 +24,5 @@ running steps and warnings.}
 images with the same name.}
 }
 \description{
-Create cloud mask of an rtoi
+Create cloud mask from an rtoi
 }

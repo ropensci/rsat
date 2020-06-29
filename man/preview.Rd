@@ -10,7 +10,7 @@
 \alias{preview,records,date}
 \alias{preview,records,numeric-method}
 \alias{preview,rtoi,numeric}
-\title{Preview records or rtoi object}
+\title{Previews a records or an rtoi object}
 \usage{
 preview(x, n, ...)
 
@@ -41,9 +41,9 @@ preview(x, n, ...)
 )
 }
 \arguments{
-\item{x}{rtoi/records variable to be previewed}
+\item{x}{a records or an rtoi object.}
 
-\item{n}{the date}
+\item{n}{the date expressed as the temporal index in the time series.}
 
 \item{...}{additional arguments}
 
@@ -51,7 +51,7 @@ preview(x, n, ...)
 layers to enable false color visualization.}
 
 \item{add.layer}{logical argument. If \code{TRUE}, the function plots the
-image on an existing map. Allows combinations of images on a map using}
+image on an existing map.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
@@ -59,10 +59,10 @@ running steps and warnings.}
 \item{pre_dir}{character argument. The directory where previsualization images
 will be located.}
 
-\item{get.map}{logical argument. If \code{TRUE} the function return the leaflet map.}
+\item{get.map}{logical argument. If \code{TRUE}, the function return the leaflet map.}
 }
 \description{
-Preview records or rtoi object
+Previews a records or an rtoi object
 }
 \examples{
 \dontrun{

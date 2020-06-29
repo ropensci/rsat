@@ -3,58 +3,58 @@
 \docType{class}
 \name{records-class}
 \alias{records-class}
-\title{Satellite image metadata in R class}
+\title{A class object for satellite image metadata}
 \description{
-This class sorts the main satellite image metadata attributes
-to ease the image preview, download, and data management.
+This class sorts the main attributes of satellite image metadata
+to ease previewing, downloading, and managing data.
 }
 \details{
 \code{records} works as vector with multiple parameters, and
-accepts usuals R methods used in R as \code{c}, \code{[]},
+accepts usual R methods such as \code{c}, \code{[]},
 \code{length}, \code{subset} or \code{unique}.
 
-All the data in the class can be substracted as \code{dataframe}
-using the method \code{as.data.frame}.
+The object can be coerced into a \code{data.frame} by
+using the command \code{as.data.frame}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{sat}}{the name of the satellite which the record belongs}
+\item{\code{sat}}{the name of the satellite to which the record belongs.}
 
-\item{\code{name}}{the name of the record}
+\item{\code{name}}{the name of the satellite record.}
 
-\item{\code{date}}{the date of the record}
+\item{\code{date}}{the date of the satellite record.}
 
-\item{\code{product}}{the product}
+\item{\code{product}}{the product.}
 
-\item{\code{path}}{the path of the tile sistem}
+\item{\code{path}}{the path of the tile system.}
 
-\item{\code{row}}{the path of the tile sistem}
+\item{\code{row}}{the row of the tile system.}
 
-\item{\code{tileid}}{the id of the tile}
+\item{\code{tileid}}{the tile id.}
 
-\item{\code{download}}{the download path of the record}
+\item{\code{download}}{the url to download the satellite record.}
 
-\item{\code{file_path}}{the directory path where the image will be download}
+\item{\code{file_path}}{the saving directory for the satellite record.}
 
-\item{\code{preview}}{the url of the preview image of the record}
+\item{\code{preview}}{the url of the preview of the satellite record.}
 
-\item{\code{api_name}}{the api name}
+\item{\code{api_name}}{the api name.}
 
-\item{\code{order}}{boolean slot, defines if the image need to be order or not}
+\item{\code{order}}{boolean, defines if the image must be requested or not.}
 
-\item{\code{extent_crs}}{extent information for projecting and preview the slot}
+\item{\code{extent_crs}}{extent (used to project the preview).}
 }}
 
 \examples{
 \dontrun{
 data(ex.navarre)
-# Create a set of records using sat_search function
+# Create a records of Sentinel-2 Level 1C images
 s2.lvl1.result<-sat_search(region=ex.navarre,
                            product="S2MSI1C",
                            dates=as.Date("2018-01-01")+seq(1,30,1))
 
-# Create a set of records using sat_search function
+# Create a records of Sentinel-2 Level 2A images
 s2.lvl2.result<-sat_search(region=ex.navarre,
                           product="S2MSI2A",
                           dates=as.Date("2019-01-01")+seq(1,30,1))

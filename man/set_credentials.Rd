@@ -6,7 +6,7 @@
 \alias{set_credentials,character,character,missing}
 \alias{set_credentials,character,character,character-method}
 \alias{set_credentials,character,character,character}
-\title{asigns the credentials for data searching and downloading}
+\title{Saves the credentials for the web services}
 \usage{
 set_credentials(user, pass, credential)
 
@@ -16,16 +16,16 @@ set_credentials(user, pass, credential)
 }
 \arguments{
 \item{user}{character argument. Defines the username of an api platform
-for searching and downloading images}
+to search or download images}
 
 \item{pass}{character argument. Defines the password of an api platform
-for searching and downloading images}
+to search and download images}
 
-\item{credential}{optional argument. Defines the platform name. earthdata,
-scihub, scihubs5p, or ALL are valid credentials}
+\item{credential}{optional argument to specify the name of the platform.
+Valid names are earthdata, scihub, scihubs5p, or ALL}
 }
 \description{
-asigns the credentials for data searching and downloading
+Saves the credentials for the web services
 }
 \examples{
 print_credentials()

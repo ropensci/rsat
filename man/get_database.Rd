@@ -4,15 +4,15 @@
 \alias{get_database}
 \alias{get_database,rtoi-method}
 \alias{get_database,rtoi}
-\title{Extract database path}
+\title{Extracts the path to the database}
 \usage{
 get_database(x)
 
 \S4method{get_database}{rtoi}(x)
 }
 \arguments{
-\item{x}{rtoi object}
+\item{x}{an rtoi object.}
 }
 \description{
-get_database returns a character with the database of an rtoi.
+extracts the path to the database from an rtoi.
 }

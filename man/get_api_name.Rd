@@ -11,11 +11,11 @@ get_api_name(x)
 \S4method{get_api_name}{records}(x)
 }
 \arguments{
-\item{x}{records object.}
+\item{x}{a records object.}
 }
 \value{
 a character vector containing the api name of al the elements in x.
 }
 \description{
-Functions to get or set the names of an object.
+Functions to get or set the api names of an object.
 }

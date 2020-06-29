@@ -6,9 +6,9 @@
 \title{A Digital Elevation Model (DEM) of the region of Navarre (Spain)}
 \format{
 The \code{RasterStack} contains 6 layers with the same DEM, one for
-every image in the time series of the
-example.
-The \code{RasterStack} coordinates are in the Sinusoidal projection:
+every image in \code{\link{ex.ndvi.navarre}}.
+
+The \code{RasterStack} coordinates are in the Sinusoidal projection.
 
 \describe{
   \item{name}{layer names contain the capturing date of the corresponding image in the format "\code{YYYYJJJ}"}.
@@ -20,6 +20,6 @@ Geographically projected \code{RasterStack} with the digital elevation model
 (DEM) of the region of Navarre (Spain). The DEM was obtained from the
 \href{http://centrodedescargas.cnig.es/CentroDescargas/locale?request_locale=en#}{National Center for Geographic Information}
 of Spain. The DEM is used as a covariable in the Image Mean Anomaly (IMA)
-algorithm
+algorithm (\code{\link{genSmoothingCovIMA}}).
 }
 \keyword{data}

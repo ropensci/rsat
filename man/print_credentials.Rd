@@ -3,7 +3,7 @@
 \name{print_credentials}
 \alias{print_credentials}
 \alias{print_credentials,ANY-method}
-\title{prints the credentials defined by the user}
+\title{Prints the credentials for the web services}
 \usage{
 print_credentials(...)
 
@@ -13,7 +13,7 @@ print_credentials(...)
 \item{...}{additional arguments.}
 }
 \description{
-prints the credentials defined by the user
+Prints the credentials for the web services
 }
 \examples{
 print_credentials()

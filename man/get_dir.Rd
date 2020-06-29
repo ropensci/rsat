@@ -9,7 +9,7 @@
 \alias{get_dir,rtoi}
 \alias{get_dir<-}
 \alias{get_dir,rtoi,character}
-\title{get the path from records or rtoi}
+\title{Gets the file path of a records or an rtoi}
 \usage{
 get_dir(x)
 
@@ -22,10 +22,10 @@ get_dir(x)
 get_dir(x) <- value
 }
 \arguments{
-\item{x}{records/rtoi object}
+\item{x}{a records or an rtoi object.}
 
-\item{value}{character argument. The value for change the direcory of x.}
+\item{value}{character argument. The new directory of x.}
 }
 \description{
-get the path from records or rtoi
+Gets the file path of a records or an rtoi
 }

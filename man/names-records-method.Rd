@@ -15,12 +15,12 @@
 \S4method{names}{rtoi,character}(x) <- value
 }
 \arguments{
-\item{x}{rtoi/records object.}
+\item{x}{a records or an rtoi object.}
 
-\item{value}{character argument. The value for changeing the name of x.}
+\item{value}{character argument. The new value for x.}
 }
 \value{
-a character vector containing the name of al the elements in x.
+a character vector containing the name of all the names in x.
 }
 \description{
 Functions to get or set the names of an object.

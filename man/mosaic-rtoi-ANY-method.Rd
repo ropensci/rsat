@@ -4,7 +4,7 @@
 \alias{mosaic,rtoi,ANY-method}
 \alias{mosaic,records,ANY-method}
 \alias{mosaic,records}
-\title{Mosaic the tiles composing the region of interest}
+\title{Mosaics the tiles covering the region of interest}
 \usage{
 \S4method{mosaic}{rtoi,ANY}(x, y, ...)
 
@@ -20,26 +20,26 @@
 )
 }
 \arguments{
-\item{x}{rtoi object with the records that compose the region of interest}
+\item{x}{an rtoi object with a records that cover the region of interest.}
 
 \item{y}{Omitted}
 
 \item{...}{additional arguments}
 
-\item{out_path}{path where the images will be stored downloading records objects}
+\item{db_path}{path where the images will be stored when using an rtoi.
+By default, the path is defined by the rtoi.}
 
-\item{db_path}{path where the images will be stored downloading rtoi objects.
-By default the path is get from the rtoi.}
-
-\item{bfilter}{a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all bands are extracted.}
+\item{bfilter}{a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all are extracted.}
 
 \item{warp}{character argument. Defines how to warp the resulting tile.}
 
 \item{region}{a \code{Spatial*}, projected \code{raster*}, o
-r \code{sf} class object defining the area of interest.}
+\code{sf} class object defining the region of interest.}
+
+\item{out.dir}{path where the images will be stored when using a records.}
 }
 \description{
-Mosaic the tiles composing the region of interest
+Mosaics the tiles covering the region of interest
 }
 \examples{
 \dontrun{

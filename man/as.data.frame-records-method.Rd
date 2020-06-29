@@ -4,7 +4,7 @@
 \alias{as.data.frame,extent_crs-method}
 \alias{as.data.frame,extent_crs}
 \alias{as.data.frame,records-method}
-\title{Coerce to a Data Frame}
+\title{Coerces to a Data Frame}
 \usage{
 \S4method{as.data.frame}{extent_crs}(x)
 

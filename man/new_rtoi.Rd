@@ -15,15 +15,15 @@ new_rtoi(name, sfobj, rtoi_path, db_path, records)
 \S4method{new_rtoi}{character,sf,character,character,records}(name, sfobj, rtoi_path, db_path, records)
 }
 \arguments{
-\item{name}{the name of the region of interes}
+\item{name}{the name of the region of interest.}
 
-\item{sfobj}{sf object.}
+\item{sfobj}{an sf object.}
 
-\item{rtoi_path}{the directory where the rtoi will be located.}
+\item{rtoi_path}{the path to the rtoi folder.}
 
-\item{db_path}{the directory where the database for creating the rtoi will be located.}
+\item{db_path}{the path to the database.}
 
-\item{records}{records object.}
+\item{records}{a records object.}
 }
 \value{
 the reference of the rtoi object

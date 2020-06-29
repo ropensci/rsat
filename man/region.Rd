@@ -7,7 +7,7 @@
 \alias{region<-}
 \alias{region<-,rtoi,sf-method}
 \alias{region<-,rtoi,sf}
-\title{Extract region}
+\title{Extracts region from an rtoi}
 \usage{
 region(x)
 
@@ -18,10 +18,10 @@ region(x) <- value
 \S4method{region}{rtoi,sf}(x) <- value
 }
 \arguments{
-\item{x}{rtoi object}
+\item{x}{an rtoi object.}
 
-\item{value}{sf argument. The value for change the region of x.}
+\item{value}{an sf object to define the region in x.}
 }
 \description{
-region returns an sf with the region of an rtoi.
+gets the sf that specifies the region of an rtoi.
 }

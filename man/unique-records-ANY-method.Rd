@@ -2,13 +2,13 @@
 % Please edit documentation in R/records.R
 \name{unique,records,ANY-method}
 \alias{unique,records,ANY-method}
-\title{Extract Unique Elements}
+\title{Extracts unique elements}
 \usage{
 \S4method{unique}{records,ANY}(x)
 }
 \arguments{
-\item{x}{records object}
+\item{x}{a records object}
 }
 \description{
-unique returns records like x but with duplicate elements/rows removed.
+unique returns a records like x but with duplicate elements/rows removed.
 }

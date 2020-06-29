@@ -10,7 +10,7 @@
 \alias{print,records}
 \alias{print,rtoi-method}
 \alias{print,variables-method}
-\title{Print Values}
+\title{Prints the values}
 \usage{
 \S4method{print}{api}(x)
 
@@ -23,12 +23,12 @@
 \S4method{print}{variables}(x, ...)
 }
 \arguments{
-\item{x}{print object.}
+\item{x}{an object to be printed..}
 
 \item{...}{additional arguments.}
 }
 \description{
-print prints its argument and returns it invisibly (via invisible(x)). It is a generic function which means that new printing methods can be easily added for new classes.
+prints an object and returns it invisibly (via invisible(x)).
 }
 \examples{
 \dontrun{

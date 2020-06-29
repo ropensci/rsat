@@ -7,7 +7,7 @@
 \alias{plot,rtoi}
 \alias{plot,rtoi,missing-method}
 \alias{plot,rtoi,missing}
-\title{Plot a rtoi object}
+\title{Plots an rtoi object}
 \usage{
 \S4method{plot}{rtoi,ANY}(x, y, verbose = FALSE, xsize = 250, ysize = 250, ...)
 
@@ -18,22 +18,22 @@
 \S4method{plot}{rtoi,missing}(x, y, verbose = FALSE, ...)
 }
 \arguments{
-\item{x}{the target rtoi}
+\item{x}{an rtoi}
 
-\item{y}{character argument. The product name to be extracted.}
+\item{y}{character argument. The product name to be plotted.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
 
-\item{xsize}{the size of x dimensión for subsetting}
+\item{xsize}{the size of x dimension for subsetting.}
 
-\item{ysize}{the size of y dimensión for subsetting}
+\item{ysize}{the size of y dimension for subsetting.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments.}
 }
 \value{
 tmap plot.
 }
 \description{
-Plot (that is, make a map of) the values of rtoi object.
+Plot (a map of) the values of an rtoi object.
 }

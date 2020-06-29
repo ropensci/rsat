@@ -8,7 +8,7 @@
 \alias{[,records,ANY,ANY-method}
 \alias{[<-,records,ANY,ANY-method}
 \alias{'[<-',rtoi,records}
-\title{Extract or Replace Parts of an Object}
+\title{Extracts or replace parts of an object}
 \usage{
 \S4method{[}{extent_crs,ANY,ANY}(x, i)
 
@@ -23,7 +23,7 @@
 
 \item{i}{numeric argument. The the position of the element to select/modify.}
 
-\item{value}{records argument. The value for change a records in x.}
+\item{value}{records argument. The slot of the records to be changed.}
 }
 \description{
 Operators acting on vectors, matrices, arrays and lists to extract or replace parts.

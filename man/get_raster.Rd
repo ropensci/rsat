@@ -4,26 +4,28 @@
 \alias{get_raster}
 \alias{get_raster,rtoi-method}
 \alias{get_raster,rtoi}
-\title{get the raster of a variable from rtoi object}
+\title{Loads into R a time series of images regarding an rtoi, satellite product,
+and remote sensing index.}
 \usage{
 get_raster(x, p, v, ...)
 
 \S4method{get_raster}{rtoi}(x, p, v, ...)
 }
 \arguments{
-\item{x}{the target rtoi}
+\item{x}{an rtoi.}
 
-\item{p}{character argument. The product name to be extracted.}
+\item{p}{a character with the name of the satellite data product.}
 
-\item{v}{character argument. The derived variable to be extracted.}
+\item{v}{a character with the name of the index.}
 
 \item{...}{additional arguments.}
 }
 \value{
-a raster stack with the variable and product defined by the user.
+a raster stack.
 }
 \description{
-get the raster of a variable from rtoi object
+Loads into R a time series of images regarding an rtoi, satellite product,
+and remote sensing index.
 }
 \examples{
 \dontrun{
@@ -42,11 +44,11 @@ db.path <- file.path(tempdir(),"DATABASE")
 navarre<-new_rtoi("Navarre",
                   ex.navarre,
                   rtoi.path,
-                  db.path)#'
+                  db.path)
 #Landsat-5
 sat_search(region=navarre,
-          product="LANDSAT_TM_C1",
-          dates=as.Date("1988-08-01")+seq(1,35))
+           product="LANDSAT_TM_C1",
+           dates=as.Date("1988-08-01")+seq(1,35))
 download(navarre)
 
 mosaic(navarre,overwrite=T)

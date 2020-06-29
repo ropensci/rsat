@@ -6,7 +6,7 @@
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,extent_crs}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing-method}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing}
-\title{Creates a new records}
+\title{Creates a new records object}
 \usage{
 new_record(
   sat,
@@ -56,37 +56,37 @@ new_record(
 )
 }
 \arguments{
-\item{sat}{the name of the satellite which the record belongs}
+\item{sat}{the name of the satellite to which the record belongs.}
 
-\item{name}{the name of the record}
+\item{name}{the name of the satellite record.}
 
-\item{date}{the date of the record}
+\item{date}{the date of the satellite record.}
 
-\item{product}{the product}
+\item{product}{the product.}
 
-\item{download}{the download path of the record}
+\item{download}{the url to download the satellite record.}
 
-\item{file_path}{the directory path where the image will be download}
+\item{file_path}{the saving directory for the satellite record.}
 
-\item{path}{the path of the tile sistem}
+\item{path}{the path of the tile system.}
 
-\item{row}{the path of the tile sistem}
+\item{row}{the row of the tile system.}
 
-\item{tileid}{the id of the tile}
+\item{tileid}{the tile id.}
 
-\item{preview}{the url of the preview image of the record}
+\item{preview}{the url of the preview of the satellite record.}
 
-\item{api_name}{the api name}
+\item{api_name}{the api name.}
 
-\item{order}{boolean slot, defines if the image need to be order or not}
+\item{order}{boolean, defines if the image must be requested or not.}
 
-\item{extent_crs}{extent information for projecting and preview the slot}
+\item{extent_crs}{extent (used to project the preview).}
 }
 \value{
 records object
 }
 \description{
-Creates a records object from scrach
+Creates a new records object from scratch
 }
 \examples{
 \dontrun{

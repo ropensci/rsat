@@ -6,7 +6,7 @@
 \alias{download,rtoi}
 \alias{download,records-method}
 \alias{download,records}
-\title{Downloads the images in the records/rtoi object}
+\title{Downloads the images from a records/rtoi object}
 \usage{
 download(x, ...)
 
@@ -15,17 +15,17 @@ download(x, ...)
 \S4method{download}{records}(x, out.dir, ...)
 }
 \arguments{
-\item{x}{records or rtoi object.}
+\item{x}{a records or an rtoi object.}
 
 \item{...}{additional arguments}
 
-\item{db_path}{path where the images will be stored downloading rtoi objects.
-By default the path is get from the rtoi.}
+\item{db_path}{path where the images will be stored when using an rtoi.
+By default, the path is defined by the rtoi.}
 
-\item{out.dir}{path where the images will be stored downloading records objects}
+\item{out.dir}{path where the images will be stored when using a records.}
 }
 \description{
-Downloads the images in the records/rtoi object
+Downloads the images from a records/rtoi object
 }
 \examples{
 \dontrun{
@@ -44,7 +44,8 @@ db.path <- file.path(tempdir(),"DATABASE")
 navarre<-new_rtoi("Navarre",
                   ex.navarre,
                   rtoi.path,
-                  db.path)#'
+                  db.path)
+
 #Landsat-5
 sat_search(region=navarre,
           product="LANDSAT_TM_C1",

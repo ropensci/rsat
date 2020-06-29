@@ -7,7 +7,7 @@
 \alias{records<-}
 \alias{records<-,rtoi,records-method}
 \alias{records<-,rtoi,records}
-\title{Extract records}
+\title{Extracts the satellite records}
 \usage{
 records(x)
 
@@ -18,10 +18,10 @@ records(x) <- value
 \S4method{records}{rtoi,records}(x) <- value
 }
 \arguments{
-\item{x}{rtoi object}
+\item{x}{an rtoi object}
 
-\item{value}{records argument. The value for change the records of x.}
+\item{value}{a records object to be set to x.}
 }
 \description{
-records returns an records object from an rtoi.
+returns the object records from an rtoi.
 }

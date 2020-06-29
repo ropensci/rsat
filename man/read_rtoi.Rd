@@ -4,19 +4,19 @@
 \alias{read_rtoi}
 \alias{read_rtoi,character-method}
 \alias{read_rtoi,character}
-\title{Reads an rtoi from hard drive}
+\title{Reads an rtoi from the hard drive}
 \usage{
 read_rtoi(path, ...)
 
 \S4method{read_rtoi}{character}(path, ...)
 }
 \arguments{
-\item{path}{rtoi object.}
+\item{path}{an rtoi object.}
 
 \item{...}{additional arguments.}
 }
 \description{
-Reads an rtoi from hard drive
+Reads an rtoi from the hard drive
 }
 \examples{
 \dontrun{

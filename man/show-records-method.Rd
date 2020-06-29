@@ -9,7 +9,7 @@
 \alias{show,rtoi}
 \alias{show,variables-method}
 \alias{show,variables}
-\title{Show an Object}
+\title{Shows an object}
 \usage{
 \S4method{show}{extent_crs}(object)
 
@@ -23,8 +23,11 @@
 \item{object}{Any R Object}
 }
 \description{
-Display the object, by printing, plotting or whatever suits its class. This function exists to be specialized by methods. The default method calls showDefault.
+Display the object, by printing, plotting or whatever suits its class.
+This function has specialized methods. Use \code{showDefault()} to call
+the default method.
 }
 \details{
-Formal methods for show will usually be invoked for automatic printing (see the details).
+Formal methods for the function \code{show} will usually be invoked
+automatically (see the details).
 }

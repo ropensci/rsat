@@ -9,7 +9,7 @@
 \alias{dates<-,records-method}
 \alias{dates,rtoi-method}
 \alias{dates,rtoi}
-\title{get date name from records or rtoi}
+\title{Gets the dates from a records or an rtoi}
 \usage{
 dates(x)
 
@@ -22,10 +22,10 @@ dates(x) <- value
 \S4method{dates}{rtoi}(x)
 }
 \arguments{
-\item{x}{records/rtoi object}
+\item{x}{a records or an rtoi object.}
 
-\item{value}{date argument. The value for change the date o x.}
+\item{value}{date argument. The new value for x.}
 }
 \description{
-get date name from records or rtoi
+Gets the dates from a records or an rtoi
 }
