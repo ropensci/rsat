@@ -104,6 +104,7 @@ setMethod("smoothing_images",
 
 })
 
+
 genSmoothingIMA<-function(rStack,
                           Img2Fill = NULL,
                           nDays = 3,
