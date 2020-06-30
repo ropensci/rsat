@@ -75,7 +75,7 @@ setMethod("smoothing_images",
                    method,
                    product="ALL",
                    satellite="ALL",
-                   process_type="ALL",
+                   stage="ALL",
                    variable="ALL",
                    ...){
             var_to_process<-list_data(x)
@@ -83,14 +83,14 @@ setMethod("smoothing_images",
               var_to_process<-var_to_process[var_to_process$product%in%product,]
             }else if(!satellite=="ALL"){
               var_to_process<-var_to_process[var_to_process$satellite%in%satellite,]
-            }else if(!process_type=="ALL"){
-              var_to_process<-var_to_process[var_to_process$process_type%in%process_type,]
+            }else if(!stage=="ALL"){
+              var_to_process<-var_to_process[var_to_process$stage%in%stage,]
             }else if(!variable=="ALL"){
               var_to_process<-var_to_process[var_to_process$variable%in%variable,]
             }
 
             # remove imasmoothing
-            var_to_process<-var_to_process[!var_to_process$process_type%in%"ima_smoothing",]
+            var_to_process<-var_to_process[!var_to_process$stage%in%"ima_smoothing",]
 
             apply(var_to_process,1,function(p,rtoi_dir,process_folder="ima_smoothing",...){
               process_list<-read_rtoi_dir(p,rtoi_dir)

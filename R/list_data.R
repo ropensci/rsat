@@ -45,7 +45,7 @@ setMethod("list_data",
                 full.names<-gsub("\\.zip","",full.names)
                 data.list<-c(data.list,strsplit(full.names,"/"))
                 df<-do.call(rbind,data.list)
-                colnames(df)<-c("satellite","product","process_type","variable")
+                colnames(df)<-c("satellite","product","stage","variable")
                 return(df)
               })
             }),recursive=FALSE)
