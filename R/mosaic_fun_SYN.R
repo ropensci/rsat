@@ -2,7 +2,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
   #TODO
   #"SY_2_SYN___"
   # if(product(dr[1])="OL_2_LFR___"){
-  #   readfromscrach<-function(m){
+  #   readfromscratch<-function(m){
   #     # extract
   #     # get new paths
   #     # filtra las bandas que queramos
@@ -16,7 +16,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
   # }
 
   allfun<-NULL
-  allfun$readfromscrach<-function(m,...){
+  allfun$readfromscratch<-function(m,...){
     args<-list(...)
     if("bands.files"%in%names(args)){
       bands.files<-args$bands.files
@@ -143,7 +143,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
                         #"Syn_SDR_removed_pixel"
   )
   #TODO band filter
-  npaths<-allfun$readfromscrach(mfiles[1],bands.files=allfun$bands.files,...)
+  npaths<-allfun$readfromscratch(mfiles[1],bands.files=allfun$bands.files,...)
   allfun$bands<-basename(npaths)
   # npaths<-npaths[basename(npaths)%in%paste0(bands.files,".vrt")]
   # npaths<-normalizePath(npaths)

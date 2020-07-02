@@ -114,12 +114,12 @@ setMethod(f="mosaic",
                 bands<-mosaicFunctions$bands
                 bands.files<-mosaicFunctions$bands.files
                 filterchunks<-mosaicFunctions$filterchunks
-                readfromscrach<-mosaicFunctions$readfromscrach
+                readfromscratch<-mosaicFunctions$readfromscratch
                 defineNodata<-mosaicFunctions$defineNodata
 
                 allfiles<-c()
                 for(m in mfiles){
-                  allfiles<-c(allfiles,readfromscrach(m,bands.files,scratch.tmp=scratch.tmp))
+                  allfiles<-c(allfiles,readfromscratch(m,bands.files,scratch.tmp=scratch.tmp))
                 }
                 ######################################
                 # Bands
@@ -147,9 +147,8 @@ setMethod(f="mosaic",
                     tryCatch({
                       switch(tolower(warp),
                              "extent"={
-                               r.tmp <-raster(cmpfile)
-                               region <- st_transform(region,proj4string(r.tmp))# gdal_crs(chunks[1])$crs[["proj4string"]])
-                               rm(r.tmp);gc();
+                               #r.tmp <-raster(cmpfile)
+                               region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp))                               rm(r.tmp);gc();
                                #region <- st_transform(region,gdal_crs(cmpfile))
                                ext<-extent(region)
                                gdal_utils(util = "warp",
@@ -158,6 +157,8 @@ setMethod(f="mosaic",
                                           options=c("-te",ext@xmin,ext@ymin,ext@xmax,ext@ymax,
                                                     "-te_srs",st_crs(region)$proj4string)
                                )
+
+                               gc()
                                file.remove(cmpfile)
                              },
                              {file.rename(cmpfile,

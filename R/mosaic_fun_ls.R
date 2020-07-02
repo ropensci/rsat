@@ -1,6 +1,6 @@
 mosaic_fun_ls<-function(mfiles){
   allfun<-NULL
-  allfun$readfromscrach<-function(m,...){
+  allfun$readfromscratch<-function(m,...){
     file.path("/vsitar",m,untar(m,list=TRUE))
   }
   allfun$filterchunks<-function(allfiles,bnds){
@@ -19,7 +19,7 @@ mosaic_fun_ls<-function(mfiles){
     nodata
   }
 
-  bands<-allfun$readfromscrach(mfiles[1])
+  bands<-allfun$readfromscratch(mfiles[1])
   #lvl2 particular change
   qa<-grepl("_qa",bands)
   bands<-gsub(".*_","",bands)

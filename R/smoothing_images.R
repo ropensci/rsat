@@ -46,6 +46,7 @@
 #' @return a \code{RasterStack} with the filled/smoothed images.
 #'
 #' @export
+#' @import fields
 #' @examples
 #' \dontrun{
 #' # load an example of NDVI time series in Navarre
