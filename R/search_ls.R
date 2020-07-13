@@ -129,11 +129,11 @@ setMethod(f="ls_search",
             #if(logout){logoutEEAPI(verbose)}
             #file extension
             if(startsWith(product,"LANDSAT_8")){
-              sat<-"ls8"
+              sat<-"Landsat-8"
             }else if(startsWith(product,"LANDSAT_7")){
-              sat<-"ls7"
+              sat<-"Landsat-7"
             }else{
-              sat<-"ls"
+              sat<-"Landsat"
               fe<-".tar.gz"
             }
 

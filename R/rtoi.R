@@ -60,14 +60,14 @@ setRefClass("rtoi",
 #' Creates a new rtoi object
 #'
 #' @param name the name of the region of interest.
-#' @param sfobj an sf object.
+#' @param region an sf object.
 #' @param records a records object.
 #' @param db_path the path to the database.
 #' @param rtoi_path the path to the rtoi folder.
 #'
 #' @return the reference of the rtoi object
 #' @exportMethod new_rtoi
-setGeneric("new_rtoi", function(name, sfobj, rtoi_path, db_path, records) {
+setGeneric("new_rtoi", function(name, region, rtoi_path, db_path, records) {
   standardGeneric("new_rtoi")
 })
 
@@ -75,11 +75,11 @@ setGeneric("new_rtoi", function(name, sfobj, rtoi_path, db_path, records) {
 #' @aliases new_rtoi,character,sf,character,character,missing
 setMethod("new_rtoi",
           signature(name = "character",
-                    sfobj = "sf",
+                    region = "sf",
                     rtoi_path = "character",
                     db_path = "character",
                     records = "missing"),
-          function(name, sfobj, rtoi_path, db_path) {
+          function(name, region, rtoi_path, db_path) {
             rtoi_path<-file.path(rtoi_path,name)
             if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
               stop("This rtoi already exists, define other name or rtoi_path")
@@ -89,7 +89,7 @@ setMethod("new_rtoi",
             newobj$records<-new("records")
             newobj$name<-name
 
-            newobj$region<-list(sfobj)
+            newobj$region<-list(region)
             newobj$rtoi_path<-rtoi_path
             newobj$db_path<-db_path
             write_rtoi(newobj)
@@ -100,11 +100,11 @@ setMethod("new_rtoi",
 #' @aliases character,sf,character,character,records
 setMethod("new_rtoi",
           signature(name = "character",
-                    sfobj = "sf",
+                    region = "sf",
                     rtoi_path = "character",
                     db_path = "character",
                     records = "records"),
-          function(name, sfobj, rtoi_path, db_path,records) {
+          function(name, region, rtoi_path, db_path,records) {
 
             rtoi_path<-file.path(rtoi_path,name)
             if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
@@ -112,7 +112,7 @@ setMethod("new_rtoi",
             }
             newobj=new("rtoi")
             newobj$name<-name
-            newobj$region<-list(sfobj)
+            newobj$region<-list(region)
             newobj$records<-records
             newobj$rtoi_path<-rtoi_path
             newobj$db_path<-db_path

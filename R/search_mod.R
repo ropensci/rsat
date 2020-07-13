@@ -135,7 +135,7 @@ setMethod(f="mod_search",
             nlen<-length(res.download)
             prdc<-list(...)$product
             img.name<-gsub("\\.hdf","",basename(res.download))
-            return(new_record(sat = rep("mod",nlen),
+            return(new_record(sat = rep("Modis",nlen),
                               name = img.name,
                               date = modGetDates(res.download),
                               product= rep(prdc,nlen),

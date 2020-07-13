@@ -70,7 +70,7 @@ setMethod(f="download",
             for(i in length(x):1){
               out.name<-file.path(out.dir,get_file_path(x[i]))
               if(get_order(x[i])&!file.exists(out.name)){
-                if(grepl("^ls",sat_name(x[i]))){
+                if(grepl("^Landsat",sat_name(x[i]))){
                   #ls order petition
                   con<-connection$getApi(api_name = get_api_name(x[i]))
                   con$espaOrderImage(names(x[i]))
