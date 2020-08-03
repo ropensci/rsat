@@ -26,7 +26,7 @@
 #' Landsat images are searched using the EarthExplorer API concerning
 #' a particular location and date interval.
 #'
-#' @param region a \code{Spatial*}, projected \code{raster*}, or \code{sf} class object defining the area of interest.
+#' @param region a \code{Spatial*}, projected \code{raster*}, \code{sf} or \code{rtoi} class object defining the area of interest.
 #' @param product a character vector containing the names of the products to be downloaded.
 #' @param ... additional arguments for searching
 #'

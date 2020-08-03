@@ -16,22 +16,26 @@ setMethod(f="ls_query",
             lsquery<-NULL
             #temporal filter
             lsquery$datasetName<- datasetName#'LANDSAT_8_C1'
-            lsquery$temporalFilter<-list("startDate"=format(startDate,"%d-%m-%Y"),
-                                         "endDate"=format(endDate,"%d-%m-%Y"))
+
+            lsquery$sceneFilter<-NULL
+
             #spatial filter
-            lsquery$spatialFilter<-list("filterType"='mbr',
+            lsquery$sceneFilter$acquisitionFilter<-list("start"=format(startDate,"%Y-%m-%d"),
+                                                        "end"=format(endDate,"%Y-%m-%d"))
+            lsquery$sceneFilter$spatialFilter<-list("filterType"="mbr",
                                         "lowerLeft"=list("latitude"=st_bbox(sf.obj)[["ymin"]],
                                                          "longitude"=st_bbox(sf.obj)[["xmin"]]),
                                         "upperRight"=list("latitude"=st_bbox(sf.obj)[["ymax"]],
                                                           "longitude"=st_bbox(sf.obj)[["xmax"]]))
             if("cloudCover"%in%names(args)){
               if(length(args$cloudCover)==2&&class(args$cloudCover)=="numeric"){
-                lsquery$minCloudCover<-min(args$cloudCover)
-                lsquery$maxCloudCover<-max(args$cloudCover)
+                lsquery$sceneFilter$cloudCoverFilter<-NULL
+                lsquery$sceneFilter$cloudCoverFilter$min<-min(args$cloudCover)
+                lsquery$sceneFilter$cloudCoverFilter$max<-max(args$cloudCover)
                 if("includeUnknownCloudCover"%in%names(args)){
-                  lsquery$includeUnknownCloudCover<-args$includeUnknownCloudCover
+                  lsquery$sceneFilter$cloudCoverFilter$includeUnknownCloudCover<-args$includeUnknownCloudCover
                 }else{
-                  lsquery$includeUnknownCloudCover<-"true"
+                  lsquery$sceneFilter$cloudCoverFilter$includeUnknownCloudCover<-"true"
                 }
               }else{stop("cloudCover must be a numeric argument")}
             }
@@ -41,8 +45,9 @@ setMethod(f="ls_query",
             lsquery$maxResults<-50000
             lsquery$startingNumber<-1
             lsquery$sortOrder<-"ASC"
-            lsquery$apiKey<-apiKey
-            return(paste0(server,'/search?jsonRequest=',toJSON(lsquery)))
+            #lsquery$apiKey<-apiKey
+            #return(paste0(file.path(server,"scene-search?jsonRequest=",toJSON(lsquery))))
+            return(list(url=file.path(server,"scene-search"),json=toJSON(lsquery)))
           }
 )
 
@@ -60,7 +65,7 @@ setMethod(f="ls_search",
                    endDate,
                    dates,
                    logoout=TRUE,
-                   lvl=1,
+                   lvl=2,
                    ...){
             if(!missing(dates)){
               startDate<-min(dates)
@@ -68,34 +73,53 @@ setMethod(f="ls_search",
             }
             con <- connection$getApi("earthexplorer")
             attempts<-5
+
             repeat{
               query <- ls_query(server=con$api_server,
                                 datasetName=product,
                                 startDate=startDate,
                                 endDate=endDate,
-                                sf.obj=region,
+                                sf.obj=st_transform(region,st_crs(4326)),
                                 apiKey=con$api_key,
                                 ...)
-              jsonres<-fromJSON(con$autoCall(query))
+              jsonres<-con$postdata(query$url,query$json,con$api_key)
               attempts<-attempts-1
-              if(jsonres$error!="Could not find api key"){
+              if(is.null(jsonres$errorCode)){
                 break
+              }else{
+                warning(jsonres$errorCode)
               }
-              if(attempts==-1){stop("Could not find api key")}
+              if(attempts==-1){
+                warning("Cannot perform Landsat search, check your credentials and/or the api status: https://m2m.cr.usgs.gov/api/docs/json/")
+                return(new("records"))
+              }
               con$loginEEApiKey()
             }
 
-            if(jsonres$data$numberReturned==0) return(new("records"))
+            if(jsonres$data$recordsReturned==0) return(new("records"))
             ##################################################################################################
-            res.df<-data.frame(t(sapply(jsonres$data$results,c)))
+            #res.df<-data.frame(t(sapply(jsonres$data$results,c)))
+            json_file <- lapply(jsonres$data$results, function(x) {
+              x[sapply(x, is.null)] <- NA
+              unlist(x)
+            })
+            res.df<-as.data.frame(do.call(rbind, json_file))
+            #res.df$browse.browsePath
+            #res.df$entityId
+            #lsGetPathRow(res.df$entityId)
+            #unlist(res.df$displayId)
 
-
-
-            satid<-basename(dirname(unlist(res.df$metadataUrl)[1]))#12864 for landsat 8
+            #satid<-basename(dirname(unlist(res.df$metadataUrl)[1]))#12864 for landsat 8
 
             #boundaries for previsualization
-            bounds<-lapply(unlist((res.df["sceneBounds"])),function(x){return(as.numeric(unlist(strsplit(x,","))))})
-            bounds<-t(sapply(bounds,c))
+            bounds<-res.df[,grepl("spatialBounds",names(res.df))]
+            bounds<-bounds[,-c(1)]
+            bounds<-t(apply(bounds,1,function(x){
+              x<-as.numeric(x)
+              longitudes<-x[seq(1,8,2)]
+              latitudes<-x[seq(2,8,2)]
+              return(c(min(longitudes),min(latitudes),max(longitudes),max(latitudes)))
+            }))
             rownames(bounds)<-NULL
             colnames(bounds)<-c("LongitudeMin","LatitudeMin","LongitudeMax","LatitudeMax")
 
@@ -104,7 +128,8 @@ setMethod(f="ls_search",
                      api_name="earthexplorer"
                      img.name<-unlist(res.df$entityId)
                      nlen<-length(img.name)
-                     download_url=file.path(con$server,"download",satid,unlist(res.df$entityId),"STANDARD/EE/")
+                     download_url=rep("",nlen)#file.path(con$server,"download",satid,unlist(res.df$entityId),"/EE/")
+                     #file.path(con$server,"download",satid,unlist(res.df$entityId),"STANDARD/EE/")
                      pr<-lsGetPathRow(img.name)
                      path = as.numeric(substr(pr,1,3))
                      row = as.numeric(substr(pr,4,6))
@@ -147,7 +172,7 @@ setMethod(f="ls_search",
                               path = path,
                               row = row,
                               tileid = rep("",nlen),
-                              preview =unlist(res.df$browseUrl),
+                              preview =unlist(res.df$browse.browsePath),
                               api_name = rep(api_name,nlen),
                               order = order,
                               extent_crs = new("extent_crs",

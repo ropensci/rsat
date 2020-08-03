@@ -54,7 +54,7 @@ connection<-setRefClass("connections",
                            }
 
                          )
-)$new(ApiList=list(eeapi=api("earthexplorer","https://earthexplorer.usgs.gov","https:/earthexplorer.usgs.gov/inventory/json/v/1.4.0","earthdata"),
+)$new(ApiList=list(eeapi=api("earthexplorer","https://earthexplorer.usgs.gov","https://m2m.cr.usgs.gov/api/api/json/stable","earthdata"),
                    espa=api("ESPA","https://espa.cr.usgs.gov","https://espa.cr.usgs.gov/api/v1","earthdata"),
                    nasainv=api("nasa_inventory","https://lpdaacsvc.cr.usgs.gov","https://lpdaacsvc.cr.usgs.gov/services/inventory","earthdata"),
                    scihub=api("scihub","https://scihub.copernicus.eu","https://scihub.copernicus.eu/apihub","scihub"),
