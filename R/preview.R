@@ -172,13 +172,16 @@ setMethod(f="preview",
                 }else{
                   ext<-extent(r)
                   extent(img)<-ext
-                  projection(img)<-st_crs(crs(r))$proj4string
+                  if(crs(r)==54008)
+                    projection(img)<-st_crs("ESRI:54008")$proj4string
+                  else
+                    projection(img)<-st_crs(crs(r))$proj4string
                   tmp.img<-paste0(pre.file,"_tmp.tif")
                   writeRaster(img,tmp.img,overwrite=TRUE)
                   gdal_utils(util = "warp",
                              source = tmp.img,
                              destination = proj_file,
-                             options=c("-t_srs",st_crs(3857)$proj4string)
+                             options=c("-t_srs",st_crs(4326)$proj4string)
                   )
                   rm(img);gc();file.remove(tmp.img);
                   lname<-paste0(sat_name(r),"_",dates(r))
