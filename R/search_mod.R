@@ -128,7 +128,7 @@ setMethod(f="mod_search",
             rw<-as.numeric(substr(pr,5,6))
             bounds<-c()
             for(n in paste0("h:",pt," v:",rw)){
-              bounds<-rbind(bounds,st_bbox(extent(st_transform(mod.tiles[mod.tiles$Name==n,],crs="+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs"#st_crs(54008)
+              bounds<-rbind(bounds,st_bbox(extent(st_transform(mod.tiles[mod.tiles$Name==n,],crs=st_crs("ESRI:54008")#"+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs"#st_crs(54008)
                                                                ))))
             }
 
@@ -149,6 +149,7 @@ setMethod(f="mod_search",
                               order = rep(FALSE,nlen),
                               extent_crs = new("extent_crs",
                                                EPSG=rep(54008,nlen),
+                                               #EPSG=st_crs("ESRI:54008"),
                                                xmin=bounds[,"xmin"],
                                                ymin=bounds[,"ymin"],
                                                xmax=bounds[,"xmax"],
