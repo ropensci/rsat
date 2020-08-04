@@ -8,16 +8,16 @@
 \alias{character,sf,character,character,records}
 \title{Creates a new rtoi object}
 \usage{
-new_rtoi(name, sfobj, rtoi_path, db_path, records)
+new_rtoi(name, region, rtoi_path, db_path, records)
 
-\S4method{new_rtoi}{character,sf,character,character,missing}(name, sfobj, rtoi_path, db_path)
+\S4method{new_rtoi}{character,sf,character,character,missing}(name, region, rtoi_path, db_path)
 
-\S4method{new_rtoi}{character,sf,character,character,records}(name, sfobj, rtoi_path, db_path, records)
+\S4method{new_rtoi}{character,sf,character,character,records}(name, region, rtoi_path, db_path, records)
 }
 \arguments{
 \item{name}{the name of the region of interest.}
 
-\item{sfobj}{an sf object.}
+\item{region}{an sf object.}
 
 \item{rtoi_path}{the path to the rtoi folder.}
 

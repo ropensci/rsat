@@ -169,6 +169,7 @@ setMethod(f="preview",
                 # check if we have projection from search result
                 if(any(is.na(as.vector(extent(r))))){
                   plotRGB(img)
+                  return(NULL)
                 }else{
                   ext<-extent(r)
                   extent(img)<-ext
@@ -184,18 +185,12 @@ setMethod(f="preview",
                              options=c("-t_srs",st_crs(4326)$proj4string)
                   )
                   rm(img);gc();file.remove(tmp.img);
-                  lname<-paste0(sat_name(r),"_",dates(r))
-                  img<-raster::stack(proj_file)
-                  addMapRasterRGB(img,lname,lpos,project=FALSE)
-                  if(get.map)return(getPreviewMap())
                 }
-              }else{
-                img<-raster::stack(proj_file)
-                lname<-paste0(sat_name(r),"_",dates(r))
-                addMapRasterRGB(img,lname,lpos,project=FALSE)
-                if(get.map)return(getPreviewMap())
               }
-
+              img<-raster::stack(proj_file)
+              lname<-paste0(sat_name(r),"_",dates(r))
+              addMapRasterRGB(img,lname,lpos,project=FALSE)
+              if(get.map)return(getPreviewMap())
 
             }else{
               if(verbose){

@@ -15,7 +15,7 @@ sat_search(region, product, ...)
 \S4method{sat_search}{sf,character}(region, product, ...)
 }
 \arguments{
-\item{region}{a \code{Spatial*}, projected \code{raster*}, or \code{sf} class object defining the area of interest.}
+\item{region}{a \code{Spatial*}, projected \code{raster*}, \code{sf} or \code{rtoi} class object defining the area of interest.}
 
 \item{product}{a character vector containing the names of the products to be downloaded.}
 

@@ -1,4 +1,5 @@
 #' @import rjson
+#' @importFrom httr add_headers
 #'
 setGeneric("ls_query", function(server,
                                 datasetName,
