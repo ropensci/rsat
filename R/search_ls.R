@@ -6,17 +6,20 @@ setGeneric("ls_query", function(server,
                                 startDate,
                                 endDate,
                                 sf.obj,
-                                apiKey,
                                 ...) {
   standardGeneric("ls_query")
 })
 setMethod(f="ls_query",
-          signature = c("character","character","Date","Date","sf","character"),
+          signature = c("character","character","Date","Date","sf"),
           function(server,datasetName,startDate,endDate,sf.obj,apiKey,...){
             args<-list(...)
             lsquery<-NULL
             #temporal filter
             lsquery$datasetName<- datasetName#'LANDSAT_8_C1'
+            #additional criteria
+            lsquery$maxResults<-"50000"
+            lsquery$startingNumber<-"1"
+            lsquery$sortDirection<-"ASC"
 
             lsquery$sceneFilter<-NULL
 
@@ -42,10 +45,7 @@ setMethod(f="ls_query",
             }
 
 
-            #additional criteria
-            lsquery$maxResults<-50000
-            lsquery$startingNumber<-1
-            lsquery$sortOrder<-"ASC"
+
             #lsquery$apiKey<-apiKey
             #return(paste0(file.path(server,"scene-search?jsonRequest=",toJSON(lsquery))))
             return(list(url=file.path(server,"scene-search"),json=toJSON(lsquery)))
@@ -73,6 +73,9 @@ setMethod(f="ls_search",
               endDate<-max(dates)
             }
             con <- connection$getApi("earthexplorer")
+            if(con$api_key==""){
+              con$loginEEApiKey()
+            }
             attempts<-5
 
             repeat{
@@ -81,9 +84,8 @@ setMethod(f="ls_search",
                                 startDate=startDate,
                                 endDate=endDate,
                                 sf.obj=st_transform(region,st_crs(4326)),
-                                apiKey=con$api_key,
                                 ...)
-              jsonres<-con$postdata(query$url,query$json,con$api_key)
+              jsonres<-con$postApiEE(query$url,query$json,con$api_key)
               attempts<-attempts-1
               if(is.null(jsonres$errorCode)){
                 break
@@ -96,8 +98,7 @@ setMethod(f="ls_search",
               }
               con$loginEEApiKey()
             }
-
-            if(jsonres$data$recordsReturned==0) return(new("records"))
+            if((is.null(jsonres$data$recordsReturned))||jsonres$data$recordsReturned==0) return(new("records"))
             ##################################################################################################
             #res.df<-data.frame(t(sapply(jsonres$data$results,c)))
             json_file <- lapply(jsonres$data$results, function(x) {

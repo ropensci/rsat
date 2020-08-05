@@ -304,28 +304,30 @@ setRefClass(Class="api",
       message('Logged into EE API.')
       .self$api_key=res$data
     },
-    postdata = function(url,body,key){
+    postApiEE = function(url,body,key){
       names(key)<-"X-Auth-Token"
       post.res <- POST(url = url,
                        body = body,
                        content_type("application/json"),
                        add_headers(key))
-      res <- content(post.res)
+      if(post.res$status_code==200)return(content(post.res))
+      return(list(errorCode=paste0("Error in Earth Explorer api connection. HTTP ",post.res$status_code,".")))
     },
     postdownload = function(){
+      #TODO
       #https://dds.cr.usgs.gov/download/eyJpZCI6MTA5ODU3NywiY29udGFjdElkIjoxNTM4NTIxfQ==/
       url<-"https://m2m.cr.usgs.gov/api/api/json/stable/download-request"
-      key<-"eyJjaWQiOjE1Mzg1MjEsInMiOiIxNTk2MTg2OTE2IiwiciI6Nzk0LCJwIjpbXX0="
+      key<-"eyJjaWQiOjE1Mzg1MjEsInMiOiIxNTk2NjU2NTE0IiwiciI6NTYzLCJwIjpbXX0="
       names(key)<-"X-Auth-Token"
-      body<-'{displayId:"LC08_L1GT_200030_20190727_20190801_01_T2"}'
+      body<-'{\"datasetName\":\"LANDSAT_8_C1\",\"sceneFilter\":{\"acquisitionFilter\":{\"start\":\"2018-07-01\",\"end\":\"2018-07-31\"},\"spatialFilter\":{\"filterType\":\"mbr\",\"lowerLeft\":{\"latitude\":41.9095732069108,\"longitude\":-2.49908963576402},\"upperRight\":{\"latitude\":43.3146327061922,\"longitude\":-0.726158447400539}}},\"maxResults\":\"50000\",\"startingNumber\":\"1\",\"sortOrder\":\"ASC\"}'
       #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC81990312020204LGN00/EE/
       #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC82000302019208LGN00/EE/
       post.res <- POST(url = url,
                        body = body,
                        content_type("application/json"),
                        add_headers(key),
-                       authenticate(user="rgistools",
-                                    password="EspacialUPNA88",
+                       authenticate(user="user",#change this
+                                    password="pass",
                                     type = "basic"))
 
       content(post.res)
