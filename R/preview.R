@@ -26,7 +26,7 @@ updateLayersControl<-function(map,addBaseGroups=NULL,addOverlayGroups=NULL){
 addMapRasterRGB<-function(img,lname,lpos,project=project){
     nmap<-getPreviewMap()%>%
       #addRasterRGB(subset(img,lpos), group=lname) #%>%
-      addRasterRGB(subset(img,lpos), group=lname,project=project)
+      addRasterRGB(st_as_stars(subset(img,lpos)), group=lname,project=project)
       #addHomeButton(st_bbox(transform_multiple_proj(img, proj4=st_crs(4326))), group = lname, position = "bottomright", add = TRUE)
       #updateLayersControl(addOverlayGroups = lname)
     setPreviewMap(updateLayersControl(nmap,addOverlayGroups = lname))
@@ -188,7 +188,8 @@ setMethod(f="preview",
                 }
               }
               img<-raster::stack(proj_file)
-              lname<-paste0(sat_name(r),"_",dates(r))
+              #lname<-paste0(sat_name(r),"_",dates(r))
+              lname<-names(r)
               addMapRasterRGB(img,lname,lpos,project=FALSE)
               if(get.map)return(getPreviewMap())
 
