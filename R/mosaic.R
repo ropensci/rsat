@@ -96,7 +96,7 @@ setMethod(f="mosaic",
                 dr<-x[which(days%in%d)]
                 mfiles<-file.path(db_path,get_file_path(dr))
 
-                if(grepl("^ls", sat_name(dr)[1])){
+                if(grepl("^Landsat", sat_name(dr)[1])){
                   mosaicFunctions<-mosaic_fun_ls(mfiles)
                 }else if("Sentinel-3"==sat_name(dr)[1]){
                   if(product(dr[1])=="SY_2_SYN___"){
@@ -106,7 +106,7 @@ setMethod(f="mosaic",
                   }
                 }else if("Sentinel-2"==sat_name(dr)[1]){
                   mosaicFunctions<-mosaic_fun_sen2(mfiles)
-                }else if("mod"==sat_name(dr)[1]){
+                }else if("Modis"==sat_name(dr)[1]){
                   mosaicFunctions<-mosaic_fun_mod(mfiles)
                 }
 

@@ -252,7 +252,10 @@ setRefClass(Class="api",
       r <- curl_fetch_memory(paste0(.self$api_server,"/item-status/",order_name), c.handle)
       json_data<-unlist(fromJSON(rawToChar(r$content)),recursive=TRUE)
       o.status<-json_data[grepl("status",names(json_data))]
-      print(o.status)
+      if(verbose){
+        message(o.status)
+      }
+
       print(json_data[grepl("product_dload_url",names(json_data))])
       if(tolower(o.status)=="complete"){
         message(paste0("Downloading ",tile_name," image."))

@@ -118,7 +118,7 @@ setMethod(f="download",
               for(i in length(ordered.list):1){
                 out.name<-file.path(out.dir,get_file_path(ordered.list[i]))
                 if(!file.exists(out.name)){
-                  if(grepl("^ls",sat_name(ordered.list[i]))){
+                  if(grepl("^Landsat",sat_name(ordered.list[i]))){
                     con$espaGetOrders()
                     if(con$espaDownloadsOrders(names(ordered.list[i]),out.name)){
                       ordered.list <- ordered.list[-i]
