@@ -13,7 +13,7 @@
 #'
 #' @references \insertRef{militino2019interpolation}{rsat}
 #'
-#' @param rStack a \code{RasterStack} class argument containing a time series of
+#' @param x a \code{RasterStack} class argument containing a time series of
 #' satellite images. Layer names should contain the date of the image in
 #' "\code{YYYYJJJ}" format.
 #' @param Img2Fill a \code{vector} argument defining the images to be
@@ -52,18 +52,18 @@
 #' # load an example of NDVI time series in Navarre
 #' data(ex.ndvi.navarre)
 #' # the 2 images to be filled and the neighbourhood
-#' genPlotGIS(ex.ndvi.navarre)
+#' plot(ex.ndvi.navarre)
 #'
 #' # filled images
-#' tiles.mod.ndvi.filled  <- genSmoothingIMA(ex.ndvi.navarre,
-#'                                Img2Fill = c(1),
-#'                                only.na=TRUE)
+#' tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
+#'                                            method="IMA",
+#'                                            only.na=TRUE)
 #' # show the filled images
-#' genPlotGIS(tiles.mod.ndvi.filled)
+#' plot(tiles.mod.ndvi.filled)
 #' # plot comparison of the cloud and the filled images
 #' tiles.mod.ndvi.comp <- stack(ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
 #'                              ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]])
-#' genPlotGIS(tiles.mod.ndvi.comp, layout=c(2, 2))
+#' plot(tiles.mod.ndvi.comp, layout=c(2, 2))
 #' }
 setGeneric("smoothing_images", function(x,
                                         method,
@@ -105,6 +105,29 @@ setMethod("smoothing_images",
 
 })
 
+setMethod("smoothing_images",
+          signature = c("RasterBrick","character"),
+          function(x,
+                   method,
+                   ...){
+            if(method=="IMA"){
+              return(genSmoothingIMA(rStack=x,get.stack=TRUE,...))
+            }else{
+              stop("Method not supported.")
+            }
+          })
+
+setMethod("smoothing_images",
+          signature = c("RasterStack","character"),
+          function(x,
+                   method,
+                   ...){
+            if(method=="IMA"){
+              return(genSmoothingIMA(rStack=x,get.stack=TRUE,...))
+            }else{
+              stop("Method not supported.")
+            }
+          })
 
 genSmoothingIMA<-function(rStack,
                           Img2Fill = NULL,
@@ -119,6 +142,7 @@ genSmoothingIMA<-function(rStack,
                           predictSE=FALSE,
                           snow.mode=FALSE,
                           out.name="outname",
+                          get.stack=FALSE,
                           ...){
   args<-list(...)
   stime<-Sys.time()
@@ -143,7 +167,7 @@ genSmoothingIMA<-function(rStack,
   }else{
     alldates<-genGetDates(names(rStack))
   }
-
+  if(get.stack){result<-raster::stack()}
   if(all(is.na(alldates))){stop("The name of the layers has to include the date and it must be in julian days (%Y%j) .")}
   for(i in Img2Fill){
     # get target date
@@ -207,12 +231,18 @@ genSmoothingIMA<-function(rStack,
       writeRaster(target.prediction,outfile)
       add2rtoi(outfile,out.zip)
     }
+    if(get.stack){
+      result<-addLayer(result,target.prediction)
+    }
   }
   if(snow.mode){
     endCluster()
   }
   etime<-Sys.time()
   message(paste0(length(Img2Fill)," images processed in ",MinSeg(etime,stime)))
+  if(get.stack){
+    return(result)
+  }
 }
 
 dateNeighbours<-function(ts.raster,
