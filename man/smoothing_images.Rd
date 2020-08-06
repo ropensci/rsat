@@ -7,15 +7,15 @@
 smoothing_images(x, method, ...)
 }
 \arguments{
+\item{x}{rtoi o object for . If is \code{RasterStack} or \code{RasterBrick} class argument containing a time series of
+satellite images. Layer names should contain the date of the image in
+"\code{YYYYJJJ}" format.}
+
 \item{...}{arguments for nested functions:
 \itemize{
   \item \code{AppRoot} the path where the filled/smoothed time series of
   images will be saved in GTiff format.
 }}
-
-\item{rStack}{a \code{RasterStack} class argument containing a time series of
-satellite images. Layer names should contain the date of the image in
-"\code{YYYYJJJ}" format.}
 
 \item{Img2Fill}{a \code{vector} argument defining the images to be
 filled/smoothed.}
@@ -70,19 +70,20 @@ target image and aggregation factor.
 \dontrun{
 # load an example of NDVI time series in Navarre
 data(ex.ndvi.navarre)
-# the 2 images to be filled and the neighbourhood
-genPlotGIS(ex.ndvi.navarre)
 
-# filled images
-tiles.mod.ndvi.filled  <- genSmoothingIMA(ex.ndvi.navarre,
-                               Img2Fill = c(1),
-                               only.na=TRUE)
+# the raster stack with the date in julian format as name
+spplot(ex.ndvi.navarre)
+
+# smoothin and fill all the time series
+tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
+                                           method="IMA",
+                                           only.na=TRUE)
 # show the filled images
-genPlotGIS(tiles.mod.ndvi.filled)
+spplot(tiles.mod.ndvi.filled)
 # plot comparison of the cloud and the filled images
 tiles.mod.ndvi.comp <- stack(ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
                              ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]])
-genPlotGIS(tiles.mod.ndvi.comp, layout=c(2, 2))
+spplot(tiles.mod.ndvi.comp, layout=c(2, 2))
 }
 }
 \references{
