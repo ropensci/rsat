@@ -11,7 +11,7 @@ mosaic_fun_ls<-function(mfiles){
     if(grepl("BQA",bnds)|grepl("_qa",bnds)){
       nodata<-1
     }else
-      if(grepl("lvl2",chunks[1])){
+      if(grepl("lvl2",chunks[1])&!grepl("aerosol",bnds)){
         nodata<--9999
       }else{
         nodata<-0

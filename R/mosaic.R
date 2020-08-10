@@ -151,12 +151,13 @@ setMethod(f="mosaic",
                                region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp))                               rm(r.tmp);gc();
                                #region <- st_transform(region,gdal_crs(cmpfile))
                                ext<-extent(region)
-                               gdal_utils(util = "warp",
-                                          source = cmpfile,
-                                          destination = out.file.name,
-                                          options=c("-te",ext@xmin,ext@ymin,ext@xmax,ext@ymax,
-                                                    "-te_srs",st_crs(region)$proj4string)
-                               )
+
+                              gdal_utils(util = "warp",
+                                         source = cmpfile,
+                                         destination = out.file.name,
+                                         options=c("-te",ext@xmin,ext@ymin,ext@xmax,ext@ymax,
+                                                   "-te_srs",st_crs(region)$proj4string)
+                                            )
 
                                gc()
                                file.remove(cmpfile)
