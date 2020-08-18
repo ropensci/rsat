@@ -79,8 +79,10 @@ setMethod(f="mosaic",
             dir.create(scratch.tmp,recursive = TRUE,showWarnings = FALSE)
             for(d in unique(days)){
               d<-as.Date(d)
-              out.dir<-file.path(out_path,get_mosaic_dir(x[1]),paste0(format(d,"%Y%j")))
-              out.zip<-paste0(out.dir,".zip")
+              #out.dir<-file.path(out_path,get_mosaic_dir(x[1]),paste0(format(d,"%Y%j")))
+              #out.zip<-paste0(out.dir,".zip")
+              out.dir<-file.path(tempdir(),get_mosaic_dir(x[1]),paste0(format(d,"%Y%j")))
+              out.zip<-file.path(out_path,get_mosaic_dir(x[1]),paste0(format(d,"%Y%j"),".zip"))
               if(file.exists(out.zip)){
                 if(overwrite){
                   file.remove(out.zip)
@@ -95,6 +97,9 @@ setMethod(f="mosaic",
 
                 dr<-x[which(days%in%d)]
                 mfiles<-file.path(db_path,get_file_path(dr))
+
+                mfiles<-mfiles[file.exists(mfiles)]
+                if(length(mfiles)<1) next
 
                 if(grepl("^Landsat", sat_name(dr)[1])){
                   mosaicFunctions<-mosaic_fun_ls(mfiles)
@@ -147,9 +152,12 @@ setMethod(f="mosaic",
                     tryCatch({
                       switch(tolower(warp),
                              "extent"={
-                               #r.tmp <-raster(cmpfile)
-                               region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp))                               rm(r.tmp);gc();
-                               #region <- st_transform(region,gdal_crs(cmpfile))
+                               r.tmp <-raster(cmpfile)
+                               region <- st_transform(region,proj4string(r.tmp)); rm(r.tmp);
+
+                               #TODO get projection using gdal_crs, cannot close the connection and remove the file
+                               #region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp)) ;gc();
+
                                ext<-extent(region)
 
                               gdal_utils(util = "warp",

@@ -98,6 +98,8 @@ setMethod("derive",
             # Image processing
             #############################################
             images<-list.files(mdir,full.names = TRUE)
+            images<-images[grepl("\\.zip$",images)]
+
             for(i in images){
               message(paste0("Processing image ",basename(i),"."))
               layers<-file.path("/vsizip",i,zip_list(i)$filename)
