@@ -412,11 +412,32 @@ setMethod(f="records<-",
 setMethod("dates",
           signature(x = "rtoi"),
           function(x){
-            return(dates(records(x)))
+            return(unique(dates(records(x))))
           })
 
 # #' @export
-#setGeneric("dropdates", function(x, dates) {standardGeneric("dropdates")})
+setGeneric("drop_records", function(x, product, y, ...) {standardGeneric("drop_records")})
+setMethod("drop_records",
+          signature(x = "rtoi", product="character", y = "Date"),
+          function(x,product,y){
+            rcds<-records(x)
+            rcds<-subset(rcds, subset=product, select="product")
+            rcds<-subset(rcds, subset=y, select="date")
+            records(x)<-records(x)[!names(records(x))%in%names(rcds)]
+            write_rtoi(x)
+            #TODO remove mosaic and data for that date
+          })
+
+setMethod("drop_records",
+          signature(x = "rtoi", product="character", y = "ANY"),
+          function(x, product, y, select){
+            rcds<-records(x)
+            rcds<-subset(rcds, subset=product, select="product")
+            rcds<-subset(rcds, subset=y, select=select)
+            records(x)<-records(x)[!names(records(x))%in%names(rcds)]
+            write_rtoi(x)
+            #TODO remove mosaic and data for that date
+          })
 
 #' @rdname product
 #' @aliases product,rtoi
@@ -427,15 +448,19 @@ setMethod("product",
           })
 
 
-# #' @export
-#setGeneric("rename", function(x, newname) { standardGeneric("rename")})
-#TODO
-# setMethod("rename",
-#           signature(x = "rtoi", newname="character"),
-#           function(x,newname){
-#             x$name<-
-#             x$dates<-c(x$dates,dates)
-#           })
+#' @export
+setGeneric("rename", function(x, newname) { standardGeneric("rename")})
+setMethod("rename",
+          signature(x = "rtoi", newname="character"),
+          function(x,newname){
+
+            new.dir<-file.path(dirname(get_dir(x)),newname)
+            file.rename(get_rtoi_path(x),file.path(get_dir(x),paste0(newname,".rtoi")))
+            names(x)<-newname
+            file.rename(get_dir(x),new.dir)
+            get_dir(x)<-new.dir
+            write_rtoi(x)
+          })
 
 
 #' Prints the values
@@ -483,12 +508,18 @@ setMethod("show",
             print(object)
           })
 
+setGeneric("get_rtoi_path",function(x){standardGeneric("get_rtoi_path")})
+setMethod("get_rtoi_path",
+          signature= c("rtoi"),
+          function(x){
+            file.path(get_dir(x),paste0(names(x),".rtoi"))
+          })
 
 setGeneric("write_rtoi",function(x){standardGeneric("write_rtoi")})
 setMethod("write_rtoi",
           signature= c("rtoi"),
           function(x){
-            saveRDS(x, file=file.path(get_dir(x),paste0(names(x),".rtoi")))
+            saveRDS(x, file=get_rtoi_path(x))
           })
 
 #' Reads an rtoi from the hard drive
