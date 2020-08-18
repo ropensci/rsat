@@ -47,6 +47,7 @@
 setMethod(f="mosaic",
           signature = c("rtoi"),
           function(x, ...){
+            rtoi_size_cal(x)
             #sat<-"sen2"
             args<-list(...)
             r<-records(x)
@@ -59,7 +60,7 @@ setMethod(f="mosaic",
                      region=region(x),
                      ...)
             }
-
+            rtoi_size_cal(x)
           }
 )
 #subset(navarre$records,"mod","sat")

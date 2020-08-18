@@ -53,7 +53,8 @@ setRefClass("rtoi",
               rtoi_path = "character",
               region = "list",
               records = "records",
-              db_path = "character"
+              db_path = "character",
+              size = "numeric"
             )
 )
 
@@ -92,6 +93,7 @@ setMethod("new_rtoi",
             newobj$region<-list(region)
             newobj$rtoi_path<-rtoi_path
             newobj$db_path<-db_path
+            newobj$size<-0
             write_rtoi(newobj)
             return(newobj)
           })
@@ -116,6 +118,7 @@ setMethod("new_rtoi",
             newobj$records<-records
             newobj$rtoi_path<-rtoi_path
             newobj$db_path<-db_path
+            newobj$size<-0
             write_rtoi(newobj)
             return(newobj)
           })
@@ -463,6 +466,22 @@ setMethod("rename",
           })
 
 
+
+setGeneric("rtoi_size_cal", function(x) { standardGeneric("rtoi_size_cal")})
+setMethod("rtoi_size_cal",
+          signature(x = "rtoi"),
+          function(x){
+            x$size<-round(((sum(file.info(list.files(get_dir(x), all.files = TRUE, recursive = TRUE,full.names = TRUE))$size)/1024)/1024)/1024,2)
+            write_rtoi(x)
+          })
+
+setGeneric("rtoi_size", function(x) standardGeneric("rtoi_size"))
+setMethod(f="rtoi_size",
+          signature=c(x = "rtoi"),
+          definition=function(x) {
+            x$size
+          })
+
 #' Prints the values
 #'
 #' prints an object and returns it invisibly (via invisible(x)).
@@ -490,7 +509,7 @@ setMethod("print",
             cat(paste0(" -N. records: ",length(records(x)),"\n"))
             cat(paste0(" -Products: ",paste0(product(x),collapse = ", "),"\n"))
             cat(paste0(" -Satellites: ",paste(unique(sat_name(records(x))),collapse = ", "),"\n"))
-            cat(paste0(" -Dir size: ",round(((sum(file.info(list.files(get_dir(x), all.files = TRUE, recursive = TRUE,full.names = TRUE))$size)/1024)/1024)/1024,2),"GB\n"))
+            cat(paste0(" -Dir size: ",rtoi_size(x),"GB\n"))
             d<-dates(records(x))
             if(length(records(x))==0){
               d<-NA

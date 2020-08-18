@@ -65,6 +65,7 @@ setMethod("derive",
                    overwrite=FALSE,
                    verbose=FALSE,
                    ...) {
+            rtoi_size_cal(x)
             if(missing(product)){
               p<-unique(product(records(x)))
               if(length(p)!=1){
@@ -121,7 +122,7 @@ setMethod("derive",
 
             }
             unlink(out.dir,recursive=TRUE)
-
+            rtoi_size_cal(x)
 })
 
 deriveBandsData<-function(product){
