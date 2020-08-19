@@ -418,7 +418,7 @@ setMethod("dates",
             return(unique(dates(records(x))))
           })
 
-# #' @export
+#' @export
 setGeneric("drop_records", function(x, product, y, ...) {standardGeneric("drop_records")})
 setMethod("drop_records",
           signature(x = "rtoi", product="character", y = "Date"),
@@ -440,6 +440,15 @@ setMethod("drop_records",
             records(x)<-records(x)[!names(records(x))%in%names(rcds)]
             write_rtoi(x)
             #TODO remove mosaic and data for that date
+          })
+
+#' @export
+setGeneric("add_records", function(x, y) {standardGeneric("add_records")})
+setMethod("add_records",
+          signature(x = "rtoi", y = "records"),
+          function(x,y){
+            records(x)<-c(records(x),y)
+            write_rtoi(x)
           })
 
 #' @rdname product
