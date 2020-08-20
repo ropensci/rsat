@@ -24,7 +24,6 @@ setMethod(f="plot",
             mosaics.dir<-dirs[grepl("mosaic",dirs)]
             files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
             if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
-
             plot.list<-list()
             for(p in product(x)){
               debands<-deriveBandsData(p)
@@ -39,11 +38,20 @@ setMethod(f="plot",
                   red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
                   green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
                   blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
-                             stretch(as(green,"Raster"), minv = 0, maxv = 255),
-                             stretch(as(blue,"Raster"), minv = 0, maxv = 255))
-                  proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
-                  plot.list<-c(plot.list,img)
+
+                  red[[1]]<-t(as.matrix(stretch(raster(t(red[[1]])))))
+                  green[[1]]<-t(as.matrix(stretch(raster(t(green[[1]])))))
+                  blue[[1]]<-t(as.matrix(stretch(raster(t(blue[[1]])))))
+                  aux<-merge(c(red,green,blue))
+                  names(aux)<-paste0(p,"_",y)
+                  plot.list<-append(plot.list,list(aux))
+
+                  # img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
+                  #            stretch(as(green,"Raster"), minv = 0, maxv = 255),
+                  #            stretch(as(blue,"Raster"), minv = 0, maxv = 255))
+                  #
+                  # proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
+                  # plot.list<-c(plot.list,img)
                 }
               }
             }
@@ -90,44 +98,44 @@ setMethod(f="plot",
           }
 )
 
-#' @rdname plot-rtoi-ANY-method
-#' @aliases plot,rtoi
-setMethod(f="plot",
-          signature = c("rtoi"),
-          function(x, y, verbose = FALSE,xsize = 250,ysize = 250,...){
-            # load the data
-            dirs<-list.dirs(get_dir(x))
-            mosaics.dir<-dirs[grepl("mosaic",dirs)]
-            files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
-            if(length(files)==0)stop("There is no image for provided date.")
-
-            plot.list<-list()
-            for(p in product(x)){
-              debands<-deriveBandsData(p)
-              if(!is.null(debands)){
-                bands<-debands$bands
-                files.p<-files[grepl(p,files)]
-                if(length(files.p)>0){
-                  files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
-
-                  rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
-
-                  red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
-                             stretch(as(green,"Raster"), minv = 0, maxv = 255),
-                             stretch(as(blue,"Raster"), minv = 0, maxv = 255))
-                  proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
-                  plot.list<-c(plot.list,img)
-                }
-              }
-            }
-
-            # plot
-            genPlotGIS(r=plot.list,region(x),...)
-          }
-)
+#' #' @rdname plot-rtoi-ANY-method
+#' #' @aliases plot,rtoi
+#' setMethod(f="plot",
+#'           signature = c("rtoi"),
+#'           function(x, y, verbose = FALSE,xsize = 250,ysize = 250,...){
+#'             # load the data
+#'             dirs<-list.dirs(get_dir(x))
+#'             mosaics.dir<-dirs[grepl("mosaic",dirs)]
+#'             files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
+#'             if(length(files)==0)stop("There is no image for provided date.")
+#'
+#'             plot.list<-list()
+#'             for(p in product(x)){
+#'               debands<-deriveBandsData(p)
+#'               if(!is.null(debands)){
+#'                 bands<-debands$bands
+#'                 files.p<-files[grepl(p,files)]
+#'                 if(length(files.p)>0){
+#'                   files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
+#'
+#'                   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+#'
+#'                   red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+#'                   green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+#'                   blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+#'                   img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
+#'                              stretch(as(green,"Raster"), minv = 0, maxv = 255),
+#'                              stretch(as(blue,"Raster"), minv = 0, maxv = 255))
+#'                   proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
+#'                   plot.list<-c(plot.list,img)
+#'                 }
+#'               }
+#'             }
+#'
+#'             # plot
+#'             genPlotGIS(r=plot.list,region(x),...)
+#'           }
+#' )
 
 #' @rdname plot-rtoi-ANY-method
 #' @aliases plot,rtoi,missing
@@ -144,25 +152,26 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
   args<-list(...)
 
   # r and region projection management
-  if(class(r)=="list"){
-    if(class(r[[1]])=="RasterBrick"|class(r[[1]])=="RasterStack"){
+  if(inherits(r,"list")){
+    if(inherits(r[[1]],"RasterBrick")||inherits(r[[1]],"RasterStack")){
       if(!missing(proj)){
         r = lapply(r, projectRaster,crs=proj)
         if(!missing(region)){region=transform_multiple_proj(region,proj4=projection(r[[1]]))}
       }
+    }else if(inherits(r[[1]],"stars")){
+
     }else{
-      stop("genPlotGIS only supports RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
+      stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
+    }
+  }else if(inherits(r,"RasterBrick")||inherits(r,"RasterStack")||inherits(r,"RasterLayer")){
+    if(!missing(proj)){
+      r = projectRaster(r,crs=proj)
+      if(!missing(region)){region=transform_multiple_proj(region,proj4=projection(r))}
     }
   }else{
-    if(class(r)=="RasterBrick"|class(r)=="RasterStack"|class(r)=="RasterLayer"){
-      if(!missing(proj)){
-        r = projectRaster(r,crs=proj)
-        if(!missing(region)){region=transform_multiple_proj(region,proj4=projection(r))}
-      }
-    }else{
-      stop("genPlotGIS only supports RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
-    }
+    stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
   }
+
 
 
   # layout preconfigured arguments
@@ -286,7 +295,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
     ####################################################
     # RGB plot
     ####################################################
-    maplist<-lapply(r,function(shp,compass,scale.bar,grid,reg){return(tm_shape(shp=shp,frame=T)+tm_rgb()+compass+scale.bar+grid+reg)},compass,scale.bar,grid,reg)
+    maplist<-lapply(r,function(shp,compass,scale.bar,grid,reg){return(tm_layout(panel.labels=names(shp),...)+tm_shape(shp=shp,frame=T)+tm_rgb()+compass+scale.bar+grid+reg)},compass,scale.bar,grid,reg)
     #tmap_arrange arguments
     tmap_arrange_args<-names(formals(tmap_arrange))
     tmap_arrange_args<-unique(tmap_arrange_args[!(tmap_arrange_args%in%"...")])
@@ -302,7 +311,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
       if(length(r)>1){
         tm_tmap_arrange_args$ncol=ceiling(sqrt(length(r)))
       }else{
-        return(tm_shape(shp=r[[1]],frame=T)+tm_rgb()+compass+scale.bar+grid+reg)
+        return(tm_layout(panel.labels=names(r[[1]]),...)+tm_shape(shp=r[[1]],frame=T)+tm_rgb()+compass+scale.bar+grid+reg)
       }
 
     }else{
@@ -372,7 +381,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
            do.call(tm_layout,tm_layout_args) +# layout
            compass + #the compass
            reg+ #region
-           scale.bar+#scale
+           scale.bar+ #scale
            grid+
            lyt)
 }
