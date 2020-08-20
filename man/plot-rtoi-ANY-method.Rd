@@ -4,7 +4,6 @@
 \alias{plot,rtoi,ANY-method}
 \alias{plot,records,ANY-method}
 \alias{plot,records}
-\alias{plot,rtoi}
 \alias{plot,rtoi,missing-method}
 \alias{plot,rtoi,missing}
 \title{Plots an rtoi object}
@@ -12,8 +11,6 @@
 \S4method{plot}{rtoi,ANY}(x, y, verbose = FALSE, xsize = 250, ysize = 250, ...)
 
 \S4method{plot}{records,ANY}(x, y, verbose = FALSE, ...)
-
-\S4method{plot}{rtoi,ANY}(x, y, verbose = FALSE, xsize = 250, ysize = 250, ...)
 
 \S4method{plot}{rtoi,missing}(x, y, verbose = FALSE, ...)
 }
@@ -36,4 +33,9 @@ tmap plot.
 }
 \description{
 Plot (a map of) the values of an rtoi object.
+
+
+}
+\details{
+
 }

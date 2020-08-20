@@ -97,7 +97,7 @@ setMethod("show",
           function(object){
              print(object)
           })
-
+#' @export
 setGeneric("show_variables", function(...) {
   standardGeneric("show_variables")
 })
