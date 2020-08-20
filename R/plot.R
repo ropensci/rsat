@@ -25,7 +25,10 @@ setMethod(f="plot",
             dirs<-list.dirs(get_dir(x))
             mosaics.dir<-dirs[grepl("mosaic",dirs)]
             files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
+<<<<<<< HEAD
 
+=======
+>>>>>>> bd3d0a3888cd6e50838ed2a700c6004fd29ca500
             if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
             plot.list<-list()
             for(p in product(x)){
