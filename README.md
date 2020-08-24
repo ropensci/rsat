@@ -41,6 +41,9 @@ install.packages("devtools")
 # load devtools library
 library(devtools)
 
+# Install stars with a little fixed error GitHub repositoy
+install_github("unai-perez/stars")
+
 # Install rsat from GitHub repositoy
 install_github("spatialstatisticsupna/rsat")
 ```
