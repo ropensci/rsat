@@ -14,15 +14,14 @@
 #'
 #' @import tmap
 #' @importFrom sp proj4string proj4string<-
+#' @importFrom ggTimeSeries ggplot_calendar_heatmap
 #' @include rtoi.R records.R
 #' @export
 #' @example
-#' plot(navarre,dates(navarre)[14],panel.label.size=0.7)
 setMethod(f="plot",
           signature = c("rtoi","Date"),
           function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
             # load the data
-
             switch(variable,
                    "rgb"={
                      dirs<-list.dirs(get_dir(x))
@@ -66,11 +65,39 @@ setMethod(f="plot",
           }
 )
 
-
+#' @rdname plot-rtoi-Date-method
+#' @aliases plot,character
 setMethod(f="plot",
           signature = c("rtoi","character"),
           function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
+            if(y=="dates"){
+              r<-records(x)
+              date<-dates(r)
 
+              all.products<-unique(sat_name(r))
+              if(length(all.products)>1){
+                all.dates<-seq(min(date),max(date),1)
+                df<-data.frame(date=all.dates)
+                for(p in all.products){
+                  p.date<-date[sat_name(r)%in%p]
+                  df[p]<-unlist(lapply(all.dates%in%p.date,function(x,p){if(x){return(p)}else{return("")}},p),recursive = TRUE)
+                }
+              }
+              n.product<-apply( df[ , 2:ncol(df) ] , 1 , paste , collapse = " + " )
+              for(a in 1:(ncol(df)-2)){
+                n.product<-gsub(" \\+  \\+ "," + ",n.product,useBytes = T)
+              }
+              n.product<-gsub(" \\+ $","",n.product,useBytes = T)
+              n.product<-gsub("^ \\+ ","",n.product,useBytes = T)
+              n.product[n.product%in%""]<-"No captures"
+              df["product"]<-n.product
+              return(ggplot_calendar_heatmap(
+                df,
+                'date',
+                'product'
+              ))
+
+            }
             switch(variable,
                    "rgb"={
                      # load the data
@@ -87,10 +114,6 @@ setMethod(f="plot",
                        }
                      }
                    },
-                   "dates"={
-                      d<-dates(x)
-
-                   },
                    {
                      # load the data
                      dirs<-list.dirs(get_dir(x))
@@ -104,7 +127,7 @@ setMethod(f="plot",
                        warning("More than one record for the same variable and product, plotting one size.")
                        files<-files[1]
                      }
-                     plot.list<-c(read_variables(files,y,variable,"ALL",xsize,ysize))
+                     plot.list<-c(read_variables(files,y,variable,NULL,xsize,ysize))
 
                    })
 
@@ -113,45 +136,7 @@ setMethod(f="plot",
           }
 )
 
-read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
-  tif.files<-file.path("/vsizip",zip.file,zip_list(zip.file)$filename)
-  if(date!="ALL"){
-    tif.files<-tif.files[grepl(format(date,"%Y%j"),tif.files)]
-    n<-paste0(product,"_",var.name,"_",date)
-  }else{
-    n<-gsub("\\.tif","",basename(tif.files))
-  }
-  rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
-  stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio)
-  stars.list<-do.call(c,stars.list)
-  names(stars.list)<-n
-  return(stars.list)
-}
-
-read_rgb<-function(files.p,product,bands,date,xsize,ysize){
-    files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
-
-    rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
-    tryCatch({
-      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-    },warning=function(cond){
-      warning(cond)
-      return(NULL)
-    })
-
-    # stretch only the data using raster
-    red[[1]]<-as.matrix(stretch(raster(red[[1]])))
-    green[[1]]<-as.matrix(stretch(raster(green[[1]])))
-    blue[[1]]<-as.matrix(stretch(raster(blue[[1]])))
-
-    aux<-merge(c(red,green,blue))
-    names(aux)<-paste0(product,"_",date)
-    return(aux)
-}
-
-#' @rdname plot-rtoi-ANY-method
+#' @rdname plot-rtoi-Date-method
 #' @aliases plot,records
 setMethod(f="plot",
           signature = c("records"),
@@ -188,44 +173,7 @@ setMethod(f="plot",
           }
 )
 
-#' #' @rdname plot-rtoi-ANY-method
-#' #' @aliases plot,rtoi
-#' setMethod(f="plot",
-#'           signature = c("rtoi"),
-#'           function(x, y, verbose = FALSE,xsize = 250,ysize = 250,...){
-#'             # load the data
-#'             dirs<-list.dirs(get_dir(x))
-#'             mosaics.dir<-dirs[grepl("mosaic",dirs)]
-#'             files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
-#'             if(length(files)==0)stop("There is no image for provided date.")
-#'
-#'             plot.list<-list()
-#'             for(p in product(x)){
-#'               debands<-deriveBandsData(p)
-#'               if(!is.null(debands)){
-#'                 bands<-debands$bands
-#'                 files.p<-files[grepl(p,files)]
-#'                 if(length(files.p)>0){
-#'                   files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
-#'
-#'                   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
-#'
-#'                   red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-#'                   green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-#'                   blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-#'                   img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
-#'                              stretch(as(green,"Raster"), minv = 0, maxv = 255),
-#'                              stretch(as(blue,"Raster"), minv = 0, maxv = 255))
-#'                   proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
-#'                   plot.list<-c(plot.list,img)
-#'                 }
-#'               }
-#'             }
-#'
-#'             # plot
-#'             genPlotGIS(r=plot.list,region(x),...)
-#'           }
-#' )
+
 
 #' @rdname plot-rtoi-ANY-method
 #' @aliases plot,rtoi,missing
@@ -236,7 +184,49 @@ setMethod(f="plot",
             y<-dates(x)[1]
             plot(x,y,verbose,...)
 
-})
+          })
+
+read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
+  tif.files<-file.path("/vsizip",zip.file,zip_list(zip.file)$filename)
+  if(!is.null(date)){
+    tif.files<-tif.files[grepl(format(date,"%Y%j"),tif.files)]
+    n<-paste0(product,"_",var.name,"_",date)
+  }else{
+    n<-gsub("\\.tif","",basename(tif.files))
+  }
+  if(length(tif.files)==0)return(NULL)
+  rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+  stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio)
+  stars.list<-do.call(c,stars.list)
+  n<<-n
+  names(stars.list)<-n
+  return(stars.list)
+}
+
+read_rgb<-function(files.p,product,bands,date,xsize,ysize){
+    files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
+
+    rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+    tryCatch({
+      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+    },warning=function(cond){
+      warning(cond)
+      return(NULL)
+    })
+
+    # stretch only the data using raster
+    red[[1]]<-as.matrix(stretch(raster(red[[1]])))
+    green[[1]]<-as.matrix(stretch(raster(green[[1]])))
+    blue[[1]]<-as.matrix(stretch(raster(blue[[1]])))
+
+    aux<-merge(c(red,green,blue))
+    names(aux)<-paste0(product,"_",date)
+    return(aux)
+}
+
+
 
 genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=10,as.grid=TRUE,compass.rm=FALSE,scale.bar.rm=FALSE,...){
   args<-list(...)
