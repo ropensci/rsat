@@ -19,53 +19,137 @@
 #' @example
 #' plot(navarre,dates(navarre)[14],panel.label.size=0.7)
 setMethod(f="plot",
-          signature = c("rtoi"),
-          function(x, y, verbose = FALSE,xsize = 250,ysize = 250,...){
+          signature = c("rtoi","Date"),
+          function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
             # load the data
-            dirs<-list.dirs(get_dir(x))
-            mosaics.dir<-dirs[grepl("mosaic",dirs)]
-            files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
-<<<<<<< HEAD
 
-=======
->>>>>>> bd3d0a3888cd6e50838ed2a700c6004fd29ca500
-            if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
-            plot.list<-list()
-            for(p in product(x)){
-              debands<-deriveBandsData(p)
-              if(!is.null(debands)){
-                bands<-debands$bands
-                files.p<-files[grepl(p,files)]
-                if(length(files.p)>0){
-                  files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
+            switch(variable,
+                   "rgb"={
+                     dirs<-list.dirs(get_dir(x))
+                     mosaics.dir<-dirs[grepl("mosaic",dirs)]
+                     files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
+                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     plot.list<-list()
+                     for(p in product(x)){
+                       debands<-deriveBandsData(p)
+                       if(!is.null(debands)){
+                         files.p<-files[grepl(p,files)]
+                         if(length(files.p)>0)
+                          plot.list<-append(plot.list,list(read_rgb(files.p,p,debands$bands,y,xsize,ysize)))
+                       }
+                     }
+                   },
+                   {# otherwise
+                     dirs<-list.dirs(get_dir(x))
+                     var.dir<-dirs[grepl("variables",dirs)]
+                     var.zip<-list.files(var.dir,full.names = TRUE)
+                     plot.list<-NULL
+                     for(p in product(x)){
+                       files.p<-var.zip[grepl(p,var.zip)]
+                       files.p<-files.p[grepl(variable,files.p)]
+                       if(length(files.p)==0) next
 
-                  rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+                       aux<-read_variables(files.p,p,variable,y,xsize,ysize)
+                       #aux<-aux %>% st_transform(st_crs(4326))
 
-                  red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-                  blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-
-                  red[[1]]<-t(as.matrix(stretch(raster(t(red[[1]])))))
-                  green[[1]]<-t(as.matrix(stretch(raster(t(green[[1]])))))
-                  blue[[1]]<-t(as.matrix(stretch(raster(t(blue[[1]])))))
-                  aux<-merge(c(red,green,blue))
-                  names(aux)<-paste0(p,"_",y)
-                  plot.list<-append(plot.list,list(aux))
-
-                  # img<-stack(stretch(as(red,"Raster"), minv = 0, maxv = 255),
-                  #            stretch(as(green,"Raster"), minv = 0, maxv = 255),
-                  #            stretch(as(blue,"Raster"), minv = 0, maxv = 255))
-                  #
-                  # proj4string(img)<-proj4string(raster(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1]))
-                  # plot.list<-c(plot.list,img)
-                }
-              }
-            }
+                       if(is.null(plot.list))
+                         plot.list<-aux
+                       else{
+                         attributes(aux)$dimensions<-attributes(plot.list)$dimensions
+                         plot.list<-c(plot.list,aux)
+                       }
+                     }
+                   })
 
             # plot
             genPlotGIS(r=plot.list,region(x),...)
           }
 )
+
+
+setMethod(f="plot",
+          signature = c("rtoi","character"),
+          function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
+
+            switch(variable,
+                   "rgb"={
+                     # load the data
+                     dirs<-list.dirs(get_dir(x))
+                     mosaics.dir<-dirs[grepl("mosaic",dirs)]
+                     files<-list.files(mosaics.dir,full.names = TRUE)
+                     files<-files[grepl(y,files)]
+                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     plot.list<-list()
+                     for(f in files){
+                       debands<-deriveBandsData(y)
+                       if(!is.null(debands)){
+                         plot.list<-append(plot.list,list(read_rgb(f,y,debands$bands,genGetDates(f),xsize,ysize)))
+                       }
+                     }
+                   },
+                   "dates"={
+                      d<-dates(x)
+
+                   },
+                   {
+                     # load the data
+                     dirs<-list.dirs(get_dir(x))
+                     var.dir<-dirs[grepl("variables",dirs)]
+                     var.dir<-var.dir[grepl(y,var.dir)]
+                     files<-list.files(var.dir,full.names = TRUE)
+                     files<-files[grepl(variable,files)]
+
+                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     if(length(files)>1){
+                       warning("More than one record for the same variable and product, plotting one size.")
+                       files<-files[1]
+                     }
+                     plot.list<-c(read_variables(files,y,variable,"ALL",xsize,ysize))
+
+                   })
+
+            # plot
+            genPlotGIS(r=plot.list,region(x),...)
+          }
+)
+
+read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
+  tif.files<-file.path("/vsizip",zip.file,zip_list(zip.file)$filename)
+  if(date!="ALL"){
+    tif.files<-tif.files[grepl(format(date,"%Y%j"),tif.files)]
+    n<-paste0(product,"_",var.name,"_",date)
+  }else{
+    n<-gsub("\\.tif","",basename(tif.files))
+  }
+  rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+  stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio)
+  stars.list<-do.call(c,stars.list)
+  names(stars.list)<-n
+  return(stars.list)
+}
+
+read_rgb<-function(files.p,product,bands,date,xsize,ysize){
+    files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
+
+    rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
+    tryCatch({
+      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+    },warning=function(cond){
+      warning(cond)
+      return(NULL)
+    })
+
+    # stretch only the data using raster
+    red[[1]]<-as.matrix(stretch(raster(red[[1]])))
+    green[[1]]<-as.matrix(stretch(raster(green[[1]])))
+    blue[[1]]<-as.matrix(stretch(raster(blue[[1]])))
+
+    aux<-merge(c(red,green,blue))
+    names(aux)<-paste0(product,"_",date)
+    return(aux)
+}
 
 #' @rdname plot-rtoi-ANY-method
 #' @aliases plot,records
@@ -174,6 +258,8 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
       r = projectRaster(r,crs=proj)
       if(!missing(region)){region=transform_multiple_proj(region,proj4=projection(r))}
     }
+  }else if(inherits(r,"stars")){
+
   }else{
     stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
   }
@@ -333,8 +419,13 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
   ####################################################
   # default label and breaks for the raster
   if(missing(zlim)){
-    lower<-min(minValue(r))
-    upper<-max(maxValue(r))
+    if(inherits(r,"stars")){
+      lower<-min(st_apply(merge(r), MARGIN=3, min,na.rm=TRUE)[[1]])
+      upper<-max(st_apply(merge(r), MARGIN=3, max,na.rm=TRUE)[[1]])
+    }else{
+      lower<-min(minValue(r))
+      upper<-max(maxValue(r))
+    }
   }else{
     if((class(zlim)!="numeric")&(length(zlim)!=0))
       stop("zlim must be a vector of length 2 specifying the upper and lower boundaries of the legend.")

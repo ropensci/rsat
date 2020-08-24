@@ -100,20 +100,22 @@ setMethod("derive",
             #############################################
             images<-list.files(mdir,full.names = TRUE)
             images<-images[grepl("\\.zip$",images)]
+            zip.file<-paste0(out.dir,".zip")
 
             for(i in images){
               message(paste0("Processing image ",basename(i),"."))
               layers<-file.path("/vsizip",i,zip_list(i)$filename)
               for(size in additional.sizes){
-                out.file<-file.path(out.dir,paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif"))
+                file.name<-paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif")
+                out.file<-file.path(out.dir,file.name)
                 layer.size<-layers[grepl(size, layers,fixed = TRUE)]
 
-                if((!file.exists(out.file))||overwrite){
+                if(!(file.exists(zip.file)&&(file.name%in%zip_list(zip.file)$filename))||overwrite){
                   result<-deriveVariables(bands,layers=layer.size,fun,verbose=verbose,i=i,...)
                   if(!is.null(result)){
                     #writeRaster(result,out.file,overwrite=overwrite)
                     write_stars(result,out.file,update=overwrite)
-                    add2rtoi(out.file,paste0(dirname(out.file),".zip"))
+                    add2rtoi(out.file,zip.file)
                   }
                 }else{
                   message(paste0("File already exists! file: ",out.file))
