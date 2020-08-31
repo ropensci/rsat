@@ -1,4 +1,4 @@
-#' @importFrom zip zipr_append
+#' @importFrom zip zipr zipr_append
 setGeneric("add2rtoi", function(infile,
                                 out.zip,
                                 ...) {
@@ -9,10 +9,11 @@ setMethod(f="add2rtoi",
           signature = c("character","character"),
           function(infile, out.zip, ...){
             if(!file.exists(out.zip)){
-              zipr(out.zip,files=infile)
+              zip::zipr(out.zip,files=infile)
             }else{
-              zipr_append(out.zip, infile, recurse = TRUE,
-                          include_directories = TRUE)
+              zip::zipr_append(out.zip, infile, recurse = TRUE,
+                               include_directories = TRUE)
             }
             file.remove(infile)
 })
+

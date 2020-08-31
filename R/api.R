@@ -256,7 +256,7 @@ setRefClass(Class="api",
         message(o.status)
       }
 
-      print(json_data[grepl("product_dload_url",names(json_data))])
+      #print(json_data[grepl("product_dload_url",names(json_data))])
       if(tolower(o.status)=="complete"){
         message(paste0("Downloading ",tile_name," image."))
         durl<-json_data[grepl("product_dload_url",names(json_data))]

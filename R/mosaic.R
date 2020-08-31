@@ -13,7 +13,7 @@
 #' @param ... additional arguments
 #'
 #' @importFrom zip zipr
-#' @import raster
+#' @import raster rgdal
 #' @include rtoi.R records.R
 #' @export
 #' @examples
@@ -84,6 +84,7 @@ setMethod(f="mosaic",
               #out.zip<-paste0(out.dir,".zip")
               out.dir<-file.path(tempdir(),get_mosaic_dir(x[1]),paste0(format(d,"%Y%j")))
               out.zip<-file.path(out_path,get_mosaic_dir(x[1]),paste0(format(d,"%Y%j"),".zip"))
+              dir.create(dirname(out.zip),recursive = TRUE,showWarnings = FALSE)
               if(file.exists(out.zip)){
                 if(overwrite){
                   file.remove(out.zip)
@@ -175,9 +176,10 @@ setMethod(f="mosaic",
                                           out.file.name)}
                       )
                       },error = function(e){
-                          file.rename(cmpfile,
-                                      out.file.name)
-                          warning(paste0("Error warping image in period ",d))
+                        warning(e)
+                        file.rename(cmpfile,
+                                    out.file.name)
+                        warning(paste0("Error warping image in period ",d))
                       })
 
                   }

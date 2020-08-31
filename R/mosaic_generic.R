@@ -61,11 +61,15 @@ genMosaicGdalUtils<-function(typechunks,temp="temp.vrt",nodata,out.name,verbose=
             warning(paste0("Error reading an image, check the following input images:\n",paste(paste0(1:length(typechunks),". ",typechunks), collapse = '\n')))
             return(FALSE)
           }
+        },error = function(e){
+          warning(e)
         })
       }else{message(warning_condition)}
     }
 
 
+  },error = function(e){
+    warning(e)
   })
   gdal_utils(util = "translate",
              source =temp,
