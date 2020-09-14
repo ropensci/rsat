@@ -26,7 +26,7 @@ setMethod("list_data",
                 allproducts<-list.files(p,full.names = TRUE)
                 if(any(grepl("mosaic",allproducts))){
                   f<-list.files(allproducts[grepl("mosaic",allproducts)],full.names = TRUE)[1]
-                  vars<-gsub("\\s*(\\d{7}_)", "", zip_list(f)$filename)
+                  vars<-gsub("\\s*(\\d{7}_)", "", utils::unzip(f)$Name)
                   vars<-gsub("\\.tif$","",vars)
                   f<-gsub(paste0(get_dir(x),"/"),"",f)
                   f<-gsub("\\.zip","",f)
@@ -63,16 +63,19 @@ setMethod("read_rtoi_dir",
           function(x,rtoi_dir){
             if(x[3]=="mosaic"){
               mos.zip<-list.files(file.path(rtoi_dir,x[1],x[2],x[3]),full.names = TRUE)
-              bands<-zip_list(mos.zip[1])$filename
+              #bands<-zip_list(mos.zip[1])$filename
+              bands<-utils::unzip(mos.zip[1],list=T)$Name
               bands<-bands[grepl(x[4],bands)]
               return(file.path("/vsizip",mos.zip,bands))
             }
             if(x[4]=="CloudMask"){
               mos.zip<-file.path(rtoi_dir,x[1],x[2],paste0(x[4],".zip"))
-              return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
+              #return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
+              return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=T)$Name))
             }
 
             mos.zip<-file.path(rtoi_dir,paste0(paste(x,collapse = "/"),".zip"))
-            return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
-          })
+            #return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
+            return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=T)$Name))
+            })
 

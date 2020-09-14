@@ -65,7 +65,7 @@ setMethod("derive",
                    overwrite=FALSE,
                    verbose=FALSE,
                    ...) {
-            rtoi_size_cal(x)
+
             if(missing(product)){
               p<-unique(product(records(x)))
               if(length(p)!=1){
@@ -104,17 +104,19 @@ setMethod("derive",
 
             for(i in images){
               message(paste0("Processing image ",basename(i),"."))
-              layers<-file.path("/vsizip",i,zip_list(i)$filename)
+              #layers<-file.path("/vsizip",i,zip_list(i)$filename)
+              layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
+
               for(size in additional.sizes){
                 file.name<-paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif")
                 out.file<-file.path(out.dir,file.name)
                 layer.size<-layers[grepl(size, layers,fixed = TRUE)]
 
-                if(!(file.exists(zip.file)&&(file.name%in%zip_list(zip.file)$filename))||overwrite){
+                if(!(file.exists(zip.file)&&(file.name%in%utils::unzip(zip.file,list=TRUE)$Name))||overwrite){
                   result<-deriveVariables(bands,layers=layer.size,fun,verbose=verbose,i=i,...)
                   if(!is.null(result)){
-                    #writeRaster(result,out.file,overwrite=overwrite)
-                    write_stars(result,out.file,update=overwrite)
+                    writeRaster(result,out.file,overwrite=overwrite)
+                    #write_stars(result,out.file,update=overwrite)
                     add2rtoi(out.file,zip.file)
                   }
                 }else{
@@ -183,8 +185,9 @@ deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
       if(verbose) warning(paste0("Error reading band ",arg))
       next
     }
-    eval(parse( text=paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
-    #eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
+    if(verbose)message(paste0("Reading band: ",paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
+    #eval(parse( text=paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
+    eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
     funString<-paste0(funString,arg,"=",arg,",")
   }
   # arguments asignation
@@ -196,6 +199,7 @@ deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
   }
   # complete the function
   funString<-paste0(substr(funString,1,nchar(funString)-1),")")
+
   #if(verbose){message(paste0("Function for evaluation: \n",funString))}
   tryCatch({
     eval(parse(text=funString))

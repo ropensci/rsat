@@ -187,7 +187,7 @@ setMethod(f="plot",
           })
 
 read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
-  tif.files<-file.path("/vsizip",zip.file,zip_list(zip.file)$filename)
+  tif.files<-file.path("/vsizip",zip.file,utils::unzip(zip.file,list=TRUE)$Name)
   if(!is.null(date)){
     tif.files<-tif.files[grepl(format(date,"%Y%j"),tif.files)]
     n<-paste0(product,"_",var.name,"_",date)
@@ -204,7 +204,7 @@ read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
 }
 
 read_rgb<-function(files.p,product,bands,date,xsize,ysize){
-    files.p<-file.path("/vsizip",files.p,zip_list(files.p)$filename)
+    files.p<-file.path("/vsizip",files.p,utils::unzip(files.p,list=TRUE)$Name)
 
     rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
     tryCatch({

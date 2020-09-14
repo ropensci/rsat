@@ -12,7 +12,7 @@ setMethod(f="add2rtoi",
               zip::zipr(out.zip,files=infile)
             }else{
               zip::zipr_append(out.zip, infile, recurse = TRUE,
-                               include_directories = TRUE)
+                               include_directories = TRUE,mode = c("mirror", "cherry-pick"))
             }
             file.remove(infile)
 })

@@ -1,7 +1,7 @@
 mosaic_fun_sen2<-function(mfiles){
   allfun<-NULL
   allfun$readfromscratch<-function(m,...){
-    file.path("/vsizip",m,zip_list(m)$filename)
+    file.path("/vsizip",m,utils::unzip(m,list=TRUE)$Name)
   }
   allfun$filterchunks<-function(allfiles,bnds){
     allfiles[grepl(paste0(bnds,".jp2"),allfiles, ignore.case=TRUE)]

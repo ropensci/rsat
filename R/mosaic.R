@@ -90,7 +90,7 @@ setMethod(f="mosaic",
                   file.remove(out.zip)
                   mosaiced.bands<-NULL
                 }else{
-                  mosaiced.bands<-zip_list(out.zip)$filename
+                  mosaiced.bands<-utils::unzip(out.zip,list=TRUE)$Name#zip_list(out.zip)$filename
                 }
               }else{
                 mosaiced.bands<-NULL

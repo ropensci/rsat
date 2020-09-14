@@ -23,7 +23,7 @@ setMethod(f="cloud_mask",
               img_dir<-get_mosaic_dir(x,p)
               out_dir<-file.path(dirname(img_dir),"CloudMask")
               dir.create(out_dir,showWarnings = FALSE)
-              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,zip_list(x)$filename)}))
+              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,utils::unzip(x,list=T)$Name)}))
 
               # Modis
               if(grepl("mod09",p)){
