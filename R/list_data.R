@@ -26,7 +26,7 @@ setMethod("list_data",
                 allproducts<-list.files(p,full.names = TRUE)
                 if(any(grepl("mosaic",allproducts))){
                   f<-list.files(allproducts[grepl("mosaic",allproducts)],full.names = TRUE)[1]
-                  vars<-gsub("\\s*(\\d{7}_)", "", utils::unzip(f)$Name)
+                  vars<-gsub("\\s*(\\d{7}_)", "", utils::unzip(f,list=TRUE)$Name)
                   vars<-gsub("\\.tif$","",vars)
                   f<-gsub(paste0(get_dir(x),"/"),"",f)
                   f<-gsub("\\.zip","",f)
