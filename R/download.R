@@ -117,6 +117,7 @@ setMethod(f="download",
             while(length(ordered.list)>0){
               for(i in length(ordered.list):1){
                 out.name<-file.path(out.dir,get_file_path(ordered.list[i]))
+                dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
                 if(!file.exists(out.name)){
                   if(grepl("^Landsat",sat_name(ordered.list[i]))){
                     con$espaGetOrders()
