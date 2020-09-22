@@ -183,7 +183,7 @@ setMethod(f="mosaic",
                       })
 
                   }
-                  add2rtoi(out.file.name,out.zip)
+                  add2rtoi(infile=out.file.name,out.zip=out.zip)
                 }
                 #zipr(out.zip,files=list.files(out.dir,full.names = T))
                 unlink(out.dir,recursive = TRUE)
