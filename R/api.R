@@ -172,7 +172,7 @@ setRefClass(Class="api",
       c.handle<-.self$secureHandle()
       if(!img_name%in%.self$order.list$id ){
         url.products = paste0(.self$api_server,'/available-products/', img_name)
-        json_data <- rjson::fromJSON(paste(secureCall(url.products), collapse=""))
+        json_data <- rjson::fromJSON(paste(.self$secureCall(url.products), collapse=""))
         #if(verbose){message(paste0("ESPA response r obj: \n",json_data))}
         json_data2<-unlist(json_data,recursive=TRUE)
         products<-json_data2[grepl("products",names(json_data2))]
@@ -201,7 +201,7 @@ setRefClass(Class="api",
 
         #if(verbose){message(paste0("ESPA query: \n",query))}
         res = POST(paste0(.self$api_server,"/order"),
-                   authenticate(username, password),
+                   authenticate(.self$username, .self$password),
                    body = as.character(query))
         #if(verbose){message(paste0("ESPA Order: \n",res))}
       }else{
@@ -248,8 +248,7 @@ setRefClass(Class="api",
     espaDownloadsOrders=function(tile_name,out.file,verbose=FALSE){
       c.handle<-.self$secureHandle()
       order_name<-.self$order.list$order[.self$order.list$id%in%tile_name]
-
-      r <- curl_fetch_memory(paste0(.self$api_server,"/item-status/",order_name), c.handle)
+      r <- curl_fetch_memory(paste0(.self$api_server,"/item-status/",order_name[1]), c.handle)
       json_data<-unlist(fromJSON(rawToChar(r$content)),recursive=TRUE)
       o.status<-json_data[grepl("status",names(json_data))]
       if(verbose){
@@ -275,10 +274,13 @@ setRefClass(Class="api",
         }
       }else if(tolower(o.status)=="processing"|tolower(o.status)=="oncache"|tolower(o.status)=="tasked"){
           return(FALSE)
+      }else if(tolower(o.status)=="unavailable"){
+          message(paste0(tile_name," image unavailable, try again later."))
+          return(TRUE)
       }else{
         if(verbose){
           message(paste0("Check order status: ", tolower(o.status)))
-          message(paste0("Unknown error downloading ",tile_name," image, omitting this download."))
+          message(paste0("Unknown download error with ",tile_name," image, omitting this download."))
         }
         return(TRUE)
       }

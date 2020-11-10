@@ -59,14 +59,14 @@ setMethod(f="download",
 #' @aliases download,records
 setMethod(f="download",
           signature = c("records"),
-          function(x,out.dir,...){
+          function(x,out.dir,verbose=FALSE,...){
             #dates<-as.Date("2016-01-25")
             #out.dir<-"E:/testnewpackage"
             ordered<-FALSE
             ordered.list<-new('records')
             if(missing(out.dir))stop("out.dir needed for image downloading.")
             # petitions for order images
-            message("Cheking records for long term access data.")
+            message("Checking records for long term access data.")
             for(i in length(x):1){
               out.name<-file.path(out.dir,get_file_path(x[i]))
               if(get_order(x[i])&!file.exists(out.name)){
@@ -120,8 +120,9 @@ setMethod(f="download",
                 dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
                 if(!file.exists(out.name)){
                   if(grepl("^Landsat",sat_name(ordered.list[i]))){
+                    con<-connection$getApi(api_name = get_api_name(ordered.list[i]))
                     con$espaGetOrders()
-                    if(con$espaDownloadsOrders(names(ordered.list[i]),out.name)){
+                    if(con$espaDownloadsOrders(names(ordered.list[i]),out.name,verbose=verbose)){
                       ordered.list <- ordered.list[-i]
                     }
                   }else if(grepl("^Sentinel",sat_name(ordered.list[i]))){
