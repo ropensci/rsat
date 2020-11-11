@@ -234,12 +234,32 @@ setGeneric("get_raster",function(x,p,v,...)  standardGeneric("get_raster"))
 setMethod("get_raster",
           signature(x = "rtoi"),
           function(x,p,v,...){
+            #layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
             dirs<-get_var_dir(x,p)
-            files<-list.files(dirs,recursive = T,pattern = "\\.tif$",full.names = T)
+            files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+            files<-files[grepl(v,files)]
             if(length(files)==0){
-              message("There are no images for this product and variable")
+              p.df<-list_data(x)
+              p.df<-p.df[p.df$product==p,]
+              p.df<-p.df[p.df$variable==v,]
+              dirs<-paste0(c(get_dir(x),p.df[1:3]),collapse="/")
+              files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+
+              mos.zip<-c()
+              for(f in files){
+                bnds<-utils::unzip(f,list=TRUE)$Name
+                bnds<-bnds[grepl(v,bnds)]
+                if(length(bnds)==1){
+                  mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
+                }
+              }
+              if(length(mos.zip)==0) message("There are no images for this product and variable")
+            }else{
+              if(length(files)==1){
+                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
+              }
             }
-            return(stack(files))
+            return(stack(mos.zip))
           })
 
 #' Loads into R a time series of images regarding an rtoi, satellite product,
@@ -287,18 +307,18 @@ setGeneric("get_stars",function(x,p,v,...)  standardGeneric("get_stars"))
 #' @rdname get_stars
 #' @aliases get_stars,rtoi
 setMethod("get_stars",
-         signature(x = "rtoi"),
-         function(x,p,v){
-           dirs<-get_var_dir(x,p)
-           dirs<-file.path(dirs,v)
-           files<-list.files(dirs,recursive = T,pattern = "\\.tif$",full.names = T)
-           if(length(files)==0){
-             message("There are no images for this product and variable")
-           }
-           #files<-file.path("/vsizip",files)
+          signature(x = "rtoi"),
+          function(x,p,v){
+            dirs<-get_var_dir(x,p)
+            dirs<-file.path(dirs,v)
+            files<-list.files(dirs,recursive = T,pattern = "\\.tif$",full.names = T)
+            if(length(files)==0){
+              message("There are no images for this product and variable")
+            }
+            #files<-file.path("/vsizip",files)
 
-           return(unique(product(records(x))))
-         })
+            return(unique(product(records(x))))
+          })
 
 #' Extracts the path to the database
 #'
