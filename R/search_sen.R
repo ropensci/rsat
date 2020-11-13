@@ -111,6 +111,8 @@ setMethod(f="sen_search",
           function(region,
                    product,
                    dates,
+                   startDate,
+                   endDate,
                    ...){
             if(!missing(dates)){
               startDate<-min(dates)
@@ -209,7 +211,9 @@ setMethod(f="sen_search",
                 if(sum(dt==mn.date)>50){
                   mn.date=mn.date-1
                 }
-                records<-c(records,sen_search(startDate=startDate,
+                records<-c(records,sen_search(region=region,
+                                              product=product,
+                                              startDate=startDate,
                                               endDate=mn.date,
                                               ...))
 
