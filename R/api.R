@@ -166,9 +166,9 @@ setRefClass(Class="api",
     ###############################################################
     # ESPA Connections
     ###############################################################
-    espaOrderImage=function(img_name,product="sr"){#c("sr","source_metadata")
+    espaOrderImage=function(img_name,product="sr",verbose=FALSE){#c("sr","source_metadata")
       if(length(img_name)>1)stop("Only one image is supported for each ESPA order.")
-      .self$espaGetOrders()
+      .self$espaGetOrders(verbose)
       c.handle<-.self$secureHandle()
       if(!img_name%in%.self$order.list$id ){
         url.products = paste0(.self$api_server,'/available-products/', img_name)
@@ -203,12 +203,17 @@ setRefClass(Class="api",
         res = POST(paste0(.self$api_server,"/order"),
                    authenticate(.self$username, .self$password),
                    body = as.character(query))
+        if(verbose){
+          message("Order response:")
+          print(res$status)
+        }
+        message(paste0(img_name," image ordered!"))
         #if(verbose){message(paste0("ESPA Order: \n",res))}
       }else{
         message(paste0("Alredy ordered image. Name: ",img_name))
       }
     },
-    espaGetOrders=function(){
+    espaGetOrders=function(verbose=FALSE){
       .self$espaUpdateOrderStatus()
       c.handle<-.self$secureHandle()
       r <- curl_fetch_memory(paste0(.self$api_server,"/list-orders"), c.handle)
@@ -222,7 +227,10 @@ setRefClass(Class="api",
         for(o in newOrders){
           r <- curl_fetch_memory(paste0(.self$api_server,"/order/",o), c.handle)
           json_data<-fromJSON(rawToChar(r$content))
-          if(json_data$note==.self$request & tolower(json_data$status)%in%c("complete","processing","oncache","tasked")){
+          if(verbose){
+            print(json_data$status)
+          }
+          if(json_data$note==.self$request & tolower(json_data$status)%in%c("complete","processing","oncache","tasked","ordered","submitted")){
             all.response<-unlist(json_data,recursive=TRUE)
             .self$order.list$order<-c(.self$order.list$order,o)
             .self$order.list$status<-c(.self$order.list$status,json_data$status)
@@ -248,14 +256,18 @@ setRefClass(Class="api",
     espaDownloadsOrders=function(tile_name,out.file,verbose=FALSE){
       c.handle<-.self$secureHandle()
       order_name<-.self$order.list$order[.self$order.list$id%in%tile_name]
+      if(is.na(order_name[1])){
+        if(verbose) message(paste0(tile_name," image not ordered, cannot be downloaded."))
+        return(TRUE)
+      }
       r <- curl_fetch_memory(paste0(.self$api_server,"/item-status/",order_name[1]), c.handle)
       json_data<-unlist(fromJSON(rawToChar(r$content)),recursive=TRUE)
       o.status<-json_data[grepl("status",names(json_data))]
       if(verbose){
-        message(o.status)
+        message(paste0(tile_name," order status: ",o.status))
       }
 
-      #print(json_data[grepl("product_dload_url",names(json_data))])
+
       if(tolower(o.status)=="complete"){
         message(paste0("Downloading ",tile_name," image."))
         durl<-json_data[grepl("product_dload_url",names(json_data))]
@@ -272,7 +284,7 @@ setRefClass(Class="api",
           file.remove(out.file)
           return(FALSE)
         }
-      }else if(tolower(o.status)=="processing"|tolower(o.status)=="oncache"|tolower(o.status)=="tasked"){
+      }else if(tolower(o.status)=="processing"|tolower(o.status)=="oncache"|tolower(o.status)=="tasked"|tolower(o.status)=="submitted"){
           return(FALSE)
       }else if(tolower(o.status)=="unavailable"){
           message(paste0(tile_name," image unavailable, try again later."))

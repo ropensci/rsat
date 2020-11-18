@@ -187,11 +187,7 @@ setMethod(f="mosaic",
                 }
                 #zipr(out.zip,files=list.files(out.dir,full.names = T))
                 unlink(out.dir,recursive = TRUE)
-                #TODO remove all not compressed files in database
-              #}else{
-              #  message(paste0("File for date ",d," exists, not mosaicking..."))
-              #  message("If you want to override this data use 'overwrite=T' and 'dates' argument")
-              #}
+
             }
           }
 )

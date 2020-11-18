@@ -121,7 +121,7 @@ setMethod(f="download",
                 if(!file.exists(out.name)){
                   if(grepl("^Landsat",sat_name(ordered.list[i]))){
                     con<-connection$getApi(api_name = get_api_name(ordered.list[i]))
-                    con$espaGetOrders()
+                    con$espaGetOrders(verbose=verbose)
                     if(con$espaDownloadsOrders(names(ordered.list[i]),out.name,verbose=verbose)){
                       ordered.list <- ordered.list[-i]
                     }
