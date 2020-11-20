@@ -67,6 +67,7 @@ setMethod(f="ls_search",
                    dates,
                    logoout=TRUE,
                    lvl=2,
+                   verbose=FALSE,
                    ...){
             if(!missing(dates)){
               startDate<-min(dates)
@@ -74,7 +75,7 @@ setMethod(f="ls_search",
             }
             con <- connection$getApi("earthexplorer")
             if(con$api_key==""){
-              con$loginEEApiKey()
+              con$loginEEApiKey(verbose=verbose)
             }
             attempts<-5
 
@@ -96,8 +97,9 @@ setMethod(f="ls_search",
                 warning("Cannot perform Landsat search, check your credentials and/or the api status: https://m2m.cr.usgs.gov/api/docs/json/")
                 return(new("records"))
               }
-              con$loginEEApiKey()
+              con$loginEEApiKey(verbose=verbose)
             }
+
             if((is.null(jsonres$data$recordsReturned))||jsonres$data$recordsReturned==0) return(new("records"))
             ##################################################################################################
             #res.df<-data.frame(t(sapply(jsonres$data$results,c)))
@@ -130,7 +132,11 @@ setMethod(f="ls_search",
                      api_name="earthexplorer"
                      img.name<-unlist(res.df$entityId)
                      nlen<-length(img.name)
-                     download_url=rep("",nlen)#file.path(con$server,"download",satid,unlist(res.df$entityId),"/EE/")
+                     dataset.data<-con$getEEdatasetID(product,verbose=verbose)
+
+                     download_url=paste0(con$server,"/download/",dataset.data$datasetId,"/",unlist(res.df$entityId),"/EE/")
+
+
                      #file.path(con$server,"download",satid,unlist(res.df$entityId),"STANDARD/EE/")
                      pr<-lsGetPathRow(img.name)
                      path = as.numeric(substr(pr,1,3))
