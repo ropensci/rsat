@@ -105,13 +105,13 @@ setMethod(f="sat_search",
             searchres<-new("records")
             for(s in product){
               if(tolower(substr(s,1,3))%in%c("mod","myd")){
-                message(paste0("Searching ",product," product..."))
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,mod_search(region(region),product=s,...))
               }else if(grepl("LANDSAT",s)){
-                message(paste0("Searching ",product," product..."))
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,ls_search(region(region),product=s,...))
               }else if(s%in%unlist(SENPRODUCTS)){
-                message(paste0("Searching ",product," product..."))
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,sen_search(region(region),product=s,...))
               }else{warning("Satellite no supported, only modis, landsat and sentinel products are supported.")}
             }
