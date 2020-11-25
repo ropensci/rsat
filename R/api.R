@@ -32,12 +32,21 @@ setRefClass(Class="api",
     simpleCall = function(url){
       c.handle = new_handle()
       req <- curl(url, handle = c.handle)
-      html<-suppressWarnings(readLines(req))
+      tryCatch({
+        html<-suppressWarnings(readLines(req))
+      }, error = function(e) {
+        close(req)
+        if(grepl("HTTP error 502.",e$message)){
+          .self$status="Offline"
+          stop("Service on maintenace. HTTP error 502.")
+        }
+        stop(e)
+      })
       html<-paste(html,collapse = "\n ")
       close(req)
       if(grepl("Internal Server Error", html)){
         .self$status="Offline"
-        stop(paste("Error:",.self$api_server,"web out of service"))
+        stop(paste("Error:",.self$api_server,"Service on maintenace."))
       }
       return(html)
     },
@@ -74,10 +83,12 @@ setRefClass(Class="api",
       }, error = function(e) {
         close(con)
         if(grepl("HTTP error 503.",e$message)){
-          .self$status="Service on maintenace."
+          .self$status="Offline"
           stop("Service on maintenace. HTTP error 503.")
         }else if(grepl("HTTP error 401.",e$message)){
           stop("Unauthorized error (HTTP error 401). Check your credentials.")
+        }else if(grepl("HTTP error 502.",e$message)){
+          stop("Service on maintenace. HTTP error 502.")
         }
         stop(e)
       })
@@ -166,7 +177,7 @@ setRefClass(Class="api",
     ###############################################################
     # ESPA Connections
     ###############################################################
-    espaOrderImage=function(img_name,product="sr",verbose=FALSE){#c("sr","source_metadata")
+    espaOrderImage=function(img_name,product="sr",ids,verbose=FALSE){#c("sr","source_metadata")
       if(length(img_name)>1)stop("Only one image is supported for each ESPA order.")
       .self$espaGetOrders(verbose)
       c.handle<-.self$secureHandle()

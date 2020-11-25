@@ -73,7 +73,7 @@ setMethod(f="download",
                 if(grepl("^Landsat",sat_name(x[i]))){
                   #ls order petition
                   con<-connection$getApi(api_name = get_api_name(x[i]))
-                  con$espaOrderImage(names(x[i]))
+                  con$espaOrderImage(names(x[i]),ids,verbose=verbose)
                   ordered.list<-c(ordered.list,x[i])
                   x<-x[-i]
                 }else if(grepl("^Sentinel",sat_name(x[i]))){
