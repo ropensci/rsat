@@ -101,14 +101,17 @@ setGeneric("sat_search", function(region, product, ...) {
 #' @aliases sat_search,rtoi,character
 setMethod(f="sat_search",
           signature = c("rtoi","character"),
-          function(region, product,...){
+          function(region, product,verbose=FALSE,...){
             searchres<-new("records")
             for(s in product){
               if(tolower(substr(s,1,3))%in%c("mod","myd")){
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,mod_search(region(region),product=s,...))
               }else if(grepl("LANDSAT",s)){
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,ls_search(region(region),product=s,...))
               }else if(s%in%unlist(SENPRODUCTS)){
+                message(paste0("Searching ",s," product..."))
                 searchres<-c(searchres,sen_search(region(region),product=s,...))
               }else{warning("Satellite no supported, only modis, landsat and sentinel products are supported.")}
             }
@@ -120,15 +123,15 @@ setMethod(f="sat_search",
 #' @aliases sat_search,sf,character
 setMethod(f="sat_search",
           signature = c("sf","character"),
-          function(region, product,...){
+          function(region, product,verbose=FALSE,...){
             searchres<-new("records")
             for(s in product){
               if(tolower(substr(s,1,3))%in%c("mod","myd")){
-                searchres<-c(searchres,mod_search(region,product=s,...))
+                searchres<-c(searchres,mod_search(region,product=s,verbose=verbose,...))
               }else if(s%in%c("LANDSAT_8_C1","LANDSAT_7_C1","SENTINEL_2A")){
-                searchres<-c(searchres,ls_search(region,product=s,...))
+                searchres<-c(searchres,ls_search(region,product=s,verbose=verbose,...))
               }else if(s%in%unlist(SENPRODUCTS)){
-                searchres<-c(searchres,sen_search(region,product=s,...))
+                searchres<-c(searchres,sen_search(region,product=s,verbose=verbose,...))
               }else{warning("Satellite no supported, only modis, landsat and sentinel products are supported.")}
             }
             return(searchres)

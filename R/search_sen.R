@@ -113,6 +113,7 @@ setMethod(f="sen_search",
                    dates,
                    startDate,
                    endDate,
+                   verbose=FALSE,
                    ...){
             if(!missing(dates)){
               startDate<-min(dates)
@@ -131,6 +132,7 @@ setMethod(f="sen_search",
                                startDate = startDate,
                                endDate = endDate,
                                region = region,
+                               verbose=verbose,
                                ...)
 
             res.download <- fromJSON(con$secureCall(query))
@@ -206,7 +208,7 @@ setMethod(f="sen_search",
                 mn.date<-min(dt)
                 if(sum(dt==mn.date)==100){
                   stop("\nSpatial regions composed by 100 or more tiles are not supported!
-           Try the search using a smaller spatial region.")
+           Try the search using a smaller region.")
                 }
                 if(sum(dt==mn.date)>50){
                   mn.date=mn.date-1
@@ -215,6 +217,7 @@ setMethod(f="sen_search",
                                               product=product,
                                               startDate=startDate,
                                               endDate=mn.date,
+                                              verbose=verbose,
                                               ...))
 
               }

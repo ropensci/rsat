@@ -317,7 +317,7 @@ setRefClass(Class="api",
       }
       .self$api_key
     },
-    loginEEApiKey = function(){
+    loginEEApiKey = function(verbose=FALSE){
       jsonquery<-list("username"=.self$username,
                       "password"=.self$password,
                       "authType"="EROS",
@@ -329,7 +329,7 @@ setRefClass(Class="api",
       if(!is.null(res$errorCode)){
         stop(res$errorMessage)
       }
-      message('Logged into EE API.')
+      if(verbose) message('Logged into EE API.')
       .self$api_key=res$data
     },
     postApiEE = function(url,body,key){
@@ -341,25 +341,62 @@ setRefClass(Class="api",
       if(post.res$status_code==200)return(content(post.res))
       return(list(errorCode=paste0("Error in Earth Explorer api connection. HTTP ",post.res$status_code,".")))
     },
-    postdownload = function(){
-      #TODO
-      #https://dds.cr.usgs.gov/download/eyJpZCI6MTA5ODU3NywiY29udGFjdElkIjoxNTM4NTIxfQ==/
-      url<-"https://m2m.cr.usgs.gov/api/api/json/stable/download-request"
-      key<-"eyJjaWQiOjE1Mzg1MjEsInMiOiIxNTk2NjU2NTE0IiwiciI6NTYzLCJwIjpbXX0="
+    getEEdatasetID = function(product,verbose=FALSE){
+      url<-paste0(.self$api_server,"/dataset")
+      key<-.self$api_key
       names(key)<-"X-Auth-Token"
-      body<-'{\"datasetName\":\"LANDSAT_8_C1\",\"sceneFilter\":{\"acquisitionFilter\":{\"start\":\"2018-07-01\",\"end\":\"2018-07-31\"},\"spatialFilter\":{\"filterType\":\"mbr\",\"lowerLeft\":{\"latitude\":41.9095732069108,\"longitude\":-2.49908963576402},\"upperRight\":{\"latitude\":43.3146327061922,\"longitude\":-0.726158447400539}}},\"maxResults\":\"50000\",\"startingNumber\":\"1\",\"sortOrder\":\"ASC\"}'
-      #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC81990312020204LGN00/EE/
-      #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC82000302019208LGN00/EE/
+      body<-paste0('{"datasetName":"',product,'"}')
       post.res <- POST(url = url,
                        body = body,
                        content_type("application/json"),
-                       add_headers(key),
-                       authenticate(user="user",#change this
-                                    password="pass",
-                                    type = "basic"))
-
-      content(post.res)
+                       add_headers(key)#,
+                       #authenticate(user="user",#change this
+                       #             password="pass",
+                       #             type = "basic")
+                       )
+      return(content(post.res)$data)
     },
+    postDownloadEE = function(url,verbose=FALSE){
+      key<-.self$api_key
+      names(key)<-"X-Auth-Token"
+      body<-paste0('{}')
+      post.res <- POST(url = url,
+                       body = body,
+                       content_type("application/json"),
+                       add_headers(key)#,
+                       #authenticate(user="user",#change this
+                       #             password="pass",
+                       #             type = "basic")
+      )
+      return(content(post.res)$data)
+    },
+    # postdownload = function(){
+    #   #TODO
+    #   #https://dds.cr.usgs.gov/download/eyJpZCI6MTA5ODU3NywiY29udGFjdElkIjoxNTM4NTIxfQ=/
+    #   url<-"https://m2m.cr.usgs.gov/api/api/json/stable/download-request"
+    #   key<-"eyJjaWQiOjE1Mzg1MjEsInMiOiIxNjA1Nzc1MzYxIiwiciI6MTgyLCJwIjpbXX0="
+    #   names(key)<-"X-Auth-Token"
+    #   body<-'{\"datasetName\":\"LANDSAT_8_C1\",
+    #          \"sceneFilter\":{\"acquisitionFilter\":
+    #                           {\"start\":\"2018-07-01\",
+    #                           \"end\":\"2018-07-31\"},
+    #                          \"spatialFilter\":{\"filterType\":\"mbr\",\"lowerLeft\":{\"latitude\":41.9095732069108,\"longitude\":-2.49908963576402},\"upperRight\":{\"latitude\":43.3146327061922,\"longitude\":-0.726158447400539}}},\"maxResults\":\"50000\",\"startingNumber\":\"1\",\"sortOrder\":\"ASC\"}'
+    #   label = "download-sample"
+    #   downloads.id<-"LC81990312020204LGN00"
+    #   downloadRequestParameters = paste0("{'downloads' : ",downloads.id,",
+    #                               'label' : ",label,"}")
+    #   #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC81990312020204LGN00/EE/
+    #   #https://earthexplorer.usgs.gov/download/5e83d0b84df8d8c2/LC82000302019208LGN00/EE/
+    #   post.res <- POST(url = url,
+    #                    body = downloadRequestParameters,
+    #                    content_type("application/json"),
+    #                    add_headers(key),
+    #                    authenticate(user="user",#change this
+    #                                 password="pass",
+    #                                 type = "basic"))
+    #
+    #   content(post.res)
+    # },
     logoutEEAPI=function(){
       jsonquery<-list("apikey"=.self$api_key)
       if(!is.null(jsonquery$apikey)){
