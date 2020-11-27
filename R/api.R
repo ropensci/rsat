@@ -177,7 +177,7 @@ setRefClass(Class="api",
     ###############################################################
     # ESPA Connections
     ###############################################################
-    espaOrderImage=function(img_name,product="sr",ids,verbose=FALSE){#c("sr","source_metadata")
+    espaOrderImage=function(img_name,product="sr",verbose=FALSE){#c("sr","source_metadata")
       if(length(img_name)>1)stop("Only one image is supported for each ESPA order.")
       .self$espaGetOrders(verbose)
       c.handle<-.self$secureHandle()
@@ -188,14 +188,14 @@ setRefClass(Class="api",
         json_data2<-unlist(json_data,recursive=TRUE)
         products<-json_data2[grepl("products",names(json_data2))]
         if(length(products)==0){
-          warning(paste0("Defined products are not available for image ",ids))
+          warning(paste0("Defined products are not available for image ",img_name))
           warning(paste0("Products ",paste(json_data2,collapse = ", ")))
           next
         }
         if(any(!(product%in%products))){
           product<-product[product%in%products]
           if(length(product)==0){
-            warning(paste0("Defined products are not available for image ",ids))
+            warning(paste0("Defined products are not available for image ",img_name))
             warning(paste0("Products ",paste(json_data2,collapse = ", ")))
             next
           }
