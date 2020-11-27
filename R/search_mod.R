@@ -101,6 +101,7 @@ setMethod(f="mod_search",
           signature = c("ANY"),
           function(region,
                    collection=6,
+                   verbose=FALSE,
                    ...){
             args<-list(...)
             con <- connection$getApi("nasa_inventory")
@@ -111,7 +112,7 @@ setMethod(f="mod_search",
                                region = region,
                                resType="url",#)
                                ...)
-            if("verbose"%in%names(args)) message(query)
+            if(verbose) message(query)
             res.download <- con$simpleCall(query)
             res.download <- xmlRoot(xmlNativeTreeParse(res.download))
             res.download <- xmlSApply(res.download,
