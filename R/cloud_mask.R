@@ -77,7 +77,7 @@ modCloudMask<-function(infile, outfile, overwrite = FALSE, verbose = FALSE,...){
     # shadows
     # interpret the bytes: 0 = clear, 1 = shadow
     r_shadow <- r
-    r_shadow <- 1 - v[,3]
+    r_shadow[] <- 1 - v[,3]
     r_shadow[r_shadow == 0] <- NA
     # save the result
     ras.cloud <- r * r_shadow
