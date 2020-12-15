@@ -69,7 +69,7 @@ setMethod(f="plot",
 #' @aliases plot,character
 setMethod(f="plot",
           signature = c("rtoi","character"),
-          function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
+          function(x, y, ..., variable="rgb", verbose = FALSE, xsize = 250, ysize = 250){
             if(y=="dates"){
               r<-records(x)
               date<-dates(r)
@@ -96,7 +96,8 @@ setMethod(f="plot",
                 'date',
                 'product'
               ))
-
+            }else if(y=="preview"){
+                get_dir(navarre)
             }
             switch(variable,
                    "rgb"={
@@ -114,8 +115,7 @@ setMethod(f="plot",
                        }
                      }
                    },
-                   {
-                     # load the data
+                   {# load the data
                      dirs<-list.dirs(get_dir(x))
                      var.dir<-dirs[grepl("variables",dirs)]
                      var.dir<-var.dir[grepl(y,var.dir)]

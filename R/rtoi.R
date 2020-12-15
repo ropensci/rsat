@@ -159,6 +159,7 @@ setMethod("get_dir",
           })
 
 #' @rdname get_dir
+#' @export
 #' @aliases get_dir,rtoi,character
 setGeneric("get_dir<-",function(x,value)  standardGeneric("get_dir<-"))
 setMethod("get_dir<-",

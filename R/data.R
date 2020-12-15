@@ -47,6 +47,14 @@ NULL
 #' @keywords data
 NULL
 
+#' A polygon with the border of Manhattan (USA)
+#'
+#' Spatial feature (\code{sf}) representing the border of Manhattan with
+#' coordinates in the NAD83 format.
+#' @name ex.manhattan
+#' @docType data
+#' @keywords data
+NULL
 
 #' @docType package
 #' @bibliography system.file("REFERENCES.bib", package = "rsat")

@@ -74,7 +74,12 @@ setMethod(f="mosaic",
           signature = c("records"),
           function(x, out_path,db_path,bfilter,warp="extent",region,overwrite=FALSE,...){
             args<-list(...)
-            days<-dates(x)
+            if("dates"%in%names(arg)){
+              days <- arg$dates
+            }else{
+              days <- dates(x)
+            }
+
             if(length(unique(product(x)))>1){stop("All the records must be from the same satellite")}
             scratch.tmp<-file.path(tempdir(),"rgt_scratch")
             dir.create(scratch.tmp,recursive = TRUE,showWarnings = FALSE)
@@ -150,7 +155,6 @@ setMethod(f="mosaic",
                                        nodata=defineNodata(chunks,bnds),
                                        out.name=cmpfile)
 
-
                     tryCatch({
                       switch(tolower(warp),
                              "extent"={
@@ -159,7 +163,6 @@ setMethod(f="mosaic",
 
                                #TODO get projection using gdal_crs, cannot close the connection and remove the file
                                #region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp)) ;gc();
-
                                ext<-extent(region)
 
                               gdal_utils(util = "warp",
