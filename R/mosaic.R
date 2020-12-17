@@ -74,8 +74,8 @@ setMethod(f="mosaic",
           signature = c("records"),
           function(x, out_path,db_path,bfilter,warp="extent",region,overwrite=FALSE,...){
             args<-list(...)
-            if("dates"%in%names(arg)){
-              days <- arg$dates
+            if("dates"%in%names(args)){
+              days <- args$dates
             }else{
               days <- dates(x)
             }
