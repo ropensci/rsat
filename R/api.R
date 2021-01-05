@@ -177,9 +177,10 @@ setRefClass(Class="api",
     ###############################################################
     # ESPA Connections
     ###############################################################
-    espaOrderImage=function(img_name,product="sr",verbose=FALSE){#c("sr","source_metadata")
+    espaOrderImage=function(img_name,product="sr",update.orders=TRUE,verbose=FALSE){#c("sr","source_metadata")
       if(length(img_name)>1)stop("Only one image is supported for each ESPA order.")
-      .self$espaGetOrders(verbose)
+      if(update.orders)
+        .self$espaGetOrders(verbose)
       c.handle<-.self$secureHandle()
       if(!img_name%in%.self$order.list$id ){
         url.products = paste0(.self$api_server,'/available-products/', img_name)
