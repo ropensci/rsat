@@ -133,35 +133,38 @@ deriveBandsData<-function(product){
   #############################################
   # Bands data
   #############################################
-  #sentinel-2
+    
+    #sentinel-2(lvl1) product
   if(product%in%"S2MSI1C"){
     return(list(bands=variables$bands[["Sentinel-2"]],
                 additional.sizes=""))
-
-    #landsat 8 product download
+    #sentinel-2(lvl2) product
   }else if(product%in%c("S2MSI2A","S2MS2Ap")){
     return(list(bands=variables$bands[["Sentinel-2"]],
                 additional.sizes=c("_10m","_20m","_60m")))
-
-    #landsat 8 product download
+    #sentinel-3 product
+  }else if(grepl("SY_2_SYN___",product)){
+    return(list(bands=variables$bands$`SY_2_SYN___`,
+                additional.sizes=""))
+    #landsat-8 product
   }else if(grepl("LANDSAT_8_C1",product)){
     return(list(bands=variables$bands$ls8,
                 additional.sizes=""))
-    #mod09 product download
-  }else if(grepl("LANDSAT_7_C1",product)){
+  # landsat-7 product
+  #}else if(grepl("LANDSAT_7_C1",product)){
+  #  return(list(bands<-variables$bands$ls7,
+  #              additional.sizes=""))
+    #landsat-7 product
+  }else if(grepl("LANDSAT_ETM_C1",product)){
     return(list(bands<-variables$bands$ls7,
                 additional.sizes=""))
-    #mod09 product download
+    #landsat-5 product
   }else if(grepl("LANDSAT_TM_C1",product)){
     return(list(bands=variables$bands$ls5,
                 additional.sizes=""))
-    #mod09 product download
+    #mod09 product
   }else if(substr(product,1,5)%in%c("mod09","myd09")){
     return(list(bands=variables$bands$mod09ga,
-                additional.sizes=""))
-
-  }else if(grepl("SY_2_SYN___",product)){
-    return(list(bands=variables$bands$`SY_2_SYN___`,
                 additional.sizes=""))
   }else{
     warning(paste0("Product '",product,"' not supported for mosaicking."))
