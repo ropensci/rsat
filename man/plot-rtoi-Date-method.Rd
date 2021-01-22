@@ -10,7 +10,17 @@
 \usage{
 \S4method{plot}{rtoi,Date}(x, y, ..., variable = "rgb", verbose = FALSE, xsize = 250, ysize = 250)
 
-\S4method{plot}{rtoi,character}(x, y, ..., variable = "rgb", verbose = FALSE, xsize = 250, ysize = 250)
+\S4method{plot}{rtoi,character}(
+  x,
+  y,
+  ...,
+  variable = "rgb",
+  product = "ALL",
+  dates = NULL,
+  verbose = FALSE,
+  xsize = 250,
+  ysize = 250
+)
 
 \S4method{plot}{records,ANY}(x, y, verbose = FALSE, ...)
 }

@@ -14,7 +14,7 @@
 #'
 #' @import tmap
 #' @importFrom sp proj4string proj4string<-
-#' @importFrom ggTimeSeries ggplot_calendar_heatmap
+#' @importFrom calendR calendR
 #' @include rtoi.R records.R
 #' @export
 #' @example
@@ -69,9 +69,18 @@ setMethod(f="plot",
 #' @aliases plot,character
 setMethod(f="plot",
           signature = c("rtoi","character"),
-          function(x, y, ..., variable="rgb", verbose = FALSE, xsize = 250, ysize = 250){
+          function(x, y, ..., variable="rgb",product="ALL",dates=NULL, verbose = FALSE, xsize = 250, ysize = 250){
             if(y=="dates"){
               r<-records(x)
+              if(!is.null(dates)){
+                r<-r[dates(r)%in%dates]
+              }
+              months<-sort(unique(format(dates(r),"%Y%m")))
+              if(length(months)>12){
+                months<-months[1:12]
+                r<-r[format(dates(r),"%Y%m")%in%months]
+                message("Ploting only one year of records, use dates argument to plot another year.")
+              }
               date<-dates(r)
 
               all.products<-unique(sat_name(r))
@@ -90,14 +99,75 @@ setMethod(f="plot",
               n.product<-gsub(" \\+ $","",n.product,useBytes = T)
               n.product<-gsub("^ \\+ ","",n.product,useBytes = T)
               n.product[n.product%in%""]<-"No captures"
-              df["product"]<-n.product
-              return(ggplot_calendar_heatmap(
-                df,
-                'date',
-                'product'
-              ))
+              #df["product"]<-n.product
+              #return(ggplot_calendar_heatmap(
+              #  df,
+              #  'date',
+              #  'product'
+              #))
+              return(calendR(start_date = min(date), # Custom start date
+                      end_date = max(date),
+                      special.days = n.product,
+                      special.col = c("pink", "lightblue", "lightgreen", "lightsalmon","brown","blue",colors())[1:length(unique(n.product))],
+                      legend.pos = "right"))
+
             }else if(y=="preview"){
-                get_dir(navarre)
+                rtoi.path<-get_dir(x)
+                if(product=="ALL"){
+                  product<-product(x)
+                }else{
+                  product<-product
+                }
+                plot.list<-list()
+                for(prdct in product){
+                  sat.records<-subset(records(x),prdct,"product")
+                  if(length(sat.records)==0){
+                    if(verbose) message(paste0("No records for product",prdct))
+                    next
+                  }
+                  preview.path<-file.path(rtoi.path,sat_name(sat.records[1]),prdct,"preview")
+                  dir.create(preview.path,showWarnings = FALSE,recursive = TRUE)
+                  if(is.null(dates)){
+                    date<-unique(dates(sat.records))
+                  }else{
+                    date<-unique(dates)
+                  }
+                  for(d in date){
+                    preview.path.img <- file.path(preview.path,paste0(format(as.Date(d),"%Y%m%d"),".tif"))
+                    preview.records <- subset(sat.records,as.Date(d),"date")
+                    if(length(preview.records)==0){
+                      if(verbose) message(paste0("No records for product ",prdct," and date ",as.Date(d),"."))
+                      next
+                    }
+                    if(!file.exists(preview.path.img)){
+                      for(i in 1:length(preview.records)){ # download all preview
+                        r<-preview.records[i]
+                        proj_file<-get_preview_proj(r,get_database(x))
+                        if(!file.exists(proj_file)){
+                          dir.create(get_preview_path(r,get_database(x)),showWarnings = FALSE,recursive = TRUE)
+                          download_preview(r,tmp_dir=get_database(x),verbose=verbose)
+                        }
+                      }
+                      all.proj.path <- get_preview_proj(preview.records,get_database(x))
+                      tmp.file<-file.path(tmpDir(),gsub("\\.tif","",basename(preview.path.img)))
+                      gdal_utils(util = "buildvrt",
+                                 source = all.proj.path,
+                                 destination = tmp.file)
+
+                      gdal_utils(util = "translate",
+                                 source =tmp.file,
+                                 destination = preview.path.img,
+                                 options=c("-of","GTiff"))
+                      plot.list<-append(plot.list,list(stack(preview.path.img)))
+
+                    }else{
+                      plot.list<-append(plot.list,list(stack(preview.path.img)))
+                    }
+                  }
+                }
+                if(length(plot.list)==0)return(message("No images for previewing in assigned time interval."))
+                return(genPlotGIS(r=plot.list,region(x),...))
+
             }
             switch(variable,
                    "rgb"={
@@ -106,7 +176,7 @@ setMethod(f="plot",
                      mosaics.dir<-dirs[grepl("mosaic",dirs)]
                      files<-list.files(mosaics.dir,full.names = TRUE)
                      files<-files[grepl(y,files)]
-                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date. You plot using 'dates' or 'preview mode.'")
                      plot.list<-list()
                      for(f in files){
                        debands<-deriveBandsData(y)

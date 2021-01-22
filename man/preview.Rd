@@ -22,7 +22,7 @@ preview(x, n, ...)
   x,
   n,
   lpos = c(3, 2, 1),
-  pre_dir = file.path(tempdir()),
+  tmp_dir = file.path(tempdir()),
   add.layer = FALSE,
   verbose = FALSE,
   get.map = TRUE,
@@ -33,7 +33,7 @@ preview(x, n, ...)
   x,
   n,
   lpos = c(3, 2, 1),
-  pre_dir = file.path(tempdir()),
+  tmp_dir = file.path(tempdir()),
   add.layer = FALSE,
   verbose = FALSE,
   get.map = TRUE,
@@ -56,7 +56,7 @@ image on an existing map.}
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
 
-\item{pre_dir}{character argument. The directory where previsualization images
+\item{tmp_dir}{character argument. The directory where previsualization images
 will be located.}
 
 \item{get.map}{logical argument. If \code{TRUE}, the function return the leaflet map.}

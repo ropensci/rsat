@@ -65,7 +65,7 @@ setPreviewMap = function(map){
 #' image on an existing map.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param pre_dir character argument. The directory where previsualization images
+#' @param tmp_dir character argument. The directory where previsualization images
 #' will be located.
 #' @param get.map logical argument. If \code{TRUE}, the function return the leaflet map.
 #' @param n the date expressed as the temporal index in the time series.
@@ -114,7 +114,7 @@ setMethod(f="preview",
           signature = c("rtoi","Date"),
           function(x,n,lpos=c(3,2,1),add.layer=FALSE,verbose = FALSE,...){
             #plot the rgb files
-            preview(records(x),n,lpos,pre_dir=get_database(x),add.layer,verbose,get.map=FALSE,...)
+            preview(records(x),n,lpos,tmp_dir=get_database(x),add.layer,verbose,get.map=FALSE,...)
             #plot sf
             addMapFeature(region(x),names(x))
             return(getPreviewMap())
@@ -127,7 +127,7 @@ setMethod(f="preview",
           signature = c("rtoi","missing"),
           function(x,n,lpos=c(3,2,1),add.layer=FALSE,verbose = FALSE,...){
             #plot the rgb files
-            preview(records(x),dates(x)[1],lpos,pre_dir=get_database(x),add.layer,verbose,get.map=FALSE,...)
+            preview(records(x),dates(x)[1],lpos,tmp_dir=get_database(x),add.layer,verbose,get.map=FALSE,...)
             #plot sf
             addMapFeature(region(x),names(x))
             return(getPreviewMap())
@@ -137,11 +137,11 @@ setMethod(f="preview",
 #' @aliases preview,records,date
 setMethod(f="preview",
           signature = c("records","Date"),
-          function(x,n,lpos=c(3,2,1),pre_dir=file.path(tempdir()),add.layer=FALSE,verbose = FALSE,get.map=TRUE,...){
+          function(x,n,lpos=c(3,2,1),tmp_dir=file.path(tempdir()),add.layer=FALSE,verbose = FALSE,get.map=TRUE,...){
               if(!add.layer)setPreviewMap(createMap())
               r<-x[dates(x)%in%n]
               for(n in 1:length(r)){
-                preview(r,n,lpos,pre_dir,add.Layer=TRUE,verbose,get.map=FALSE)
+                preview(r,n,lpos,tmp_dir,add.Layer=TRUE,verbose,get.map=FALSE)
               }
               if(get.map)return(getPreviewMap())
           }
@@ -150,42 +150,13 @@ setMethod(f="preview",
 #' @aliases preview,rtoi,numeric
 setMethod(f="preview",
           signature = c("records","numeric"),
-          function(x,n,lpos=c(3,2,1),pre_dir=file.path(tempdir()),add.layer=FALSE,verbose = FALSE,get.map=TRUE,...){
+          function(x,n,lpos=c(3,2,1),tmp_dir=file.path(tempdir()),add.layer=FALSE,verbose = FALSE,get.map=TRUE,...){
             if(length(x)>=n&n>0){
               r<-x[n]
-              p.url<-get_preview(r)
-              na<-names(r)
-              pre_dir<-file.path(pre_dir,get_dir(r),"rgt_preview")
-              dir.create(pre_dir,showWarnings = FALSE,recursive = TRUE)
-              pre.file<-file.path(pre_dir,names(r))
-              if(verbose)message(paste0("Preview file download file: ",pre.file))
-              if(!file.exists(pre.file)){
-                con<-connection$getApi(get_api_name(r))
-                con$pictureDownload(p.url,pre.file)
-              }
-              proj_file<-paste0(pre.file,"_proj")
+              dir.create(get_preview_path(r,tmp_dir),showWarnings = FALSE,recursive = TRUE)
+              proj_file<-get_preview_proj(r,tmp_dir)
               if(!file.exists(proj_file)){
-                img<-raster::stack(pre.file)
-                # check if we have projection from search result
-                if(any(is.na(as.vector(extent(r))))){
-                  plotRGB(img)
-                  return(NULL)
-                }else{
-                  ext<-extent(r)
-                  extent(img)<-ext
-                  if(crs(r)==54008)
-                    projection(img)<-st_crs("ESRI:54008")$proj4string
-                  else
-                    projection(img)<-st_crs(crs(r))$proj4string
-                  tmp.img<-paste0(pre.file,"_tmp.tif")
-                  writeRaster(img,tmp.img,overwrite=TRUE)
-                  gdal_utils(util = "warp",
-                             source = tmp.img,
-                             destination = proj_file,
-                             options=c("-t_srs",st_crs(4326)$proj4string)
-                  )
-                  rm(img);gc();file.remove(tmp.img);
-                }
+                download_preview(r,tmp_dir,verbose=verbose,...)
               }
               img<-raster::stack(proj_file)
               #lname<-paste0(sat_name(r),"_",dates(r))
@@ -205,3 +176,44 @@ setMethod(f="preview",
           }
 )
 
+get_preview_path<-function(r,tmp_dir){
+  return(file.path(tmp_dir,get_dir(r),"rgt_preview"))
+}
+get_preview_file<-function(r,tmp_dir){
+  return(file.path(get_preview_path(r,tmp_dir),names(r)))
+}
+get_preview_proj<-function(r,tmp_dir){
+  return(paste0(get_preview_file(r,tmp_dir),"_proj"))
+}
+
+download_preview<-function(r,tmp_dir,verbose = FALSE,...){
+    pre.file<-get_preview_file(r,tmp_dir)
+    if(verbose)message(paste0("Preview file download file: ",pre.file))
+    if(!file.exists(pre.file)){
+      p.url<-get_preview(r)
+      con<-connection$getApi(get_api_name(r))
+      con$pictureDownload(p.url,pre.file)
+    }
+    img<-raster::stack(pre.file)
+    # check if we have projection from search result
+    if(any(is.na(as.vector(extent(r))))){
+      #plotRGB(img)
+      warning("Image without projection, cannot mosaick")
+      return(NULL)
+    }else{
+      ext<-extent(r)
+      extent(img)<-ext
+      if(crs(r)==54008)
+        projection(img)<-st_crs("ESRI:54008")$proj4string
+      else
+        projection(img)<-st_crs(crs(r))$proj4string
+      tmp.img<-paste0(pre.file,"_tmp.tif")
+      writeRaster(img,tmp.img,overwrite=TRUE)
+      gdal_utils(util = "warp",
+                 source = tmp.img,
+                 destination = get_preview_proj(r,tmp_dir),
+                 options=c("-t_srs",st_crs(4326)$proj4string)
+      )
+      rm(img);gc();file.remove(tmp.img);
+    }
+}

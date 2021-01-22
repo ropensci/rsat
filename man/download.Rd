@@ -12,7 +12,7 @@ download(x, ...)
 
 \S4method{download}{rtoi}(x, db_path, ...)
 
-\S4method{download}{records}(x, out.dir, ...)
+\S4method{download}{records}(x, out.dir, verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{a records or an rtoi object.}

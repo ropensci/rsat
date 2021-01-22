@@ -232,7 +232,7 @@ setRefClass(Class="api",
       newOrders<-fromJSON(rawToChar(r$content))
       dates<-as.Date(gsub(".*\\s*(\\d{8}).*","\\1",newOrders),"%m%d%Y")
       newOrders<-newOrders[Sys.Date()-dates<8]
-      if(length(newOrders)==0)return(message("There are no ordered images."))
+      if(length(newOrders)==0&verbose)return(message("There are no ordered images."))
 
       newOrders<-newOrders[!(newOrders%in%.self$order.list$order)]
       if(length(newOrders)>0){

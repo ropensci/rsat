@@ -128,7 +128,7 @@ setMethod(f="sat_search",
             for(s in product){
               if(tolower(substr(s,1,3))%in%c("mod","myd")){
                 searchres<-c(searchres,mod_search(region,product=s,verbose=verbose,...))
-              }else if(s%in%c("LANDSAT_8_C1","LANDSAT_7_C1","SENTINEL_2A")){
+              }else if(grepl("LANDSAT",s)){
                 searchres<-c(searchres,ls_search(region,product=s,verbose=verbose,...))
               }else if(s%in%unlist(SENPRODUCTS)){
                 searchres<-c(searchres,sen_search(region,product=s,verbose=verbose,...))

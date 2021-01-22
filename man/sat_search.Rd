@@ -10,9 +10,9 @@
 \usage{
 sat_search(region, product, ...)
 
-\S4method{sat_search}{rtoi,character}(region, product, ...)
+\S4method{sat_search}{rtoi,character}(region, product, verbose = FALSE, ...)
 
-\S4method{sat_search}{sf,character}(region, product, ...)
+\S4method{sat_search}{sf,character}(region, product, verbose = FALSE, ...)
 }
 \arguments{
 \item{region}{a \code{Spatial*}, projected \code{raster*}, \code{sf} or \code{rtoi} class object defining the area of interest.}

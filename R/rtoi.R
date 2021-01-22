@@ -147,7 +147,7 @@ setReplaceMethod(f="names",
 setMethod(f="sat_name",
           signature =c("rtoi"),
           definition = function(x){
-            return(list.dirs(get_dir(x),recursive = FALSE,full.names = FALSE))
+            return(unique(sat_name(records(x))))
           })
 
 #' @rdname get_dir
@@ -546,7 +546,7 @@ setMethod("print",
             cat(paste0("Name: ",names(x),"\n"))
             cat(paste0(" -N. records: ",length(records(x)),"\n"))
             cat(paste0(" -Products: ",paste0(product(x),collapse = ", "),"\n"))
-            cat(paste0(" -Satellites: ",paste(unique(sat_name(records(x))),collapse = ", "),"\n"))
+            cat(paste0(" -Satellites: ",paste(sat_name(x),collapse = ", "),"\n"))
             cat(paste0(" -Dir size: ",rtoi_size(x),"GB\n"))
             d<-dates(records(x))
             if(length(records(x))==0){
