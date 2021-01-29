@@ -480,11 +480,11 @@ setMethod(f="get_order<-",
 setMethod(f="subset",
           signature="records",
           definition=function(x, subset, select) {
-            if(inherits(subset,"numeric")){
+            if(inherits(subset,"numeric")&!select%in%c("path","row")){
                 return(x[subset])
             }
             records.names<-names(getSlots("records"))
-            if(!select%in%records.names){stop("'select' must be a slot from records class.")}
+            if(!select%in%records.names){stop("'select' must be a slot name from records class.")}
             return(x[which(slot(x, select)%in%subset)])
           })
 

@@ -158,14 +158,14 @@ setMethod(f="plot",
                                  source =tmp.file,
                                  destination = preview.path.img,
                                  options=c("-of","GTiff"))
-                      plot.list<-append(plot.list,list(stack(preview.path.img)))
+                      plot.list<-append(plot.list,list(read_stars(preview.path.img,RasterIO=list(nBufXSize = xsize, nBufYSize = ysize))))
 
                     }else{
-                      plot.list<-append(plot.list,list(stack(preview.path.img)))
+                      plot.list<-append(plot.list,list(read_stars(preview.path.img,RasterIO=list(nBufXSize = xsize, nBufYSize = ysize))))
                     }
                   }
                 }
-                if(length(plot.list)==0)return(message("No images for previewing in assigned time interval."))
+                if(length(plot.list)==0)return(message("No images for previewing in assigned time interval and product."))
                 return(genPlotGIS(r=plot.list,region(x),...))
 
             }
@@ -266,9 +266,8 @@ read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
   }
   if(length(tif.files)==0)return(NULL)
   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
-  stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio)
+  stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
   stars.list<-do.call(c,stars.list)
-  n<<-n
   names(stars.list)<-n
   return(stars.list)
 }
@@ -278,9 +277,9 @@ read_rgb<-function(files.p,product,bands,date,xsize,ysize){
 
     rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
     tryCatch({
-      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
-      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio)
+      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
+      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
+      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
     },warning=function(cond){
       warning(cond)
       return(NULL)
@@ -292,6 +291,7 @@ read_rgb<-function(files.p,product,bands,date,xsize,ysize){
     blue[[1]]<-as.matrix(stretch(raster(blue[[1]])))
 
     aux<-merge(c(red,green,blue))
+    #aux<-as(aux,"Raster")
     names(aux)<-paste0(product,"_",date)
     return(aux)
 }
@@ -443,7 +443,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
     reg<-NULL
   }
 
-  if(class(r)=="list"){
+  if(inherits(r,"list")){
     ####################################################
     # RGB plot
     ####################################################
