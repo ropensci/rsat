@@ -9,7 +9,7 @@ Author: U Pérez - Goya [aut, cre] <unai.perez@unavarra.es>,
 Maintainer: U Perez - Goya <unai.perez@unavarra.es>
 Description: Downloading, customizing, and processing time series of satellite images for a region of interest. 'rsat' functions allow a unified access to multispectral images from Landsat, MODIS and Sentinel repositories. 'rsat' also offers capabilities for customizing satellite images, such as tile mosaicking, image cropping and new variables computation. Finally, 'rsat' covers the processing, including cloud masking, compositing and gap-filling/smoothing time series of images (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019 <doi:10.1109/TGRS.2019.2904193>).
 Depends: R (>= 3.5.0), raster, sf, stars
-Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp, Rdpack, fields, ggTimeSeries
+Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp, Rdpack, fields, calendR
 RdMacros: Rdpack
 Suggests: rgdal
 License: GPL-3
