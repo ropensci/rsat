@@ -133,7 +133,7 @@ deriveBandsData<-function(product){
   #############################################
   # Bands data
   #############################################
-    
+
     #sentinel-2(lvl1) product
   if(product%in%"S2MSI1C"){
     return(list(bands=variables$bands[["Sentinel-2"]],
@@ -163,7 +163,7 @@ deriveBandsData<-function(product){
     return(list(bands=variables$bands$ls5,
                 additional.sizes=""))
     #mod09 product
-  }else if(substr(product,1,5)%in%c("mod09","myd09")){
+  }else if(any(grepl(tolower(substr(product,1,5)),c("mod09","myd09")))){
     return(list(bands=variables$bands$mod09ga,
                 additional.sizes=""))
   }else{
