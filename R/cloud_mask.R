@@ -26,7 +26,7 @@ setMethod(f="cloud_mask",
               all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,utils::unzip(x,list=T)$Name)}))
 
               # Modis
-              if(grepl("mod09|myd09",p)){
+              if(any(grepl(tolower(substr(p,1,5)),c("mod09","myd09")))){
                 all_files<-all_files[grepl("_state_1km_1",all_files)]
                 fun_clkmsk<-modCloudMask
               # Landsat
