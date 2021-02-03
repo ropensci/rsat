@@ -84,20 +84,22 @@ setMethod(f="plot",
               date<-dates(r)
 
               all.products<-unique(sat_name(r))
+              all.dates<-seq(min(date),max(date),1)
+              df<-data.frame(date=all.dates)
+              for(p in all.products){
+                p.date<-date[sat_name(r)%in%p]
+                df[p]<-unlist(lapply(all.dates%in%p.date,function(x,p){if(x){return(p)}else{return("")}},p),recursive = TRUE)
+              }
               if(length(all.products)>1){
-                all.dates<-seq(min(date),max(date),1)
-                df<-data.frame(date=all.dates)
-                for(p in all.products){
-                  p.date<-date[sat_name(r)%in%p]
-                  df[p]<-unlist(lapply(all.dates%in%p.date,function(x,p){if(x){return(p)}else{return("")}},p),recursive = TRUE)
+                n.product<-apply( df[ , 2:ncol(df) ] , 1 , paste , collapse = " + " )
+                for(a in 1:(ncol(df)-2)){
+                  n.product<-gsub(" \\+  \\+ "," + ",n.product,useBytes = T)
                 }
+                n.product<-gsub(" \\+ $","",n.product,useBytes = T)
+                n.product<-gsub("^ \\+ ","",n.product,useBytes = T)
+              }else{
+                n.product<-df[,2]
               }
-              n.product<-apply( df[ , 2:ncol(df) ] , 1 , paste , collapse = " + " )
-              for(a in 1:(ncol(df)-2)){
-                n.product<-gsub(" \\+  \\+ "," + ",n.product,useBytes = T)
-              }
-              n.product<-gsub(" \\+ $","",n.product,useBytes = T)
-              n.product<-gsub("^ \\+ ","",n.product,useBytes = T)
               n.product[n.product%in%""]<-"No captures"
               #df["product"]<-n.product
               #return(ggplot_calendar_heatmap(
