@@ -449,8 +449,12 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
     ####################################################
     # RGB plot
     ####################################################
-    maplist<-lapply(r,function(shp,compass,scale.bar,grid,reg){return(tm_layout(panel.labels=names(shp),...)+tm_shape(shp=shp,frame=T)+tm_rgb()+compass+scale.bar+grid+reg)},compass,scale.bar,grid,reg)
-    #tmap_arrange arguments
+
+    maplist<-lapply(r,function(shp,compass,scale.bar,grid,reg){
+      tm_layout_args$panel.labels=names(shp)
+      return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=shp,frame=T)+tm_rgb()+compass+scale.bar+grid+reg)}
+      ,compass,scale.bar,grid,reg)
+    #tmap_arrange argumentsd o.call(tm_layout,tm_layout_args)
     tmap_arrange_args<-names(formals(tmap_arrange))
     tmap_arrange_args<-unique(tmap_arrange_args[!(tmap_arrange_args%in%"...")])
     names(tmap_arrange_args)<-paste0("tmap.arrange.",tmap_arrange_args)
@@ -465,7 +469,8 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
       if(length(r)>1){
         tm_tmap_arrange_args$ncol=ceiling(sqrt(length(r)))
       }else{
-        return(tm_layout(panel.labels=names(r[[1]]),...)+tm_shape(shp=r[[1]],frame=T)+tm_rgb()+compass+scale.bar+grid+reg)
+        tm_layout_args$panel.labels=names(r[[1]])
+        return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=r[[1]],frame=T)+tm_rgb()+compass+scale.bar+grid+reg)
       }
 
     }else{
