@@ -17,6 +17,7 @@ setMethod("list_data",
           function(x,...){
             allfiles<-list.files(get_dir(x),full.names = TRUE)
             allfiles<-allfiles[!grepl("\\.rtoi$",allfiles)]
+
             #satellite
            allvariables<-unlist(lapply(allfiles, function(af){
               #product
@@ -24,6 +25,9 @@ setMethod("list_data",
                 data.list<-list()
                 #product
                 allproducts<-list.files(p,full.names = TRUE)
+                #remove preview
+                allproducts<-allproducts[!grepl("preview",allproducts)]
+
                 if(any(grepl("mosaic",allproducts))){
                   f<-list.files(allproducts[grepl("mosaic",allproducts)],full.names = TRUE)[1]
                   vars<-gsub("\\s*(\\d{7}_)", "", utils::unzip(f,list=TRUE)$Name)
