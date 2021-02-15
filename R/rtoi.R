@@ -576,6 +576,7 @@ setGeneric("write_rtoi",function(x){standardGeneric("write_rtoi")})
 setMethod("write_rtoi",
           signature= c("rtoi"),
           function(x){
+            unlink(get_rtoi_path(x))
             saveRDS(x, file=get_rtoi_path(x))
           })
 
@@ -611,5 +612,10 @@ setMethod("read_rtoi",
             files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
             if(length(files)>1){warning("More than one rtoi found! loading the first.")}
             if(length(files)==0)stop("There is no rtoi object in this path.")
-            return(readRDS(file=files[1]))
+            aux<-readRDS(file=files[1])
+            rtoi_dir<-get_dir(aux)
+            if(path!=rtoi_dir){
+              get_dir(aux)<-path
+            }
+            return(aux)
           })
