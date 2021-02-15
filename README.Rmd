@@ -1,30 +1,37 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # rsat
 
 <!-- badges: start -->
 
-[![CRAN
-version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
+[![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
 [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 <!-- badges: end -->
 
-The goal of `rsat` is to help you handling time-series of satellite
-images from multiple platforms in a local, efficient, and standardized
-way. The package provides tools to;
+The goal of `rsat` is to help you handling time-series of satellite images from multiple platforms in a local, efficient, and standardized way. The package provides tools to;
 
 1.  Search
 2.  Download
 3.  Customize, and
 4.  Process
 
-satellite images from Landsat, MODIS, and Sentinel for a region and a
-time of interest.
+satellite images from Landsat, MODIS, and Sentinel for a region and a time of interest.
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -34,8 +41,7 @@ devtools::install_github("spatialstatisticsupna/rsat")
 
 ### Linux
 
-In Linux, you need to install additional libraries before starting with
-`rsat`. Use the following commands for:
+In Linux, you need to install additional libraries before starting with `rsat`. Use the following commands for:
 
 -   **Debian/Ubuntu**
 
@@ -51,23 +57,14 @@ In Linux, you need to install additional libraries before starting with
 
 ## Log-in profiles
 
-The registration in the following online portals is required to get a
-full access to satellite images;
+The registration in the following online portals is required to get a full access to satellite images;
 
--   [EarthData](https://ers.cr.usgs.gov/register/): A repository of
-    NASA’s earth observation data-sets. More information about EarthData
-    can be found
-    [here](https://earthdata.nasa.gov/earth-observation-data).
--   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a
-    web service giving access to Copernicus’ scientific data hub. Please
-    go [here](https://scihub.copernicus.eu/) to find more details about
-    the data hub.
+-   [EarthData](https://ers.cr.usgs.gov/register/): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://earthdata.nasa.gov/earth-observation-data).
+-   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
 
 ## Example
 
-This is a basic example which shows you how to compute the Normalized
-Difference Vegetation Index from a MODIS captured on January 11th, 2020
-in northern Spain (Navarre):
+This is a basic example which shows you how to compute the Normalized Difference Vegetation Index from a MODIS captured on January 11th, 2020 in northern Spain (Navarre):
 
 ``` r
 library(rsat)
