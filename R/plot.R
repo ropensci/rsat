@@ -20,7 +20,7 @@
 #' @example
 setMethod(f="plot",
           signature = c("rtoi","Date"),
-          function(x, y,...,variable="rgb", verbose = FALSE,xsize = 250,ysize = 250){
+          function(x, y,...,variable="rgb",band_name = c("red","green","blue"), verbose = FALSE,xsize = 250,ysize = 250){
             # load the data
             switch(variable,
                    "rgb"={
@@ -34,7 +34,7 @@ setMethod(f="plot",
                        if(!is.null(debands)){
                          files.p<-files[grepl(p,files)]
                          if(length(files.p)>0)
-                          plot.list<-append(plot.list,list(read_rgb(files.p,p,debands$bands,y,xsize,ysize)))
+                          plot.list<-append(plot.list,list(read_rgb(files.p,p,debands$bands,band_name=band_name,y,xsize,ysize)))
                        }
                      }
                    },
@@ -274,14 +274,14 @@ read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
   return(stars.list)
 }
 
-read_rgb<-function(files.p,product,bands,date,xsize,ysize){
+read_rgb<-function(files.p,product,bands,band_name=c("red","green","blue"),date,xsize,ysize){
     files.p<-file.path("/vsizip",files.p,utils::unzip(files.p,list=TRUE)$Name)
 
     rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
     tryCatch({
-      red<-read_stars(files.p[grepl(bands["red"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
-      green<-read_stars(files.p[grepl(bands["green"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
-      blue<-read_stars(files.p[grepl(bands["blue"],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
+      red<-read_stars(files.p[grepl(bands[band_name[1]],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
+      green<-read_stars(files.p[grepl(bands[band_name[2]],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
+      blue<-read_stars(files.p[grepl(bands[band_name[3]],files.p,ignore.case = TRUE)][1],normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
     },warning=function(cond){
       warning(cond)
       return(NULL)
