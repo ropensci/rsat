@@ -72,14 +72,17 @@ in northern Spain (Navarre):
 ``` r
 library(rsat)
 
+# replace with your own credentials
 set_credentials("username", "password")
 
+# region and time of interest
 roi <- ex.navarre
 toi <- as.Date("2020-01-11")
 rtp <- tempdir()
 dbp <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi("Navarre", roi, rtp, dbp)
 
+# acquire, customize, and process
 sat_search(region = navarre, product = "mod09ga", dates = toi)
 download(navarre)
 mosaic(navarre, overwrite = TRUE)
