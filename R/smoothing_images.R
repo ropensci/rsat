@@ -1,6 +1,6 @@
 #' Fill data gaps and smooth outliers in a time series of satellite images
 #'
-#' \code{genSmoothingIMA} is the implementation of a spatio temporal method
+#' \code{smoothing_images} is the implementation of a spatio temporal method
 #' called image mean anomaly (IMA) for gap filling and smoothing satellite
 #' data \insertCite{militino2019interpolation}{rsat}.
 #'
