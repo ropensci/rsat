@@ -1,73 +1,109 @@
-# rsat 
-Handling multiplatform satellite images.
 
-[![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
+# rsat
+
+<!-- badges: start -->
+
+[![CRAN
+version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
 [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-## Table of contents
 
-- [The package](#the-package)
-- [Installation](#installation)
-- [Credentials for downloading satellite images](#credentials-for-downloading-satellite-images)
-- [Copyright and license](#copyright-and-license)
+<!-- badges: end -->
 
+The goal of `rsat` is to help you handling time-series of satellite
+images from multiple platforms in a local, efficient, and standardized
+way. The package provides tools to;
 
-# The package
-This package enables you downloading, customizing, and processing time series of
-satellite images from Landsat, MODIS and Sentinel in a standardized way. Some
-functions download and convert automatically the platform-specific file formats
-into GTiff, so they can be loaded in R. The customization functions support tile
-mosaicking, cropping, cloud masking and deriving new variables of interest,
-such as the NDVI, EVI, etc. Tile mosaicking is required when the region of
-interest extends over several tiles, so they can be combined into a single
-image. Cropping involves removing the pixels outside the region of interest,
-making any analysis more computationally and memory efficient. Cloud masking
-eliminates cloud reflectance that would otherwise be erroneously attributed
-to land surface features. Cloud removal and (measurement or processing) errors
-trigger data gaps and outliers, decreasing the quality and quantity of 
-measurements. Hence, the package includes a set of function for filling and
-smoothing the satellite imagery. The combination of functions in rsat
-results in a stack of satellite images ready-to-use. 
+1.  Search
+2.  Download
+3.  Customize, and
+4.  Process
 
+satellite images from Landsat, MODIS, and Sentinel for a region and a
+time of interest.
 
-# Installation
-## Install from CRAN
-Not in CRAN
+## Installation
 
-## Install from GitHub
-```
-# Install devtools package from cran repository
-install.packages("devtools")
+You can install the development version from
+[GitHub](https://github.com/) with:
 
-# load devtools library
-library(devtools)
-
-# Install stars with a little fixed error GitHub repositoy
-install_github("unai-perez/stars")
-
-# Install rsat from GitHub repositoy
-install_github("spatialstatisticsupna/rsat")
-```
-## Dependencies for linux
-The package depends on some R packages that in Linux requires the installation of some libraries before the installation in R. Here you have the command to install all the applications from repository for Debian/Ubuntu and RedHat/Fedora.
-### Debian/Ubuntu
-```
-sudo apt update
-sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev libssl libssl-dev xml2 libxml2-dev libmagick++-dev
-```
-### RedHat/Fedora
-```
-sudo dnf install gdal gdal_devel proj_devel xml2 libxml2_devel libcurl_devel openssl_devel ImageMagick-c++_devel
+``` r
+# install.packages("devtools")
+devtools::install_github("unai-perez/stars")
+devtools::install_github("spatialstatisticsupna/rsat")
 ```
 
-# Credentials for downloading satellite images
-### Modis
-Credentials [EarthData](https://ers.cr.usgs.gov/register/) 
+### Linux
 
-### Landsat
-Credentials [EarthData](https://ers.cr.usgs.gov/register/) 
+In Linux, you need to install additional libraries before starting with
+`rsat`. Use the following commands for:
 
-### Sentinel
-Credentials [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration) 
+-   **Debian/Ubuntu**
 
-## Copyright and license
-Licensed under the GPL-3 License. [Full license here](/LICENSE.md).
+<!-- -->
+
+        sudo apt update sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev libssl libssl-dev xml2 libxml2-dev libmagick++-dev
+
+-   **RedHat/Fedora**
+
+<!-- -->
+
+    sudo dnf install gdal gdal_devel proj_devel xml2 libxml2_devel libcurl_devel openssl_devel ImageMagick-c++\_devel
+
+## Log-in profiles
+
+The registration in the following online portals is required to get a
+full access to satellite images;
+
+-   [EarthData](https://ers.cr.usgs.gov/register/): A repository of
+    NASA’s earth observation data-sets. More information about EarthData
+    can be found
+    [here](https://earthdata.nasa.gov/earth-observation-data).
+-   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a
+    web service giving access to Copernicus’ scientific data hub. Please
+    go [here](https://scihub.copernicus.eu/) to find more details about
+    the data hub.
+
+## Example
+
+This is a basic example which shows you how to compute the Normalized
+Difference Vegetation Index from a MODIS captured on January 11th, 2020
+in northern Spain (Navarre):
+
+``` r
+library(rsat)
+
+# replace with your own credentials
+set_credentials("username", "password")
+
+# region and time of interest
+roi <- ex.navarre
+toi <- as.Date("2020-01-11")
+rtp <- tempdir()
+dbp <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi("Navarre", roi, rtp, dbp)
+
+# acquire, customize, and process
+sat_search(region = navarre, product = "mod09ga", dates = toi)
+download(navarre)
+mosaic(navarre, overwrite = TRUE)
+derive(navarre, "NDVI", product = "mod09ga")
+```
+
+## Citation
+
+``` r
+citation(rsat)[1]
+```
+
+To cite the package:
+
+U Pérez-Goya, M Montesino-SanMartin, A F Militino, M D Ugarte (2020).
+rsat: Handling Multiplatform Satellite Images. R package version 0.1.3.
+<https://CRAN.R-project.org/package=rsat>.
+
+A BibTeX entry for LaTeX users is
+
+@Manual{, title = {rsat: Handling Multiplatform Satellite Images},
+author = {U P{'e}rez-Goya and M Montesino-SanMartin and A F Militino and
+M D Ugarte}, year = {2020}, note = {R package version 0.1.3}, url =
+{<https://CRAN.R-project.org/package=rsat>}, }
