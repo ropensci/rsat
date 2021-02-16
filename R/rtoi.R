@@ -318,14 +318,37 @@ setMethod("get_stars",
           signature(x = "rtoi"),
           function(x,p,v){
             dirs<-get_var_dir(x,p)
-            dirs<-file.path(dirs,v)
-            files<-list.files(dirs,recursive = T,pattern = "\\.tif$",full.names = T)
+            files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+            files<-files[grepl(v,files)]
             if(length(files)==0){
-              message("There are no images for this product and variable")
-            }
-            #files<-file.path("/vsizip",files)
+              p.df<-list_data(x)
+              p.df<-p.df[p.df$product==p,]
+              p.df<-p.df[p.df$variable==v,]
 
-            return(unique(product(records(x))))
+              if(grepl("CloudMask",v)){
+                files<-paste0(paste0(c(get_dir(x),p.df[1:3]),collapse="/"),v,".zip")
+                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
+                return(stack(mos.zip))
+              }
+
+              dirs<-paste0(c(get_dir(x),p.df[1:3]),collapse="/")
+              files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+
+              mos.zip<-c()
+              for(f in files){
+                bnds<-utils::unzip(f,list=TRUE)$Name
+                bnds<-bnds[grepl(v,bnds)]
+                if(length(bnds)==1){
+                  mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
+                }
+              }
+              if(length(mos.zip)==0) message("There are no images for this product and variable")
+            }else{
+              if(length(files)==1){
+                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
+              }
+            }
+            return(st_as_stars(stack(mos.zip)))#from raster to stars (up to fix argument normalize_path in read_stars)
           })
 
 #' Extracts the path to the database
@@ -575,6 +598,7 @@ setGeneric("write_rtoi",function(x){standardGeneric("write_rtoi")})
 setMethod("write_rtoi",
           signature= c("rtoi"),
           function(x){
+            unlink(get_rtoi_path(x))
             saveRDS(x, file=get_rtoi_path(x))
           })
 
@@ -610,5 +634,10 @@ setMethod("read_rtoi",
             files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
             if(length(files)>1){warning("More than one rtoi found! loading the first.")}
             if(length(files)==0)stop("There is no rtoi object in this path.")
-            return(readRDS(file=files[1]))
+            aux<-readRDS(file=files[1])
+            rtoi_dir<-get_dir(aux)
+            if(path!=rtoi_dir){
+              get_dir(aux)<-path
+            }
+            return(aux)
           })
