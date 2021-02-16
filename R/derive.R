@@ -188,8 +188,9 @@ deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
       if(verbose) warning(paste0("Error reading band ",arg))
       next
     }
-    if(verbose)message(paste0("Reading band: ",paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
-    #eval(parse( text=paste0(arg,"<-read_stars('",layers[grepl(band,layers)],"',normalize_path = FALSE)")))
+    band<-gsub("\\","/",band,fixed =T)
+    if(verbose)message(paste0("Reading band: ",paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
+    #eval(parse( text=paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
     eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
     funString<-paste0(funString,arg,"=",arg,",")
   }
