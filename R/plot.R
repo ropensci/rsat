@@ -270,8 +270,9 @@ read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
   stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
   stars.list<-do.call(c,stars.list)
-  names(stars.list)<-n
-  return(as(stars.list,"Raster"))#TODO change to stars
+  raster.list<-as(stars.list,"Raster")
+  names(raster.list)<-n
+  return(raster.list)#TODO change to stars
 }
 
 read_rgb<-function(files.p,product,bands,band_name=c("red","green","blue"),date,xsize,ysize){
