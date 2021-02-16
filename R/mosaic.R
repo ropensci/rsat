@@ -1,16 +1,16 @@
 #' Mosaic the tiles intersecting the region of interest
 #'
-#' @param x an rtoi object with a records that cover the region of interest.
-#' @param y Omitted
-#' @param db_path path where the images will be stored when using an rtoi.
-#' By default, the path is defined by the rtoi.
-#' @param out.dir path where the images will be stored when using a records.
-#' @param bfilter a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all are extracted.
-#' @param warp character argument. Defines how to warp the resulting tile.
-#' @param region a \code{Spatial*}, projected \code{raster*}, o
-#'  \code{sf} class object defining the region of interest.
+#' Satellite measurements are divided into indivisible units called tiles. The
+#' mosaic function binds and crops the tiles to generate a single image
+#' of the region of interest for each date.
 #'
-#' @param ... additional arguments
+#' @param x an \code{rtoi} object.
+#' @param db_path path to the database. By default, the path is defined by \code{x}.
+#' @param bfilter a vector of bands to. If not supplied, all are used.
+#' @param warp character. If equal to "extent", it also crops the images
+#' around the \code{rtoi}. Use "" otherwise.
+#'
+#' @param ... additional arguments.
 #'
 #' @importFrom zip zipr
 #' @import raster rgdal

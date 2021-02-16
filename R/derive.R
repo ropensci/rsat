@@ -1,16 +1,30 @@
-#' Computes a remote sensing index from an rtoi
+#' Computes a remote sensing index from an \code{rtoi}
 #'
-#' @param x rtoi object from which the index is computed.
-#' @param products the name of the dataset from which the index is computed.
-#' @param dates a vector with the dates being considered (optional).
+#' Combines the bands from multispectral satellite products through simple
+#' math to highlight a process or material in the image.
+#'
+#' The package contemplates some pre-defined indexes, which can be displayed
+#' using the \code{show_variables()} function. To compute one of those, write
+#' its name in the \code{variable} argument. Custom indexes can be
+#' supplied through the \code{fun} argument. The function should use the
+#' name of the bands as inputs (red, green, blue, nir, swir1, or swir2) and
+#' return a single element. For instance, the Normalized Difference Snow
+#' Index would be;
+#'
+#' NDSI = function(green, swir1){
+#' ndsi <- (green - swir1)/(green + swir1)
+#' return(ndsi)
+#' }
+#'
+#' @param x an \code{rtoi} as the source of images.
+#' @param products the name of the product from which the index is computed.
+#' @param dates a vector of dates being considered (optional).
 #' @param fun a \code{function} that computes the remote sensing index.
 #' @param overwrite logical argument. If \code{TRUE}, overwrites the existing
 #' images with the same name.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#'
-#' @param variable the name of the variable. Run \code{show_variables()}
-#' to check the variables supported by the package.
+#' @param variable the name of the variable.
 #' @param ... additional argument for variable deriving
 #'
 #' @return nothing. The derived variables will be save in the hard drive.

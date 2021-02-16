@@ -1,4 +1,4 @@
-#' Region and Time Of Interest (rtoi)
+#' Region and Time Of Interest (\code{rtoi})
 #'
 #' It is a proxy object to store metadata about satellite imagery
 #' covering a spatial region over a time period. Images can come from
@@ -57,15 +57,15 @@ setRefClass("rtoi",
             )
 )
 
-#' Creates a new rtoi object
+#' Creates a new \code{rtoi} object
 #'
 #' @param name the name of the region of interest.
 #' @param region an sf object.
 #' @param records a records object.
 #' @param db_path the path to the database.
-#' @param rtoi_path the path to the rtoi folder.
+#' @param rtoi_path the path to the \code{rtoi} folder.
 #'
-#' @return the reference of the rtoi object
+#' @return the reference of the \code{rtoi} object
 #' @exportMethod new_rtoi
 setGeneric("new_rtoi", function(name, region, rtoi_path, db_path, records) {
   standardGeneric("new_rtoi")

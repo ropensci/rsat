@@ -1,16 +1,16 @@
-#' Plots an rtoi object
+#' Plot an \code{rtoi} object
 #'
-#' Plot (a map of) the values of an rtoi object.
+#' Plot (a map of) the values of an \code{rtoi} object.
 #'
-#' @param x an rtoi
+#' @param x an \code{rtoi}.
 #' @param y character argument. The product name to be plotted.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param xsize the size of x dimension for subsetting.
-#' @param ysize the size of y dimension for subsetting.
+#' @param xsize the number of samples on the horizontal axis.
+#' @param ysize the number of samples on the vertical axis.
 #' @param ... additional arguments.
 #'
-#' @return tmap plot.
+#' @return \code{tmap} plot.
 #'
 #' @import tmap
 #' @importFrom sp proj4string proj4string<-

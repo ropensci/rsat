@@ -1,9 +1,11 @@
-#' Lists all the variables in rtoi
+#' List the information available for an \code{rtoi}
 #'
-#' @param x
-#' @param ...
+#' Displays the existing products, bands, and processing levels for a given \code{rtoi}
 #'
-#' @return
+#' @param x an \code{rtoi} object.
+#' @param ... additional arguments.
+#'
+#' @return a \code{data.frame} of the available information.
 #' @export
 #' @import zip
 #'

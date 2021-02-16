@@ -46,7 +46,7 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 
 <!-- -->
 
-        sudo apt update sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev libssl libssl-dev xml2 libxml2-dev libmagick++-dev
+    sudo apt update sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev libssl libssl-dev xml2 libxml2-dev libmagick++-dev
 
 -   **RedHat/Fedora**
 
@@ -68,21 +68,24 @@ This is a basic example which shows you how to compute the Normalized Difference
 ``` r
 library(rsat)
 
-# replace with your own credentials
+# replace with your own "username" and "password"
 set_credentials("username", "password")
 
-# region and time of interest
+# region and time of interest: rtoi
 roi <- ex.navarre
-toi <- as.Date("2020-01-11")
+toi <- as.Date("2020-01-11") + c(0:1)
 rtp <- tempdir()
 dbp <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi("Navarre", roi, rtp, dbp)
 
-# acquire, customize, and process
+# search, acquire, customize, and process
 sat_search(region = navarre, product = "mod09ga", dates = toi)
 download(navarre)
 mosaic(navarre, overwrite = TRUE)
-derive(navarre, "NDVI", product = "mod09ga")
+derive(navarre, product = "mod09ga", variable = "NDVI")
+
+# plot the results
+plot(navarre, "mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
 ```
 
 ## Citation

@@ -1,10 +1,12 @@
-#' Downloads the images from a records/rtoi object
+#' Download the images from a \code{records} or an \code{rtoi} object
 #'
-#' @param x a records or an rtoi object.
-#' @param db_path path where the images will be stored when using an rtoi.
-#' By default, the path is defined by the rtoi.
-#' @param out.dir path where the images will be stored when using a records.
-#' @param ... additional arguments
+#' The function saves the raw images in the database or the specified directory.
+#' It skips the images that already exist in the database or directory.
+#'
+#' @param x a \code{records} or an \code{rtoi} object.
+#' @param db_path path to the database. By default, the path is defined by the \code{rtoi}.
+#' @param out.dir path where the outputs are stored when using a \code{records}.
+#' @param ... additional arguments.
 #'
 #' @include rtoi.R records.R
 #' @examples
