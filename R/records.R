@@ -1,21 +1,22 @@
 #' A class object for satellite image metadata
 #'
-#' This class sorts the main attributes of satellite image metadata
-#' to ease previewing, downloading, and managing data.
+#' This object structures the main metadata attributes of satellite images
+#' from several missions/programs. Structuring the information facilitates
+#' previewing, downloading, and managing data records.
 #'
-#' \code{records} works as vector with multiple parameters, and
-#' accepts usual R methods such as \code{c}, \code{[]},
-#' \code{length}, \code{subset} or \code{unique}.
+#' \code{records} works as vector. It accepts usual R methods such as
+#' \code{c}, \code{[]}, \code{length}, \code{subset} or \code{unique}.
+#' Each record (vector element) contains several parameters or slots.
 #'
 #' The object can be coerced into a \code{data.frame} by
-#' using the command \code{as.data.frame}.
+#' using the function \code{as.data.frame()}.
 #'
 #' @slot sat the name of the satellite to which the record belongs.
-#' @slot name the name of the satellite record.
-#' @slot date the date of the satellite record.
+#' @slot name the name of the record.
+#' @slot date the date of the record.
 #' @slot product the product.
-#' @slot path the path of the tile system.
-#' @slot row the row of the tile system.
+#' @slot path the path of the tiling system.
+#' @slot row the row of the tiling system.
 #' @slot tileid the tile id.
 #' @slot download the url to download the satellite record.
 #' @slot file_path the saving directory for the satellite record.
@@ -78,16 +79,16 @@ setClass(
 )
 
 
-#' Creates a new records object
+#' Create a new \code{records} object
 #'
-#' Creates a new records object from scratch
+#' Create a new \code{records} object from scratch
 #'
 #' @param sat the name of the satellite to which the record belongs.
-#' @param name the name of the satellite record.
-#' @param date the date of the satellite record.
+#' @param name the name of the record.
+#' @param date the date of the record.
 #' @param product the product.
-#' @param path the path of the tile system.
-#' @param row the row of the tile system.
+#' @param path the path of the tiling system.
+#' @param row the row of the tiling system.
 #' @param tileid the tile id.
 #' @param download the url to download the satellite record.
 #' @param file_path the saving directory for the satellite record.
@@ -200,7 +201,7 @@ setMethod("print",
             }
           })
 
-#' Shows an object
+#' Show an object
 #'
 #' Display the object, by printing, plotting or whatever suits its class.
 #' This function has specialized methods. Use \code{showDefault()} to call
@@ -218,7 +219,7 @@ setMethod(f="show",
             print(object)
           })
 
-#' Coerces to a Data Frame
+#' Coerce to a Data Frame
 #'
 #' Functions to check if an object is a data frame, or coerce it if possible.
 #'
@@ -237,9 +238,9 @@ setMethod("as.data.frame",
             return(df)
             })
 
-#' Creates vector
+#' Create vector
 #'
-#' Creates a vector from x.
+#' Create a vector from \code{x}.
 #'
 #' @param x records object.
 #'
@@ -251,13 +252,13 @@ setMethod("as.vector",
           })
 
 
-#' Combines values into a vector or list
+#' Combine values into a vector or a list
 #'
 #' This is a generic function which combines its arguments.
 #'
 #' The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value. All attributes except names are removed.
 #'
-#' @param x records object.
+#' @param x a \code{records} object.
 #' @param ... additional arguments.
 #'
 #' @export
@@ -281,13 +282,13 @@ setMethod(f="c",
             return(x)
           })
 
-#' Extracts or replace parts of an object
+#' Extract or replace parts of an object
 #'
 #' Operators acting on vectors, matrices, arrays and lists to extract or replace parts.
 #'
-#' @param x object from which to extract element(s) or in which to replace element(s)
+#' @param x object from which to extract element(s) or in which to replace element(s).
 #' @param i numeric argument. The the position of the element to select/modify.
-#' @param value records argument. The slot of the records to be changed.
+#' @param value a \code{records} argument. The slot of the records to be changed.
 #'
 #' @export
 setMethod(f="[", signature="records",
@@ -314,7 +315,7 @@ setReplaceMethod(f="[",
 #'
 #' Get or set the length of vectors (including lists) and factors, and of any other R object for which a method has been defined.
 #'
-#' @param x records object to compute its length
+#' @param x a \code{records} object to compute its length.
 #'
 #' @export
 setMethod(f="length",
@@ -324,9 +325,9 @@ setMethod(f="length",
           })
 
 
-#' Creates records object from data frame
+#' Create records object from data frame
 #'
-#' @param x data frame with columns representing the slots of records.
+#' @param x  a \code{data.frame} with columns representing the slots of records.
 #'
 #' @export
 setGeneric("as.records",function(x){
@@ -351,9 +352,9 @@ setMethod(f="as.records",
             }
 })
 
-#' Gets the name of the satellite from a records or an rtoi
+#' Get the name of the satellite(s) from a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
+#' @param x a \code{records} or an \code{rtoi} object.
 #'
 #' @export
 setGeneric("sat_name", function(x) standardGeneric("sat_name"))
@@ -365,10 +366,10 @@ setMethod(f="sat_name",
             return(x@sat)
           })
 
-#' Gets the dates from a records or an rtoi
+#' Get the dates from a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
-#' @param value date argument. The new value for x.
+#' @param x a \code{records} or an \code{rtoi} object.
+#' @param value date argument. The new value for \code{x}.
 #'
 #' @export
 setGeneric("dates", function(x) standardGeneric("dates"))
@@ -394,9 +395,9 @@ setMethod(f="dates<-",
           })
 
 
-#' Gets the name of the product from a records or an rtoi
+#' Get the name of the product from a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
+#' @param x a \code{records} or an \code{rtoi} object.
 #'
 #' @export
 setGeneric("product", function(x) standardGeneric("product"))
@@ -408,10 +409,10 @@ setMethod(f="product",
             return(x@product)
           })
 
-#' Gets the file path of a records or an rtoi
+#' Get the file path of a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
-#' @param value character argument. The new directory of x.
+#' @param x a \code{records} or an \code{rtoi} object.
+#' @param value character argument. The new directory of \code{x}.
 #'
 #' @export
 setGeneric("get_dir",function(x)  standardGeneric("get_dir"))
@@ -439,10 +440,10 @@ setMethod(f="get_file_path",
             return(x@file_path)
           })
 
-#' Gets the slot called order from a records or an rtoi
+#' Get the slot called order from a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
-#' @param value logical argument. The new value for x.
+#' @param x a \code{records} or an \code{rtoi} object.
+#' @param value logical argument. The new value for \code{x}.
 #'
 #' @export
 setGeneric("get_order",function(x){standardGeneric("get_order")})
@@ -470,9 +471,9 @@ setMethod(f="get_order<-",
 
 
 
-#' Filters the satellite records of a records or an rtoi object
+#' Filter the satellite records of a \code{records} or an \code{rtoi}
 #'
-#' @param x a records or an rtoi object.
+#' @param x a \code{records} or an \code{rtoi} object.
 #' @param subset an R object with the value for subsetting.
 #' @param select character argument indicating the name of the slot.
 #'
@@ -488,11 +489,11 @@ setMethod(f="subset",
             return(x[which(slot(x, select)%in%subset)])
           })
 
-#' Extracts unique elements
+#' Extract unique elements
 #'
-#' unique returns a records like x but with duplicate elements/rows removed.
+#' It returns a \code{records} like \code{x} but with duplicate elements/rows removed.
 #'
-#' @param x a records object
+#' @param x a \code{records} object.
 #'
 #' @export
 setMethod(f="unique",
@@ -501,11 +502,11 @@ setMethod(f="unique",
             return(x[unique(as.numeric(as.factor(x@download)))])
           })
 
-#' Extracts the url of the preview
+#' Extract the url of the preview
 #'
-#' get_preview returns a vector of character with the url for previewing the recods.
+#' It returns a character vector of urls to preview the data records.
 #'
-#' @param x a records object
+#' @param x a \code{records} object.
 #'
 #' @export
 setGeneric("get_preview", function(x) { standardGeneric("get_preview")})
@@ -517,11 +518,11 @@ setMethod(f="get_preview",
             return(x@preview)
           })
 
-#' Extracts the url to download a record
+#' Extract the url to download a data record
 #'
-#' get_download returns a character with the url to download the image.
+#' It returns a character with the url to download the image.
 #'
-#' @param x a records object
+#' @param x a \code{records} object.
 #'
 #' @export
 setGeneric("get_download", function(x) { standardGeneric("get_download")})
@@ -534,14 +535,14 @@ setMethod(f="get_download",
           })
 
 
-#' Gets the name of the object
+#' Get the name of the object
 #'
-#' Functions to get or set the names of an object.
+#' A function to get or set the names of an object.
 #'
-#' @param x a records or an rtoi object.
-#' @param value character argument. The new value for x.
+#' @param x a \code{records} or an \code{rtoi} object.
+#' @param value character argument. The new value for \code{x}.
 #'
-#' @return a character vector containing the name of all the names in x.
+#' @return a character vector containing the name of all the names in \code{x}.
 #' @export
 #'
 #' @examples
@@ -586,13 +587,13 @@ setMethod(f="crs",
             return(crs(x@extent_crs))
           })
 
-#' Gets the api name of the records
+#' Get the API name of a \code{records}
 #'
-#' Functions to get or set the api names of an object.
+#' A function to get or set the api names of an object.
 #'
-#' @param x a records object.
+#' @param x a \code{records} object.
 #'
-#' @return a character vector containing the api name of al the elements in x.
+#' @return a character vector containing the API names of the elements in \code{x}.
 #' @export
 setGeneric("get_api_name", function(x) { standardGeneric("get_api_name")})
 #' @rdname get_api_name

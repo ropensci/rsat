@@ -56,17 +56,17 @@ setPreviewMap = function(map){
   assign("map", map, envir=previewmap)
 }
 
-#' Previews a records or an rtoi object
+#' Preview a \code{records} or an \code{rtoi} object
 #'
-#' @param x a records or an rtoi object.
+#' @param x a \code{records} or an \code{rtoi} object.
 #' @param lpos vector argument. Defines the position of the red-green-blue
-#' layers to enable false color visualization.
+#' layers to enable a false color visualization.
 #' @param add.layer logical argument. If \code{TRUE}, the function plots the
 #' image on an existing map.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param tmp_dir character argument. The directory where previsualization images
-#' will be located.
+#' @param tmp_dir character argument. The directory where preview images
+#' are located.
 #' @param get.map logical argument. If \code{TRUE}, the function return the leaflet map.
 #' @param n the date expressed as the temporal index in the time series.
 #' @param ... additional arguments

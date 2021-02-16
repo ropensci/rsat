@@ -1,33 +1,38 @@
-#' Searches satellite images
+#' Search satellite images
 #'
-#' Searches satellite images concerning a
-#' particular location, data product and date interval. The function returns a
-#' \code{records} object if the region is an \code{sf}. If \code{rtoi} is used
-#' for performing the search, the function returns nothing and the records
-#' are added to the rtoi.
+#' Search satellite images concerning a particular location, data product, and
+#' date interval. The function returns a \code{records} object if the
+#' \code{region} is a \code{sf}. If an \code{rtoi} is used, the
+#' function returns nothing and the records are added to the \code{rtoi}.
 #'
-#' Modis images are searched using \href{https://lpdaacsvc.cr.usgs.gov/services/inventory}{NASA Common Metadata Repository}
-#' (CMR). The catalogue of MODIS products can be found
+#' MODIS images are found through the
+#' \href{https://lpdaacsvc.cr.usgs.gov/services/inventory}{NASA Common Metadata Repository}
+#' (CMR). The inventory of MODIS products can be found
 #' \href{https://modis.gsfc.nasa.gov/data/dataprod/}{here}.
-#' The catalogue shows the product short names and provides detailed information
-#' about the product. By the time `rsat' is released, NASA carries out the
-#' maintenance of its website on Wednesdays, which may cause an error when
-#' connecting to their server. You can get your `EarthData' credentials
-#' \href{https://urs.earthdata.nasa.gov/users/new}{here}.
+#' The catalog shows the product short names and detailed information.
+#' MODIS surface reflectance products are named `mod09ga' and `myd09ga' for
+#' Terra and Aqua satellites. By the time \code{rsat} is
+#' released, NASA carries out the maintenance of its website on Wednesdays,
+#' which may cause an error when connecting to their server.
 #'
-#' Sentinel images are searched using \href{http://scihub.copernicus.eu}{ESA's powered API} (`SciHub').The catalogue
-#' of Sentinel-2 products can be found
-#' \href{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}{here}.
-#' The function explores the images available for a specific location and
-#' time-span. Dates must be provided as \code{Date} class objects. Credentials
-#' from ESA’s `SciHub' are needed and they can be obtained
-#' \href{https://scihub.copernicus.eu/dhus/#/self-registration}{here}.
+#' We use \href{http://scihub.copernicus.eu}{ESA's powered API} (`SciHub') to
+#' find Sentinel images. The catalog of Sentinel-2 and -3 products can be found
+#' \href{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}{here}
+#' and
+#' \href{https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3/data-products}{here},
+#' respectively. Sentinel-2 and -3 surface reflectance product names are
+#' referred to as `S2MSI2A' and `SY_2_SYN___'.
 #'
-#' Landsat images are searched using the EarthExplorer API concerning
-#' a particular location and date interval.
+#' Landsat images are accessed via the
+#' \href{https://m2m.cr.usgs.gov/}{Machine-to-Machine API}.
+#' Details about the Landsat products can be found
+#' \href{https://www.usgs.gov/core-science-systems/nli/landsat/product-information}{here}.
+#' The names of Landsat products are `LANDSAT_TM_C1', `LANDSAT_ETM_C1', and
+#' `LANDSAT_8_C1' for missions 4-5, 7, and 8.
 #'
-#' @param region a \code{Spatial*}, projected \code{raster*}, \code{sf} or \code{rtoi} class object defining the area of interest.
-#' @param product a character vector containing the names of the products to be downloaded.
+#' @param region a \code{Spatial*}, \code{Raster*}, \code{sf} or \code{rtoi}
+#' class objects defining the region of interest.
+#' @param product a character vector of product names.
 #' @param ... additional arguments for searching
 #'
 #' @import sf

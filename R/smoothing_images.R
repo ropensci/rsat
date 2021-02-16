@@ -1,36 +1,58 @@
 #' Fill data gaps and smooth outliers in a time series of satellite images
 #'
+<<<<<<< HEAD
+#' \code{apply_ima} is the implementation of a spatio-temporal method
+#' called Interpolation of Mean Anomalies(IMA) for gap filling and smoothing
+#' satellite data \insertCite{militino2019interpolation}{rsat}.
+=======
 #' \code{smoothing_images} is the implementation of a spatio temporal method
 #' called image mean anomaly (IMA) for gap filling and smoothing satellite
 #' data \insertCite{militino2019interpolation}{rsat}.
+>>>>>>> f0204917c610db35cff9a91eaea3a3862c00c311
 #'
 #' This filling/smoothing method was developed by
-#' \insertCite{militino2019interpolation;textual}{rsat}. This technique decomposes
-#' a time series of images into a new series of mean and anomaly images. The
-#' procedure applies the smoothing algorithm over the anomaly images. The
-#' procedure requires a proper definition of a temporal neighbourhood for the
-#' target image and aggregation factor.
+#' \insertCite{militino2019interpolation;textual}{rsat}. IMA fills the gaps
+#' borrowing information from an adaptable temporal neighborhood. Two
+#' parameters determine the size of the neighborhood; the number of days
+#'  before and after the target image (\code{nDays}) and the number of previous
+#' and subsequent years (\code{nYears}). Both parameters should be adjusted
+#' based on the temporal resolution of the of the time-series of images. We
+#' recommend that the neighborhood extends over days rather than years, when
+#' there is little resemblance between seasons. Also, cloudy series may require
+#' larger neighborhoods.
+#'
+#' IMA gives the following steps; (1) creates a representative image from the
+#' temporal neighborhood of the target image (image to be filled/smoothed) e.g.,
+#' doing the mean, median, etc. for each pixel's time-series (\code{fun}), (2)
+#' the target and representative images are subtracted giving an image of
+#' anomalies, (3) the anomalies falling outside the quantile limits
+#' (\code{aFilter}) are considered outliers and therefore removed, (4) it
+#' aggregates the anomaly image into a coarser resolution (\code{fact}) to
+#' reveal potential spatial dependencies, (5) the procedure fits a spatial
+#' model (thin plate splines or TPS) to the anomalies which is then used to
+#' interpolate the values at the original resolution, and (6) the output
+#' is the sum of the interpolated anomalies and the average image.
 #'
 #' @references \insertRef{militino2019interpolation}{rsat}
 #'
-#' @param x rtoi o object for . If is \code{RasterStack} or \code{RasterBrick} class argument containing a time series of
-#' satellite images. Layer names should contain the date of the image in
+#' @param x \code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
+#' a time series of satellite images.
+#' @param Img2Fill a \code{vector} defining the images to be filled/smoothed.
+#' @param r.dates a \code{vector} of dates for the layers in \code{x}.
+#' Mandatory when layer names of \code{x} do not contain their capturing dates
 #' "\code{YYYYJJJ}" format.
-#' @param Img2Fill a \code{vector} argument defining the images to be
-#' filled/smoothed.
-#' @param r.dates a \code{vector} argument containing the dates of the layers in rstack
 #' @param nDays a \code{numeric} argument with the number of previous and
-#' subsequent days that define the temporal neighborhood.
+#' subsequent days of the temporal neighborhood.
 #' @param nYears a \code{numeric} argument with the number of previous and
-#' subsequent years that define the temporal neighborhood.
-#' @param aFilter a \code{vector} with the lower and upper quantiles that define
-#' the outliers of the anomalies. Ex. c(0.05,0.95).
-#' @param fact a \code{numeric} argument with an aggregation factor of the
-#' anomalies before the interpolation.
+#' subsequent years of the temporal neighborhood.
+#' @param aFilter a \code{vector} of lower and upper quantiles defining
+#' the outliers in the anomalies. Ex. c(0.05,0.95).
+#' @param fact a \code{numeric} argument specifying the aggregation factor of
+#' the anomalies.
 #' @param fun a \code{function} used to aggregate the image of anomalies. Both
-#' \code{mean} (default) or \code{median} are acceptted.
-#' @param snow.mode logical argument. If \code{TRUE}, the filling process will
-#' be parallelized using the `\code{raster}' package.
+#' \code{mean} (default) or \code{median} are accepted.
+#' @param snow.mode logical argument. If \code{TRUE}, the process is parallelized
+#' using the functionalities from the `\code{raster}' package.
 #' @param predictSE calculate the standard error instead the prediction.
 #' @param factSE the \code{fact} used in the standard error prediction.
 #' @param out.name the name of the folder containing the smoothed/filled images
@@ -40,7 +62,7 @@
 #' @param ... arguments for nested functions:
 #' \itemize{
 #'   \item \code{AppRoot} the path where the filled/smoothed time series of
-#'   images will be saved in GTiff format.
+#'   images are saved in GTiff format.
 #' }
 #'
 #' @return a \code{RasterStack} with the filled/smoothed images.

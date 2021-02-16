@@ -28,7 +28,6 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("unai-perez/stars")
 devtools::install_github("spatialstatisticsupna/rsat")
 ```
 
@@ -97,13 +96,6 @@ citation(rsat)[1]
 
 To cite the package:
 
-U Pérez-Goya, M Montesino-SanMartin, A F Militino, M D Ugarte (2020).
+U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2020).
 rsat: Handling Multiplatform Satellite Images. R package version 0.1.3.
 <https://CRAN.R-project.org/package=rsat>.
-
-A BibTeX entry for LaTeX users is
-
-@Manual{, title = {rsat: Handling Multiplatform Satellite Images},
-author = {U P{'e}rez-Goya and M Montesino-SanMartin and A F Militino and
-M D Ugarte}, year = {2020}, note = {R package version 0.1.3}, url =
-{<https://CRAN.R-project.org/package=rsat>}, }
