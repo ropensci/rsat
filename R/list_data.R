@@ -18,6 +18,7 @@ setMethod("list_data",
           signature = c("rtoi"),
           function(x,...){
             allfiles<-list.files(get_dir(x),full.names = TRUE)
+            allfiles<-gsub("\\","/",allfiles,fixed=TRUE)
             allfiles<-allfiles[!grepl("\\.rtoi$",allfiles)]
 
             #satellite
@@ -36,22 +37,31 @@ setMethod("list_data",
                   vars<-gsub("\\.tif$","",vars)
                   f<-gsub(paste0(get_dir(x),"/"),"",f)
                   f<-gsub("\\.zip","",f)
-                  data.list<-c(data.list,lapply(vars,function(x,y)c(y,x),unlist(strsplit(f,"/"))[-4]))
+                  dl<-do.call(rbind,lapply(vars,function(x,y)c(y,x),unlist(strsplit(f,"/"))))
+                  n.col<-ncol(dl)
+                  dl<-dl[,c(n.col-4,n.col-3,n.col-2,n.col)]
+                  data.list<-rbind(data.list,dl)
                   allproducts<-allproducts[!grepl("mosaic",allproducts)]
                 }
                 if(any(grepl("CloudMask",allproducts))){
                   vars<-gsub("\\.zip$","",allproducts[grepl("CloudMask",allproducts)])
                   vars<-unlist(strsplit(gsub(paste0(get_dir(x),"/"),"",vars),"/"))
-                  vars<-c(vars[1:2],"",vars[3])
-                  data.list<-c(data.list,list(vars))
+                  n.col<-length(vars)
+                  vars<-c(vars[n.col-2:1],"",vars[n.col])
+                  data.list<-rbind(vars,data.list)
                   allproducts<-allproducts[!grepl("CloudMask",allproducts)]
                 }
                 full.names<-list.files(allproducts,full.names = TRUE)
                 full.names<-gsub(paste0(get_dir(x),"/"),"",full.names)
                 full.names<-gsub("\\.zip","",full.names)
-                data.list<-c(data.list,strsplit(full.names,"/"))
-                df<-do.call(rbind,data.list)
+                dl<-do.call(rbind,strsplit(full.names,"/"))
+                dl[,1]<-""
+                n.col<-ncol(dl)
+                dl<-dl[,c(n.col-3,n.col-2,1,n.col)]
+                data.list<-rbind(dl,data.list)
+                df<-as.data.frame(data.list)
                 colnames(df)<-c("satellite","product","stage","variable")
+                row.names(df)<-NULL
                 return(df)
               })
             }),recursive=FALSE)
