@@ -175,8 +175,13 @@ setMethod(f="sen_search",
                 bounds<-rbind(bounds,c(xmin=min(x),ymin=min(y),xmax=max(x),ymax=max(y)))
               }
               nlen=length(name)
+
               if(is.null(tileid)){
-                tileid<-rep("",nlen)
+                if(product=="S2MSI2A"){
+                  tileid<-getTileID_MSIL2A(name)
+                }else{
+                  tileid<-rep("",nlen)
+                }
               }
 
               #TODO define order by product

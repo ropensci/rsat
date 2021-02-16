@@ -134,7 +134,9 @@ modGetDates<-function(str,...){
 modGetPathRow<-function(str){
   return(gsub(".*\\s*(h\\d{2}v\\d{2}).*", "\\1", str))
 }
-
+getTileID_MSIL2A<-function(str){
+  return(substr(str,40,44))
+}
 
 SENPRODUCTS<-list("Sentinel-1"=c("SLC", "GRD", "OCN"),
                   "Sentinel-2"=c("S2MSI2A","S2MSI1C", "S2MS2Ap"),
