@@ -1,4 +1,4 @@
-#' Mosaics the tiles covering the region of interest
+#' Mosaic the tiles intersecting the region of interest
 #'
 #' @param x an rtoi object with a records that cover the region of interest.
 #' @param y Omitted
