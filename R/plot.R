@@ -174,7 +174,7 @@ setMethod(f="plot",
             switch(variable,
                    "rgb"={
                      # load the data
-                     dirs<-list.dirs(get_dir(x))
+                     dirs<-list.dirs(gsub("\\","/",get_dir(x)),fixed=TRUE)
                      mosaics.dir<-dirs[grepl("mosaic",dirs)]
                      files<-list.files(mosaics.dir,full.names = TRUE)
                      files<-files[grepl(y,files)]
@@ -188,7 +188,7 @@ setMethod(f="plot",
                      }
                    },
                    {# load the data
-                     dirs<-list.dirs(get_dir(x))
+                     dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
                      var.dir<-dirs[grepl("variables",dirs)]
                      var.dir<-var.dir[grepl(y,var.dir)]
                      files<-list.files(var.dir,full.names = TRUE)
@@ -199,7 +199,7 @@ setMethod(f="plot",
                        warning("More than one record for the same variable and product, plotting one size.")
                        files<-files[1]
                      }
-                     plot.list<-c(read_variables(files,y,variable,NULL,xsize,ysize))
+                     plot.list<-read_variables(files,y,variable,NULL,xsize,ysize)
 
                    })
 
@@ -270,8 +270,9 @@ read_variables<-function(zip.file,product,var.name,date,xsize,ysize){
   rasterio<-list(nBufXSize = xsize, nBufYSize = ysize)
   stars.list<-lapply(tif.files,read_stars,normalize_path = FALSE,RasterIO =rasterio, proxy=FALSE)
   stars.list<-do.call(c,stars.list)
-  names(stars.list)<-n
-  return(stars.list)
+  raster.list<-as(stars.list,"Raster")
+  names(raster.list)<-n
+  return(raster.list)#TODO change to stars
 }
 
 read_rgb<-function(files.p,product,bands,band_name=c("red","green","blue"),date,xsize,ysize){
@@ -305,7 +306,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
 
   # r and region projection management
   if(inherits(r,"list")){
-    if(inherits(r[[1]],"RasterBrick")||inherits(r[[1]],"RasterStack")){
+    if(inherits(r[[1]],"RasterBrick")||inherits(r[[1]],"RasterStack")||inherits(r,"RasterLayer")){
       if(!missing(proj)){
         r = lapply(r, projectRaster,crs=proj)
         if(!missing(region)){region=transform_multiple_proj(region,proj4=projection(r[[1]]))}
