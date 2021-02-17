@@ -11,7 +11,10 @@ Description: Downloading, customizing, and processing time series of satellite i
 Depends: R (>= 3.5.0), raster, sf, stars
 Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp, Rdpack, fields, calendR
 RdMacros: Rdpack
-Suggests: rgdal
+Suggests: 
+    rgdal,
+    knitr,
+    rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -43,3 +46,4 @@ Collate:
     'search.R'
     'smoothing_images.R'
     'variables.R'
+VignetteBuilder: knitr
