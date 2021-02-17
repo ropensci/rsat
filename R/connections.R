@@ -49,7 +49,7 @@ connection<-setRefClass("connections",
                              for(api in .self$ApiList){
                                apis<-rbind(apis,c(api$api_name,api$credentials,api$getCredentials()))
                              }
-                             colnames(apis)<-c("Api_name","Credential_type","Username","Password")
+                             colnames(apis)<-c("Api_name","Portal","Username","Password")
                              apis
                            }
 
