@@ -58,7 +58,8 @@ connection<-setRefClass("connections",
                    espa=api("ESPA","https://espa.cr.usgs.gov","https://espa.cr.usgs.gov/api/v1","earthdata"),
                    nasainv=api("nasa_inventory","https://lpdaacsvc.cr.usgs.gov","https://lpdaacsvc.cr.usgs.gov/services/inventory","earthdata"),
                    scihub=api("scihub","https://scihub.copernicus.eu","https://scihub.copernicus.eu/apihub","scihub"),
-                   scihubs5p=api("scihubs5p","https://s5phub.copernicus.eu","https://s5phub.copernicus.eu/apihub","scihubs5p")),
+                   #scihubs5p=api("scihubs5p","https://s5phub.copernicus.eu","https://s5phub.copernicus.eu/apihub","scihubs5p")
+                   ),
       useragent="Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0")
 
 
