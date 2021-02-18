@@ -5,7 +5,7 @@
 #' previewing, downloading, and managing data records.
 #'
 #' \code{records} works as vector. It accepts usual R methods such as
-#' \code{c}, \code{[]}, \code{length}, \code{subset} or \code{unique}.
+#' \code{c}, \code{[]}, \code{length()}, \code{subset()} or \code{unique()}.
 #' Each record (vector element) contains several parameters or slots.
 #'
 #' The object can be coerced into a \code{data.frame} by
@@ -341,10 +341,11 @@ setMethod(f="as.records",
           definition = function(x){
             na<-names(getSlots("records"))
             if(all(names(x)%in%na)){
-              x<-x[na]
-              t<-apply(x,1,FUN = function(x){
-                do.call(new_record, as.list(x))
-                }
+              cols <- which(names(x) %in% na)
+              x<-x[,cols]
+              t<-apply(x, 1, FUN = function(i){
+                do.call(new_record, as.list(i))
+                  }
                 )
               return(do.call("c",t))
             }else{
