@@ -632,8 +632,8 @@ setMethod("read_rtoi",
           signature= c("character"),
           function(path,...){
             files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
-            if(length(files)>1){warning("More than one rtoi found! loading the first.")}
-            if(length(files)==0)stop("There is no rtoi object in this path.")
+            if(length(files)>1){warning("More than one rtoi found! loading the first one.")}
+            if(length(files)==0)stop("There is no rtoi in this path.")
             aux<-readRDS(file=files[1])
             rtoi_dir<-get_dir(aux)
             if(path!=rtoi_dir){

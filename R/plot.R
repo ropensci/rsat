@@ -27,7 +27,7 @@ setMethod(f="plot",
                      dirs<-list.dirs(get_dir(x))
                      mosaics.dir<-dirs[grepl("mosaic",dirs)]
                      files<-list.files(mosaics.dir,full.names = TRUE,pattern=format(y,"%Y%j"))
-                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     if(length(files)==0)stop("Plotting requires mosaicked images and there is none.")
                      plot.list<-list()
                      for(p in product(x)){
                        debands<-deriveBandsData(p)
@@ -79,7 +79,7 @@ setMethod(f="plot",
               if(length(months)>12){
                 months<-months[1:12]
                 r<-r[format(dates(r),"%Y%m")%in%months]
-                message("Ploting only one year of records, use dates argument to plot another year.")
+                message("Plotting is restricted to one year, use the 'dates' argument to plot another year.")
               }
               date<-dates(r)
 
@@ -138,7 +138,7 @@ setMethod(f="plot",
                     preview.path.img <- file.path(preview.path,paste0(format(as.Date(d),"%Y%m%d"),".tif"))
                     preview.records <- subset(sat.records,as.Date(d),"date")
                     if(length(preview.records)==0){
-                      if(verbose) message(paste0("No records for product ",prdct," and date ",as.Date(d),"."))
+                      if(verbose) message(paste0("No records for the product ",prdct," and date ",as.Date(d),"."))
                       next
                     }
                     if(!file.exists(preview.path.img)){
@@ -167,7 +167,7 @@ setMethod(f="plot",
                     }
                   }
                 }
-                if(length(plot.list)==0)return(message("No images for previewing in assigned time interval and product."))
+                if(length(plot.list)==0)return(message("No preview is available for this time interval and product."))
                 return(genPlotGIS(r=plot.list,region(x),...))
 
             }
@@ -178,7 +178,7 @@ setMethod(f="plot",
                      mosaics.dir<-dirs[grepl("mosaic",dirs)]
                      files<-list.files(mosaics.dir,full.names = TRUE)
                      files<-files[grepl(y,files)]
-                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date. You plot using 'dates' or 'preview mode.'")
+                     if(length(files)==0)stop("Plotting requires mosaicked images and there is none. Use the 'dates' argument or the 'preview' mode.")
                      plot.list<-list()
                      for(f in files){
                        debands<-deriveBandsData(y)
@@ -194,9 +194,9 @@ setMethod(f="plot",
                      files<-list.files(var.dir,full.names = TRUE)
                      files<-files[grepl(variable,files)]
 
-                     if(length(files)==0)stop("plot required mosaiced images. There is no image for provided date.")
+                     if(length(files)==0)stop("Plotting requires mosaicked images, and there is none.")
                      if(length(files)>1){
-                       warning("More than one record for the same variable and product, plotting one size.")
+                       warning("More than one record for the same variable and product, plotting the first one.")
                        files<-files[1]
                      }
                      plot.list<-read_variables(files,y,variable,NULL,xsize,ysize)
@@ -215,7 +215,7 @@ setMethod(f="plot",
           function(x, y, verbose = FALSE,...){
             # load the data
             if(length(x)>0){
-              if(length(x)>5)message("Records plot takes a while downloading preview images.")
+              if(length(x)>5)message("It may take a while to download the previews.")
               img.list<-list()
               lname<-c()
               for(i in 1:length(x)){
@@ -225,7 +225,7 @@ setMethod(f="plot",
                 pre_dir<-file.path(tmpDir(),get_dir(r),"rgt_preview")
                 dir.create(pre_dir,showWarnings = FALSE,recursive = TRUE)
                 pre.file<-file.path(pre_dir,names(r))
-                if(verbose)message(paste0("Preview file download file: ",pre.file))
+                if(verbose)message(paste0("Preview downloaded: ",pre.file))
                 if(!file.exists(pre.file)){
                   con<-connection$getApi(get_api_name(r))
                   con$pictureDownload(p.url,pre.file)
@@ -314,7 +314,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
     }else if(inherits(r[[1]],"stars")){
 
     }else{
-      stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
+      stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list of RasterBrick or RasterStack.")
     }
   }else if(inherits(r,"RasterBrick")||inherits(r,"RasterStack")||inherits(r,"RasterLayer")){
     if(!missing(proj)){
@@ -324,7 +324,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
   }else if(inherits(r,"stars")){
 
   }else{
-    stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list composed by RasterBrick or RasterStack.")
+    stop("genPlotGIS only supports stars, RasterBrick or RasterStack, or a list of RasterBrick or RasterStack.")
   }
 
 

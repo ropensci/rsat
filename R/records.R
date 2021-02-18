@@ -344,12 +344,12 @@ setMethod(f="as.records",
               cols <- which(names(x) %in% na)
               x<-x[,cols]
               t<-apply(x, 1, FUN = function(i){
-                do.call(new_record, as.list(i))
+                do.call(rsat:::new_record, as.list(i))
                   }
                 )
               return(do.call("c",t))
             }else{
-              stop(paste0("To create records object the data frame need to include the following names: ",paste(na,collapse = ","),"."))
+              stop(paste0("To create a records object provide a data frame with the following names: ",paste(na,collapse = ","),"."))
             }
 })
 
@@ -486,7 +486,7 @@ setMethod(f="subset",
                 return(x[subset])
             }
             records.names<-names(getSlots("records"))
-            if(!select%in%records.names){stop("'select' must be a slot name from records class.")}
+            if(!select%in%records.names){stop("'select' must be a slot name from the class records.")}
             return(x[which(slot(x, select)%in%subset)])
           })
 
