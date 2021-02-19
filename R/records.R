@@ -1,43 +1,45 @@
 #' A class object for satellite image metadata
 #'
-#' This object structures the main metadata attributes of satellite images
-#' from several missions/programs. Structuring the information facilitates
-#' previewing, downloading, and managing data records.
+#' This class object organizes the attributes of satellite images' metadata
+#' from several missions/programs uniformly. Structuring the information
+#' facilitates managing, previewing, and downloading data records.
 #'
 #' \code{records} works as vector. It accepts usual R methods such as
 #' \code{c}, \code{[]}, \code{length}, \code{subset} or \code{unique}.
 #' Each record (vector element) contains several parameters or slots.
 #'
 #' The object can be coerced into a \code{data.frame} by
-#' using the function \code{as.data.frame()}.
+#' using the function \code{as.data.frame()}. The \code{data.frame} can
+#' be transformed back into a \code{records} with the function
+#' \code{as.records()}.
 #'
-#' @slot sat the name of the satellite to which the record belongs.
-#' @slot name the name of the record.
-#' @slot date the date of the record.
-#' @slot product the product.
+#' @slot sat the name of the satellite.
+#' @slot name the name of the file.
+#' @slot date capturing date of the image.
+#' @slot product name of the data product.
 #' @slot path the path of the tiling system.
 #' @slot row the row of the tiling system.
-#' @slot tileid the tile id.
-#' @slot download the url to download the satellite record.
+#' @slot tileid the tile identification number.
+#' @slot download the download url.
 #' @slot file_path the saving directory for the satellite record.
-#' @slot preview the url of the preview of the satellite record.
-#' @slot api_name the api name.
-#' @slot order boolean, defines if the image must be requested or not.
-#' @slot extent_crs extent (used to project the preview).
+#' @slot preview the preview url.
+#' @slot api_name the name of the API.
+#' @slot order boolean, whether the image needs to be ordered.
+#' @slot extent_crs coordinate reference system of the preview.
 #'
 #' @include extent_crs.R
 #' @examples
 #' \dontrun{
 #' data(ex.navarre)
 #' # Create a records of Sentinel-2 Level 1C images
-#' s2.lvl1.result<-sat_search(region=ex.navarre,
-#'                            product="S2MSI1C",
-#'                            dates=as.Date("2018-01-01")+seq(1,30,1))
+#' s2.lvl1.result <- sat_search(region = ex.navarre,
+#'                              product = "S2MSI1C",
+#'                              dates = as.Date("2018-01-01") + seq(1, 30, 1))
 #'
 #' # Create a records of Sentinel-2 Level 2A images
-#' s2.lvl2.result<-sat_search(region=ex.navarre,
-#'                           product="S2MSI2A",
-#'                           dates=as.Date("2019-01-01")+seq(1,30,1))
+#' s2.lvl2.result <- sat_search(region = ex.navarre,
+#'                              product = "S2MSI2A",
+#'                              dates = as.Date("2019-01-01") + seq(1, 30, 1))
 #' class(s2.lvl2.result)
 #' dates(s2.lvl2.result)
 #' all.records <- c(s2.lvl1.result,s2.lvl2.result)

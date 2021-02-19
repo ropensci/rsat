@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
-[![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/) [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 <!-- badges: end -->
 
@@ -27,7 +26,7 @@ The goal of `rsat` is to help you handling time-series of satellite images from 
 3.  Customize, and
 4.  Process
 
-satellite images from Landsat, MODIS, and Sentinel for a region and a time of interest.
+satellite images from Landsat, MODIS, and Sentinel for a region and time of interest.
 
 ## Installation
 
@@ -56,14 +55,16 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 
 ## Log-in profiles
 
-The registration in the following online portals is required to get a full access to satellite images;
+The registration in the following online portals is required to get a full access to satellite images with `rsat`;
 
 -   [EarthData](https://ers.cr.usgs.gov/register/): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://earthdata.nasa.gov/earth-observation-data).
 -   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
 
+For convenience, try to use the same username and password for all of them. To satisfy the criteria of all web services make sure that the username is $4$ characters long and includes a period, number or underscore. The password must be $12$ character long and should include characters with at least one capital letter, and numbers.
+
 ## Example
 
-This is a basic example which shows you how to compute the Normalized Difference Vegetation Index from a MODIS captured on January 11th, 2020 in northern Spain (Navarre):
+This is a basic example which shows you how to compute the Normalized Difference Vegetation Index from a MODIS image captured on January 11th, 2020 in northern Spain (Navarre):
 
 ``` r
 library(rsat)
@@ -73,7 +74,7 @@ set_credentials("username", "password")
 
 # region and time of interest: rtoi
 roi <- ex.navarre
-toi <- as.Date("2020-01-11") + c(0:1)
+toi <- as.Date("2020-01-11")
 rtp <- tempdir()
 dbp <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi("Navarre", roi, rtp, dbp)
@@ -93,6 +94,7 @@ plot(navarre, "mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
 ``` r
 citation(rsat)[1]
 ```
+
 To cite the package:
 
-U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2020). rsat: Handling Multiplatform Satellite Images. R package version 0.1.3. https://CRAN.R-project.org/package=rsat.
+U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2020). rsat: Handling Multiplatform Satellite Images. R package version 0.1.3. <https://CRAN.R-project.org/package=rsat>.

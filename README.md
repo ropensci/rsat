@@ -18,8 +18,8 @@ way. The package provides tools to;
 3.  Customize, and
 4.  Process
 
-satellite images from Landsat, MODIS, and Sentinel for a region and a
-time of interest.
+satellite images from Landsat, MODIS, and Sentinel for a region and time
+of interest.
 
 ## Installation
 
@@ -51,7 +51,7 @@ In Linux, you need to install additional libraries before starting with
 ## Log-in profiles
 
 The registration in the following online portals is required to get a
-full access to satellite images;
+full access to satellite images with `rsat`;
 
 -   [EarthData](https://ers.cr.usgs.gov/register/): A repository of
     NASA’s earth observation data-sets. More information about EarthData
@@ -62,11 +62,17 @@ full access to satellite images;
     go [here](https://scihub.copernicus.eu/) to find more details about
     the data hub.
 
+For convenience, try to use the same username and password for all of
+them. To satisfy the criteria of all web services make sure that the
+username is 4 characters long and includes a period, number or
+underscore. The password must be 12 character long and should include
+characters with at least one capital letter, and numbers.
+
 ## Example
 
 This is a basic example which shows you how to compute the Normalized
-Difference Vegetation Index from a MODIS captured on January 11th, 2020
-in northern Spain (Navarre):
+Difference Vegetation Index from a MODIS image captured on January 11th,
+2020 in northern Spain (Navarre):
 
 ``` r
 library(rsat)
@@ -76,7 +82,7 @@ set_credentials("username", "password")
 
 # region and time of interest: rtoi
 roi <- ex.navarre
-toi <- as.Date("2020-01-11") + c(0:1)
+toi <- as.Date("2020-01-11")
 rtp <- tempdir()
 dbp <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi("Navarre", roi, rtp, dbp)
