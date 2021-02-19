@@ -82,7 +82,7 @@ setMethod("new_rtoi",
           function(name, region, rtoi_path, db_path) {
             rtoi_path<-file.path(rtoi_path,name)
             if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
-              stop("This rtoi already exists, define other name or rtoi_path")
+              stop("This rtoi already exists. Give it a new name or rtoi_path.")
             }
             dir.create(rtoi_path,showWarnings = FALSE)
             newobj=new("rtoi")
@@ -109,7 +109,7 @@ setMethod("new_rtoi",
 
             rtoi_path<-file.path(rtoi_path,name)
             if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
-              stop("This rtoi already exists, define other name or rtoi_path")
+              stop("This rtoi already exists. Give it a new name or rtoi_path.")
             }
             newobj=new("rtoi")
             newobj$name<-name
@@ -261,7 +261,7 @@ setMethod("get_raster",
                   mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
                 }
               }
-              if(length(mos.zip)==0) message("There are no images for this product and variable")
+              if(length(mos.zip)==0) message("There are no images for this product and variable.")
             }else{
               if(length(files)==1){
                 mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
@@ -342,7 +342,7 @@ setMethod("get_stars",
                   mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
                 }
               }
-              if(length(mos.zip)==0) message("There are no images for this product and variable")
+              if(length(mos.zip)==0) message("There are no images for this product and variable.")
             }else{
               if(length(files)==1){
                 mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
