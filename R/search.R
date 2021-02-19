@@ -110,15 +110,15 @@ setMethod(f="sat_search",
             searchres<-new("records")
             for(s in product){
               if(tolower(substr(s,1,3))%in%c("mod","myd")){
-                message(paste0("Searching ",s," product..."))
+                message(paste0("Searching scenes in the ",s," product..."))
                 searchres<-c(searchres,mod_search(region(region),product=s,...))
               }else if(grepl("LANDSAT",s)){
-                message(paste0("Searching ",s," product..."))
+                message(paste0("Searching scenes in the ",s," product..."))
                 searchres<-c(searchres,ls_search(region(region),product=s,...))
               }else if(s%in%unlist(SENPRODUCTS)){
-                message(paste0("Searching ",s," product..."))
+                message(paste0("Searching scenes in the ",s," product..."))
                 searchres<-c(searchres,sen_search(region(region),product=s,...))
-              }else{warning("Satellite no supported, only modis, landsat and sentinel products are supported.")}
+              }else{warning("Satellite not supported, only modis, landsat and sentinel related products.")}
             }
             if(length(searchres)!=0){records(region)<-unique(c(records(region),searchres))}
           }
@@ -137,7 +137,7 @@ setMethod(f="sat_search",
                 searchres<-c(searchres,ls_search(region,product=s,verbose=verbose,...))
               }else if(s%in%unlist(SENPRODUCTS)){
                 searchres<-c(searchres,sen_search(region,product=s,verbose=verbose,...))
-              }else{warning("Satellite no supported, only modis, landsat and sentinel products are supported.")}
+              }else{warning("Satellite not supported, only modis, landsat and sentinel related products.")}
             }
             return(searchres)
           }
