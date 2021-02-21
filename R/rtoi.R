@@ -618,9 +618,11 @@ setMethod("write_rtoi",
             cat("Records:",file=get_rtoi_path(x),sep="\n",append=TRUE)
             df<-as.data.frame(records(x))
             cat(paste0(names(df),collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
-            df$date<-as.character(df$date)
-            for(i in 1:nrow(df)){
-              cat(paste0(df[i,],collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
+            if(nrow(df)>0){
+              df$date<-as.character(df$date)
+              for(i in 1:nrow(df)){
+                cat(paste0(df[i,],collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
+              }
             }
             #sf
             dir.create(file.path(get_dir(x),"region"),showWarnings = FALSE)
@@ -693,8 +695,14 @@ setMethod("read_rtoi",
             #records
             rcds<-lines[(which(grepl("Records:",lines))+1):length(lines)]
             rcds<-strsplit(rcds,",")
-            df.rcds<-as.data.frame(do.call(rbind,rcds[-1]))
-            names(df.rcds)<-rcds[[1]]
-            records(newobj)<-as.records(df.rcds)
+            if(length(rcds)>1){
+              df.rcds<-as.data.frame(do.call(rbind,rcds[-1]))
+              names(df.rcds)<-rcds[[1]]
+              records(newobj)<-as.records(df.rcds)
+            }else{
+              records(newobj)<-new_record()
+            }
+
+
             return(newobj)
           })
