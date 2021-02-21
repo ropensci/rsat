@@ -237,7 +237,7 @@ setMethod("as.data.frame",
             for(s in slots[-1]){
               df[s]<-slot(x, s)
             }
-            return(df)
+            return(cbind(df,as.data.frame(x@extent_crs)))
             })
 
 #' Create vector
@@ -341,15 +341,46 @@ setGeneric("as.records",function(x){
 setMethod(f="as.records",
           signature = "data.frame",
           definition = function(x){
-            na<-names(getSlots("records"))
+            type<-getSlots("records")
+            na<-names(type)
+            type<-type[which(!type%in%"extent_crs")]
+            ecrs.index<-which(names(x)%in%c("EPSG","xmin","ymin","xmax","ymax"))
+            if(length(ecrs.index)!=0){
+              ecrs.df<-x[,c("EPSG","xmin","ymin","xmax","ymax")]
+              x<-x[,-ecrs.index]
+            }
+
             if(all(names(x)%in%na)){
               cols <- which(names(x) %in% na)
               x<-x[,cols]
-              t<-apply(x, 1, FUN = function(i){
-                do.call(rsat:::new_record, as.list(i))
-                  }
-                )
-              return(do.call("c",t))
+
+              for(ty in 1:length(type)){
+                if(type[ty]=="Date"){
+                  x[,ty]<-as.Date(x[,ty])
+                }else{
+                  x[,ty]<-as(x[,ty],type[ty])
+                }
+              }
+
+              if(length(ecrs.index)==0){
+                return(do.call("c",apply(x, 1, FUN = function(i){
+                  do.call(new_record, as.list(i))
+                })))
+              }else{
+                extent_crs=new("extent_crs",
+                               EPSG=as.numeric(ecrs.df[,"EPSG"]),
+                               xmin=as.numeric(ecrs.df[,"xmin"]),
+                               ymin=as.numeric(ecrs.df[,"ymin"]),
+                               xmax=as.numeric(ecrs.df[,"xmax"]),
+                               ymax=as.numeric(ecrs.df[,"ymax"]))
+                r<-new("records")
+                for(i in 1:nrow(x)){
+                  r<-c(r,do.call(new_record, c(as.list(x[i,]),list(extent_crs=extent_crs[i]))))
+                }
+
+              }
+
+              return(r)
             }else{
               stop(paste0("To create a records object provide a data frame with the following names: ",paste(na,collapse = ","),"."))
             }

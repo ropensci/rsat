@@ -13,7 +13,7 @@
 #' @param ... additional arguments.
 #'
 #' @importFrom zip zipr
-#' @import raster rgdal
+#' @import raster
 #' @include rtoi.R records.R
 #' @export
 #' @examples

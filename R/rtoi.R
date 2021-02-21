@@ -67,7 +67,7 @@ setRefClass("rtoi",
 #'
 #' @return the reference of the \code{rtoi} object
 #' @exportMethod new_rtoi
-setGeneric("new_rtoi", function(name, region, rtoi_path, db_path, records) {
+setGeneric("new_rtoi", function(name, region, rtoi_path, db_path, records,size) {
   standardGeneric("new_rtoi")
 })
 
@@ -78,7 +78,8 @@ setMethod("new_rtoi",
                     region = "sf",
                     rtoi_path = "character",
                     db_path = "character",
-                    records = "missing"),
+                    records = "missing",
+                    size = "missing"),
           function(name, region, rtoi_path, db_path) {
             rtoi_path<-file.path(rtoi_path,name)
             if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
@@ -88,7 +89,6 @@ setMethod("new_rtoi",
             newobj=new("rtoi")
             newobj$records<-new("records")
             newobj$name<-name
-
             newobj$region<-list(region)
             newobj$rtoi_path<-rtoi_path
             newobj$db_path<-db_path
@@ -104,24 +104,30 @@ setMethod("new_rtoi",
                     region = "sf",
                     rtoi_path = "character",
                     db_path = "character",
-                    records = "records"),
+                    records = "records",
+                    size = "missing"),
           function(name, region, rtoi_path, db_path,records) {
-
-            rtoi_path<-file.path(rtoi_path,name)
-            if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
-              stop("This rtoi already exists. Give it a new name or rtoi_path.")
-            }
-            newobj=new("rtoi")
-            newobj$name<-name
-            newobj$region<-list(region)
-            newobj$records<-records
-            newobj$rtoi_path<-rtoi_path
-            newobj$db_path<-db_path
+            newobj<-new_rtoi(name,region,rtoi_path,db_path,records=records)
             newobj$size<-0
             write_rtoi(newobj)
             return(newobj)
           })
 
+#' @rdname new_rtoi
+#' @aliases character,sf,character,character,records,size
+setMethod("new_rtoi",
+          signature(name = "character",
+                    region = "sf",
+                    rtoi_path = "character",
+                    db_path = "character",
+                    records = "records",
+                    size = "numeric"),
+          function(name, region, rtoi_path, db_path,records,size) {
+            newobj<-new_rtoi(name,region,rtoi_path,db_path,records=records)
+            newobj$size<-size
+            write_rtoi(newobj)
+            return(newobj)
+          })
 
 #' @rdname names-records-method
 #' @aliases names,rtoi
@@ -594,12 +600,32 @@ setMethod("get_rtoi_path",
             file.path(get_dir(x),paste0(names(x),".rtoi"))
           })
 
-setGeneric("write_rtoi",function(x){standardGeneric("write_rtoi")})
+setGeneric("write_rtoi",function(x,...){standardGeneric("write_rtoi")})
 setMethod("write_rtoi",
           signature= c("rtoi"),
-          function(x){
+          function(x, ...){
             unlink(get_rtoi_path(x))
-            saveRDS(x, file=get_rtoi_path(x))
+            args<-list(...)
+            if(is.null(args$overwrite))args$overwrite<-TRUE
+            rtoi.names<-names(x$getRefClass()$fields())
+            rtoi.names<-rtoi.names[!rtoi.names%in%c("records","region")]
+            #slots
+            for(param in rtoi.names){
+              cat(paste0(param,":",x$field(param)),file=get_rtoi_path(x),sep="\n",append=TRUE)# change txt get_rtoi_path(x)
+            }
+
+            #records
+            cat("Records:",file=get_rtoi_path(x),sep="\n",append=TRUE)
+            df<-as.data.frame(records(x))
+            cat(paste0(names(df),collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
+            df$date<-as.character(df$date)
+            for(i in 1:nrow(df)){
+              cat(paste0(df[i,],collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
+            }
+            #sf
+            dir.create(file.path(get_dir(x),"region"),showWarnings = FALSE)
+            st_write(x$region[[1]], dsn=file.path(get_dir(x),"region"),driver="ESRI Shapefile",quiet =TRUE,append=!args$overwrite)
+            #saveRDS(x, file=get_rtoi_path(x))
           })
 
 #' Reads an rtoi from the hard drive
@@ -634,10 +660,41 @@ setMethod("read_rtoi",
             files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
             if(length(files)>1){warning("More than one rtoi found! loading the first one.")}
             if(length(files)==0)stop("There is no rtoi in this path.")
-            aux<-readRDS(file=files[1])
-            rtoi_dir<-get_dir(aux)
-            if(path!=rtoi_dir){
-              get_dir(aux)<-path
+            newobj=new("rtoi")
+            #aux<-readRDS(file=files[1])
+            lines<-readLines(files[1])
+
+            #fields
+            rtoi.name<-gsub("name:","",lines[grepl("name:",lines)])
+            if(length(rtoi.name)!=0){
+              newobj$name<-rtoi.name
             }
-            return(aux)
+
+            rtoi.dir<-gsub("rtoi_path:","",lines[grepl("rtoi_path:",lines)])
+            if(path!=rtoi.dir){
+              rtoi.dir<-path
+            }
+            if(length(rtoi.dir)!=0){
+              newobj$rtoi_path<-rtoi.dir
+            }
+
+            db_path<-gsub("db_path:","",lines[grepl("db_path:",lines)])
+            if(length(db_path)!=0){
+              newobj$db_path<-db_path
+            }
+            size<-as.numeric(gsub("size:","",lines[grepl("size:",lines)]))
+            if(length(size)!=0){
+              newobj$size<-size
+            }
+            #sf
+            region<-st_read(file.path(path,"region"),quiet = TRUE)
+            newobj$region<-list(region)
+
+            #records
+            rcds<-lines[(which(grepl("Records:",lines))+1):length(lines)]
+            rcds<-strsplit(rcds,",")
+            df.rcds<-as.data.frame(do.call(rbind,rcds[-1]))
+            names(df.rcds)<-rcds[[1]]
+            records(newobj)<-as.records(df.rcds)
+            return(newobj)
           })

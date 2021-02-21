@@ -15,6 +15,7 @@
 #' @import tmap
 #' @importFrom sp proj4string proj4string<-
 #' @importFrom calendR calendR
+#' @importFrom grDevices colors
 #' @include rtoi.R records.R
 #' @export
 #' @example
@@ -174,7 +175,7 @@ setMethod(f="plot",
             switch(variable,
                    "rgb"={
                      # load the data
-                     dirs<-list.dirs(gsub("\\","/",get_dir(x)),fixed=TRUE)
+                     dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
                      mosaics.dir<-dirs[grepl("mosaic",dirs)]
                      files<-list.files(mosaics.dir,full.names = TRUE)
                      files<-files[grepl(y,files)]

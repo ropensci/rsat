@@ -124,7 +124,7 @@ setMethod("smoothing_images",
             },rtoi_dir=get_dir(x),...)
 
 })
-
+#' @rdname smoothing_images
 setMethod("smoothing_images",
           signature = c("RasterBrick","character"),
           function(x,
@@ -136,7 +136,7 @@ setMethod("smoothing_images",
               stop("Method not supported.")
             }
           })
-
+#' @rdname smoothing_images
 setMethod("smoothing_images",
           signature = c("RasterStack","character"),
           function(x,

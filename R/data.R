@@ -56,5 +56,14 @@ NULL
 #' @keywords data
 NULL
 
+#' A polygon with the border of Madrid (Spain)
+#'
+#' Spatial feature (\code{sf}) representing the border of Madrid with
+#' coordinates in the longitude/latitude format.
+#' @name ex.madrid
+#' @docType data
+#' @keywords data
+NULL
+
 #' @docType package
 #' @bibliography system.file("REFERENCES.bib", package = "rsat")
