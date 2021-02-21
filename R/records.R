@@ -235,7 +235,12 @@ setMethod("as.data.frame",
             df<-data.frame(sat=slot(x, slots[1]))
             slots<-slots[!slots%in%c("extent_crs")]
             for(s in slots[-1]){
-              df[s]<-slot(x, s)
+              if(s=="date"){
+                df[s]<-as.Date(character())
+              }else{
+                df[s]<-slot(x, s)
+              }
+
             }
             return(cbind(df,as.data.frame(x@extent_crs)))
             })
