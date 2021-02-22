@@ -251,12 +251,12 @@ setMethod("get_raster",
               p.df<-p.df[p.df$variable==v,]
 
               if(grepl("CloudMask",v)){
-                files<-paste0(paste0(c(get_dir(x),p.df[1:3]),collapse="/"),v,".zip")
+                files<-paste0(paste0(c(get_dir(x),unlist(p.df[1:3])),collapse="/"),v,".zip")
                 mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
                 return(stack(mos.zip))
               }
 
-              dirs<-paste0(c(get_dir(x),p.df[1:3]),collapse="/")
+              dirs<-paste0(c(get_dir(x),unlist(p.df[1:3])),collapse="/")
               files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
 
               mos.zip<-c()
