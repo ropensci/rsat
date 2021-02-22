@@ -9,11 +9,201 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+# Customize
+
+**Customizing** means transforming raw images into useful information for particular needs. Customizing includes; (1) mosaicking, i.e. joining scenes of a region and date in a single file , (2) calculating and index to highlight the presence of process/material in the satellite image, and (3) mask the cloudy pixels to avoid misinterpreting the surface reflectance values. This demo builds on the showcase from the search vignette and so, the first section reviews the most important code from the previous vignette.
+
+------------------------------------------------------------------------
+
+## Review
+
+As a first step of `rsat`'s workflow is specifying the credentials for the the web services:
+
+```{r}
 library(rsat)
+set_credentials("rsat.package","UpnaSSG.2021")
 ```
+
+The showcase aims at assessing the effect of the [Snowstorm Filomena](https://en.wikipedia.org/wiki/2020%E2%80%9321_European_windstorm_season#Storm_Filomena) on the Iberian peninsula during January $10^{th}$ and $15^{th}$, $2021$. Hence, the *roi* and *toi* correspond to an `sf` polygon around the peninsula (`ip`) and a vector of dates (`toi`) covering the time-span:
+
+```{r search_review}
+ip <- st_sf(st_as_sfc(st_bbox(c(
+  xmin = -9.755859,
+  xmax =  4.746094,
+  ymin = 35.91557,
+  ymax = 44.02201 
+), crs = 4326)))
+toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+```
+
+The folders for the database and dataset can be created programmatically as follows:
+
+```{r}
+db.path <- "C:/database"
+ds.path <- "C:/datasets"
+dir.create(db.path)
+dir.create(ds.path)
+```
+
+The minimum information to generate a new `rtoi` is a `name` for the object, a polygon of the region of interest (*roi*), and the paths to the database and dataset:
+
+```{r}
+filomena <- new_rtoi(name = "filomena",
+                     region = ip,
+                     db_path = db.path,
+                     rtoi_path = ds.path)
+```
+
+To limit the amount of data and processing times, the assessment is conducted over MODIS imagery. A total number of $24$ images are found for the region over the $6$-day period:
+
+```{r}
+sat_search(region = filomena, product = c("mod09ga"), dates = toi)
+```
+
+The way to download the search results is as follows:
+
+```{r}
+download(filomena)
+```
+
+------------------------------------------------------------------------
+
+## Mosaic
+
+***Mosaicking*** involves binding together several images of a region from the same date. The function `mosaic()` finds automatically the relevant images in the database and joins them together in a single file. Additionally, by default, the function crops around the *roi* of the `rtoi` to remove unnecessary information and save space on your hard disk drive:
+
+```{r, eval=FALSE}
+mosaic(filomena)
+```
+
+The cropping option can be disabled with the argument `warp = NULL`. Here, cropping is appropriate since images extend far beyond our region of interest.
+
+The results are saved in the `rtoi_path` inside a sub-folder called *mosaic*. This is the first time in the workflow that the `rtoi_path` is being used. The reason is that mosaicking is the first transformation applied to the raw images to better fit the particular needs of the analysis. The outcomes from the mosaic are compressed (*zip)* to minimize their size:
+
+```{r, eval=FALSE}
+list.files(rtoi_path(filomena), full.names = TRUE, recursive = TRUE)
+```
+
+At this point of the workflow, *RGB* representations of the satellite images can be displayed on the fly, without loading the entire image in `R`. By default, the `plot()` method for an `rtoi` displays the mosaicked images when the object is not followed by the words `"preview"` or `"date"` (see other types of plots for an `rtoi` in the search vignette):
+
+```{r}
+plot(filomena, as.Date("2021-01-11"))
+```
+
+The map shows a sample of pixels from the original image. This is a strategy to save space in *RAM* memory. The downside is the reduction in the level of detail of the image. By default, the number of pixels on the horizontal and vertical axis is $250$. The arguments `xsize` and `ysize` change the size of the sample to vary the crispness of the image. The code below doubles the number of pixels on each axis of the image;
+
+```{r}
+plot(filomena, as.Date("2021-01-11"),xsize = 500, ysize = 500)
+```
+
+Clouds and snow are visually similar. False color images are frequently used in the field in order to ease the detection of features. False color images switch the natural color in the *RGB* image to other bands. These kind of representations can be built using the `band_name` argument followed by the name of the bands replacing the *red*, *green*, and *blue* colors. For instance, the rendering of *swir1*, *nir*, and *blue* highlights the snow in blue color:
+
+```{r}
+plot(filomena,
+     as.Date("2021-01-11"),
+     xsize = 500,
+     ysize = 500,
+     band_name = c("swir1", "nir", "blue"))
+```
+
+## Index calculation {#index-calculation}
+
+### Definition
+
+A ***remote sensing index*** is an indicator that reveals the presence of a material in a satellite image. Indexes are the result of simple math applied to the bands of an image. The computation involves the bands with a distinctively high or low reflectance for the feature at hand. Over the years, researchers have developed a wide variety of indexes for different materials or processes which can be consulted [here](https://www.indexdatabase.de/db/i.php).
+
+For instance, the *Normalized Difference Snow Index* (NDSI) (see e.g., [@ndsi2004]) highlights the snow using the *green* and *shortwave-infrared* bands (around $1.5 \mu m$). The subtraction of this two bands gives a large number for those pixels depicting snow. The denominator ensures that values oscillate between $-1$ and $1$.
+
+$$ NDSI = \frac{Green - SWIR1}{Green + SWIR1}$$
+
+### Calculation
+
+In `R` we can create a function replicating the calculation of the *NDSI* index*:*
+
+```{r basic_ndsi, eval = FALSE}
+NDSI = function(green, swir1){
+  ndsi <- (green - swir1)/(green + swir1)
+  return(ndsi)
+}
+```
+
+`rsat` demands that these formulas use the band names, e.g. *red, green, blue, etc.* rather than band number. Band names and numbers differ among mission/satellites. For instance, the *green* corresponds to the band number $4$ in MODIS and Landsat-7, number $3$ in Landsat-8 and Sentinel-2, and number $6$ in Sentinel-3 (see [here](https://drive.google.com/file/d/1cSw4LaTLPlGBHmG8v7uwH54f-m9jZz1N/view?usp=sharing)). Using their names enables the use of a unique custom function across satellites/missions. `rsat` functions are responsible for linking the name to the corresponding band number according to the mission. Some widespread variables are built-in the package and the list of variables can be printed using;
+
+```{r basic_variables}
+show_variables()
+```
+
+To use the `NDSI()` function over the series of satellite images of the Iberian peninsula, use the function `derive()` as follows;
+
+```{r basic_derive, eval = FALSE}
+derive(filomena, product = "mod09ga", variable = "ndsi", fun = NDSI)
+```
+
+Again, you can plot the results without loading the scenes in `R`:
+
+```{r}
+plot(filomena,
+     as.Date("2021-01-11"),
+     variable = "ndsi",
+     xsize = 500,
+     ysize = 500,
+     zlim = c(0,1))
+```
+
+The *NDSI* index improves the separability between clouds and snow. However, there might be some difficulties distinguishing between them in certain parts of the image. As a solution, the next step removes cloud-covered pixels.
+
+## Cloud removal {#cloud-removal}
+
+Some data providers apply algorithms over their data-sets to detect the presence of clouds (Level 1/2 products). The analysis is part of the quality assessment done during pre-processing and the results are included in the ***Quality Assurance*** (*QA*) band of the image. In addition to cloud coverage, the band provides information about over-saturated or filled pixels. The information is packed in this band using the bit format.
+
+The function `cloud_mask()` interprets the *QA* band to obtain images showing the presence/absence of clouds. Its application is straightforward;
+
+```{r basic_cloud, eval=FALSE}
+cloud_mask(filomena)
+```
+
+To apply the cloud mask, we need to import the *NDSI* images into `R` using the `get_raster()` function. The values of the index must be truncated between $-1$ and $1$ to avoid values outside the feasible range (sun reflections on mirror-like surfaces, such as water, can lead to misleading results):
+
+```{r basic_ndsi_import, eval = FALSE}
+ndsi.img <- get_raster(filomena, "mod09ga", "ndsi")
+ndsi.img <- clamp(ndsi.img, -1, 1)
+```
+
+For every image in the `rtoi`, the `cloud_mask()` function generates a new image, called ***mask***, in which $1$s and $NA$s indicate clear and covered pixels. The function identifies the mission/program and applies the appropriate interpretation of bits to create the cloud mask. To import the result run;
+
+```{r basic_mask, eval = FALSE}
+clds.msk <- get_raster(filomena, "mod09ga", "CloudMask")
+```
+
+In MODIS, cloud-masks have a different resolution than the multispectral image. To adjust the resolution, *resample* the cloud mask to math the resolution of the *NDSI* images (`resample()`) using the nearest neighbor method (`"ngb"`):
+
+```{r basic_mask_resample}
+clds.msk <- resample(clds.msk, ndsi.img, method = "ngb")
+```
+
+To apply the cloud mask, we just multiply both series of pixels. Dot multiplications are performed pixel-wise. *NDSI* values multiplied by $1$ remain unaltered but those multiplied by $NA$ become missing:
+
+```{r basic_mask_apply}
+ndsi.filt <- ndsi.img * clds.msk
+names(ndsi.filt) <- names(clds.msk) # keep the names
+```
+
+As an attempt to obtain a ***composite image***, we extract maximum value of the *NDSI* for each pixel in the time series. Maximum value compositions are frequent in this field [@mvc1986]. Compositing is as a way to summarize the information in a time-lapse and ignore the presence of clouds:
+
+```{r basic_composite}
+snow.spain <- calc(ndsi.filt, max, na.rm = TRUE)
+```
+
+Represent the results:
+
+```{r basic_ndsi_map}
+tm_shape(snow.spain) + tm_raster(style = "cont")
+```
+
+The results are not completely satisfactory. The image shows unfilled gaps and this is because for those pixels there is no valid information along the time-series. The following vignette explains how to process images to fill gaps and smooth outliers.

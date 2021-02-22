@@ -9,11 +9,93 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+# Download
+
+**Downloading** implies acquiring and saving the list of satellite images in a `records` on your machine. This demo builds on the showcase from the search vignette and so, the first section reviews the most important code from the previous vignette. The second section explains how to obtain satellite images with `rsat`. The last section mentions how `rtoi`s are designed to favor collaborative efforts to save downloading time.
+
+------------------------------------------------------------------------
+
+## Review
+
+As a first step of `rsat`'s workflow is specifying the credentials for the the web services:
+
+```{r}
 library(rsat)
+set_credentials("rsat.package","UpnaSSG.2021")
 ```
+
+The showcase aims at assessing the effect of the [Snowstorm Filomena](https://en.wikipedia.org/wiki/2020%E2%80%9321_European_windstorm_season#Storm_Filomena) on the Iberian peninsula during January $10^{th}$ and $15^{th}$, $2021$. Hence, the *roi* and *toi* correspond to an `sf` polygon around the peninsula (`ip`) and a vector of dates (`toi`) covering the time-span:
+
+```{r search_review}
+ip <- st_sf(st_as_sfc(st_bbox(c(
+  xmin = -9.755859,
+  xmax =  4.746094,
+  ymin = 35.91557,
+  ymax = 44.02201 
+), crs = 4326)))
+toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+```
+
+The folders for the database and dataset can be created programmatically as follows:
+
+```{r}
+db.path <- "C:/database"
+ds.path <- "C:/datasets"
+dir.create(db.path)
+dir.create(ds.path)
+```
+
+The minimum information to generate a new `rtoi` is the `name`, a polygon of the *roi*, and the paths to database and dataset:
+
+```{r}
+filomena <- new_rtoi(name = "filomena",
+                     region = ip,
+                     db_path = db.path,
+                     rtoi_path = ds.path)
+```
+
+To limit the amount of data and processing times, the assessment is conducted over MODIS imagery. A total number of $24$ images are found for the region over the $6$-day period:
+
+```{r}
+sat_search(region = filomena, product = c("mod09ga"), dates = toi)
+```
+
+------------------------------------------------------------------------
+
+## Image acquisition
+
+Downloading is straightforward with the function `download()`. The simplest way to use this function is passing the `rtoi` as an input. Depending on the speed of the internet connection, the following instruction may take from few to several minutes to run:
+
+```{r download_rtoi}
+download(filomena)
+```
+
+The function saves the satellite images automatically in the database. The path to the database is provided by the `rtoi`:
+
+```{r download_database}
+list.files(get_database(filomena), recursive = TRUE)
+```
+
+Another way to download images is using a `records`. This variant requires defining a path for saving the resulting files (`out.dir`). The next line is equivalent to the `rtoi` version but using its `records` class object:
+
+```{r download_records}
+download(records(filomena), out.dir = get_database(filomena))
+```
+
+This second time, the message reveals that the function reads the database first and checks which images in the `rtoi` are already available in the destination path. If it is available, the function skips its download. This feature becomes handy when teams share a common database.
+
+------------------------------------------------------------------------
+
+## Collaborative `rtoi`s
+
+The `rtoi` leverages the collective use of the package by different working groups within the same or different institutions. Teams working on separate studies or `rtoi`s can refer to the same database increasing its size over time. The database can progressively turn into a local repository. Eventually, new `rtoi`s may find the requested information in the local database, skipping their download, and saving processing time. We encourage `rsat` users to develop common databases when possible on shared machines.
+
+![The `rtoi` architecture and its role in collaborative work](images/rtoi_collaborative.PNG "The rtoi architecture and its role in collaborative work"){width="348"}
+
+The following vignette explains how to customize the satellite images to turn raw data into valuable information for the aim of the analysis.

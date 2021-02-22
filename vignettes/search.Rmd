@@ -9,11 +9,299 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+# Search
+
+In `rsat`, **searching** means locating the satellite images of a desired data product for a given region and time of interest (referred to as *roi* and *toi* henceforth). Searching requires **getting access** to satellite imagery and **doing a search** (Section 2), i.e. finding, previewing, and filtering the available information for a *roi* and *toi*.
+
+------------------------------------------------------------------------
+
+## Getting access {#Getting-access}
+
+### Profiles
+
+`rsat` communicates with two public data archives through their *Application Programming Interfaces* (*APIs*). The registration in the following online portals is required to get a full access to satellite images with `rsat`;
+
+-   [EarthData](https://ers.cr.usgs.gov/register/): A repository of NASA's earth observation data-sets. More information about Earth Data can be found [here](https://earthdata.nasa.gov/earth-observation-data).
+-   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
+
+For convenience, try to use the same *username* and *password* for all of them. To satisfy the criteria in both web services make sure that the [*username* is $4$ characters long and includes a period, number or underscore]{.ul}. The [*password* must be $12$ character long and should include characters with at least one capital letter, and numbers]{.ul}.
+
+### Credentials management
+
+Two functions deal with the *usernames* and *passwords* for the various *APIs* considered in `rsat`; `set_credentials()` and `print_credentials()`*.* The former defines which `username` (first argument) and `password` (second argument) should be used for which `portal` (third argument):
+
+```{r credentials_individual}
 library(rsat)
+set_credentials("rsat.package","UpnaSSG.2021", "scihub")
+set_credentials("rsat.package","UpnaSSG.2021", "earthdata")
+```
+
+The latter prints the *usernames* and *passwords* saved during the current `R` session:
+
+```{r credentials_print}
+print_credentials()
+```
+
+If *usernames* and *passwords* are the same for all the portals, they can be set with a single instruction:
+
+```{r credentials_simultaneous}
+set_credentials("rsat.package","UpnaSSG.2021")
+```
+
+------------------------------------------------------------------------
+
+## Doing a search {#Doing-a-search}
+
+### Simple search
+
+#### Finding data records
+
+The function `sat_search()` performs the search of satellite imagery. One way to use this function is providing; (1) a geo-referenced polygon (`sf` class object), (2) the initial and final dates of the relevant time period (`date` vector), and (3) the name(s) of the satellite data product(s) (`character` vector). `rsat` gives access to several satellite data products. Among them, the *surface reflectance* products are frequently used in applied research studies. Their names are:
+
+-   for the Landsat program:
+
+    -   Landsat 4-5 mission: `"LANDSAT_TM_C1"`
+    -   Landsat-7 mission: `"LANDSAT_ETM_C1"`
+    -   Landsat-8 mission: `"LANDSAT_8_C1"`
+
+-   for the MODIS program:
+
+    -   Terra satellite: `"mod09ga"`
+    -   Aqua satellite: `"myd09ga"`
+
+-   for the Sentinel program:
+
+    -   Sentinel-2 mission: `"S2MSI2A"`
+
+    -   Sentinel-3 mission: `"SY_2_SYN___"`
+
+More details about other products and their names can be found [here](https://www.usgs.gov/core-science-systems/nli/landsat/product-information), [here](https://modis.gsfc.nasa.gov/data/dataprod/), and [here](https://sentinel.esa.int/web/sentinel/missions) for Landsat, MODIS, and Sentinel respectively. The package can search and download other data than multispectral images (e.g., radar) although this goes beyond the scope of the current status of the package.
+
+The following code looks for satellite images (*surface reflectance*) of a region in norther Spain captured during the first half of January $2021$, captured by MODIS:
+
+```{r records_search}
+data("ex.navarre")
+toi <- as.Date("2021-01-01") + 0:15
+rcd <- sat_search(region = ex.navarre,
+                  product = c("mod09ga"),
+                  dates = toi)
+```
+
+A search can involve several products simultaneously. In addition to MODIS, the instruction below also considers images from Sentinel-3:
+
+```{r records_search_multiple}
+rcd <- sat_search(region = ex.navarre,
+                  product = c("mod09ga", "SY_2_SYN___"),
+                  dates = toi)
+class(rcd)
+```
+
+The output from `sat_search()` is a `records` object. This object stores the search results metadata from the various *APIs* in standardized manner. A `records` works as a vector and every element of the vector refers to an image. Information about an image is saved in the following *slots*:
+
+-   sat (`character`): name of the satellite (e.g., Landsat, MODIS, Sentinel-2, Sentinel-3, etc.).
+-   name (`character`): name of the file.
+-   date (`Date`): capturing date of the image.
+-   product (`character`): name of the data product.
+-   path (`numeric`): horizontal location of the tile (MODIS/Landsat only).
+-   row (`numeric`): vertical location of the tile (MODIS/Landsat only).
+-   tileid (`character`): tile identification number (Sentinel only).
+-   download (`character`): download URL.
+-   file_path (`character`): the relative path for local store of the image.
+-   preview (`character`): preview URL.
+-   api_name (`character`): name of the API internally used by `rsat`.
+-   order (`boolean`): if `TRUE`, the image needs to be ordered before the download.
+-   extent_crs (`extent_crs`): coordinate reference system of the preview.
+
+You can extract the most relevant *slots* from a `records` using specific functions such as `sat_name()`, `names()`, or `dates()`:
+
+```{r records_slots}
+unique(sat_name(rcd))
+names(rcd)[1]
+unique(dates(rcd))
+```
+
+### Filtering search results
+
+As mentioned earlier, a `records` object behaves like a vector. It works with common `R` methods such as `c()`, `[]`, `length()`, `subset()`, or `unique()`. These methods allow to filter and tinker with the search results. Selecting and filtering satellite images is specially powerful when combined with visualization (see below). Discarding useless images at this stage of the process can save memory space and processing time.
+
+For instance, the code below counts the results found from each mission:
+
+```{r records_filter_basic}
+mod.rcd <- subset(rcd, "Modis", "sat")
+sn3.rcd <- subset(rcd, "Sentinel-3", "sat")
+length(mod.rcd)
+length(sn3.rcd)
+```
+
+The first, second, and third argument in `subset()` correspond to, (1) the `records` object, (2) the value of the slot we are interested in, and (3) the name of the slot used for subsetting. The next lines of code show a more advance filtering example where a new `records` is built from images captured by both missions on the same dates:
+
+```{r records_filter_advanced}
+mod.mtch <- mod.rcd[dates(mod.rcd) %in% dates(sn3.rcd)]
+sn3.mtch <- sn3.rcd[dates(sn3.rcd) %in% dates(mod.rcd)]
+rcd <- c(mod.mtch, sn3.mtch)
+```
+
+A `records` can be coerced to a `data.frame` with `as.data.frame()` and transformed back with `as.records()`. The rows and columns of the `data.frame` correspond to the satellite images and their slots respectively:
+
+```{r records_dataframe}
+rcd.df <- as.data.frame(rcd)
+dim(rcd.df)
+names(rcd.df)
+# rcd <- as.records(rcd.df)
+# class(rcd)
+```
+
+### Previewing search results
+
+The `rsat` package provides a `plot()` method for satellite `records`. It displays a preview of the satellite images, i.e a low-resolution versions of the satellite images. Previewing can help to decide whether the actual image, much heavier than the preview, is worth downloading.
+
+Cloudy images are frequently useless and they can be removed from the `records` object using vector-like methods (see previous section). For instance, the code below displays the first $10$ records and, based on visual evaluation of cloud coverage, it removes the $9^{th}$ image from the `records`:
+
+```{r}
+prview <- plot(rcd[1:12])
+prview
+rcd <- rcd[-9]
+```
+
+Sometimes, it might be difficult to spot the location of the region of interest on the previews. The *roi* polygon can be passed to the `plot()` function using the `region` argument. Additionally, the `plot()` method in `rsat` is a wrapper function of `tmap` and it accepts other inputs from `tm_raster()` and `tm_polygon()`. These arguments should be preceded by the `tm.raster` and `tm.polygon` identifiers.
+
+The instruction below leverages the preview to its fullest. It shows the *RGB* satellite image preview with the *roi* superposed (), with a red border color (`tm.polygon.region.border.col = "red"`) and no fill (`tm.polygon.region.alpha = 0`). The compass (`compass.rm = TRUE`) and scale bar (`scale.bar.rm = TRUE`) are removed:
+
+```{r}
+plot(rcd[1:6],
+     region = ex.navarre,
+     tm.polygon.region.border.col = "red",
+     tm.polygon.region.alpha = 0,
+     compass.rm = T,
+     scale.bar.rm = T)
+```
+
+------------------------------------------------------------------------
+
+## Advanced search
+
+### The `rtoi`
+
+Sometimes, regions are located at the intersection of images or they are too large to fit in a single scene. In these situations, working with separate files might be cumbersome. As a solution, `rsat` provides the `rtoi` class object. An `rtoi` is a project or study-case which is associated with a *region and time of interest* (hence its name). An `rtoi` consists of the following elements:
+
+1.  `name`: a project identifier.
+2.  `region`: a georeferenced polygon (`sf` class object).
+3.  `db_path`: the path to a database, i.e. a folder for raw satellite images which have generic purposes.
+4.  `rtoi_path`: the path to a dataset, i.e. a folder for customized/processed.
+5.  `records`: a vector of satellite records relevant for the study.
+
+As a showcase, we'll assess the effects of the [Storm Filomena](https://en.wikipedia.org/wiki/2020%E2%80%9321_European_windstorm_season#Storm_Filomena) over the Iberian peninsula in terms of snow coverage. The storm was an extreme meteorological event (largest since 1971, according to [*AEMET*](http://www.aemet.es/en/portada)). The storm swept the peninsula from January $6^{th}$ and $11^{th}$, $2021$. The code below generates a bounding box around the peninsula (`ip`) and limits the study period (`toi`) to the immediate dates after the storm:
+
+```{r roi_toi}
+ip <- st_sf(st_as_sfc(st_bbox(c(
+  xmin = -9.755859,
+  xmax =  4.746094,
+  ymin = 35.91557,
+  ymax = 44.02201 
+), crs = 4326)))
+
+toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+```
+
+A new `rtoi` requires at least the elements from $1$ to $4$. The following lines generate programmatically the database and dataset folders:
+
+```{r database_dataset}
+db.path <- "C:/database"
+ds.path <- "C:/datasets"
+dir.create(db.path)
+dir.create(ds.path)
+```
+
+The function `new_rtoi()` builds a new `rtoi` from the elements mentioned above:
+
+```{r rtoi_search}
+filomena <- new_rtoi(name = "filomena",
+                     region = ip,
+                     db_path = db.path,
+                     rtoi_path = ds.path)
+```
+
+The `new_rtoi()` writes automatically a new file which is a copy of the `R` object:
+
+```{r rtoi_file}
+rtoi.file <- list.files(ds.path,
+                        pattern = "*.rtoi$",
+                        full.name = TRUE,
+                        recursive = TRUE)
+rtoi.file
+```
+
+This file is updated whenever the `rtoi` is modified. Thus, if the `R` session accidentally breaks or closes, the last version of the `rtoi` is saved in you hard drive and can be loaded with `read_rtoi()`:
+
+```{r rtoi_read}
+filomena <- read_rtoi(file.path(ds.path, "filomena"))
+```
+
+Printing the `rtoi` provides a summary about the region and time of interest, a summary of the relevant `records` for the analysis, and the paths to the database and the dataset:
+
+```{r rtoi_print}
+print(filomena)
+```
+
+### Search with an `rtoi`
+
+You can use an `rtoi` to search satellite images with `sat_search()`:
+
+```{r rtoi_search}
+toi <- as.Date("2021-01-10") + 0:5
+sat_search(region = filomena,
+           product = c("mod09ga", "SY_2_SYN___"),
+           dates = toi)
+```
+
+An `rtoi` is an S6 class object, so it behaves like any object in other programming languages. That is, if the `rtoi` is passed as an argument and modifies the `rtoi`, the object in the main environment is also updated. The function `sat_search()` places the resulting `records` into the `rtoi`:
+
+```{r rtoi_r_update}
+print(filomena)
+```
+
+Since the `rtoi` has been modified, the `rtoi.file` has also been updated:
+
+```{r rtoi_file_update}
+file.info(rtoi.file)$ctime # creation time
+file.info(rtoi.file)$mtime # modification time
+```
+
+To extract the `records` from the `rtoi` use `records()`:
+
+```{r rtoi_records}
+rcds <- records(filomena)
+class(rcds)
+```
+
+If you want to apply further filters on the results, as shown in the previous section, you need to extract the `records` from the `rtoi` first and then apply `c()`, `[]`, `subset()`, and `length()` at your convenience.
+
+### Displaying results
+
+There is a `plot()` method too for `rtoi`s but it is more sophisticated. There is a `"preview"` mode that shows the low-resolution *RGB* version of the satellite images. The plot binds together the satellite images available for a given date and `roi`, and the function allows other arguments, such as `product` or `dates`, to better select the information being shown:
+
+```{r rtoi_preview}
+plot(filomena,
+     "preview",
+     product = "mod09ga",
+     dates = "2021-01-10")
+```
+
+`rtoi`s are designed save information from several missions. The `mode = "dates"` prints a calendar indicating the availability of satellite images from one or multiple missions during the time of interest:
+
+```{r rtoi_calendar}
+plot(filomena, "dates")
+```
+
+The following vignette explains how to download the satellite images and the role of the *database* when managing multiple `rtoi`s. To reduce the processing times and memory space, the showcase is restricted to MODIS images from here onward:
+
+```{r rtoi_lightening}
+rcd <- records(filomena)
+records(filomena) <- subset(rcd, "mod09ga", "product")
 ```
