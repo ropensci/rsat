@@ -227,14 +227,11 @@ filomena <- new_rtoi(name = "filomena",
                      rtoi_path = ds.path)
 ```
 
-The `new_rtoi()` writes automatically a new file which is a copy of the `R` object:
+The `new_rtoi()` function writes a set of files representing a copy of the `R` object (filomena.rtoi) and a shapefile of the *roi* (region):
 
 ```{r rtoi_file}
-rtoi.file <- list.files(ds.path,
-                        pattern = "*.rtoi$",
-                        full.name = TRUE,
-                        recursive = TRUE)
-rtoi.file
+rtoi.files <- list.files(file.path(ds.path, "filomena"), full.name = TRUE)
+rtoi.files
 ```
 
 This file is updated whenever the `rtoi` is modified. Thus, if the `R` session accidentally breaks or closes, the last version of the `rtoi` is saved in you hard drive and can be loaded with `read_rtoi()`:
@@ -269,8 +266,8 @@ print(filomena)
 Since the `rtoi` has been modified, the `rtoi.file` has also been updated:
 
 ```{r rtoi_file_update}
-file.info(rtoi.file)$ctime # creation time
-file.info(rtoi.file)$mtime # modification time
+file.info(rtoi.files[1])$ctime # creation time
+file.info(rtoi.files[1])$mtime # modification time
 ```
 
 To extract the `records` from the `rtoi` use `records()`:
@@ -290,7 +287,7 @@ There is a `plot()` method too for `rtoi`s but it is more sophisticated. There i
 plot(filomena,
      "preview",
      product = "mod09ga",
-     dates = "2021-01-10")
+     dates = "2021-01-11")
 ```
 
 `rtoi`s are designed save information from several missions. The `mode = "dates"` prints a calendar indicating the availability of satellite images from one or multiple missions during the time of interest:

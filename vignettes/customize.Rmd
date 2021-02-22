@@ -84,10 +84,10 @@ mosaic(filomena)
 
 The cropping option can be disabled with the argument `warp = NULL`. Here, cropping is appropriate since images extend far beyond our region of interest.
 
-The results are saved in the `rtoi_path` inside a sub-folder called *mosaic*. This is the first time in the workflow that the `rtoi_path` is being used. The reason is that mosaicking is the first transformation applied to the raw images to better fit the particular needs of the analysis. The outcomes from the mosaic are compressed (*zip)* to minimize their size:
+The results are saved under `rtoi_path` inside Modis/mod09ga/mosaic (i.e. *constellation_name/data_product_name/mosaic*). This is the first time in the workflow that the `rtoi_path` is being used. The reason is that mosaicking is the first transformation applied to the raw images to better fit the particular needs of the analysis. The outcomes from the mosaic are compressed (*zip)* to minimize their size:
 
 ```{r, eval=FALSE}
-list.files(rtoi_path(filomena), full.names = TRUE, recursive = TRUE)
+list.files(file.path(ds.path, "filomena", "Modis/mod09ga/mosaic"), full.name = TRUE)
 ```
 
 At this point of the workflow, *RGB* representations of the satellite images can be displayed on the fly, without loading the entire image in `R`. By default, the `plot()` method for an `rtoi` displays the mosaicked images when the object is not followed by the words `"preview"` or `"date"` (see other types of plots for an `rtoi` in the search vignette):
@@ -153,7 +153,7 @@ plot(filomena,
      variable = "ndsi",
      xsize = 500,
      ysize = 500,
-     zlim = c(0,1))
+     zlim = c(-1,1))
 ```
 
 The *NDSI* index improves the separability between clouds and snow. However, there might be some difficulties distinguishing between them in certain parts of the image. As a solution, the next step removes cloud-covered pixels.
@@ -203,6 +203,7 @@ snow.spain <- calc(ndsi.filt, max, na.rm = TRUE)
 Represent the results:
 
 ```{r basic_ndsi_map}
+library(tmap)
 tm_shape(snow.spain) + tm_raster(style = "cont")
 ```
 
