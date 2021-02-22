@@ -700,7 +700,7 @@ setMethod("read_rtoi",
               names(df.rcds)<-rcds[[1]]
               records(newobj)<-as.records(df.rcds)
             }else{
-              records(newobj)<-new_record()
+              records(newobj)<-new("records")
             }
 
 
