@@ -619,7 +619,8 @@ setMethod("write_rtoi",
             df<-as.data.frame(records(x))
             cat(paste0(names(df),collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
             if(nrow(df)>0){
-              df$date<-as.character(df$date)
+              #df$date<-as.character(df$date) # MMTU
+              df$date <- as.character(dates(records(x)))
               for(i in 1:nrow(df)){
                 cat(paste0(df[i,],collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
               }
