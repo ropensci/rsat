@@ -20,6 +20,7 @@ setMethod("list_data",
             allfiles<-list.files(get_dir(x),full.names = TRUE)
             allfiles<-gsub("\\","/",allfiles,fixed=TRUE)
             allfiles<-allfiles[!grepl("\\.rtoi$",allfiles)]
+            allfiles<-allfiles[!grepl("region$",allfiles)]
 
             #satellite
            allvariables<-unlist(lapply(allfiles, function(af){
