@@ -236,7 +236,7 @@ setMethod("as.data.frame",
             slots<-slots[!slots%in%c("extent_crs")]
             for(s in slots[-1]){
               if(s=="date"){
-                df[s]<-as.Date(character())
+                df[s]<-dates(x)
               }else{
                 df[s]<-slot(x, s)
               }
@@ -538,7 +538,7 @@ setMethod(f="subset",
 setMethod(f="unique",
           signature = "records",
           definition = function(x){
-            return(x[unique(as.numeric(as.factor(x@download)))])
+            return(x[which(names(x)%in%unique(names(x)))])
           })
 
 #' Extract the url of the preview
