@@ -306,9 +306,9 @@ setMethod(f="[", signature="records",
             return(x)
           })
 
-# operator ([<-)
-#' @rdname sub-records-ANY-ANY-method
-#' @aliases '[<-',rtoi,records
+#' Extract or replace parts of an object
+#' @rdname sub-records-ANY-ANY-ANY-method
+#' @aliases '[<-',records,records
 setReplaceMethod(f="[",
                  signature="records",
                  definition=function(x, i, value) {
