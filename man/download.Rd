@@ -6,7 +6,7 @@
 \alias{download,rtoi}
 \alias{download,records-method}
 \alias{download,records}
-\title{Downloads the images from a records/rtoi object}
+\title{Download the images from a \code{records} or an \code{rtoi} object}
 \usage{
 download(x, ...)
 
@@ -15,17 +15,20 @@ download(x, ...)
 \S4method{download}{records}(x, out.dir, verbose = FALSE, ...)
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments.}
 
-\item{db_path}{path where the images will be stored when using an rtoi.
-By default, the path is defined by the rtoi.}
+\item{db_path}{path to the database. By default, the path is defined by the \code{rtoi}.}
 
-\item{out.dir}{path where the images will be stored when using a records.}
+\item{out.dir}{path where the outputs are stored when using a \code{records}.}
+
+\item{verbose}{logical argument. If \code{TRUE}, the function prints the
+running steps and warnings.}
 }
 \description{
-Downloads the images from a records/rtoi object
+The function saves the raw images in the database or the specified directory.
+It skips the images that already exist in the database or directory.
 }
 \examples{
 \dontrun{

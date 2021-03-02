@@ -2,32 +2,38 @@
 % Please edit documentation in R/rtoi.R
 \name{new_rtoi}
 \alias{new_rtoi}
-\alias{new_rtoi,character,sf,character,character,missing-method}
+\alias{new_rtoi,character,sf,character,character,missing,missing-method}
 \alias{new_rtoi,character,sf,character,character,missing}
-\alias{new_rtoi,character,sf,character,character,records-method}
+\alias{new_rtoi,character,sf,character,character,records,missing-method}
 \alias{character,sf,character,character,records}
-\title{Creates a new rtoi object}
+\alias{new_rtoi,character,sf,character,character,records,numeric-method}
+\alias{character,sf,character,character,records,size}
+\title{Creates a new \code{rtoi} object}
 \usage{
-new_rtoi(name, region, rtoi_path, db_path, records)
+new_rtoi(name, region, rtoi_path, db_path, records, size)
 
-\S4method{new_rtoi}{character,sf,character,character,missing}(name, region, rtoi_path, db_path)
+\S4method{new_rtoi}{character,sf,character,character,missing,missing}(name, region, rtoi_path, db_path)
 
-\S4method{new_rtoi}{character,sf,character,character,records}(name, region, rtoi_path, db_path, records)
+\S4method{new_rtoi}{character,sf,character,character,records,missing}(name, region, rtoi_path, db_path, records)
+
+\S4method{new_rtoi}{character,sf,character,character,records,numeric}(name, region, rtoi_path, db_path, records, size)
 }
 \arguments{
 \item{name}{the name of the region of interest.}
 
 \item{region}{an sf object.}
 
-\item{rtoi_path}{the path to the rtoi folder.}
+\item{rtoi_path}{the path to the \code{rtoi} folder.}
 
 \item{db_path}{the path to the database.}
 
 \item{records}{a records object.}
+
+\item{size}{the size of \code{rtoi} folder. By default, the size is computed from \code{rtoi_path}.}
 }
 \value{
-the reference of the rtoi object
+the reference of the \code{rtoi} object
 }
 \description{
-Creates a new rtoi object
+Creates a new \code{rtoi} object
 }

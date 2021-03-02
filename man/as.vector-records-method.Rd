@@ -2,7 +2,7 @@
 % Please edit documentation in R/records.R
 \name{as.vector,records-method}
 \alias{as.vector,records-method}
-\title{Creates vector}
+\title{Create vector}
 \usage{
 \S4method{as.vector}{records}(x)
 }
@@ -10,5 +10,5 @@
 \item{x}{records object.}
 }
 \description{
-Creates a vector from x.
+Create a vector from \code{x}.
 }

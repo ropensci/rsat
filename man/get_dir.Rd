@@ -8,8 +8,10 @@
 \alias{get_dir,rtoi-method}
 \alias{get_dir,rtoi}
 \alias{get_dir<-}
-\alias{get_dir,rtoi,character}
-\title{Gets the file path of a records or an rtoi}
+\alias{get_dir,rtoi,character-generic}
+\alias{get_dir<-,rtoi,character-method}
+\alias{get_dir,rtoi,character-method}
+\title{Get the file path of a \code{records} or an \code{rtoi}}
 \usage{
 get_dir(x)
 
@@ -20,12 +22,14 @@ get_dir(x)
 \S4method{get_dir}{rtoi}(x)
 
 get_dir(x) <- value
+
+\S4method{get_dir}{rtoi,character}(x) <- value
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{value}{character argument. The new directory of x.}
+\item{value}{character argument. The new directory of \code{x}.}
 }
 \description{
-Gets the file path of a records or an rtoi
+Get the file path of a \code{records} or an \code{rtoi}
 }

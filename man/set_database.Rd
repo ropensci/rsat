@@ -4,16 +4,7 @@
 \alias{set_database}
 \alias{set_database,rtoi-method}
 \alias{set_database,rtoi}
-\title{#' @export
-setGeneric("get_database<-",function(x,value)  standardGeneric("get_database<-"))
-setMethod("get_database<-",
-          signature(x = "rtoi",value="character"),
-          function(x,value){
-            x$db_path<-value
-            write_rtoi(x)
-            return(x)
-          })
-set database path}
+\title{set database path}
 \usage{
 set_database(x, value)
 

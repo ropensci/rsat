@@ -6,7 +6,7 @@
 \alias{sat_name,records}
 \alias{sat_name,rtoi-method}
 \alias{sat_name,rtoi}
-\title{Gets the name of the satellite from a records or an rtoi}
+\title{Get the name of the satellite(s) from a \code{records} or an \code{rtoi}}
 \usage{
 sat_name(x)
 
@@ -15,8 +15,8 @@ sat_name(x)
 \S4method{sat_name}{rtoi}(x)
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 }
 \description{
-Gets the name of the satellite from a records or an rtoi
+Get the name of the satellite(s) from a \code{records} or an \code{rtoi}
 }

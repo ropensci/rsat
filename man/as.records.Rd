@@ -4,15 +4,15 @@
 \alias{as.records}
 \alias{as.records,data.frame-method}
 \alias{as.records,data.frame}
-\title{Creates records object from data frame}
+\title{Create records object from data frame}
 \usage{
 as.records(x)
 
 \S4method{as.records}{data.frame}(x)
 }
 \arguments{
-\item{x}{data frame with columns representing the slots of records.}
+\item{x}{a \code{data.frame} with columns representing the slots of records.}
 }
 \description{
-Creates records object from data frame
+Create records object from data frame
 }

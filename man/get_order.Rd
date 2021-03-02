@@ -5,7 +5,7 @@
 \alias{get_order<-}
 \alias{get_order<-,records-method}
 \alias{get_order<-,records}
-\title{Gets the slot called order from a records or an rtoi}
+\title{Get the slot called order from a \code{records} or an \code{rtoi}}
 \usage{
 get_order(x)
 
@@ -14,10 +14,10 @@ get_order(x) <- value
 \S4method{get_order}{records}(x) <- value
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{value}{logical argument. The new value for x.}
+\item{value}{logical argument. The new value for \code{x}.}
 }
 \description{
-Gets the slot called order from a records or an rtoi
+Get the slot called order from a \code{records} or an \code{rtoi}
 }

@@ -6,7 +6,7 @@
 \alias{names,rtoi}
 \alias{names<-,rtoi,character-method}
 \alias{names<-,rtoi,character}
-\title{Gets the name of the object}
+\title{Get the name of the object}
 \usage{
 \S4method{names}{records}(x)
 
@@ -15,15 +15,15 @@
 \S4method{names}{rtoi,character}(x) <- value
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{value}{character argument. The new value for x.}
+\item{value}{character argument. The new value for \code{x}.}
 }
 \value{
-a character vector containing the name of all the names in x.
+a character vector containing the name of all the names in \code{x}.
 }
 \description{
-Functions to get or set the names of an object.
+A function to get or set the names of an object.
 }
 \examples{
 \dontrun{

@@ -3,29 +3,28 @@
 \docType{class}
 \name{rtoi-class}
 \alias{rtoi-class}
-\title{Region and Time Of Interest (rtoi)}
+\title{Region and Time Of Interest (\code{rtoi})}
 \description{
-It is a proxy object to store the metadata about the satellite imagery
-that covers a spatial region over a time period. Images can come from
-multiple satellite programs and its purpose is to help managing
+It is a proxy object to store metadata about satellite imagery
+covering a spatial region over a time period. Images can come from
+multiple missions/programs and its purpose is to help managing
 heterogeneous datasets.
 }
 \details{
 An \code{rtoi} object manages two main folders called database and rtoi.
 The database is meant to work as a local, generic, and organized archive
-of raw satellite images. When the function \code{download} is called
-with an rtoi, images go to the database.
-In contrast, the rtoi folder contains just the relevant information for
-a particular region and time of interest. It contains a \code{region.rtoi}
-file which saves all the metadata about that region/time of interest
-and satellite imagery available. Also, when the function \code{mosaic} is
-run, the relevant images from the database are cropped, mosaicked, and saved
-in the rtoi folder.
+of raw satellite data retrieved with the \code{download()} function.
+The rtoi folder contains processed information for
+a particular region and time of interest. When \code{mosaic()}
+is called, the function crops and mosaics the relevant raw images from
+the database and saves the results in the rtoi folder. This folder also
+contains a \code{region.rtoi} file which saves metadata about the
+region/time of interest and satellite imagery available.
 }
 \section{Fields}{
 
 \describe{
-\item{\code{name}}{a character with the name of the region of interest}
+\item{\code{name}}{a character with the name of the region of interest.}
 
 \item{\code{rtoi_path}}{a character with the path to the rtoi folder.}
 

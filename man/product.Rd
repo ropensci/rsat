@@ -6,7 +6,7 @@
 \alias{product,records}
 \alias{product,rtoi-method}
 \alias{product,rtoi}
-\title{Gets the name of the product from a records or an rtoi}
+\title{Get the name of the product from a \code{records} or an \code{rtoi}}
 \usage{
 product(x)
 
@@ -15,8 +15,8 @@ product(x)
 \S4method{product}{rtoi}(x)
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 }
 \description{
-Gets the name of the product from a records or an rtoi
+Get the name of the product from a \code{records} or an \code{rtoi}
 }

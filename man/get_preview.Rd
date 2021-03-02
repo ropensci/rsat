@@ -5,7 +5,7 @@
 \alias{get_preview,records-method}
 \alias{get_preview,records}
 \alias{get_download,records-method}
-\title{Extracts the url of the preview}
+\title{Extract the url of the preview}
 \usage{
 get_preview(x)
 
@@ -14,8 +14,8 @@ get_preview(x)
 \S4method{get_download}{records}(x)
 }
 \arguments{
-\item{x}{a records object}
+\item{x}{a \code{records} object.}
 }
 \description{
-get_preview returns a vector of character with the url for previewing the recods.
+It returns a character vector of urls to preview the data records.
 }

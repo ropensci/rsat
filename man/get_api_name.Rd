@@ -4,18 +4,18 @@
 \alias{get_api_name}
 \alias{get_api_name,records-method}
 \alias{get_api_name,records}
-\title{Gets the api name of the records}
+\title{Get the API name of a \code{records}}
 \usage{
 get_api_name(x)
 
 \S4method{get_api_name}{records}(x)
 }
 \arguments{
-\item{x}{a records object.}
+\item{x}{a \code{records} object.}
 }
 \value{
-a character vector containing the api name of al the elements in x.
+a character vector containing the API names of the elements in \code{x}.
 }
 \description{
-Functions to get or set the api names of an object.
+A function to get or set the api names of an object.
 }

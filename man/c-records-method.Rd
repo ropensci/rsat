@@ -4,14 +4,14 @@
 \alias{c,extent_crs-method}
 \alias{c,extent_crs}
 \alias{c,records-method}
-\title{Combines values into a vector or list}
+\title{Combine values into a vector or a list}
 \usage{
 \S4method{c}{extent_crs}(x, ...)
 
 \S4method{c}{records}(x, ...)
 }
 \arguments{
-\item{x}{records object.}
+\item{x}{a \code{records} object.}
 
 \item{...}{additional arguments.}
 }

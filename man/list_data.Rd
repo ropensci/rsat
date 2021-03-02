@@ -2,16 +2,63 @@
 % Please edit documentation in R/list_data.R
 \name{list_data}
 \alias{list_data}
-\title{Lists all the variables in rtoi}
+\alias{list_data,rtoi-method}
+\alias{list_data,rtoi}
+\title{List the information available for an \code{rtoi}}
 \usage{
 list_data(x, ...)
+
+\S4method{list_data}{rtoi}(x, ...)
 }
 \arguments{
-\item{...}{}
+\item{x}{an \code{rtoi} object.}
+
+\item{...}{additional arguments.}
 }
 \value{
-
+a \code{data.frame} of the available information.
 }
 \description{
-Lists all the variables in rtoi
+Displays the existing products, bands, and processing levels for a given \code{rtoi}
+}
+\examples{
+\dontrun{
+# set-up the region of interest
+ip <- st_sf(st_as_sfc(st_bbox(c(xmin = -9.755859,
+                                xmax =  4.746094,
+                                ymin = 35.91557,
+                                ymax = 44.02201),
+                              crs = 4326)))
+# set-up the time of interest
+toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+
+# set-up the folders
+db.path <- "C:/database"
+ds.path <- "C:/datasets"
+dir.create(db.path)
+dir.create(ds.path)
+
+# set-up rtoi
+filomena <- new_rtoi(name = "filomena",
+                     region = ip,
+                     db_path = db.path,
+                     rtoi_path = ds.path)
+
+# search the images
+sat_search(region = filomena,
+           product = "mod09ga",
+           dates = toi)
+
+# download into the database
+download(filomena)
+
+# print empty rtoi
+list_data(filomena)
+
+# mosaic and crop the images
+mosaic(filomena)
+
+# print mosaicked bands
+list_data(filomena)
+}
 }

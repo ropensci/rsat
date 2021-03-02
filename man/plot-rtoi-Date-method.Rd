@@ -6,9 +6,20 @@
 \alias{plot,character}
 \alias{plot,records,ANY-method}
 \alias{plot,records}
-\title{Plots an rtoi object}
+\alias{plot,rtoi,missing-method}
+\alias{plot,rtoi,missing}
+\title{Plot an \code{rtoi} object}
 \usage{
-\S4method{plot}{rtoi,Date}(x, y, ..., variable = "rgb", verbose = FALSE, xsize = 250, ysize = 250)
+\S4method{plot}{rtoi,Date}(
+  x,
+  y,
+  ...,
+  variable = "rgb",
+  band_name = c("red", "green", "blue"),
+  verbose = FALSE,
+  xsize = 250,
+  ysize = 250
+)
 
 \S4method{plot}{rtoi,character}(
   x,
@@ -23,24 +34,41 @@
 )
 
 \S4method{plot}{records,ANY}(x, y, verbose = FALSE, ...)
+
+\S4method{plot}{rtoi,missing}(x, y, verbose = FALSE, ...)
 }
 \arguments{
-\item{x}{an rtoi}
+\item{x}{an \code{rtoi} or \code{records}.}
 
-\item{y}{character argument. The product name to be plotted.}
+\item{y}{character argument. The valid values are "dates", "preview", or "view".}
 
 \item{...}{additional arguments.}
+
+\item{variable}{character argument. The variable to be plotted. By default, a color (RGB) variable is selected .}
+
+\item{band_name}{character vector argument. Enables false color plots. By default, usual bands are selected \code{c("red","green","blue")}.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
 
-\item{xsize}{the size of x dimension for subsetting.}
+\item{xsize}{the number of samples on the horizontal axis.}
 
-\item{ysize}{the size of y dimension for subsetting.}
+\item{ysize}{the number of samples on the vertical axis.}
+
+\item{product}{character argument. The product name to be plotted.}
+
+\item{dates}{date vector argument. The dates to be plotted.}
 }
 \value{
-tmap plot.
+\code{tmap} plot.
 }
 \description{
-Plot (a map of) the values of an rtoi object.
+Plot (a map of) the values of an \code{rtoi} or \code{records} object.
+}
+\examples{
+\dontrun{
+# plotting records
+a<-5+5
+
+}
 }

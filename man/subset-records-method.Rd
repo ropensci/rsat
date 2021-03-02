@@ -2,17 +2,17 @@
 % Please edit documentation in R/records.R
 \name{subset,records-method}
 \alias{subset,records-method}
-\title{Filters the satellite records of a records or an rtoi object}
+\title{Filter the satellite records of a \code{records} or an \code{rtoi}}
 \usage{
 \S4method{subset}{records}(x, subset, select)
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
 \item{subset}{an R object with the value for subsetting.}
 
 \item{select}{character argument indicating the name of the slot.}
 }
 \description{
-Filters the satellite records of a records or an rtoi object
+Filter the satellite records of a \code{records} or an \code{rtoi}
 }

@@ -4,7 +4,7 @@
 \alias{derive}
 \alias{derive,rtoi,character-method}
 \alias{derive,rtoi,character}
-\title{Computes a remote sensing index from an rtoi}
+\title{Computes a remote sensing index from an \code{rtoi}}
 \usage{
 derive(x, variable, ...)
 
@@ -20,14 +20,15 @@ derive(x, variable, ...)
 )
 }
 \arguments{
-\item{x}{rtoi object from which the index is computed.}
+\item{x}{an \code{rtoi} as the source of images.}
 
-\item{variable}{the name of the variable. Run \code{show_variables()}
-to check the variables supported by the package.}
+\item{variable}{the name of the variable.}
 
 \item{...}{additional argument for variable deriving}
 
-\item{dates}{a vector with the dates being considered (optional).}
+\item{product}{the name of the product from which the index is computed.}
+
+\item{dates}{a vector of dates being considered (optional).}
 
 \item{fun}{a \code{function} that computes the remote sensing index.}
 
@@ -36,15 +37,28 @@ images with the same name.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
-
-\item{products}{the name of the dataset from which the index is computed.}
 }
 \value{
 nothing. The derived variables will be save in the hard drive.
 Use get_stars to get the variables.
 }
 \description{
-Computes a remote sensing index from an rtoi
+Combines the bands from multispectral satellite products through simple
+math to highlight a process or material in the image.
+}
+\details{
+The package contemplates some pre-defined indexes, which can be displayed
+using the \code{show_variables()} function. To compute one of those, write
+its name in the \code{variable} argument. Custom indexes can be
+supplied through the \code{fun} argument. The function should use the
+name of the bands as inputs (red, green, blue, nir, swir1, or swir2) and
+return a single element. For instance, the Normalized Difference Snow
+Index would be;
+
+NDSI = function(green, swir1){
+ndsi <- (green - swir1)/(green + swir1)
+return(ndsi)
+}
 }
 \examples{
 \dontrun{

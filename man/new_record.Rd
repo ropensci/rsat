@@ -6,7 +6,7 @@
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,extent_crs}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing-method}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing}
-\title{Creates a new records object}
+\title{Create a new \code{records} object}
 \usage{
 new_record(
   sat,
@@ -58,9 +58,9 @@ new_record(
 \arguments{
 \item{sat}{the name of the satellite to which the record belongs.}
 
-\item{name}{the name of the satellite record.}
+\item{name}{the name of the record.}
 
-\item{date}{the date of the satellite record.}
+\item{date}{the date of the record.}
 
 \item{product}{the product.}
 
@@ -68,9 +68,9 @@ new_record(
 
 \item{file_path}{the saving directory for the satellite record.}
 
-\item{path}{the path of the tile system.}
+\item{path}{the path of the tiling system.}
 
-\item{row}{the row of the tile system.}
+\item{row}{the row of the tiling system.}
 
 \item{tileid}{the tile id.}
 
@@ -86,7 +86,7 @@ new_record(
 records object
 }
 \description{
-Creates a new records object from scratch
+Create a new \code{records} object from scratch
 }
 \examples{
 \dontrun{

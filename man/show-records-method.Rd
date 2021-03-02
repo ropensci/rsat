@@ -8,8 +8,8 @@
 \alias{show,rtoi-method}
 \alias{show,rtoi}
 \alias{show,variables-method}
-\alias{show,variables}
-\title{Shows an object}
+\alias{show,records}
+\title{Show an object}
 \usage{
 \S4method{show}{extent_crs}(object)
 

@@ -2,69 +2,92 @@
 % Please edit documentation in R/smoothing_images.R
 \name{smoothing_images}
 \alias{smoothing_images}
+\alias{smoothing_images,rtoi,character-method}
+\alias{smoothing_images,rtoi,character}
+\alias{smoothing_images,RasterBrick,character-method}
+\alias{smoothing_images,RasterStack,character-method}
 \title{Fill data gaps and smooth outliers in a time series of satellite images}
 \usage{
 smoothing_images(x, method, ...)
+
+\S4method{smoothing_images}{rtoi,character}(
+  x,
+  method,
+  product = "ALL",
+  satellite = "ALL",
+  stage = "ALL",
+  variable = "ALL",
+  ...
+)
+
+\S4method{smoothing_images}{RasterBrick,character}(x, method, ...)
+
+\S4method{smoothing_images}{RasterStack,character}(x, method, ...)
 }
 \arguments{
-\item{x}{rtoi o object for . If is \code{RasterStack} or \code{RasterBrick} class argument containing a time series of
-satellite images. Layer names should contain the date of the image in
-"\code{YYYYJJJ}" format.}
+\item{x}{\code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
+a time series of satellite images.}
 
 \item{...}{arguments for nested functions:
 \itemize{
-  \item \code{AppRoot} the path where the filled/smoothed time series of
-  images will be saved in GTiff format.
+  \item \code{Img2Fill}  a \code{vector} defining the images to be filled/smoothed.
+  \item \code{r.dates} a \code{vector} of dates for the layers in \code{x}.
+Mandatory when layer names of \code{x} do not contain their capturing dates
+"\code{YYYYJJJ}" format.
+  \item \code{nDays} a \code{numeric} argument with the number of previous and
+subsequent days of the temporal neighborhood.
+  \item \code{nYears} a \code{numeric} argument with the number of previous and
+subsequent years of the temporal neighborhood.
+  \item \code{aFilter} a \code{vector} of lower and upper quantiles defining
+the outliers in the anomalies. Ex. c(0.05,0.95).
+  \item \code{fact} a \code{numeric} argument specifying the aggregation factor of
+the anomalies.
+  \item \code{fun} a \code{function} used to aggregate the image of anomalies. Both
+\code{mean} (default) or \code{median} are accepted.
+  \item \code{snow.mode} logical argument. If \code{TRUE}, the process is parallelized
+using the functionalities from the `\code{raster}' package.
+  \item \code{predictSE} calculate the standard error instead the prediction.
+  \item \code{factSE} the \code{fact} used in the standard error prediction.
+  \item \code{out.name} the name of the folder containing the smoothed/filled images
+when saved in the Hard Disk Device (HDD).
+  \item \code{only.na} logical argument. If \code{TRUE} only fills the \code{NA} values.
+\code{FALSE}  by default.
 }}
-
-\item{Img2Fill}{a \code{vector} argument defining the images to be
-filled/smoothed.}
-
-\item{r.dates}{a \code{vector} argument containing the dates of the layers in rstack}
-
-\item{nDays}{a \code{numeric} argument with the number of previous and
-subsequent days that define the temporal neighborhood.}
-
-\item{nYears}{a \code{numeric} argument with the number of previous and
-subsequent years that define the temporal neighborhood.}
-
-\item{aFilter}{a \code{vector} with the lower and upper quantiles that define
-the outliers of the anomalies. Ex. c(0.05,0.95).}
-
-\item{fact}{a \code{numeric} argument with an aggregation factor of the
-anomalies before the interpolation.}
-
-\item{fun}{a \code{function} used to aggregate the image of anomalies. Both
-\code{mean} (default) or \code{median} are acceptted.}
-
-\item{snow.mode}{logical argument. If \code{TRUE}, the filling process will
-be parallelized using the `\code{raster}' package.}
-
-\item{predictSE}{calculate the standard error instead the prediction.}
-
-\item{factSE}{the \code{fact} used in the standard error prediction.}
-
-\item{out.name}{the name of the folder containing the smoothed/filled images
-when saved in the Hard Disk Device (HDD).}
-
-\item{only.na}{logical argument. If \code{TRUE} only fills the \code{NA} values.
-\code{FALSE}  by default.}
 }
 \value{
 a \code{RasterStack} with the filled/smoothed images.
 }
 \description{
-\code{genSmoothingIMA} is the implementation of a spatio temporal method
+\code{apply_ima} is the implementation of a spatio-temporal method
+called Interpolation of Mean Anomalies(IMA) for gap filling and smoothing
+satellite data \insertCite{militino2019interpolation}{rsat}.
+\code{smoothing_images} is the implementation of a spatio temporal method
 called image mean anomaly (IMA) for gap filling and smoothing satellite
 data \insertCite{militino2019interpolation}{rsat}.
 }
 \details{
 This filling/smoothing method was developed by
-\insertCite{militino2019interpolation;textual}{rsat}. This technique decomposes
-a time series of images into a new series of mean and anomaly images. The
-procedure applies the smoothing algorithm over the anomaly images. The
-procedure requires a proper definition of a temporal neighbourhood for the
-target image and aggregation factor.
+\insertCite{militino2019interpolation;textual}{rsat}. IMA fills the gaps
+borrowing information from an adaptable temporal neighborhood. Two
+parameters determine the size of the neighborhood; the number of days
+ before and after the target image (\code{nDays}) and the number of previous
+and subsequent years (\code{nYears}). Both parameters should be adjusted
+based on the temporal resolution of the of the time-series of images. We
+recommend that the neighborhood extends over days rather than years, when
+there is little resemblance between seasons. Also, cloudy series may require
+larger neighborhoods.
+
+IMA gives the following steps; (1) creates a representative image from the
+temporal neighborhood of the target image (image to be filled/smoothed) e.g.,
+doing the mean, median, etc. for each pixel's time-series (\code{fun}), (2)
+the target and representative images are subtracted giving an image of
+anomalies, (3) the anomalies falling outside the quantile limits
+(\code{aFilter}) are considered outliers and therefore removed, (4) it
+aggregates the anomaly image into a coarser resolution (\code{fact}) to
+reveal potential spatial dependencies, (5) the procedure fits a spatial
+model (thin plate splines or TPS) to the anomalies which is then used to
+interpolate the values at the original resolution, and (6) the output
+is the sum of the interpolated anomalies and the average image.
 }
 \examples{
 \dontrun{

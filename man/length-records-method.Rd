@@ -11,7 +11,7 @@
 \S4method{length}{records}(x)
 }
 \arguments{
-\item{x}{records object to compute its length}
+\item{x}{a \code{records} object to compute its length.}
 }
 \description{
 Get or set the length of vectors (including lists) and factors, and of any other R object for which a method has been defined.

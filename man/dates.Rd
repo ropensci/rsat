@@ -9,7 +9,7 @@
 \alias{dates<-,records-method}
 \alias{dates,rtoi-method}
 \alias{dates,rtoi}
-\title{Gets the dates from a records or an rtoi}
+\title{Get the dates from a \code{records} or an \code{rtoi}}
 \usage{
 dates(x)
 
@@ -22,10 +22,10 @@ dates(x) <- value
 \S4method{dates}{rtoi}(x)
 }
 \arguments{
-\item{x}{a records or an rtoi object.}
+\item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{value}{date argument. The new value for x.}
+\item{value}{date argument. The new value for \code{x}.}
 }
 \description{
-Gets the dates from a records or an rtoi
+Get the dates from a \code{records} or an \code{rtoi}
 }

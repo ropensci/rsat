@@ -4,7 +4,7 @@
 \alias{mosaic,rtoi,ANY-method}
 \alias{mosaic,records,ANY-method}
 \alias{mosaic,records}
-\title{Mosaics the tiles covering the region of interest}
+\title{Mosaic the tiles intersecting the region of interest}
 \usage{
 \S4method{mosaic}{rtoi,ANY}(x, y, ...)
 
@@ -20,26 +20,28 @@
 )
 }
 \arguments{
-\item{x}{an rtoi object with a records that cover the region of interest.}
+\item{x}{an \code{rtoi} object.}
 
-\item{y}{Omitted}
+\item{...}{additional arguments.}
 
-\item{...}{additional arguments}
+\item{out_path}{path to save the mosaicked images. By default, the path is defined by \code{x}.}
 
-\item{db_path}{path where the images will be stored when using an rtoi.
-By default, the path is defined by the rtoi.}
+\item{db_path}{path to the database. By default, the path is defined by \code{x}.}
 
-\item{bfilter}{a vector with the bands to be extracted when \code{untar=TRUE}. If not supplied, all are extracted.}
+\item{bfilter}{a vector of bands to. If not supplied, all are used.}
 
-\item{warp}{character argument. Defines how to warp the resulting tile.}
+\item{warp}{character. If equal to "extent", it also crops the images
+around the \code{rtoi}. Use "" otherwise.}
 
-\item{region}{a \code{Spatial*}, projected \code{raster*}, o
-\code{sf} class object defining the region of interest.}
+\item{region}{an sf object. Region for croping the images around. By default, the path is defined by \code{x}.}
 
-\item{out.dir}{path where the images will be stored when using a records.}
+\item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
+images with the same name.}
 }
 \description{
-Mosaics the tiles covering the region of interest
+Satellite measurements are divided into indivisible units called tiles. The
+mosaic function binds and crops the tiles to generate a single image
+of the region of interest for each date.
 }
 \examples{
 \dontrun{

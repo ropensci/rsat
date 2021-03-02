@@ -5,59 +5,62 @@
 \alias{records-class}
 \title{A class object for satellite image metadata}
 \description{
-This class sorts the main attributes of satellite image metadata
-to ease previewing, downloading, and managing data.
+This class object organizes the attributes of satellite images' metadata
+from several missions/programs uniformly. Structuring the information
+facilitates managing, previewing, and downloading data records.
 }
 \details{
-\code{records} works as vector with multiple parameters, and
-accepts usual R methods such as \code{c}, \code{[]},
-\code{length}, \code{subset} or \code{unique}.
+\code{records} works as vector. It accepts usual R methods such as
+\code{c}, \code{[]}, \code{length()}, \code{subset()} or \code{unique()}.
+Each record (vector element) contains several parameters or slots.
 
 The object can be coerced into a \code{data.frame} by
-using the command \code{as.data.frame}.
+using the function \code{as.data.frame()}. The \code{data.frame} can
+be transformed back into a \code{records} with the function
+\code{as.records()}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{sat}}{the name of the satellite to which the record belongs.}
+\item{\code{sat}}{the name of the satellite.}
 
-\item{\code{name}}{the name of the satellite record.}
+\item{\code{name}}{the name of the file.}
 
-\item{\code{date}}{the date of the satellite record.}
+\item{\code{date}}{capturing date of the image.}
 
-\item{\code{product}}{the product.}
+\item{\code{product}}{name of the data product.}
 
-\item{\code{path}}{the path of the tile system.}
+\item{\code{path}}{the path of the tiling system.}
 
-\item{\code{row}}{the row of the tile system.}
+\item{\code{row}}{the row of the tiling system.}
 
-\item{\code{tileid}}{the tile id.}
+\item{\code{tileid}}{the tile identification number.}
 
-\item{\code{download}}{the url to download the satellite record.}
+\item{\code{download}}{the download url.}
 
 \item{\code{file_path}}{the saving directory for the satellite record.}
 
-\item{\code{preview}}{the url of the preview of the satellite record.}
+\item{\code{preview}}{the preview url.}
 
-\item{\code{api_name}}{the api name.}
+\item{\code{api_name}}{the name of the API.}
 
-\item{\code{order}}{boolean, defines if the image must be requested or not.}
+\item{\code{order}}{boolean, whether the image needs to be ordered.}
 
-\item{\code{extent_crs}}{extent (used to project the preview).}
+\item{\code{extent_crs}}{coordinate reference system of the preview.}
 }}
 
 \examples{
 \dontrun{
 data(ex.navarre)
 # Create a records of Sentinel-2 Level 1C images
-s2.lvl1.result<-sat_search(region=ex.navarre,
-                           product="S2MSI1C",
-                           dates=as.Date("2018-01-01")+seq(1,30,1))
+s2.lvl1.result <- sat_search(region = ex.navarre,
+                             product = "S2MSI1C",
+                             dates = as.Date("2018-01-01") + seq(1, 30, 1))
 
 # Create a records of Sentinel-2 Level 2A images
-s2.lvl2.result<-sat_search(region=ex.navarre,
-                          product="S2MSI2A",
-                          dates=as.Date("2019-01-01")+seq(1,30,1))
+s2.lvl2.result <- sat_search(region = ex.navarre,
+                             product = "S2MSI2A",
+                             dates = as.Date("2019-01-01") + seq(1, 30, 1))
 class(s2.lvl2.result)
 dates(s2.lvl2.result)
 all.records <- c(s2.lvl1.result,s2.lvl2.result)
