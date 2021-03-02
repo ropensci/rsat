@@ -22,6 +22,8 @@
 \arguments{
 \item{x}{an \code{rtoi} object.}
 
+\item{y}{omitted parameter.}
+
 \item{...}{additional arguments.}
 
 \item{out_path}{path to save the mosaicked images. By default, the path is defined by \code{x}.}

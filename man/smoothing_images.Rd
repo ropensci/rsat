@@ -28,6 +28,8 @@ smoothing_images(x, method, ...)
 \item{x}{\code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
 a time series of satellite images.}
 
+\item{method}{character argument. Defines the method used for processing the images, e.a. "IMA".}
+
 \item{...}{arguments for nested functions:
 \itemize{
   \item \code{Img2Fill}  a \code{vector} defining the images to be filled/smoothed.
@@ -53,6 +55,19 @@ when saved in the Hard Disk Device (HDD).
   \item \code{only.na} logical argument. If \code{TRUE} only fills the \code{NA} values.
 \code{FALSE}  by default.
 }}
+
+\item{product}{character argument. The name of the product to
+be processed. Check the name of the parameter with \code{\link{list_data}}
+function. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+
+\item{satellite}{character argument. The name of the satellite to
+be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+
+\item{stage}{character argument. The name of the processed stage
+of the data. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+
+\item{variable}{character argument.The name of the variable to
+be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
 }
 \value{
 a \code{RasterStack} with the filled/smoothed images.

@@ -34,6 +34,16 @@
 #'
 #' @param x \code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
 #' a time series of satellite images.
+#' @param method character argument. Defines the method used for processing the images, e.a. "IMA".
+#' @param product character argument. The name of the product to
+#' be processed. Check the name of the parameter with \code{\link{list_data}}
+#' function. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".
+#' @param satellite character argument. The name of the satellite to
+#' be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".
+#' @param stage character argument. The name of the processed stage
+#' of the data. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".
+#' @param variable character argument.The name of the variable to
+#' be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".
 #' @param ... arguments for nested functions:
 #' \itemize{
 #'   \item \code{Img2Fill}  a \code{vector} defining the images to be filled/smoothed.
