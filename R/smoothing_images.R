@@ -34,32 +34,30 @@
 #'
 #' @param x \code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
 #' a time series of satellite images.
-#' @param Img2Fill a \code{vector} defining the images to be filled/smoothed.
-#' @param r.dates a \code{vector} of dates for the layers in \code{x}.
-#' Mandatory when layer names of \code{x} do not contain their capturing dates
-#' "\code{YYYYJJJ}" format.
-#' @param nDays a \code{numeric} argument with the number of previous and
-#' subsequent days of the temporal neighborhood.
-#' @param nYears a \code{numeric} argument with the number of previous and
-#' subsequent years of the temporal neighborhood.
-#' @param aFilter a \code{vector} of lower and upper quantiles defining
-#' the outliers in the anomalies. Ex. c(0.05,0.95).
-#' @param fact a \code{numeric} argument specifying the aggregation factor of
-#' the anomalies.
-#' @param fun a \code{function} used to aggregate the image of anomalies. Both
-#' \code{mean} (default) or \code{median} are accepted.
-#' @param snow.mode logical argument. If \code{TRUE}, the process is parallelized
-#' using the functionalities from the `\code{raster}' package.
-#' @param predictSE calculate the standard error instead the prediction.
-#' @param factSE the \code{fact} used in the standard error prediction.
-#' @param out.name the name of the folder containing the smoothed/filled images
-#' when saved in the Hard Disk Device (HDD).
-#' @param only.na logical argument. If \code{TRUE} only fills the \code{NA} values.
-#' \code{FALSE}  by default.
 #' @param ... arguments for nested functions:
 #' \itemize{
-#'   \item \code{AppRoot} the path where the filled/smoothed time series of
-#'   images are saved in GTiff format.
+#'   \item \code{Img2Fill}  a \code{vector} defining the images to be filled/smoothed.
+#'   \item \code{r.dates} a \code{vector} of dates for the layers in \code{x}.
+#' Mandatory when layer names of \code{x} do not contain their capturing dates
+#' "\code{YYYYJJJ}" format.
+#'   \item \code{nDays} a \code{numeric} argument with the number of previous and
+#' subsequent days of the temporal neighborhood.
+#'   \item \code{nYears} a \code{numeric} argument with the number of previous and
+#' subsequent years of the temporal neighborhood.
+#'   \item \code{aFilter} a \code{vector} of lower and upper quantiles defining
+#' the outliers in the anomalies. Ex. c(0.05,0.95).
+#'   \item \code{fact} a \code{numeric} argument specifying the aggregation factor of
+#' the anomalies.
+#'   \item \code{fun} a \code{function} used to aggregate the image of anomalies. Both
+#' \code{mean} (default) or \code{median} are accepted.
+#'   \item \code{snow.mode} logical argument. If \code{TRUE}, the process is parallelized
+#' using the functionalities from the `\code{raster}' package.
+#'   \item \code{predictSE} calculate the standard error instead the prediction.
+#'   \item \code{factSE} the \code{fact} used in the standard error prediction.
+#'   \item \code{out.name} the name of the folder containing the smoothed/filled images
+#' when saved in the Hard Disk Device (HDD).
+#'   \item \code{only.na} logical argument. If \code{TRUE} only fills the \code{NA} values.
+#' \code{FALSE}  by default.
 #' }
 #'
 #' @return a \code{RasterStack} with the filled/smoothed images.
@@ -90,6 +88,8 @@ setGeneric("smoothing_images", function(x,
                                         ...) {
   standardGeneric("smoothing_images")
 })
+#' @rdname smoothing_images
+#' @aliases smoothing_images,rtoi,character
 setMethod("smoothing_images",
           signature = c("rtoi","character"),
           function(x,
