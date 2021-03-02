@@ -1,9 +1,13 @@
 #' Plot an \code{rtoi} object
 #'
-#' Plot (a map of) the values of an \code{rtoi} object.
+#' Plot (a map of) the values of an \code{rtoi} or \code{records} object.
 #'
-#' @param x an \code{rtoi}.
-#' @param y character argument. The product name to be plotted.
+#' @param x an \code{rtoi} or \code{records}.
+#' @param y character argument. The valid values are "dates", "preview", or "view".
+#' @param variable character argument. The variable to be plotted. By default, a color (RGB) variable is selected .
+#' @param band_name character vector argument. Enables false color plots. By default, usual bands are selected \code{c("red","green","blue")}.
+#' @param product character argument. The product name to be plotted.
+#' @param dates date vector argument. The dates to be plotted.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
 #' @param xsize the number of samples on the horizontal axis.
@@ -18,7 +22,12 @@
 #' @importFrom grDevices colors
 #' @include rtoi.R records.R
 #' @export
-#' @example
+#' @examples
+#' \dontrun{
+#' # plotting records
+#' a<-5+5
+#'
+#' }
 setMethod(f="plot",
           signature = c("rtoi","Date"),
           function(x, y,...,variable="rgb",band_name = c("red","green","blue"), verbose = FALSE,xsize = 250,ysize = 250){
@@ -171,38 +180,44 @@ setMethod(f="plot",
                 if(length(plot.list)==0)return(message("No preview is available for this time interval and product."))
                 return(genPlotGIS(r=plot.list,region(x),...))
 
-            }
-            switch(variable,
-                   "rgb"={
-                     # load the data
-                     dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
-                     mosaics.dir<-dirs[grepl("mosaic",dirs)]
-                     files<-list.files(mosaics.dir,full.names = TRUE)
-                     files<-files[grepl(y,files)]
-                     if(length(files)==0)stop("Plotting requires mosaicked images and there is none. Use the 'dates' argument or the 'preview' mode.")
-                     plot.list<-list()
-                     for(f in files){
-                       debands<-deriveBandsData(y)
-                       if(!is.null(debands)){
-                         plot.list<-append(plot.list,list(read_rgb(f,y,debands$bands,genGetDates(f),xsize,ysize)))
+            }else if(y=="view"){
+              if(product=="ALL"){
+                stop("view mode requires product argument.")
+              }
+              switch(variable,
+                     "rgb"={
+                       # load the data
+                       dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
+                       mosaics.dir<-dirs[grepl("mosaic",dirs)]
+                       files<-list.files(mosaics.dir,full.names = TRUE)
+                       files<-files[grepl(product,files)]
+                       if(length(files)==0)stop("Plotting requires mosaicked images and there is none. Use the 'dates' argument or the 'preview' mode.")
+                       plot.list<-list()
+                       for(f in files){
+                         debands<-deriveBandsData(product)
+                         if(!is.null(debands)){
+                           plot.list<-append(plot.list,list(read_rgb(f,product,debands$bands,genGetDates(f),xsize,ysize)))
+                         }
                        }
-                     }
-                   },
-                   {# load the data
-                     dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
-                     var.dir<-dirs[grepl("variables",dirs)]
-                     var.dir<-var.dir[grepl(y,var.dir)]
-                     files<-list.files(var.dir,full.names = TRUE)
-                     files<-files[grepl(variable,files)]
+                     },
+                     {# load the data
+                       dirs<-list.dirs(gsub("\\","/",get_dir(x),fixed=TRUE))
+                       var.dir<-dirs[grepl("variables",dirs)]
+                       var.dir<-var.dir[grepl(product,var.dir)]
+                       files<-list.files(var.dir,full.names = TRUE)
+                       files<-files[grepl(variable,files)]
 
-                     if(length(files)==0)stop("Plotting requires mosaicked images, and there is none.")
-                     if(length(files)>1){
-                       warning("More than one record for the same variable and product, plotting the first one.")
-                       files<-files[1]
-                     }
-                     plot.list<-read_variables(files,y,variable,NULL,xsize,ysize)
+                       if(length(files)==0)stop("Plotting requires mosaicked images, and there is none.")
+                       if(length(files)>1){
+                         warning("More than one record for the same variable and product, plotting the first one.")
+                         files<-files[1]
+                       }
+                       plot.list<-read_variables(files,product,variable,NULL,xsize,ysize)
 
-                   })
+                     })
+            }else{
+              stop("plot needs")
+            }
 
             # plot
             genPlotGIS(r=plot.list,region(x),...)
@@ -247,15 +262,14 @@ setMethod(f="plot",
 )
 
 
-
-#' @rdname plot-rtoi-ANY-method
+#' @rdname plot-rtoi-Date-method
 #' @aliases plot,rtoi,missing
 setMethod(f="plot",
           signature = c("rtoi","missing"),
           function(x, y, verbose = FALSE,...){
             # load the data
-            y<-dates(x)[1]
-            plot(x,y,verbose,...)
+            y<-"view"
+            plot(x,y,dates=dates(x)[1],verbose,...)
 
           })
 
