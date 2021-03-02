@@ -6,6 +6,8 @@
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @param db_path path to the database. By default, the path is defined by the \code{rtoi}.
 #' @param out.dir path where the outputs are stored when using a \code{records}.
+#' @param verbose logical argument. If \code{TRUE}, the function prints the
+#' running steps and warnings.
 #' @param ... additional arguments.
 #'
 #' @include rtoi.R records.R
