@@ -129,7 +129,7 @@ setMethod(f="c",
             return(x)
           })
 
-#' @rdname sub-records-ANY-ANY-method
+#' @rdname sub-records-ANY-ANY-ANY-method
 #' @aliases sub,extent_crs
 setMethod(f="[", signature="extent_crs",
           definition=function(x, i) {
@@ -140,7 +140,7 @@ setMethod(f="[", signature="extent_crs",
           })
 
 # operator ([<-)
-#' @rdname sub-records-ANY-ANY-method
+#' @rdname sub-records-ANY-ANY-ANY-method
 #' @aliases sub<-,extent_crs
 setReplaceMethod(f="[",
                  signature="extent_crs",
