@@ -6,7 +6,11 @@
 #'
 #' @param x an \code{rtoi} object.
 #' @param db_path path to the database. By default, the path is defined by \code{x}.
+#' @param region an sf object. Region for croping the images around. By default, the path is defined by \code{x}.
+#' @param out_path path to save the mosaicked images. By default, the path is defined by \code{x}.
 #' @param bfilter a vector of bands to. If not supplied, all are used.
+#' @param overwrite logical argument. If \code{TRUE}, overwrites the existing
+#' images with the same name.
 #' @param warp character. If equal to "extent", it also crops the images
 #' around the \code{rtoi}. Use "" otherwise.
 #'
