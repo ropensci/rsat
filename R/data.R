@@ -4,7 +4,7 @@
 #'(DEM) of the region of Navarre (Spain). The DEM was obtained from the
 #' \href{http://centrodedescargas.cnig.es/CentroDescargas/locale?request_locale=en#}{National Center for Geographic Information}
 #' of Spain. The DEM is used as a covariable in the Image Mean Anomaly (IMA)
-#' algorithm (\code{\link{genSmoothingCovIMA}}).
+#' algorithm (\code{\link{smoothing_images}}).
 #'
 #' @format The \code{RasterStack} contains 6 layers with the same DEM, one for
 #' every image in \code{\link{ex.ndvi.navarre}}.
