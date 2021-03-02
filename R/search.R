@@ -33,6 +33,8 @@
 #' @param region a \code{Spatial*}, \code{Raster*}, \code{sf} or \code{rtoi}
 #' class objects defining the region of interest.
 #' @param product a character vector of product names.
+#' @param verbose logical argument. If \code{TRUE}, the function prints the
+#' running steps and warnings.
 #' @param ... additional arguments for searching
 #'
 #' @import sf
