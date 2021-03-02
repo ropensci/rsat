@@ -64,6 +64,7 @@ setRefClass("rtoi",
 #' @param records a records object.
 #' @param db_path the path to the database.
 #' @param rtoi_path the path to the \code{rtoi} folder.
+#' @param size the size of \code{rtoi} folder. By default, the size is computed from \code{rtoi_path}.
 #'
 #' @return the reference of the \code{rtoi} object
 #' @exportMethod new_rtoi
@@ -163,10 +164,14 @@ setMethod("get_dir",
             return(x$rtoi_path)
           })
 
+
 #' @rdname get_dir
 #' @export
-#' @aliases get_dir,rtoi,character
+#' @aliases get_dir,rtoi,character-generic
 setGeneric("get_dir<-",function(x,value)  standardGeneric("get_dir<-"))
+
+#' @rdname get_dir
+#' @aliases get_dir,rtoi,character-method
 setMethod("get_dir<-",
           signature(x = "rtoi",value="character"),
           function(x,value){
@@ -374,16 +379,6 @@ setMethod("get_database",
             return(x$db_path)
           })
 
-#' #' @export
-#' setGeneric("get_database<-",function(x,value)  standardGeneric("get_database<-"))
-#' setMethod("get_database<-",
-#'           signature(x = "rtoi",value="character"),
-#'           function(x,value){
-#'             x$db_path<-value
-#'             write_rtoi(x)
-#'             return(x)
-#'           })
-
 #' set database path
 #'
 #' set_database set a new database  directory in x.
@@ -455,6 +450,7 @@ setMethod("records",
 #' @rdname records
 #' @aliases records<-
 setGeneric("records<-", function(x, value) standardGeneric("records<-"))
+
 #' @rdname records
 #' @aliases records<-,rtoi,records
 setMethod(f="records<-",
@@ -465,8 +461,6 @@ setMethod(f="records<-",
             x
           })
 
-# #' @export
-#setGeneric("adddates", function(x, dates) {standardGeneric("adddates")})
 #' @rdname dates
 #' @aliases dates,rtoi
 setMethod("dates",
@@ -475,38 +469,6 @@ setMethod("dates",
             return(unique(dates(records(x))))
           })
 
-#' @export
-setGeneric("drop_records", function(x, product, y, ...) {standardGeneric("drop_records")})
-setMethod("drop_records",
-          signature(x = "rtoi", product="character", y = "Date"),
-          function(x,product,y){
-            rcds<-records(x)
-            rcds<-subset(rcds, subset=product, select="product")
-            rcds<-subset(rcds, subset=y, select="date")
-            records(x)<-records(x)[!names(records(x))%in%names(rcds)]
-            write_rtoi(x)
-            #TODO remove mosaic and data for that date
-          })
-
-setMethod("drop_records",
-          signature(x = "rtoi", product="character", y = "ANY"),
-          function(x, product, y, select){
-            rcds<-records(x)
-            rcds<-subset(rcds, subset=product, select="product")
-            rcds<-subset(rcds, subset=y, select=select)
-            records(x)<-records(x)[!names(records(x))%in%names(rcds)]
-            write_rtoi(x)
-            #TODO remove mosaic and data for that date
-          })
-
-#' @export
-setGeneric("add_records", function(x, y) {standardGeneric("add_records")})
-setMethod("add_records",
-          signature(x = "rtoi", y = "records"),
-          function(x,y){
-            records(x)<-c(records(x),y)
-            write_rtoi(x)
-          })
 
 #' @rdname product
 #' @aliases product,rtoi
@@ -517,12 +479,25 @@ setMethod("product",
           })
 
 
+#' Renames an \code{rtoi}
+#'
+#' Renames all parameters and folder name of an \code{rtoi}.
+#'
+#' @param x an rtoi object
+#' @param newname a character class to rename the \code{rtoi}.
 #' @export
+#' @examples
+#' \dontrun{
+#' myrtoi <- read_rtoi("file_path/rtoir_name")
+#' rename(myrtoi,"Navarre_BACK")
+#' }
 setGeneric("rename", function(x, newname) { standardGeneric("rename")})
+
+#' @rdname rename
+#' @aliases rename,rtoi,character
 setMethod("rename",
           signature(x = "rtoi", newname="character"),
           function(x,newname){
-
             new.dir<-file.path(dirname(get_dir(x)),newname)
             file.rename(get_rtoi_path(x),file.path(get_dir(x),paste0(newname,".rtoi")))
             names(x)<-newname
