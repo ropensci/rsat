@@ -250,7 +250,7 @@ print(filomena)
 
 You can use an `rtoi` to search satellite images with `sat_search()`:
 
-```{r rtoi_search}
+```{r rtoi_search_2}
 toi <- as.Date("2021-01-10") + 0:5
 sat_search(region = filomena,
            product = c("mod09ga", "SY_2_SYN___"),
