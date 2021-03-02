@@ -17,7 +17,7 @@
 #' }
 #'
 #' @param x an \code{rtoi} as the source of images.
-#' @param products the name of the product from which the index is computed.
+#' @param product the name of the product from which the index is computed.
 #' @param dates a vector of dates being considered (optional).
 #' @param fun a \code{function} that computes the remote sensing index.
 #' @param overwrite logical argument. If \code{TRUE}, overwrites the existing
