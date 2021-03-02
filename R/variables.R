@@ -92,16 +92,28 @@ setMethod("print",
           })
 
 #' @rdname show-records-method
-#' @aliases show,variables
+#' @aliases show,records
 setMethod("show",
           "variables",
           function(object){
              print(object)
           })
+
+#' List the variables and satellites supported by \code{rsat}
+#'
+#' Displays the satellites and variable method
+#' @param ... arguments for nestering functions
+#'
+#' @return prints supported satellites and derived variables information.
 #' @export
+#' @examples
+#' show_variables()
 setGeneric("show_variables", function(...) {
   standardGeneric("show_variables")
 })
+
+#' @rdname show_variables
+#' @aliases show_variables-method
 setMethod("show_variables",
           c(),
           function(){
