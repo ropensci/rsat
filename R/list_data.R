@@ -10,10 +10,51 @@
 #' @import zip
 #'
 #' @examples
+#' \dontrun{
+#' # set-up the region of interest
+#' ip <- st_sf(st_as_sfc(st_bbox(c(xmin = -9.755859,
+#'                                 xmax =  4.746094,
+#'                                 ymin = 35.91557,
+#'                                 ymax = 44.02201),
+#'                               crs = 4326)))
+#' # set-up the time of interest
+#' toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+#'
+#' # set-up the folders
+#' db.path <- "C:/database"
+#' ds.path <- "C:/datasets"
+#' dir.create(db.path)
+#' dir.create(ds.path)
+#'
+#' # set-up rtoi
+#' filomena <- new_rtoi(name = "filomena",
+#'                      region = ip,
+#'                      db_path = db.path,
+#'                      rtoi_path = ds.path)
+#'
+#' # search the images
+#' sat_search(region = filomena,
+#'            product = "mod09ga",
+#'            dates = toi)
+#'
+#' # download into the database
+#' download(filomena)
+#'
+#' # print empty rtoi
+#' list_data(filomena)
+#'
+#' # mosaic and crop the images
+#' mosaic(filomena)
+#'
+#' # print mosaicked bands
+#' list_data(filomena)
+#' }
 setGeneric("list_data", function(x,
                                  ...) {
   standardGeneric("list_data")
 })
+#' @rdname list_data
+#' @aliases list_data,rtoi
 setMethod("list_data",
           signature = c("rtoi"),
           function(x,...){
