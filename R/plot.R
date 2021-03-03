@@ -216,7 +216,7 @@ setMethod(f="plot",
 
                      })
             }else{
-              stop("plot needs")
+              stop("plot needs a parameter 'y' with one of the following values: 'view', 'preview', or 'dates'.")
             }
 
             # plot
