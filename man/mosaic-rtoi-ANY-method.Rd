@@ -35,7 +35,7 @@
 \item{warp}{character. If equal to "extent", it also crops the images
 around the \code{rtoi}. Use "" otherwise.}
 
-\item{region}{an sf object. Region for croping the images around. By default, the path is defined by \code{x}.}
+\item{region}{an sf object. Region for cropping the images around. By default, the path is defined by \code{x}.}
 
 \item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
 images with the same name.}
