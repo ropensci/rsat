@@ -12,7 +12,6 @@
 #' using the function \code{as.data.frame()}. The \code{data.frame} can
 #' be transformed back into a \code{records} with the function
 #' \code{as.records()}.
-#'
 #' @slot sat the name of the satellite.
 #' @slot name the name of the file.
 #' @slot date capturing date of the image.
@@ -417,7 +416,12 @@ setGeneric("dates", function(x) standardGeneric("dates"))
 setMethod(f="dates",
           signature = "records",
           definition = function(x){
-            return(x@date)
+            if(inherits(x@date, "Date")) {
+              out <- x@date
+            }else{
+              out <- as.Date(integer(0))
+            }
+            return(out)
           })
 
 #' @export
