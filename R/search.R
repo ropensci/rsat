@@ -111,7 +111,7 @@ setMethod(f="sat_search",
           function(region, product,verbose=FALSE,...){
             searchres<-new("records")
             for(s in product){
-              if(tolower(substr(s,1,3))%in%c("mod","myd")){
+              if(tolower(substr(s,1,3))%in%c("mod","myd","mcd")){
                 message(paste0("Searching scenes in the ",s," product..."))
                 searchres<-c(searchres,mod_search(region(region),product=s,...))
               }else if(grepl("LANDSAT",s)){

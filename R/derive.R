@@ -180,8 +180,12 @@ deriveBandsData<-function(product){
   }else if(any(grepl(tolower(substr(product,1,5)),c("mod09","myd09")))){
     return(list(bands=variables$bands$mod09ga,
                 additional.sizes=""))
+    # mcd43a4
+  }else if(grepl("mcd43a4",product)){
+    return(list(bands=variables$bands$mcd43a4,
+                additional.sizes=""))
   }else{
-    warning(paste0("Product '",product,"' not supported for mosaicking."))
+    warning(paste0("Product '",product,"' not supported."))
     return(NULL)
   }
 }
