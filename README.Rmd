@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 [![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/) [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 [![Codecov test coverage](https://codecov.io/gh/spatialstatisticsupna/rsat/branch/master/graph/badge.svg)](https://codecov.io/gh/spatialstatisticsupna/rsat?branch=master)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/spatialstatisticsupna/rsat?branch=master&svg=true)](https://ci.appveyor.com/project/spatialstatisticsupna/rsat)
+[![Build status](https://ci.appveyor.com/api/projects/status/2bx8qjhhk36dnkoc/branch/master?svg=true)](https://ci.appveyor.com/project/unai-perez/rsat/branch/master)
 <!-- badges: end -->
 
 The goal of `rsat` is to help you handling time-series of satellite images from multiple platforms in a local, efficient, and standardized way. The package provides tools to;
