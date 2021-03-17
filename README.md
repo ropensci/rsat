@@ -30,7 +30,7 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("spatialstatisticsupna/rsat")
+devtools::install_github("spatialstatisticsupna/rsat", build_vignettes=TRUE)
 ```
 
 ### Linux
