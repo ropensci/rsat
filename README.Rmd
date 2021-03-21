@@ -91,7 +91,10 @@ derive(navarre, product = "mod09ga", variable = "NDVI")
 # plot the results
 plot(navarre, "mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
 ```
-
+See the vignettes for more examples:
+```
+browseVignettes("rsat")
+```
 ## Citation
 
 ``` r
