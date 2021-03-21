@@ -55,5 +55,4 @@ test_that("search test", {
     tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
                                                method="IMA",
                                                only.na=TRUE)
-    list_data(navarre)
 })
