@@ -5,3 +5,5 @@
 ^LICENSE\.md$
 ^codecov\.yml$
 ^appveyor\.yml$
+^doc$
+^Meta$

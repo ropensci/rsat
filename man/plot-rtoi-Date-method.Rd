@@ -27,6 +27,7 @@
   ...,
   variable = "rgb",
   product = "ALL",
+  band_name = c("red", "green", "blue"),
   dates = NULL,
   verbose = FALSE,
   xsize = 250,
@@ -67,8 +68,52 @@ Plot (a map of) the values of an \code{rtoi} or \code{records} object.
 }
 \examples{
 \dontrun{
-# plotting records
-a<-5+5
+library(rsat)
 
+# load navarre sf from the package
+data(ex.navarre)
+
+# set the credentials
+set_credentials("username","password")
+
+# path where the region is stored
+rtoi.path <- tempdir()
+# path where downloads are stored
+db.path <- file.path(tempdir(),"DATABASE")
+navarre<-new_rtoi("Navarre",
+                  ex.navarre,
+                  rtoi.path,
+                  db.path)
+
+# search mod09ga products
+sat_search(region=navarre,
+           product="mod09ga",
+           dates=as.Date("2021-03-01")+seq(1,20))
+
+#plot the dates as calendar
+plot(navarre, y="dates")
+
+# plot the quicklook images before the download
+plot(navarre, y="preview")
+
+# select partially cloud free
+rcds <-  records(navarre)
+rcds <- rcds[dates(rcds)\%in\%as.Date(c("20210310","20210313"),"\%Y\%m\%d")]
+records(navarre)<-rcds
+plot(navarre, "preview")
+
+# download the images
+download(navarre)
+
+#
+plot(navarre,"preview")
+# mosaic the tiles
+mosaic(navarre)
+
+# plot mosaicked images
+plot(navarre,"view", product="mod09ga")
+
+# plot with false color
+plot(navarre,"view", product="mod09ga",band_name = c("nir","red","green"))
 }
 }
