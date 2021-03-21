@@ -37,8 +37,8 @@ test_that("search test", {
     mosaic(navarre)
     # plot mosaicked images
     plot(navarre,"view", product=unique(product(navarre))[1])
-    plot(navarre,"view", product=unique(product(navarre))[2])
-    plot(navarre,"view", product=unique(product(navarre))[3])
+    #plot(navarre,"view", product=unique(product(navarre))[2])
+    #plot(navarre,"view", product=unique(product(navarre))[3])
 
     # plot with false color
     derive(navarre,product="mod09ga","NDVI")
