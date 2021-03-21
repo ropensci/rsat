@@ -1,6 +1,9 @@
 test_that("search test", {
    set_credentials("rgistools","EspacialUPNA88")
    rtoi.path <- tempdir()
+
+   show_variables()
+
    # path where downloads are stored
    db.path <- file.path(tempdir(),"DATABASE")
    navarre<-new_rtoi("Navarre",
@@ -29,6 +32,7 @@ test_that("search test", {
     rcds2 <- subset(rcds,unique(product(rcds))[2],"product")[1]
     rcds3 <- subset(rcds,unique(product(rcds))[3],"product")[1]
     records(navarre)<-c(rcds1,rcds2,rcds3)
+    plot(c(rcds1,rcds2,rcds3))
     plot(navarre, y="preview")
     preview(navarre,dates(navarre)[1])
     preview(navarre,dates(navarre)[2])
@@ -46,8 +50,10 @@ test_that("search test", {
     plot(navarre,"view",variable="NDVI",product="mod09ga")
     cloud_mask(navarre)
     r.stack<-get_raster(navarre,"mod09ga","NDVI")
+    get_stars(navarre,"mod09ga","NDVI")
+    get_stars(navarre,"mod09ga","CloudMask")
     tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
                                                method="IMA",
                                                only.na=TRUE)
-
+    list_data(navarre)
 })
