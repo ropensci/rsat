@@ -51,7 +51,7 @@ test_that("search test", {
     cloud_mask(navarre)
     r.stack<-get_raster(navarre,"mod09ga","NDVI")
     get_stars(navarre,"mod09ga","NDVI")
-    get_stars(navarre,"mod09ga","CloudMask")
+    get_stars(navarre,"mod09ga","NDVI")
     tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
                                                method="IMA",
                                                only.na=TRUE)
