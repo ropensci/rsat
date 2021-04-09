@@ -9,7 +9,7 @@ mosaic_fun_mod<-function(mfiles){
     bands.names
   }
   allfun$filterchunks<-function(allfiles,bnds){
-    allfiles[grepl(pattern=bnds,x=allfiles,perl = T)]
+    allfiles[grepl(pattern=bnds,x=allfiles,perl = TRUE)]
   }
   bands<-allfun$readfromscratch(mfiles[1])
   bands<-gsub(".*SUBDATASET_.*_NAME=","",bands)

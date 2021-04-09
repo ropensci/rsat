@@ -122,18 +122,18 @@ setMethod("read_rtoi_dir",
             if(x[3]=="mosaic"){
               mos.zip<-list.files(file.path(rtoi_dir,x[1],x[2],x[3]),full.names = TRUE)
               #bands<-zip_list(mos.zip[1])$filename
-              bands<-utils::unzip(mos.zip[1],list=T)$Name
+              bands<-utils::unzip(mos.zip[1],list=TRUE)$Name
               bands<-bands[grepl(x[4],bands)]
               return(file.path("/vsizip",mos.zip,bands))
             }
             if(x[4]=="CloudMask"){
               mos.zip<-file.path(rtoi_dir,x[1],x[2],paste0(x[4],".zip"))
               #return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
-              return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=T)$Name))
+              return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=TRUE)$Name))
             }
 
             mos.zip<-file.path(rtoi_dir,paste0(paste(x,collapse = "/"),".zip"))
             #return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
-            return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=T)$Name))
+            return(file.path("/vsizip",mos.zip,utils::unzip(mos.zip,list=TRUE)$Name))
             })
 

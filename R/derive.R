@@ -119,7 +119,7 @@ setMethod("derive",
             for(i in images){
               message(paste0("Processing image ",basename(i),"."))
               #layers<-file.path("/vsizip",i,zip_list(i)$filename)
-              layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
+              layers<-file.path("/vsizip",i,utils::unzip(i,list=TRUE)$Name)
 
               for(size in additional.sizes){
                 file.name<-paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif")
@@ -206,7 +206,7 @@ deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
       if(verbose) warning(paste0("Error reading band ",arg))
       next
     }
-    band<-gsub("\\","/",band,fixed =T)
+    band<-gsub("\\","/",band,fixed =TRUE)
     if(verbose)message(paste0("Reading band: ",paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
     #eval(parse( text=paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
     eval(parse( text=paste0(arg,"<-raster('",band,"')") ))

@@ -147,10 +147,10 @@ setMethod(f="plot",
               if(length(all.products)>1){
                 n.product<-apply( df[ , 2:ncol(df) ] , 1 , paste , collapse = " + " )
                 for(a in 1:(ncol(df)-2)){
-                  n.product<-gsub(" \\+  \\+ "," + ",n.product,useBytes = T)
+                  n.product<-gsub(" \\+  \\+ "," + ",n.product,useBytes = TRUE)
                 }
-                n.product<-gsub(" \\+ $","",n.product,useBytes = T)
-                n.product<-gsub("^ \\+ ","",n.product,useBytes = T)
+                n.product<-gsub(" \\+ $","",n.product,useBytes = TRUE)
+                n.product<-gsub("^ \\+ ","",n.product,useBytes = TRUE)
               }else{
                 n.product<-df[,2]
               }
@@ -512,7 +512,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
 
     maplist<-lapply(r,function(shp,compass,scale.bar,grid,reg){
       tm_layout_args$panel.labels=names(shp)
-      return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=shp,frame=T)+tm_rgb()+compass+scale.bar+grid+reg)}
+      return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=shp,frame=TRUE)+tm_rgb()+compass+scale.bar+grid+reg)}
       ,compass,scale.bar,grid,reg)
     #tmap_arrange argumentsd o.call(tm_layout,tm_layout_args)
     tmap_arrange_args<-names(formals(tmap_arrange))
@@ -530,7 +530,7 @@ genPlotGIS<-function(r,region,breaks,labels,zlim,layout,proj,nbreaks=40,nlabels=
         tm_tmap_arrange_args$ncol=ceiling(sqrt(length(r)))
       }else{
         tm_layout_args$panel.labels=names(r[[1]])
-        return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=r[[1]],frame=T)+tm_rgb()+compass+scale.bar+grid+reg)
+        return(do.call(tm_layout,tm_layout_args)+tm_shape(shp=r[[1]],frame=TRUE)+tm_rgb()+compass+scale.bar+grid+reg)
       }
 
     }else{

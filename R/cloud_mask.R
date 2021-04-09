@@ -23,7 +23,7 @@ setMethod(f="cloud_mask",
               img_dir<-get_mosaic_dir(x,p)
               out_dir<-file.path(dirname(img_dir),"CloudMask")
               dir.create(out_dir,showWarnings = FALSE)
-              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,utils::unzip(x,list=T)$Name)}))
+              all_files<-unlist(lapply(list.files(img_dir,full.names = TRUE,pattern="\\.zip$"), function(x){file.path("/vsizip",x,utils::unzip(x,list=TRUE)$Name)}))
 
               # Modis
               if(any(grepl(tolower(substr(p,1,5)),c("mod09","myd09")))){
@@ -67,7 +67,7 @@ setMethod(f="cloud_mask",
 modCloudMask<-function(infile, outfile, overwrite = FALSE, verbose = FALSE,...){
   if((!file.exists(outfile))|overwrite){
     r <- raster(infile)
-    v <- matrix(as.numeric(matrix(intToBits(getValues(r)), ncol = 32, byrow = T)[,1:3]),ncol = 3)
+    v <- matrix(as.numeric(matrix(intToBits(getValues(r)), ncol = 32, byrow = TRUE)[,1:3]),ncol = 3)
     # clouds
     # interpret the bytes: 0 = clear, 1+1 = not known, assumed clear
     r[] <- rowSums(v[,1:2])

@@ -37,7 +37,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
     coor.info<-unlist(strsplit(coor.info,"\n"))
     coor.names<-coor.info[grepl(".*SUBDATASET_.*_NAME=", coor.info)]
     coor.names<-gsub(".*SUBDATASET_.*_NAME=","",coor.names)
-    coor.names<-gsub("\"","",coor.names,fixed = T)
+    coor.names<-gsub("\"","",coor.names,fixed = TRUE)
 
     lat<-file.path(ext.dir,"lat.vrt")
     lon<-file.path(ext.dir,"lon.vrt")
@@ -64,7 +64,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
       image.data<-unlist(strsplit(image.data,"\n"))
       bands.names<-image.data[grepl(".*SUBDATASET_.*_NAME=", image.data)]
       bands.names<-gsub(".*SUBDATASET_.*_NAME=","",bands.names)
-      bands.names<-gsub("\"","",bands.names,fixed = T)
+      bands.names<-gsub("\"","",bands.names,fixed = TRUE)
       img.name<-gsub("\\.nc","",basename(np))
 
       #add projection

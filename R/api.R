@@ -139,7 +139,7 @@ setRefClass(Class="api",
       }
 
       if(.self$api_name=="scihub"){
-        online<-gsub("/$value","/Online/$value",url,fixed = T)
+        online<-gsub("/$value","/Online/$value",url,fixed = TRUE)
         is.online<-curl_fetch_memory(online,handle=c.handle)
         if(rawToChar(is.online$content)=="false"){
           message("The image is archived, ordering...")

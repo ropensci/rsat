@@ -248,7 +248,7 @@ setMethod("get_raster",
             #layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
 
             dirs<-get_var_dir(x,p)
-            files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+            files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
             files<-files[grepl(v,files)]
             if(length(files)==0){
               p.df<-list_data(x)
@@ -262,7 +262,7 @@ setMethod("get_raster",
               }
 
               dirs<-paste0(c(get_dir(x),unlist(p.df[1:3])),collapse="/")
-              files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+              files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
 
               mos.zip<-c()
               for(f in files){
@@ -329,7 +329,7 @@ setMethod("get_stars",
           signature(x = "rtoi"),
           function(x,p,v){
             dirs<-get_var_dir(x,p)
-            files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+            files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
             files<-files[grepl(v,files)]
             if(length(files)==0){
               p.df<-list_data(x)
@@ -343,7 +343,7 @@ setMethod("get_stars",
               }
 
               dirs<-paste0(c(get_dir(x),p.df[1:3]),collapse="/")
-              files<-list.files(dirs,recursive = T,pattern = "\\.zip$",full.names = T)
+              files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
 
               mos.zip<-c()
               for(f in files){
