@@ -3,9 +3,14 @@
 \name{new_record}
 \alias{new_record}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,extent_crs-method}
-\alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,extent_crs}
+\alias{new_record,}
+\alias{character,}
+\alias{Date,}
+\alias{numeric,}
+\alias{logical,}
+\alias{extent_crs}
 \alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing-method}
-\alias{new_record,character,character,Date,character,character,character,numeric,numeric,character,character,character,logical,missing}
+\alias{missing}
 \title{Create a new \code{records} object}
 \usage{
 new_record(
@@ -90,10 +95,12 @@ Create a new \code{records} object from scratch
 }
 \examples{
 \dontrun{
-a<-new_record(sat="modis",
-name="mod09a",
-date=as.Date("2011087","\%Y\%j"),
-product="product",
-download="url/aaa/download")
+a <- new_record(
+  sat = "modis",
+  name = "mod09a",
+  date = as.Date("2011087", "\%Y\%j"),
+  product = "product",
+  download = "url/aaa/download"
+)
 }
 }

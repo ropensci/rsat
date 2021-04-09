@@ -30,7 +30,8 @@ region/time of interest and satellite imagery available.
 
 \item{\code{region}}{an sf with the region of interest.}
 
-\item{\code{records}}{the satellite records available for your region and time of interest.}
+\item{\code{records}}{the satellite records available for
+your region and time of interest.}
 
 \item{\code{db_path}}{a character with the path to the database.}
 }}
@@ -44,11 +45,13 @@ data(ex.navarre)
 rtoi.path <- tempdir()
 
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi(name="Navarre",
-                  region=ex.navarre,
-                  rtoi_path=rtoi.path,
-                  db_path=db.path)
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  name = "Navarre",
+  region = ex.navarre,
+  rtoi_path = rtoi.path,
+  db_path = db.path
+)
 
 print(navarre)
 

@@ -28,46 +28,58 @@ smoothing_images(x, method, ...)
 \item{x}{\code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
 a time series of satellite images.}
 
-\item{method}{character argument. Defines the method used for processing the images, e.a. "IMA".}
+\item{method}{character argument. Defines the method used
+for processing the images, e.a. "IMA".}
 
 \item{...}{arguments for nested functions:
 \itemize{
-  \item \code{Img2Fill}  a \code{vector} defining the images to be filled/smoothed.
+  \item \code{Img2Fill}  a \code{vector} defining the
+  images to be filled/smoothed.
   \item \code{r.dates} a \code{vector} of dates for the layers in \code{x}.
-Mandatory when layer names of \code{x} do not contain their capturing dates
+Mandatory when layer names of \code{x} do not contain their
+ capturing dates
 "\code{YYYYJJJ}" format.
-  \item \code{nDays} a \code{numeric} argument with the number of previous and
-subsequent days of the temporal neighborhood.
-  \item \code{nYears} a \code{numeric} argument with the number of previous and
-subsequent years of the temporal neighborhood.
-  \item \code{aFilter} a \code{vector} of lower and upper quantiles defining
-the outliers in the anomalies. Ex. c(0.05,0.95).
-  \item \code{fact} a \code{numeric} argument specifying the aggregation factor of
-the anomalies.
-  \item \code{fun} a \code{function} used to aggregate the image of anomalies. Both
-\code{mean} (default) or \code{median} are accepted.
-  \item \code{snow.mode} logical argument. If \code{TRUE}, the process is parallelized
-using the functionalities from the `\code{raster}' package.
-  \item \code{predictSE} calculate the standard error instead the prediction.
-  \item \code{factSE} the \code{fact} used in the standard error prediction.
-  \item \code{out.name} the name of the folder containing the smoothed/filled images
-when saved in the Hard Disk Device (HDD).
-  \item \code{only.na} logical argument. If \code{TRUE} only fills the \code{NA} values.
+  \item \code{nDays} a \code{numeric} argument with the number
+  of previous and subsequent days of the temporal neighborhood.
+  \item \code{nYears} a \code{numeric} argument with the number
+  of previous and subsequent years of the temporal neighborhood.
+  \item \code{aFilter} a \code{vector} of lower and upper
+  quantiles defining the outliers in the anomalies. Ex. c(0.05,0.95).
+  \item \code{fact} a \code{numeric} argument specifying the aggregation
+  factor of the anomalies.
+  \item \code{fun} a \code{function} used to aggregate the
+  image of anomalies. Both \code{mean} (default) or \code{median} are
+  accepted.
+  \item \code{snow.mode} logical argument. If \code{TRUE},
+  the process is parallelized using the functionalities from the `
+  \code{raster}' package.
+  \item \code{predictSE} calculate the standard error instead
+  the prediction.
+  \item \code{factSE} the \code{fact} used in the standard error
+  prediction.
+  \item \code{out.name} the name of the folder containing the
+  smoothed/filled images when saved in the Hard Disk Device (HDD).
+  \item \code{only.na} logical argument. If \code{TRUE}
+  only fills the \code{NA} values.
 \code{FALSE}  by default.
 }}
 
 \item{product}{character argument. The name of the product to
 be processed. Check the name of the parameter with \code{\link{list_data}}
-function. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+function. Check the name of the parameter with
+\code{\link{list_data}} function. By default, "ALL".}
 
 \item{satellite}{character argument. The name of the satellite to
-be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+be processed. Check the name of the parameter with
+\code{\link{list_data}} function. By default, "ALL".}
 
 \item{stage}{character argument. The name of the processed stage
-of the data. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+of the data. Check the name of the parameter with
+\code{\link{list_data}} function. By default, "ALL".}
 
 \item{variable}{character argument.The name of the variable to
-be processed. Check the name of the parameter with \code{\link{list_data}} function. By default, "ALL".}
+be processed. Check the name of the parameter with
+\code{\link{list_data}} function. By default, "ALL".}
 }
 \value{
 a \code{RasterStack} with the filled/smoothed images.
@@ -113,15 +125,18 @@ data(ex.ndvi.navarre)
 spplot(ex.ndvi.navarre)
 
 # smoothin and fill all the time series
-tiles.mod.ndvi.filled  <- smoothing_images(ex.ndvi.navarre,
-                                           method="IMA",
-                                           only.na=TRUE)
+tiles.mod.ndvi.filled <- smoothing_images(ex.ndvi.navarre,
+  method = "IMA",
+  only.na = TRUE
+)
 # show the filled images
 spplot(tiles.mod.ndvi.filled)
 # plot comparison of the cloud and the filled images
-tiles.mod.ndvi.comp <- stack(ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
-                             ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]])
-spplot(tiles.mod.ndvi.comp, layout=c(2, 2))
+tiles.mod.ndvi.comp <- stack(
+  ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
+  ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]]
+)
+spplot(tiles.mod.ndvi.comp, layout = c(2, 2))
 }
 }
 \references{

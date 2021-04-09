@@ -19,5 +19,7 @@
 This is a generic function which combines its arguments.
 }
 \details{
-The default method combines its arguments to form a vector. All arguments are coerced to a common type which is the type of the returned value. All attributes except names are removed.
+The default method combines its arguments to form a vector.
+All arguments are coerced to a common type which is the type
+ of the returned value. All attributes except names are removed.
 }

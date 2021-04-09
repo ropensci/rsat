@@ -40,25 +40,29 @@
 #' data(ex.navarre)
 #'
 #' # set the credentials
-#' set_credentials("username","password")
+#' set_credentials("username", "password")
 #'
 #' # path where the region is stored
 #' rtoi.path <- tempdir()
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)
-#' #Landsat-5
-#' sat_search(region=navarre,
-#'           product="LANDSAT_TM_C1",
-#'           dates=as.Date("1988-08-01")+seq(1,35))
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   "Navarre",
+#'   ex.navarre,
+#'   rtoi.path,
+#'   db.path
+#' )
+#' # Landsat-5
+#' sat_search(
+#'   region = navarre,
+#'   product = "LANDSAT_TM_C1",
+#'   dates = as.Date("1988-08-01") + seq(1, 35)
+#' )
 #' download(navarre)
 #'
-#' mosaic(navarre,overwrite=T)
+#' mosaic(navarre, overwrite = T)
 #'
-#' derive(navarre,"NDVI",product="LANDSAT_TM_C1")
+#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
 #' }
 setGeneric("derive", function(x,
                               variable,
@@ -70,172 +74,212 @@ setGeneric("derive", function(x,
 #' @aliases derive,rtoi,character
 #' @importFrom zip zip_list
 setMethod("derive",
-          signature = c("rtoi","character"),
-          function(x,
-                   variable,
-                   product,
-                   dates,
-                   fun,
-                   overwrite=FALSE,
-                   verbose=FALSE,
-                   ...) {
+  signature = c("rtoi", "character"),
+  function(x,
+           variable,
+           product,
+           dates,
+           fun,
+           overwrite = FALSE,
+           verbose = FALSE,
+           ...) {
+    if (missing(product)) {
+      p <- unique(product(records(x)))
+      if (length(p) != 1) {
+        stop(paste0("Your rtoi has more than one product, ",
+                    "use 'product' argument to specify the ",
+                    "product to derive variables."))
+      } else {
+        product <- p
+      }
+    }
+    if (missing(fun)) {
+      fun <- get_var_fun(variable)
+    }
+    # product =
+    rtoi_products <- basename(list.dirs(list.dirs(get_dir(x),
+                                                  recursive = FALSE),
+                                        recursive = FALSE))
+    if (!any(grepl(product, rtoi_products))) {
+      message(paste0("Product not mosaicked, mosaic the product ",
+                     "from you will derive variables."))
+      stop(paste0("\nAvailable products: ", paste(rtoi_products,
+                                                  collapse = ", "), "."))
+    }
 
-            if(missing(product)){
-              p<-unique(product(records(x)))
-              if(length(p)!=1){
-                stop("Your rtoi has more than one product, use 'product' argument to specify the product to derive variables.")
-              }else{
-                product<-p
-              }
-            }
-            if(missing(fun)){
-              fun<-get_var_fun(variable)
-            }
-            #product =
-            rtoi_products<-basename(list.dirs(list.dirs(get_dir(x),recursive = FALSE),recursive = FALSE))
-            if(!any(grepl(product,rtoi_products))){
-              message(paste0("Product not mosaicked, mosaic the product from you will derive variables."))
-              stop(paste0("\nAvailable products: ",paste(rtoi_products, collapse = ", "),"."))
-            }
+    bdata <- deriveBandsData(product)
+    bands <- bdata$bands
+    additional.sizes <- bdata$additional.sizes
 
-            bdata<-deriveBandsData(product)
-            bands<-bdata$bands
-            additional.sizes<-bdata$additional.sizes
+    #############################################
+    # Dir creation
+    #############################################
+    mdir <- get_mosaic_dir(x, product)
+    out.dir <- file.path(get_var_dir(x, product), variable)
+    dir.create(out.dir, recursive = TRUE, showWarnings = FALSE)
 
-            #############################################
-            # Dir creation
-            #############################################
-            mdir<-get_mosaic_dir(x,product)
-            out.dir<-file.path(get_var_dir(x,product),variable)
-            dir.create(out.dir,recursive = TRUE,showWarnings = FALSE)
+    #############################################
+    # Image processing
+    #############################################
+    images <- list.files(mdir, full.names = TRUE)
+    images <- images[grepl("\\.zip$", images)]
+    zip.file <- paste0(out.dir, ".zip")
 
-            #############################################
-            # Image processing
-            #############################################
-            images<-list.files(mdir,full.names = TRUE)
-            images<-images[grepl("\\.zip$",images)]
-            zip.file<-paste0(out.dir,".zip")
+    for (i in images) {
+      message(paste0("Processing image ", basename(i), "."))
+      # layers<-file.path("/vsizip",i,zip_list(i)$filename)
+      layers <- file.path("/vsizip", i, utils::unzip(i, list = TRUE)$Name)
 
-            for(i in images){
-              message(paste0("Processing image ",basename(i),"."))
-              #layers<-file.path("/vsizip",i,zip_list(i)$filename)
-              layers<-file.path("/vsizip",i,utils::unzip(i,list=TRUE)$Name)
+      for (size in additional.sizes) {
+        file.name <- paste0(variable, "_",
+                            format(genGetDates(i), "%Y%j"),
+                            size,
+                            ".tif")
+        out.file <- file.path(out.dir, file.name)
+        layer.size <- layers[grepl(size, layers, fixed = TRUE)]
 
-              for(size in additional.sizes){
-                file.name<-paste0(variable,"_",format(genGetDates(i),"%Y%j"),size,".tif")
-                out.file<-file.path(out.dir,file.name)
-                layer.size<-layers[grepl(size, layers,fixed = TRUE)]
+        if (!(file.exists(zip.file) &&
+              (file.name %in% utils::unzip(zip.file, list = TRUE)$Name)) ||
+            overwrite) {
+          result <- deriveVariables(bands,
+                                    layers = layer.size,
+                                    fun,
+                                    verbose = verbose,
+                                    i = i, ...)
+          if (!is.null(result)) {
+            writeRaster(result, out.file, overwrite = overwrite)
+            # write_stars(result,out.file,update=overwrite)
+            add2rtoi(out.file, zip.file)
+          }
+        } else {
+          message(paste0("File already exists! file: ", out.file))
+        }
+      }
+    }
+    unlink(out.dir, recursive = TRUE)
+    rtoi_size_cal(x)
+  }
+)
 
-                if(!(file.exists(zip.file)&&(file.name%in%utils::unzip(zip.file,list=TRUE)$Name))||overwrite){
-                  result<-deriveVariables(bands,layers=layer.size,fun,verbose=verbose,i=i,...)
-                  if(!is.null(result)){
-                    writeRaster(result,out.file,overwrite=overwrite)
-                    #write_stars(result,out.file,update=overwrite)
-                    add2rtoi(out.file,zip.file)
-                  }
-                }else{
-                  message(paste0("File already exists! file: ",out.file))
-                }
-              }
-
-            }
-            unlink(out.dir,recursive=TRUE)
-            rtoi_size_cal(x)
-})
-
-deriveBandsData<-function(product){
+deriveBandsData <- function(product) {
   #############################################
   # Bands data
   #############################################
 
-    #sentinel-2(lvl1) product
-  if(product%in%"S2MSI1C"){
-    return(list(bands=variables$bands[["Sentinel-2"]],
-                additional.sizes=""))
-    #sentinel-2(lvl2) product
-  }else if(product%in%c("S2MSI2A","S2MS2Ap")){
-    return(list(bands=variables$bands[["Sentinel-2"]],
-                additional.sizes=c("_10m","_20m","_60m")))
-    #sentinel-3 product
-  }else if(grepl("SY_2_SYN___",product)){
-    return(list(bands=variables$bands$`SY_2_SYN___`,
-                additional.sizes=""))
-    #landsat-8 product
-  }else if(grepl("LANDSAT_8_C1",product)){
-    return(list(bands=variables$bands$ls8,
-                additional.sizes=""))
-  # landsat-7 product
-  #}else if(grepl("LANDSAT_7_C1",product)){
-  #  return(list(bands<-variables$bands$ls7,
-  #              additional.sizes=""))
-    #landsat-7 product
-  }else if(grepl("LANDSAT_ETM_C1",product)){
-    return(list(bands<-variables$bands$ls7,
-                additional.sizes=""))
-    #landsat-5 product
-  }else if(grepl("LANDSAT_TM_C1",product)){
-    return(list(bands=variables$bands$ls5,
-                additional.sizes=""))
-    #mod09 product
-  }else if(any(grepl(tolower(substr(product,1,5)),c("mod09","myd09")))){
-    return(list(bands=variables$bands$mod09ga,
-                additional.sizes=""))
+  # sentinel-2(lvl1) product
+  if (product %in% "S2MSI1C") {
+    return(list(
+      bands = variables$bands[["Sentinel-2"]],
+      additional.sizes = ""
+    ))
+    # sentinel-2(lvl2) product
+  } else if (product %in% c("S2MSI2A", "S2MS2Ap")) {
+    return(list(
+      bands = variables$bands[["Sentinel-2"]],
+      additional.sizes = c("_10m", "_20m", "_60m")
+    ))
+    # sentinel-3 product
+  } else if (grepl("SY_2_SYN___", product)) {
+    return(list(
+      bands = variables$bands$`SY_2_SYN___`,
+      additional.sizes = ""
+    ))
+    # landsat-8 product
+  } else if (grepl("LANDSAT_8_C1", product)) {
+    return(list(
+      bands = variables$bands$ls8,
+      additional.sizes = ""
+    ))
+    # landsat-7 product
+    # }else if(grepl("LANDSAT_7_C1",product)){
+    #  return(list(bands<-variables$bands$ls7,
+    #              additional.sizes=""))
+    # landsat-7 product
+  } else if (grepl("LANDSAT_ETM_C1", product)) {
+    return(list(bands <- variables$bands$ls7,
+      additional.sizes = ""
+    ))
+    # landsat-5 product
+  } else if (grepl("LANDSAT_TM_C1", product)) {
+    return(list(
+      bands = variables$bands$ls5,
+      additional.sizes = ""
+    ))
+    # mod09 product
+  } else if (any(grepl(tolower(substr(product, 1, 5)), c("mod09",
+                                                         "myd09")))) {
+    return(list(
+      bands = variables$bands$mod09ga,
+      additional.sizes = ""
+    ))
     # mcd43a4
-  }else if(grepl("mcd43a4",product)){
-    return(list(bands=variables$bands$mcd43a4,
-                additional.sizes=""))
-  }else{
-    warning(paste0("Product '",product,"' not supported."))
+  } else if (grepl("mcd43a4", product)) {
+    return(list(
+      bands = variables$bands$mcd43a4,
+      additional.sizes = ""
+    ))
+  } else {
+    warning(paste0("Product '", product, "' not supported."))
     return(NULL)
   }
 }
 
 
-deriveVariables<-function(bands,layers,fun,verbose=FALSE,i=NULL,...){
-  bjump<-FALSE
-  result<-NULL
-  funargs<-formalArgs(fun)
-  funString<-"result<-fun("
-  #band load and asignation
-  funargs<-formalArgs(fun)
-  for(arg in funargs){
-    band<-bands[names(bands)%in%arg]
-    if(length(band)!=0)
-      band<-layers[grepl(band,layers,ignore.case = TRUE)]
-    if(length(band)==0){
-      if(verbose) warning(paste0("Error reading band ",arg))
+deriveVariables <- function(bands,
+                            layers,
+                            fun,
+                            verbose = FALSE,
+                            i = NULL, ...) {
+  bjump <- FALSE
+  result <- NULL
+  funargs <- formalArgs(fun)
+  funString <- "result<-fun("
+  # band load and asignation
+  funargs <- formalArgs(fun)
+  for (arg in funargs) {
+    band <- bands[names(bands) %in% arg]
+    if (length(band) != 0) {
+      band <- layers[grepl(band, layers, ignore.case = TRUE)]
+    }
+    if (length(band) == 0) {
+      if (verbose) warning(paste0("Error reading band ", arg))
       next
     }
-    band<-gsub("\\","/",band,fixed =TRUE)
-    if(verbose)message(paste0("Reading band: ",paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
-    #eval(parse( text=paste0(arg,"<-read_stars('",band,"',normalize_path = FALSE)")))
-    eval(parse( text=paste0(arg,"<-raster('",band,"')") ))
-    funString<-paste0(funString,arg,"=",arg,",")
+    band <- gsub("\\", "/", band, fixed = TRUE)
+    if (verbose) message(paste0("Reading band: ",
+                                paste0(arg, "<-read_stars('",
+                                       band,
+                                       "',normalize_path = FALSE)")))
+    # eval(parse( text=paste0(arg, "<-read_stars('",
+    #                         band,
+    #                         "',normalize_path = FALSE)")))
+    eval(parse(text = paste0(arg, "<-raster('", band, "')")))
+    funString <- paste0(funString, arg, "=", arg, ",")
   }
   # arguments asignation
-  arguments<-as.list(match.call())
-  arguments<-arguments[names(arguments)%in%funargs&
-                         (!names(arguments)%in%names(layers))]
-  for(arg in names(arguments)){
-    funString<-paste0(funString,arg,"=function.arg$",arg,",")
+  arguments <- as.list(match.call())
+  arguments <- arguments[names(arguments) %in% funargs &
+    (!names(arguments) %in% names(layers))]
+  for (arg in names(arguments)) {
+    funString <- paste0(funString, arg, "=function.arg$", arg, ",")
   }
   # complete the function
-  funString<-paste0(substr(funString,1,nchar(funString)-1),")")
+  funString <- paste0(substr(funString, 1, nchar(funString) - 1), ")")
 
-  #if(verbose){message(paste0("Function for evaluation: \n",funString))}
-  tryCatch({
-    eval(parse(text=funString))
-    return(result)
-  },
-  error=function(e) {
-    if(verbose){
-      message(e)
-      message(paste0("Band not found for image ",i,". Check the mosaic of this image."))
+  # if(verbose){message(paste0("Function for evaluation: \n",funString))}
+  tryCatch(
+    {
+      eval(parse(text = funString))
+      return(result)
+    },
+    error = function(e) {
+      if (verbose) {
+        message(e)
+        message(paste0("Band not found for image ",
+                       i,
+                       ". Check the mosaic of this image."))
+      }
     }
-  })
+  )
   return(result)
 }
-
-
-
-

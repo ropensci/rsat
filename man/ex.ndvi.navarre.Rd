@@ -10,7 +10,8 @@ August in 2017 and 2018. The \code{RasterBrick} coordinates are in the
 Sinusoidal projection:
 
 \describe{
-  \item{name}{layer names contain the date of the image in the format "\code{YYYYJJJ}"}.
+  \item{name}{layer names contain the date of the
+  image in the format "\code{YYYYJJJ}"}.
   \item{size}{each layer contains 113 rows and 105 columns}.
 }
 }

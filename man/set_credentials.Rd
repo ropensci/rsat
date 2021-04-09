@@ -29,8 +29,8 @@ Saves the credentials for the web services
 }
 \examples{
 print_credentials()
-set_credentials("example","example")
+set_credentials("example", "example")
 print_credentials()
-set_credentials("example","example","earthdata")
+set_credentials("example", "example", "earthdata")
 print_credentials()
 }

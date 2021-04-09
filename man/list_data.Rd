@@ -19,18 +19,22 @@ list_data(x, ...)
 a \code{data.frame} of the available information.
 }
 \description{
-Displays the existing products, bands, and processing levels for a given \code{rtoi}
+Displays the existing products, bands,
+and processing levels for a given \code{rtoi}
 }
 \examples{
 \dontrun{
 # set-up the region of interest
-ip <- st_sf(st_as_sfc(st_bbox(c(xmin = -9.755859,
-                                xmax =  4.746094,
-                                ymin = 35.91557,
-                                ymax = 44.02201),
-                              crs = 4326)))
+ip <- st_sf(st_as_sfc(st_bbox(c(
+  xmin = -9.755859,
+  xmax = 4.746094,
+  ymin = 35.91557,
+  ymax = 44.02201
+),
+crs = 4326
+)))
 # set-up the time of interest
-toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
+toi <- seq(as.Date("2021-01-10"), as.Date("2021-01-15"), 1)
 
 # set-up the folders
 db.path <- "C:/database"
@@ -39,15 +43,19 @@ dir.create(db.path)
 dir.create(ds.path)
 
 # set-up rtoi
-filomena <- new_rtoi(name = "filomena",
-                     region = ip,
-                     db_path = db.path,
-                     rtoi_path = ds.path)
+filomena <- new_rtoi(
+  name = "filomena",
+  region = ip,
+  db_path = db.path,
+  rtoi_path = ds.path
+)
 
 # search the images
-sat_search(region = filomena,
-           product = "mod09ga",
-           dates = toi)
+sat_search(
+  region = filomena,
+  product = "mod09ga",
+  dates = toi
+)
 
 # download into the database
 download(filomena)

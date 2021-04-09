@@ -19,7 +19,8 @@ download(x, ...)
 
 \item{...}{additional arguments.}
 
-\item{db_path}{path to the database. By default, the path is defined by the \code{rtoi}.}
+\item{db_path}{path to the database. By default, the path
+is defined by the \code{rtoi}.}
 
 \item{out.dir}{path where the outputs are stored when using a \code{records}.}
 
@@ -38,21 +39,25 @@ library(rsat)
 data(ex.navarre)
 
 # set the credentials
-set_credentials("username","password")
+set_credentials("username", "password")
 
 # path where the region is stored
 rtoi.path <- tempdir()
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  "Navarre",
+  ex.navarre,
+  rtoi.path,
+  db.path
+)
 
-#Landsat-5
-sat_search(region=navarre,
-          product="LANDSAT_TM_C1",
-          dates=as.Date("1988-08-01")+seq(1,35))
+# Landsat-5
+sat_search(
+  region = navarre,
+  product = "LANDSAT_TM_C1",
+  dates = as.Date("1988-08-01") + seq(1, 35)
+)
 download(navarre)
 }
 }

@@ -53,17 +53,21 @@ be transformed back into a \code{records} with the function
 \dontrun{
 data(ex.navarre)
 # Create a records of Sentinel-2 Level 1C images
-s2.lvl1.result <- sat_search(region = ex.navarre,
-                             product = "S2MSI1C",
-                             dates = as.Date("2018-01-01") + seq(1, 30, 1))
+s2.lvl1.result <- sat_search(
+  region = ex.navarre,
+  product = "S2MSI1C",
+  dates = as.Date("2018-01-01") + seq(1, 30, 1)
+)
 
 # Create a records of Sentinel-2 Level 2A images
-s2.lvl2.result <- sat_search(region = ex.navarre,
-                             product = "S2MSI2A",
-                             dates = as.Date("2019-01-01") + seq(1, 30, 1))
+s2.lvl2.result <- sat_search(
+  region = ex.navarre,
+  product = "S2MSI2A",
+  dates = as.Date("2019-01-01") + seq(1, 30, 1)
+)
 class(s2.lvl2.result)
 dates(s2.lvl2.result)
-all.records <- c(s2.lvl1.result,s2.lvl2.result)
+all.records <- c(s2.lvl1.result, s2.lvl2.result)
 
 print(all.records)
 }

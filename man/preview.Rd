@@ -59,7 +59,8 @@ running steps and warnings.}
 \item{tmp_dir}{character argument. The directory where preview images
 are located.}
 
-\item{get.map}{logical argument. If \code{TRUE}, the function return the leaflet map.}
+\item{get.map}{logical argument. If \code{TRUE}, the function
+return the leaflet map.}
 }
 \description{
 Preview a \code{records} or an \code{rtoi} object
@@ -72,28 +73,34 @@ library(rsat)
 data(ex.navarre)
 
 # set the credentials
-set_credentials("username","password")
+set_credentials("username", "password")
 
 # path where the region is stored
 rtoi.path <- tempdir()
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)#'
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  "Navarre",
+  ex.navarre,
+  rtoi.path,
+  db.path
+) #'
 
-sat_search(region=navarre,
-          product="S2MSI1C",
-          dates=as.Date("2018-01-01")+seq(1,30,1))
+sat_search(
+  region = navarre,
+  product = "S2MSI1C",
+  dates = as.Date("2018-01-01") + seq(1, 30, 1)
+)
 
 preview(navarre)
 
 
-sat_search(region=ex.navarre,
-          product="S2MSI1C",
-          dates=as.Date("2018-01-01")+seq(1,30,1))
+sat_search(
+  region = ex.navarre,
+  product = "S2MSI1C",
+  dates = as.Date("2018-01-01") + seq(1, 30, 1)
+)
 
-preview(navarre,n=1)
+preview(navarre, n = 1)
 }
 }

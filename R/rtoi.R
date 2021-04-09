@@ -18,7 +18,8 @@
 #' @field name a character with the name of the region of interest.
 #' @field rtoi_path a character with the path to the rtoi folder.
 #' @field region an sf with the region of interest.
-#' @field records the satellite records available for your region and time of interest.
+#' @field records the satellite records available for
+#' your region and time of interest.
 #' @field db_path a character with the path to the database.
 #'
 #' @exportClass rtoi
@@ -33,11 +34,13 @@
 #' rtoi.path <- tempdir()
 #'
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi(name="Navarre",
-#'                   region=ex.navarre,
-#'                   rtoi_path=rtoi.path,
-#'                   db_path=db.path)
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   name = "Navarre",
+#'   region = ex.navarre,
+#'   rtoi_path = rtoi.path,
+#'   db_path = db.path
+#' )
 #'
 #' print(navarre)
 #'
@@ -46,15 +49,15 @@
 #' print(navarre.records)
 #' }
 setRefClass("rtoi",
-            # Define the slots
-            fields = list(
-              name = "character",
-              rtoi_path = "character",
-              region = "list",
-              records = "records",
-              db_path = "character",
-              size = "numeric"
-            )
+  # Define the slots
+  fields = list(
+    name = "character",
+    rtoi_path = "character",
+    region = "list",
+    records = "records",
+    db_path = "character",
+    size = "numeric"
+  )
 )
 
 #' Creates a new \code{rtoi} object
@@ -64,138 +67,170 @@ setRefClass("rtoi",
 #' @param records a records object.
 #' @param db_path the path to the database.
 #' @param rtoi_path the path to the \code{rtoi} folder.
-#' @param size the size of \code{rtoi} folder. By default, the size is computed from \code{rtoi_path}.
+#' @param size the size of \code{rtoi} folder. By default,
+#' the size is computed from \code{rtoi_path}.
 #'
 #' @return the reference of the \code{rtoi} object
 #' @exportMethod new_rtoi
-setGeneric("new_rtoi", function(name, region, rtoi_path, db_path, records,size) {
+setGeneric("new_rtoi", function(name,
+                                region,
+                                rtoi_path,
+                                db_path,
+                                records,
+                                size) {
   standardGeneric("new_rtoi")
 })
 
 #' @rdname new_rtoi
 #' @aliases new_rtoi,character,sf,character,character,missing
-setMethod("new_rtoi",
-          signature(name = "character",
-                    region = "sf",
-                    rtoi_path = "character",
-                    db_path = "character",
-                    records = "missing",
-                    size = "missing"),
-          function(name, region, rtoi_path, db_path) {
-            rtoi_path<-file.path(rtoi_path,name)
-            if(length(list.files(rtoi_path,pattern="\\.rtoi$"))>0){
-              stop("This rtoi already exists. Give it a new name or rtoi_path.")
-            }
-            dir.create(rtoi_path,showWarnings = FALSE)
-            newobj<-new("rtoi")
-            newobj$records<-new("records")
-            newobj$name<-name
-            newobj$region<-list(region)
-            newobj$rtoi_path<-rtoi_path
-            newobj$db_path<-db_path
-            newobj$size<-0
-            write_rtoi(newobj)
-            return(newobj)
-          })
+setMethod(
+  "new_rtoi",
+  signature(
+    name = "character",
+    region = "sf",
+    rtoi_path = "character",
+    db_path = "character",
+    records = "missing",
+    size = "missing"
+  ),
+  function(name, region, rtoi_path, db_path) {
+    rtoi_path <- file.path(rtoi_path, name)
+    if (length(list.files(rtoi_path, pattern = "\\.rtoi$")) > 0) {
+      stop("This rtoi already exists. Give it a new name or rtoi_path.")
+    }
+    dir.create(rtoi_path, showWarnings = FALSE)
+    newobj <- new("rtoi")
+    newobj$records <- new("records")
+    newobj$name <- name
+    newobj$region <- list(region)
+    newobj$rtoi_path <- rtoi_path
+    newobj$db_path <- db_path
+    newobj$size <- 0
+    write_rtoi(newobj)
+    return(newobj)
+  }
+)
 
 #' @rdname new_rtoi
 #' @aliases character,sf,character,character,records
-setMethod("new_rtoi",
-          signature(name = "character",
-                    region = "sf",
-                    rtoi_path = "character",
-                    db_path = "character",
-                    records = "records",
-                    size = "missing"),
-          function(name, region, rtoi_path, db_path,records) {
-            newobj<-new_rtoi(name,region,rtoi_path,db_path,records=records)
-            newobj$size<-0
-            write_rtoi(newobj)
-            return(newobj)
-          })
+setMethod(
+  "new_rtoi",
+  signature(
+    name = "character",
+    region = "sf",
+    rtoi_path = "character",
+    db_path = "character",
+    records = "records",
+    size = "missing"
+  ),
+  function(name, region, rtoi_path, db_path, records) {
+    newobj <- new_rtoi(name, region, rtoi_path, db_path, records = records)
+    newobj$size <- 0
+    write_rtoi(newobj)
+    return(newobj)
+  }
+)
 
 #' @rdname new_rtoi
 #' @aliases character,sf,character,character,records,size
-setMethod("new_rtoi",
-          signature(name = "character",
-                    region = "sf",
-                    rtoi_path = "character",
-                    db_path = "character",
-                    records = "records",
-                    size = "numeric"),
-          function(name, region, rtoi_path, db_path,records,size) {
-            newobj<-new_rtoi(name,region,rtoi_path,db_path,records=records)
-            newobj$size<-size
-            write_rtoi(newobj)
-            return(newobj)
-          })
+setMethod(
+  "new_rtoi",
+  signature(
+    name = "character",
+    region = "sf",
+    rtoi_path = "character",
+    db_path = "character",
+    records = "records",
+    size = "numeric"
+  ),
+  function(name, region, rtoi_path, db_path, records, size) {
+    newobj <- new_rtoi(name, region, rtoi_path, db_path, records = records)
+    newobj$size <- size
+    write_rtoi(newobj)
+    return(newobj)
+  }
+)
 
 #' @rdname names-records-method
 #' @aliases names,rtoi
 #' @include records.R
-setMethod("names",
-          signature(x = "rtoi"),
-          function(x){
-            return(x$name)
-          })
+setMethod(
+  "names",
+  signature(x = "rtoi"),
+  function(x) {
+    return(x$name)
+  }
+)
 
 #' @rdname names-records-method
 #' @aliases names<-,rtoi,character
-setReplaceMethod(f="names",
-                 signature=c("rtoi","character"),
-                 definition=function(x, value) {
-                   x$name<-value
-                   return(x)
-                 })
+setReplaceMethod(
+  f = "names",
+  signature = c("rtoi", "character"),
+  definition = function(x, value) {
+    x$name <- value
+    return(x)
+  }
+)
 
 #' @rdname sat_name
 #' @aliases sat_name,rtoi
-setMethod(f="sat_name",
-          signature =c("rtoi"),
-          definition = function(x){
-            return(unique(sat_name(records(x))))
-          })
+setMethod(
+  f = "sat_name",
+  signature = c("rtoi"),
+  definition = function(x) {
+    return(unique(sat_name(records(x))))
+  }
+)
 
 #' @rdname get_dir
 #' @aliases get_dir,rtoi
-setMethod("get_dir",
-          signature(x = "rtoi"),
-          function(x){
-            return(x$rtoi_path)
-          })
+setMethod(
+  "get_dir",
+  signature(x = "rtoi"),
+  function(x) {
+    return(x$rtoi_path)
+  }
+)
 
 
 #' @rdname get_dir
 #' @export
 #' @aliases get_dir,rtoi,character-generic
-setGeneric("get_dir<-",function(x,value)  standardGeneric("get_dir<-"))
+setGeneric("get_dir<-", function(x, value) standardGeneric("get_dir<-"))
 
 #' @rdname get_dir
 #' @aliases get_dir,rtoi,character-method
-setMethod("get_dir<-",
-          signature(x = "rtoi",value="character"),
-          function(x,value){
-            x$rtoi_path<-value
-            write_rtoi(x)
-            return(x)
-          })
+setMethod(
+  "get_dir<-",
+  signature(x = "rtoi", value = "character"),
+  function(x, value) {
+    x$rtoi_path <- value
+    write_rtoi(x)
+    return(x)
+  }
+)
 
 
-setGeneric("get_var_dir",function(x,p)  standardGeneric("get_var_dir"))
-setMethod("get_var_dir",
-          signature(x = "rtoi"),
-          function(x,p){
-            dirs<-list.files(list.files(get_dir(x),full.names = TRUE),pattern=p,full.names = TRUE)
-            return(file.path(dirs,"variables"))
-          })
+setGeneric("get_var_dir", function(x, p) standardGeneric("get_var_dir"))
+setMethod(
+  "get_var_dir",
+  signature(x = "rtoi"),
+  function(x, p) {
+    dirs <- list.files(list.files(get_dir(x), full.names = TRUE),
+                       pattern = p, full.names = TRUE)
+    return(file.path(dirs, "variables"))
+  }
+)
 
 setMethod("get_mosaic_dir",
-          signature=c(x = "rtoi"),
-          function(x,p){
-            dirs<-list.dirs(get_dir(x),full.names = TRUE,recursive=TRUE)
-            dirs<-dirs[grepl(p,basename(dirs))]
-            return(file.path(dirs,"mosaic"))
-          })
+  signature = c(x = "rtoi"),
+  function(x, p) {
+    dirs <- list.dirs(get_dir(x), full.names = TRUE, recursive = TRUE)
+    dirs <- dirs[grepl(p, basename(dirs))]
+    return(file.path(dirs, "mosaic"))
+  }
+)
 
 #' Loads into R a time series of images regarding an rtoi, satellite product,
 #' and remote sensing index.
@@ -217,69 +252,85 @@ setMethod("get_mosaic_dir",
 #' data(ex.navarre)
 #'
 #' # set the credentials
-#' set_credentials("username","password")
+#' set_credentials("username", "password")
 #'
 #' # path where the region is stored
 #' rtoi.path <- tempdir()
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)
-#' #Landsat-5
-#' sat_search(region=navarre,
-#'            product="LANDSAT_TM_C1",
-#'            dates=as.Date("1988-08-01")+seq(1,35))
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   "Navarre",
+#'   ex.navarre,
+#'   rtoi.path,
+#'   db.path
+#' )
+#' # Landsat-5
+#' sat_search(
+#'   region = navarre,
+#'   product = "LANDSAT_TM_C1",
+#'   dates = as.Date("1988-08-01") + seq(1, 35)
+#' )
 #' download(navarre)
 #'
-#' mosaic(navarre,overwrite=T)
+#' mosaic(navarre, overwrite = T)
 #'
-#' derive(navarre,"NDVI",product="LANDSAT_TM_C1")
-#' ls6.ndvi<-get_raster(navarre,"LANDSAT_TM_C1","NDVI")
+#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+#' ls6.ndvi <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
 #' }
-setGeneric("get_raster",function(x,p,v,...)  standardGeneric("get_raster"))
+setGeneric("get_raster", function(x, p, v, ...) standardGeneric("get_raster"))
 
 #' @rdname get_raster
 #' @aliases get_raster,rtoi
-setMethod("get_raster",
-          signature(x = "rtoi"),
-          function(x,p,v,...){
-            #layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
+setMethod(
+  "get_raster",
+  signature(x = "rtoi"),
+  function(x, p, v, ...) {
+    # layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
 
-            dirs<-get_var_dir(x,p)
-            files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
-            files<-files[grepl(v,files)]
-            if(length(files)==0){
-              p.df<-list_data(x)
-              p.df<-p.df[p.df$product==p,]
-              p.df<-p.df[p.df$variable==v,]
+    dirs <- get_var_dir(x, p)
+    files <- list.files(dirs, recursive = TRUE, pattern = "\\.zip$",
+                        full.names = TRUE)
+    files <- files[grepl(v, files)]
+    if (length(files) == 0) {
+      p.df <- list_data(x)
+      p.df <- p.df[p.df$product == p, ]
+      p.df <- p.df[p.df$variable == v, ]
 
-              if(grepl("CloudMask",v)){
-                files<-paste0(paste0(c(get_dir(x),unlist(p.df[1:3])),collapse="/"),v,".zip")
-                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
-                return(stack(mos.zip))
-              }
+      if (grepl("CloudMask", v)) {
+        files <- paste0(paste0(c(get_dir(x),
+                                 unlist(p.df[1:3])),
+                               collapse = "/"), v, ".zip")
+        mos.zip <- file.path("/vsizip",
+                             files,
+                             utils::unzip(files, list = TRUE)$Name)
+        return(stack(mos.zip))
+      }
 
-              dirs<-paste0(c(get_dir(x),unlist(p.df[1:3])),collapse="/")
-              files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
+      dirs <- paste0(c(get_dir(x), unlist(p.df[1:3])), collapse = "/")
+      files <- list.files(dirs,
+                          recursive = TRUE,
+                          pattern = "\\.zip$",
+                          full.names = TRUE)
 
-              mos.zip<-c()
-              for(f in files){
-                bnds<-utils::unzip(f,list=TRUE)$Name
-                bnds<-bnds[grepl(v,bnds)]
-                if(length(bnds)==1){
-                  mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
-                }
-              }
-              if(length(mos.zip)==0) message("There are no images for this product and variable.")
-            }else{
-              if(length(files)==1){
-                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
-              }
-            }
-            return(stack(mos.zip))
-          })
+      mos.zip <- c()
+      for (f in files) {
+        bnds <- utils::unzip(f, list = TRUE)$Name
+        bnds <- bnds[grepl(v, bnds)]
+        if (length(bnds) == 1) {
+          mos.zip <- c(mos.zip, file.path("/vsizip", f, bnds))
+        }
+      }
+      if (length(mos.zip) == 0)
+        message("There are no images for this product and variable.")
+    } else {
+      if (length(files) == 1) {
+        mos.zip <- file.path("/vsizip",
+                             files, utils::unzip(files, list = TRUE)$Name)
+      }
+    }
+    return(stack(mos.zip))
+  }
+)
 
 #' Loads into R a time series of images regarding an rtoi, satellite product,
 #' and remote sensing index.
@@ -300,67 +351,86 @@ setMethod("get_raster",
 #' data(ex.navarre)
 #'
 #' # set the credentials
-#' set_credentials("username","password")
+#' set_credentials("username", "password")
 #'
 #' # path where the region is stored
 #' rtoi.path <- tempdir()
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)#'
-#' #Landsat-5
-#' sat_search(region=navarre,
-#'           product="LANDSAT_TM_C1",
-#'           dates=as.Date("1988-08-101")+seq(1,35))
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   "Navarre",
+#'   ex.navarre,
+#'   rtoi.path,
+#'   db.path
+#' ) #'
+#' # Landsat-5
+#' sat_search(
+#'   region = navarre,
+#'   product = "LANDSAT_TM_C1",
+#'   dates = as.Date("1988-08-101") + seq(1, 35)
+#' )
 #' download(navarre)
 #'
-#' mosaic(navarre,overwrite=T)
+#' mosaic(navarre, overwrite = T)
 #'
-#' derive(navarre,"NDVI",product="LANDSAT_TM_C1")
-#' ls6.ndvi<-get_stars(navarre,"LANDSAT_TM_C1","NDVI")
+#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+#' ls6.ndvi <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
 #' }
-setGeneric("get_stars",function(x,p,v,...)  standardGeneric("get_stars"))
+setGeneric("get_stars", function(x, p, v, ...) standardGeneric("get_stars"))
 
 #' @rdname get_stars
 #' @aliases get_stars,rtoi
-setMethod("get_stars",
-          signature(x = "rtoi"),
-          function(x,p,v){
-            dirs<-get_var_dir(x,p)
-            files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
-            files<-files[grepl(v,files)]
-            if(length(files)==0){
-              p.df<-list_data(x)
-              p.df<-p.df[p.df$product==p,]
-              p.df<-p.df[p.df$variable==v,]
+setMethod(
+  "get_stars",
+  signature(x = "rtoi"),
+  function(x, p, v) {
+    dirs <- get_var_dir(x, p)
+    files <- list.files(dirs,
+                        recursive = TRUE,
+                        pattern = "\\.zip$",
+                        full.names = TRUE)
+    files <- files[grepl(v, files)]
+    if (length(files) == 0) {
+      p.df <- list_data(x)
+      p.df <- p.df[p.df$product == p, ]
+      p.df <- p.df[p.df$variable == v, ]
 
-              if(grepl("CloudMask",v)){
-                files<-paste0(paste0(c(get_dir(x),p.df[1:3]),collapse="/"),v,".zip")
-                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
-                return(stack(mos.zip))
-              }
+      if (grepl("CloudMask", v)) {
+        files <- paste0(paste0(c(get_dir(x), p.df[1:3]), collapse = "/"),
+                        v,
+                        ".zip")
+        mos.zip <- file.path("/vsizip",
+                             files,
+                             utils::unzip(files, list = TRUE)$Name)
+        return(stack(mos.zip))
+      }
 
-              dirs<-paste0(c(get_dir(x),p.df[1:3]),collapse="/")
-              files<-list.files(dirs,recursive = TRUE,pattern = "\\.zip$",full.names = TRUE)
+      dirs <- paste0(c(get_dir(x), p.df[1:3]), collapse = "/")
+      files <- list.files(dirs,
+                          recursive = TRUE,
+                          pattern = "\\.zip$",
+                          full.names = TRUE)
 
-              mos.zip<-c()
-              for(f in files){
-                bnds<-utils::unzip(f,list=TRUE)$Name
-                bnds<-bnds[grepl(v,bnds)]
-                if(length(bnds)==1){
-                  mos.zip<-c(mos.zip,file.path("/vsizip",f,bnds))
-                }
-              }
-              if(length(mos.zip)==0) message("There are no images for this product and variable.")
-            }else{
-              if(length(files)==1){
-                mos.zip<-file.path("/vsizip",files,utils::unzip(files,list=TRUE)$Name)
-              }
-            }
-            return(st_as_stars(stack(mos.zip)))#from raster to stars (up to fix argument normalize_path in read_stars)
-          })
+      mos.zip <- c()
+      for (f in files) {
+        bnds <- utils::unzip(f, list = TRUE)$Name
+        bnds <- bnds[grepl(v, bnds)]
+        if (length(bnds) == 1) {
+          mos.zip <- c(mos.zip, file.path("/vsizip", f, bnds))
+        }
+      }
+      if (length(mos.zip) == 0)
+        message("There are no images for this product and variable.")
+    } else {
+      if (length(files) == 1) {
+        mos.zip <- file.path("/vsizip",
+                             files,
+                             utils::unzip(files, list = TRUE)$Name)
+      }
+    }
+    return(st_as_stars(stack(mos.zip)))
+  }
+)
 
 #' Extracts the path to the database
 #'
@@ -369,34 +439,39 @@ setMethod("get_stars",
 #' @param x an rtoi object.
 #'
 #' @export
-setGeneric("get_database",function(x)  standardGeneric("get_database"))
+setGeneric("get_database", function(x) standardGeneric("get_database"))
 
 #' @rdname get_database
 #' @aliases get_database,rtoi
-setMethod("get_database",
-          signature(x = "rtoi"),
-          function(x){
-            return(x$db_path)
-          })
+setMethod(
+  "get_database",
+  signature(x = "rtoi"),
+  function(x) {
+    return(x$db_path)
+  }
+)
 
 #' set database path
 #'
 #' set_database set a new database  directory in x.
 #'
 #' @param x rtoi object
-#' @param value character argument. The value for change the database directory of x.
+#' @param value character argument. The value for
+#' change the database directory of x.
 #'
 #' @export
-setGeneric("set_database",function(x,value)  standardGeneric("set_database"))
+setGeneric("set_database", function(x, value) standardGeneric("set_database"))
 
 #' @rdname set_database
 #' @aliases set_database,rtoi
-setMethod("set_database",
-          signature(x = "rtoi"),
-          function(x,value){
-            x$db_path<-value
-            write_rtoi(x)
-          })
+setMethod(
+  "set_database",
+  signature(x = "rtoi"),
+  function(x, value) {
+    x$db_path <- value
+    write_rtoi(x)
+  }
+)
 
 #' Extracts region from an rtoi
 #'
@@ -406,14 +481,18 @@ setMethod("set_database",
 #' @param value an sf object to define the region in x.
 #'
 #' @export
-setGeneric("region", function(x) {standardGeneric("region")})
+setGeneric("region", function(x) {
+  standardGeneric("region")
+})
 #' @rdname region
 #' @aliases region,rtoi
-setMethod("region",
-          signature(x = "rtoi"),
-          function(x){
-            return(x$region[[1]])
-          })
+setMethod(
+  "region",
+  signature(x = "rtoi"),
+  function(x) {
+    return(x$region[[1]])
+  }
+)
 
 #' @export
 #' @rdname region
@@ -421,13 +500,15 @@ setMethod("region",
 setGeneric("region<-", function(x, value) standardGeneric("region<-"))
 #' @rdname region
 #' @aliases region<-,rtoi,sf
-setMethod(f="region<-",
-          signature=c(x = "rtoi",value = "sf"),
-          definition=function(x, value) {
-            x$region<-list(value)
-            write_rtoi(x)
-            x
-          })
+setMethod(
+  f = "region<-",
+  signature = c(x = "rtoi", value = "sf"),
+  definition = function(x, value) {
+    x$region <- list(value)
+    write_rtoi(x)
+    x
+  }
+)
 
 #' Extracts the satellite records
 #'
@@ -437,14 +518,18 @@ setMethod(f="region<-",
 #' @param value a records object to be set to x.
 #'
 #' @export
-setGeneric("records", function(x) {standardGeneric("records")})
+setGeneric("records", function(x) {
+  standardGeneric("records")
+})
 #' @rdname records
 #' @aliases records,rtoi
-setMethod("records",
-          signature(x = "rtoi"),
-          function(x){
-            return(x$records)
-          })
+setMethod(
+  "records",
+  signature(x = "rtoi"),
+  function(x) {
+    return(x$records)
+  }
+)
 
 #' @export
 #' @rdname records
@@ -453,30 +538,36 @@ setGeneric("records<-", function(x, value) standardGeneric("records<-"))
 
 #' @rdname records
 #' @aliases records<-,rtoi,records
-setMethod(f="records<-",
-          signature=c(x = "rtoi",value = "records"),
-          definition=function(x, value) {
-            x$records<-value
-            write_rtoi(x)
-            x
-          })
+setMethod(
+  f = "records<-",
+  signature = c(x = "rtoi", value = "records"),
+  definition = function(x, value) {
+    x$records <- value
+    write_rtoi(x)
+    x
+  }
+)
 
 #' @rdname dates
 #' @aliases dates,rtoi
-setMethod("dates",
-          signature(x = "rtoi"),
-          function(x){
-            return(unique(dates(records(x))))
-          })
+setMethod(
+  "dates",
+  signature(x = "rtoi"),
+  function(x) {
+    return(unique(dates(records(x))))
+  }
+)
 
 
 #' @rdname product
 #' @aliases product,rtoi
-setMethod("product",
-          signature(x = "rtoi"),
-          function(x){
-            return(unique(product(records(x))))
-          })
+setMethod(
+  "product",
+  signature(x = "rtoi"),
+  function(x) {
+    return(unique(product(records(x))))
+  }
+)
 
 
 #' Renames an \code{rtoi}
@@ -489,39 +580,54 @@ setMethod("product",
 #' @examples
 #' \dontrun{
 #' myrtoi <- read_rtoi("file_path/rtoir_name")
-#' rename(myrtoi,"Navarre_BACK")
+#' rename(myrtoi, "Navarre_BACK")
 #' }
-setGeneric("rename", function(x, newname) { standardGeneric("rename")})
+setGeneric("rename", function(x, newname) {
+  standardGeneric("rename")
+})
 
 #' @rdname rename
 #' @aliases rename,rtoi,character
-setMethod("rename",
-          signature(x = "rtoi", newname="character"),
-          function(x,newname){
-            new.dir<-file.path(dirname(get_dir(x)),newname)
-            file.rename(get_rtoi_path(x),file.path(get_dir(x),paste0(newname,".rtoi")))
-            names(x)<-newname
-            file.rename(get_dir(x),new.dir)
-            get_dir(x)<-new.dir
-            write_rtoi(x)
-          })
+setMethod(
+  "rename",
+  signature(x = "rtoi", newname = "character"),
+  function(x, newname) {
+    new.dir <- file.path(dirname(get_dir(x)), newname)
+    file.rename(get_rtoi_path(x), file.path(get_dir(x),
+                                            paste0(newname, ".rtoi")))
+    names(x) <- newname
+    file.rename(get_dir(x), new.dir)
+    get_dir(x) <- new.dir
+    write_rtoi(x)
+  }
+)
 
 
 
-setGeneric("rtoi_size_cal", function(x) { standardGeneric("rtoi_size_cal")})
-setMethod("rtoi_size_cal",
-          signature(x = "rtoi"),
-          function(x){
-            x$size<-round(((sum(file.info(list.files(get_dir(x), all.files = TRUE, recursive = TRUE,full.names = TRUE))$size)/1024)/1024)/1024,2)
-            write_rtoi(x)
-          })
+setGeneric("rtoi_size_cal", function(x) {
+  standardGeneric("rtoi_size_cal")
+})
+setMethod(
+  "rtoi_size_cal",
+  signature(x = "rtoi"),
+  function(x) {
+    x$size <- round(((sum(file.info(list.files(get_dir(x),
+                                               all.files = TRUE,
+                                               recursive = TRUE,
+                                               full.names = TRUE))$size)
+                      / 1024) / 1024) / 1024, 2)
+    write_rtoi(x)
+  }
+)
 
 setGeneric("rtoi_size", function(x) standardGeneric("rtoi_size"))
-setMethod(f="rtoi_size",
-          signature=c(x = "rtoi"),
-          definition=function(x) {
-            x$size
-          })
+setMethod(
+  f = "rtoi_size",
+  signature = c(x = "rtoi"),
+  definition = function(x) {
+    x$size
+  }
+)
 
 #' Prints the values
 #'
@@ -536,75 +642,89 @@ setMethod(f="rtoi_size",
 #' # path where the data will be
 #' rtoi.path <- tempdir()
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   "Navarre",
+#'   ex.navarre,
+#'   rtoi.path,
+#'   db.path
+#' )
 #' print(navarre)
 #' }
-setMethod("print",
-          signature(x = "rtoi"),
-          function(x){
-            cat(paste0("Name: ",names(x),"\n"))
-            cat(paste0(" -N. records: ",length(records(x)),"\n"))
-            cat(paste0(" -Products: ",paste0(product(x),collapse = ", "),"\n"))
-            cat(paste0(" -Satellites: ",paste(sat_name(x),collapse = ", "),"\n"))
-            cat(paste0(" -Dir size: ",rtoi_size(x),"GB\n"))
-            d<-dates(records(x))
-            if(length(records(x))==0){
-              d<-NA
-            }
-            cat(paste0(" -Dates: from ",min(d)," to ",max(d),"\n"))
-            cat(paste0(" -Database dir: ",get_database(x),"\n"))
-            cat(paste0(" -rtoi dir: ",get_dir(x),"\n"))
-          })
+setMethod(
+  "print",
+  signature(x = "rtoi"),
+  function(x) {
+    cat(paste0("Name: ", names(x), "\n"))
+    cat(paste0(" -N. records: ", length(records(x)), "\n"))
+    cat(paste0(" -Products: ", paste0(product(x), collapse = ", "), "\n"))
+    cat(paste0(" -Satellites: ", paste(sat_name(x), collapse = ", "), "\n"))
+    cat(paste0(" -Dir size: ", rtoi_size(x), "GB\n"))
+    d <- dates(records(x))
+    if (length(records(x)) == 0) {
+      d <- NA
+    }
+    cat(paste0(" -Dates: from ", min(d), " to ", max(d), "\n"))
+    cat(paste0(" -Database dir: ", get_database(x), "\n"))
+    cat(paste0(" -rtoi dir: ", get_dir(x), "\n"))
+  }
+)
 
 #' @rdname show-records-method
 #' @aliases show,rtoi
 setMethod("show",
-          signature= c("rtoi"),
-          function(object){
-            print(object)
-          })
+  signature = c("rtoi"),
+  function(object) {
+    print(object)
+  }
+)
 
-setGeneric("get_rtoi_path",function(x){standardGeneric("get_rtoi_path")})
+setGeneric("get_rtoi_path", function(x) {
+  standardGeneric("get_rtoi_path")
+})
 setMethod("get_rtoi_path",
-          signature= c("rtoi"),
-          function(x){
-            file.path(get_dir(x),paste0(names(x),".rtoi"))
-          })
+  signature = c("rtoi"),
+  function(x) {
+    file.path(get_dir(x), paste0(names(x), ".rtoi"))
+  }
+)
 
-setGeneric("write_rtoi",function(x,...){standardGeneric("write_rtoi")})
+setGeneric("write_rtoi", function(x, ...) {
+  standardGeneric("write_rtoi")
+})
 setMethod("write_rtoi",
-          signature= c("rtoi"),
-          function(x, ...){
-            unlink(get_rtoi_path(x))
-            args<-list(...)
-            if(is.null(args$overwrite))args$overwrite<-TRUE
-            rtoi.names<-names(x$getRefClass()$fields())
-            rtoi.names<-rtoi.names[!rtoi.names%in%c("records","region")]
-            #slots
-            for(param in rtoi.names){
-              cat(paste0(param,":",x$field(param)),file=get_rtoi_path(x),sep="\n",append=TRUE)# change txt get_rtoi_path(x)
-            }
+  signature = c("rtoi"),
+  function(x, ...) {
+    unlink(get_rtoi_path(x))
+    args <- list(...)
+    if (is.null(args$overwrite)) args$overwrite <- TRUE
+    rtoi.names <- names(x$getRefClass()$fields())
+    rtoi.names <- rtoi.names[!rtoi.names %in% c("records", "region")]
+    # slots
+    for (param in rtoi.names) {
+      cat(paste0(param, ":", x$field(param)),
+          file = get_rtoi_path(x), sep = "\n", append = TRUE)
+    }
 
-            #records
-            cat("Records:",file=get_rtoi_path(x),sep="\n",append=TRUE)
-            df<-as.data.frame(records(x))
-            cat(paste0(names(df),collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
-            if(nrow(df)>0){
-              #df$date<-as.character(df$date) # MMTU
-              df$date <- as.character(dates(records(x)))
-              for(i in 1:nrow(df)){
-                cat(paste0(df[i,],collapse=","),file=get_rtoi_path(x),sep="\n",append=TRUE)
-              }
-            }
-            #sf
-            dir.create(file.path(get_dir(x),"region"),showWarnings = FALSE)
-            st_write(x$region[[1]], dsn=file.path(get_dir(x),"region"),driver="ESRI Shapefile",quiet =TRUE,append=!args$overwrite)
-            #saveRDS(x, file=get_rtoi_path(x))
-          })
+    # records
+    cat("Records:", file = get_rtoi_path(x), sep = "\n", append = TRUE)
+    df <- as.data.frame(records(x))
+    cat(paste0(names(df), collapse = ","),
+        file = get_rtoi_path(x), sep = "\n", append = TRUE)
+    if (nrow(df) > 0) {
+      df$date <- as.character(dates(records(x)))
+      for (i in 1:nrow(df)) {
+        cat(paste0(df[i, ], collapse = ","),
+            file = get_rtoi_path(x), sep = "\n", append = TRUE)
+      }
+    }
+    # sf
+    dir.create(file.path(get_dir(x), "region"), showWarnings = FALSE)
+    st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
+             driver = "ESRI Shapefile",
+             quiet = TRUE, append = !args$overwrite)
+   }
+)
 
 #' Reads an rtoi from the hard drive
 #'
@@ -618,67 +738,74 @@ setMethod("write_rtoi",
 #' # path where the data will be
 #' rtoi.path <- tempdir()
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(),"DATABASE")
-#' navarre<-new_rtoi("Navarre",
-#'                   ex.navarre,
-#'                   rtoi.path,
-#'                   db.path)
+#' db.path <- file.path(tempdir(), "DATABASE")
+#' navarre <- new_rtoi(
+#'   "Navarre",
+#'   ex.navarre,
+#'   rtoi.path,
+#'   db.path
+#' )
 #' rm(navarre)
 #'
-#' rtoi.path <- file.path(tempdir(),"Navarre")
+#' rtoi.path <- file.path(tempdir(), "Navarre")
 #' new.navarre <- read_rtoi(rtoi.path)
 #' print(new.navarre)
 #' }
-setGeneric("read_rtoi",function(path,...){standardGeneric("read_rtoi")})
+setGeneric("read_rtoi", function(path, ...) {
+  standardGeneric("read_rtoi")
+})
 #' @rdname read_rtoi
 #' @aliases read_rtoi,character
 setMethod("read_rtoi",
-          signature= c("character"),
-          function(path,...){
-            files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
-            if(length(files)>1){warning("More than one rtoi found! loading the first one.")}
-            if(length(files)==0)stop("There is no rtoi in this path.")
-            newobj<-new("rtoi")
-            #aux<-readRDS(file=files[1])
-            lines<-readLines(files[1])
+  signature = c("character"),
+  function(path, ...) {
+    files <- list.files(path, pattern = "\\.rtoi$", full.names = TRUE, ...)
+    if (length(files) > 1) {
+      warning("More than one rtoi found! loading the first one.")
+    }
+    if (length(files) == 0) stop("There is no rtoi in this path.")
+    newobj <- new("rtoi")
+    # aux<-readRDS(file=files[1])
+    lines <- readLines(files[1])
 
-            #fields
-            rtoi.name<-gsub("name:","",lines[grepl("name:",lines)])
-            if(length(rtoi.name)!=0){
-              newobj$name<-rtoi.name
-            }
+    # fields
+    rtoi.name <- gsub("name:", "", lines[grepl("name:", lines)])
+    if (length(rtoi.name) != 0) {
+      newobj$name <- rtoi.name
+    }
 
-            rtoi.dir<-gsub("rtoi_path:","",lines[grepl("rtoi_path:",lines)])
-            if(path!=rtoi.dir){
-              rtoi.dir<-path
-            }
-            if(length(rtoi.dir)!=0){
-              newobj$rtoi_path<-rtoi.dir
-            }
+    rtoi.dir <- gsub("rtoi_path:", "", lines[grepl("rtoi_path:", lines)])
+    if (path != rtoi.dir) {
+      rtoi.dir <- path
+    }
+    if (length(rtoi.dir) != 0) {
+      newobj$rtoi_path <- rtoi.dir
+    }
 
-            db_path<-gsub("db_path:","",lines[grepl("db_path:",lines)])
-            if(length(db_path)!=0){
-              newobj$db_path<-db_path
-            }
-            size<-as.numeric(gsub("size:","",lines[grepl("size:",lines)]))
-            if(length(size)!=0){
-              newobj$size<-size
-            }
-            #sf
-            region<-st_read(file.path(path,"region"),quiet = TRUE)
-            newobj$region<-list(region)
+    db_path <- gsub("db_path:", "", lines[grepl("db_path:", lines)])
+    if (length(db_path) != 0) {
+      newobj$db_path <- db_path
+    }
+    size <- as.numeric(gsub("size:", "", lines[grepl("size:", lines)]))
+    if (length(size) != 0) {
+      newobj$size <- size
+    }
+    # sf
+    region <- st_read(file.path(path, "region"), quiet = TRUE)
+    newobj$region <- list(region)
 
-            #records
-            rcds<-lines[(which(grepl("Records:",lines))+1):length(lines)]
-            rcds<-strsplit(rcds,",")
-            if(length(rcds)>1){
-              df.rcds<-as.data.frame(do.call(rbind,rcds[-1]))
-              names(df.rcds)<-rcds[[1]]
-              records(newobj)<-as.records(df.rcds)
-            }else{
-              records(newobj)<-new("records")
-            }
+    # records
+    rcds <- lines[(which(grepl("Records:", lines)) + 1):length(lines)]
+    rcds <- strsplit(rcds, ",")
+    if (length(rcds) > 1) {
+      df.rcds <- as.data.frame(do.call(rbind, rcds[-1]))
+      names(df.rcds) <- rcds[[1]]
+      records(newobj) <- as.records(df.rcds)
+    } else {
+      records(newobj) <- new("records")
+    }
 
 
-            return(newobj)
-          })
+    return(newobj)
+  }
+)

@@ -21,6 +21,6 @@ Renames all parameters and folder name of an \code{rtoi}.
 \examples{
 \dontrun{
 myrtoi <- read_rtoi("file_path/rtoir_name")
-rename(myrtoi,"Navarre_BACK")
+rename(myrtoi, "Navarre_BACK")
 }
 }

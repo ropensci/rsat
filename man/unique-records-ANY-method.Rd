@@ -10,5 +10,6 @@
 \item{x}{a \code{records} object.}
 }
 \description{
-It returns a \code{records} like \code{x} but with duplicate elements/rows removed.
+It returns a \code{records} like \code{x} but with duplicate
+elements/rows removed.
 }

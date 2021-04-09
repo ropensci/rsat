@@ -26,16 +26,19 @@
 
 \item{...}{additional arguments.}
 
-\item{out_path}{path to save the mosaicked images. By default, the path is defined by \code{x}.}
+\item{out_path}{path to save the mosaicked images. By default, the path
+is defined by \code{x}.}
 
-\item{db_path}{path to the database. By default, the path is defined by \code{x}.}
+\item{db_path}{path to the database. By default, the path
+is defined by \code{x}.}
 
 \item{bfilter}{a vector of bands to. If not supplied, all are used.}
 
 \item{warp}{character. If equal to "extent", it also crops the images
 around the \code{rtoi}. Use "" otherwise.}
 
-\item{region}{an sf object. Region for cropping the images around. By default, the path is defined by \code{x}.}
+\item{region}{an sf object. Region for cropping the images around.
+By default, the path is defined by \code{x}.}
 
 \item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
 images with the same name.}
@@ -53,24 +56,28 @@ library(rsat)
 data(ex.navarre)
 
 # set the credentials
-set_credentials("username","password")
+set_credentials("username", "password")
 
 # path where the region is stored
 rtoi.path <- tempdir()
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)#'
-#Landsat-5
-sat_search(region=navarre,
-          product="LANDSAT_TM_C1",
-          dates=as.Date("1988-08-01")+seq(1,35))
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  "Navarre",
+  ex.navarre,
+  rtoi.path,
+  db.path
+) #'
+# Landsat-5
+sat_search(
+  region = navarre,
+  product = "LANDSAT_TM_C1",
+  dates = as.Date("1988-08-01") + seq(1, 35)
+)
 download(navarre)
 
-mosaic(navarre,overwrite=T)
+mosaic(navarre, overwrite = T)
 
-derive(navarre,"NDVI",product="LANDSAT_TM_C1")
+derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
 }
 }

@@ -29,7 +29,8 @@ new_rtoi(name, region, rtoi_path, db_path, records, size)
 
 \item{records}{a records object.}
 
-\item{size}{the size of \code{rtoi} folder. By default, the size is computed from \code{rtoi_path}.}
+\item{size}{the size of \code{rtoi} folder. By default,
+the size is computed from \code{rtoi_path}.}
 }
 \value{
 the reference of the \code{rtoi} object

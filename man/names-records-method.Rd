@@ -20,7 +20,8 @@
 \item{value}{character argument. The new value for \code{x}.}
 }
 \value{
-a character vector containing the name of all the names in \code{x}.
+a character vector containing the name of
+all the names in \code{x}.
 }
 \description{
 A function to get or set the names of an object.
@@ -31,20 +32,24 @@ data(ex.navarre)
 # path where the data will be
 rtoi.path <- tempdir()
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  "Navarre",
+  ex.navarre,
+  rtoi.path,
+  db.path
+)
 names(navarre)
 
 # Create a set of records using sat_search function
-s2.lvl2.result<-sat_search(region=ex.navarre,
-                          product="S2MSI2A",
-                          dates=as.Date("2019-01-01")+seq(1,30,1))
+s2.lvl2.result <- sat_search(
+  region = ex.navarre,
+  product = "S2MSI2A",
+  dates = as.Date("2019-01-01") + seq(1, 30, 1)
+)
 names(s2.lvl2.result)
 
-names(s2.lvl2.result)<-"New name"
+names(s2.lvl2.result) <- "New name"
 names(s2.lvl2.result)
 }
 }

@@ -24,14 +24,16 @@ Reads an rtoi from the hard drive
 # path where the data will be
 rtoi.path <- tempdir()
 # path where downloads are stored
-db.path <- file.path(tempdir(),"DATABASE")
-navarre<-new_rtoi("Navarre",
-                  ex.navarre,
-                  rtoi.path,
-                  db.path)
+db.path <- file.path(tempdir(), "DATABASE")
+navarre <- new_rtoi(
+  "Navarre",
+  ex.navarre,
+  rtoi.path,
+  db.path
+)
 rm(navarre)
 
-rtoi.path <- file.path(tempdir(),"Navarre")
+rtoi.path <- file.path(tempdir(), "Navarre")
 new.navarre <- read_rtoi(rtoi.path)
 print(new.navarre)
 }

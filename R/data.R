@@ -1,8 +1,9 @@
 #' A Digital Elevation Model (DEM) of the region of Navarre (Spain)
 #'
 #' Geographically projected \code{RasterStack} with the digital elevation model
-#'(DEM) of the region of Navarre (Spain). The DEM was obtained from the
-#' \href{http://centrodedescargas.cnig.es/CentroDescargas/locale?request_locale=en#}{National Center for Geographic Information}
+#' (DEM) of the region of Navarre (Spain). The DEM was obtained from the
+#' \href{http://centrodedescargas.cnig.es/CentroDescargas/
+#' locale?request_locale=en#}{National Center for Geographic Information}
 #' of Spain. The DEM is used as a covariable in the Image Mean Anomaly (IMA)
 #' algorithm (\code{\link{smoothing_images}}).
 #'
@@ -12,7 +13,8 @@
 #' The \code{RasterStack} coordinates are in the Sinusoidal projection.
 #'
 #' \describe{
-#'   \item{name}{layer names contain the capturing date of the corresponding image in the format "\code{YYYYJJJ}"}.
+#'   \item{name}{layer names contain the capturing date of the
+#'   corresponding image in the format "\code{YYYYJJJ}"}.
 #'   \item{size}{113 rows by 105 columns and 6 layers}.
 #' }
 #' @name ex.dem.navarre
@@ -30,7 +32,8 @@ NULL
 #' Sinusoidal projection:
 #'
 #' \describe{
-#'   \item{name}{layer names contain the date of the image in the format "\code{YYYYJJJ}"}.
+#'   \item{name}{layer names contain the date of the
+#'   image in the format "\code{YYYYJJJ}"}.
 #'   \item{size}{each layer contains 113 rows and 105 columns}.
 #' }
 #' @name ex.ndvi.navarre

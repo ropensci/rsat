@@ -14,7 +14,8 @@ get_api_name(x)
 \item{x}{a \code{records} object.}
 }
 \value{
-a character vector containing the API names of the elements in \code{x}.
+a character vector containing the API names of the
+elements in \code{x}.
 }
 \description{
 A function to get or set the api names of an object.

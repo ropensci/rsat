@@ -13,7 +13,8 @@ set_database(x, value)
 \arguments{
 \item{x}{rtoi object}
 
-\item{value}{character argument. The value for change the database directory of x.}
+\item{value}{character argument. The value for
+change the database directory of x.}
 }
 \description{
 set_database set a new database  directory in x.

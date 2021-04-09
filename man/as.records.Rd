@@ -11,7 +11,8 @@ as.records(x)
 \S4method{as.records}{data.frame}(x)
 }
 \arguments{
-\item{x}{a \code{data.frame} with columns representing the slots of records.}
+\item{x}{a \code{data.frame} with columns representing the slots of
+records.}
 }
 \description{
 Create records object from data frame

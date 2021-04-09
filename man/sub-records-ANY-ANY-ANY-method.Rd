@@ -19,12 +19,16 @@
 \S4method{[}{records,ANY,ANY,ANY}(x, i) <- value
 }
 \arguments{
-\item{x}{object from which to extract element(s) or in which to replace element(s).}
+\item{x}{object from which to extract element(s) or in which to
+replace element(s).}
 
-\item{i}{numeric argument. The the position of the element to select/modify.}
+\item{i}{numeric argument. The the position of the element to
+select/modify.}
 
-\item{value}{a \code{records} argument. The slot of the records to be changed.}
+\item{value}{a \code{records} argument. The slot of the records
+to be changed.}
 }
 \description{
-Operators acting on vectors, matrices, arrays and lists to extract or replace parts.
+Operators acting on vectors, matrices, arrays and lists to
+extract or replace parts.
 }
