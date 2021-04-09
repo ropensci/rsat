@@ -11,6 +11,7 @@ Description: Downloading, customizing, and processing time series of satellite i
 Depends: R (>= 3.5.0), raster, sf, stars
 Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp, Rdpack, fields, calendR
 URL: https://github.com/spatialstatisticsupna/rsat
+BugReports: https://github.com/spatialstatisticsupna/rsat/issues
 RdMacros: Rdpack
 Suggests: 
     rgdal,
