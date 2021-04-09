@@ -123,7 +123,7 @@ setMethod(
     # res.df<-data.frame(t(sapply(jsonres$data$results,c)))
     json_file <- lapply(jsonres$data$results, function(x) {
       # x[sapply(x, is.null)] <- NA
-      x[vapply(x, is.null)] <- NA
+      x[vapply(x, is.null,FUN.VALUE = logical(1))] <- NA
       unlist(x)
     })
     res.df <- as.data.frame(do.call(rbind, json_file))
