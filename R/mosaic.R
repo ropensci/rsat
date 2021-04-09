@@ -163,7 +163,8 @@ setMethod(f="mosaic",
                       switch(tolower(warp),
                              "extent"={
                                r.tmp <-raster(cmpfile)
-                               region <- st_transform(region,proj4string(r.tmp)); rm(r.tmp);
+                               region <- st_transform(region,proj4string(r.tmp))
+                               rm(r.tmp)
 
                                #TODO get projection using gdal_crs, cannot close the connection and remove the file
                                #region <- st_transform(region,gdal_crs(cmpfile)$input)#proj4string(r.tmp)) ;gc();

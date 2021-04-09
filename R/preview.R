@@ -214,6 +214,8 @@ download_preview<-function(r,tmp_dir,verbose = FALSE,...){
                  destination = get_preview_proj(r,tmp_dir),
                  options=c("-t_srs",st_crs(4326)$proj4string)
       )
-      rm(img);gc();file.remove(tmp.img);
+      rm(img)
+      gc()
+      file.remove(tmp.img)
     }
 }
