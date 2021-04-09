@@ -49,10 +49,10 @@ addMapFeature<-function(sfobj,lname){
 previewmap <- new.env()
 assign("map", createMap(), env=previewmap)
 
-getPreviewMap = function(){
+getPreviewMap <- function(){
   get("map", envir=previewmap)
 }
-setPreviewMap = function(map){
+setPreviewMap <- function(map){
   assign("map", map, envir=previewmap)
 }
 

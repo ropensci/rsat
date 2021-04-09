@@ -10,8 +10,8 @@ connection<-setRefClass("connections",
                              apicheck<-FALSE
                              for(api in .self$ApiList){
                                if(credentials==api$credentials|credentials=="ALL"){
-                                 api$username=user
-                                 apicheck=TRUE
+                                 api$username<-user
+                                 apicheck<-TRUE
                                }
                              }
                              if(!apicheck)warning("Api not supported.")
@@ -20,8 +20,8 @@ connection<-setRefClass("connections",
                              apicheck<-FALSE
                              for(api in .self$ApiList){
                                if(credentials==api$credentials|credentials=="ALL"){
-                                 api$password=pass
-                                 apicheck=TRUE
+                                 api$password<-pass
+                                 apicheck<-TRUE
                                }
                              }
                              if(!apicheck)warning("Api not supported.")

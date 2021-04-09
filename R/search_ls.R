@@ -104,7 +104,8 @@ setMethod(f="ls_search",
             ##################################################################################################
             #res.df<-data.frame(t(sapply(jsonres$data$results,c)))
             json_file <- lapply(jsonres$data$results, function(x) {
-              x[sapply(x, is.null)] <- NA
+              #x[sapply(x, is.null)] <- NA
+              x[vapply(x, is.null)] <- NA
               unlist(x)
             })
             res.df<-as.data.frame(do.call(rbind, json_file))
@@ -129,32 +130,32 @@ setMethod(f="ls_search",
 
             switch(lvl,
                    "1"={
-                     api_name="earthexplorer"
+                     api_name<-"earthexplorer"
                      img.name<-unlist(res.df$entityId)
                      nlen<-length(img.name)
                      dataset.data<-con$getEEdatasetID(product,verbose=verbose)
 
-                     download_url=paste0(con$server,"/download/",dataset.data$datasetId,"/",unlist(res.df$entityId),"/EE/")
+                     download_url<-paste0(con$server,"/download/",dataset.data$datasetId,"/",unlist(res.df$entityId),"/EE/")
 
 
                      #file.path(con$server,"download",satid,unlist(res.df$entityId),"STANDARD/EE/")
                      pr<-lsGetPathRow(img.name)
-                     path = as.numeric(substr(pr,1,3))
-                     row = as.numeric(substr(pr,4,6))
+                     path <- as.numeric(substr(pr,1,3))
+                     row <- as.numeric(substr(pr,4,6))
                      d<-lsGetDates(img.name)
-                     order = rep(FALSE,nlen)
+                     order <- rep(FALSE,nlen)
                      fe<-".tar.gz"
                    },
                    "2"={
-                     api_name="ESPA"
+                     api_name<-"ESPA"
                      img.name<-unlist(res.df$displayId)
                      nlen<-length(img.name)
-                     download_url=paste0(connection$getApi("ESPA")$api_server,'/available-products/', res.df$displayId)
+                     download_url<-paste0(connection$getApi("ESPA")$api_server,'/available-products/', res.df$displayId)
                      pr<-gsub(".*_\\s*(\\d{6})_.*","\\1",img.name)
-                     path = as.numeric(substr(pr,1,3))
-                     row = as.numeric(substr(pr,4,6))
+                     path <- as.numeric(substr(pr,1,3))
+                     row <- as.numeric(substr(pr,4,6))
                      d<-as.Date(gsub(".*?\\s*(\\d{8}).*","\\1",img.name),"%Y%m%d")
-                     order = rep(TRUE,nlen)
+                     order <- rep(TRUE,nlen)
                      fe<-".tar.gz"
                    })
 

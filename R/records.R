@@ -186,7 +186,7 @@ setMethod("new_record",
 setMethod("print",
           signature(x = "records"),
           function(x){
-            len=length(x@path)
+            len<-length(x@path)
             if(len==0){
               return(cat("Empty records object"))
             }else if(len==1){
@@ -275,7 +275,7 @@ setMethod(f="c",
 
             for(z in args){
               if(length(x)==0){
-                x=z
+                x<-z
                 next
               }
               if(length(z)==0){
@@ -371,7 +371,7 @@ setMethod(f="as.records",
                   do.call(new_record, as.list(i))
                 })))
               }else{
-                extent_crs=new("extent_crs",
+                extent_crs<-new("extent_crs",
                                EPSG=as.numeric(ecrs.df[,"EPSG"]),
                                xmin=as.numeric(ecrs.df[,"xmin"]),
                                ymin=as.numeric(ecrs.df[,"ymin"]),

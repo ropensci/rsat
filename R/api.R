@@ -18,26 +18,26 @@ setRefClass(Class="api",
     order.list = "list"),
   methods = list(
     initialize=function(){
-      .self$username=""
-      .self$password=""
-      .self$request="rsat request"
-      .self$api_key=""
-      .self$credentials=""
-      .self$status="Not checked"
-      .self$order.list=list("order"=c(),"status"=c(),"id"=c())
+      .self$username<-""
+      .self$password<-""
+      .self$request<-"rsat request"
+      .self$api_key<-""
+      .self$credentials<-""
+      .self$status<-"Not checked"
+      .self$order.list<-list("order"=c(),"status"=c(),"id"=c())
     },
     getCredentials =function(){
       return(c(username=.self$username,password=.self$password))
     },
     simpleCall = function(url){
-      c.handle = new_handle()
+      c.handle <- new_handle()
       req <- curl(url, handle = c.handle)
       tryCatch({
         html<-suppressWarnings(readLines(req))
       }, error = function(e) {
         close(req)
         if(grepl("HTTP error 502.",e$message)){
-          .self$status="Offline"
+          .self$status<-"Offline"
           stop("Service on maintenace. HTTP error 502.")
         }
         stop(e)
@@ -45,13 +45,13 @@ setRefClass(Class="api",
       html<-paste(html,collapse = "\n ")
       close(req)
       if(grepl("Internal Server Error", html)){
-        .self$status="Offline"
+        .self$status<-"Offline"
         stop(paste("Error:",.self$api_server,"Service on maintenace."))
       }
       return(html)
     },
     autoCall = function(url){
-      c.handle = new_handle()
+      c.handle <- new_handle()
       handle_setopt(c.handle,
                     referer=.self$server,
                     useragent = connection$useragent,
@@ -64,7 +64,7 @@ setRefClass(Class="api",
       return(html)
     },
     secureHandle=function(){
-      c.handle = new_handle()
+      c.handle <- new_handle()
       if(.self$username==""|.self$password==""){stop("Check your credentials.")}
       handle_setopt(c.handle,
                     referer=.self$server,
@@ -77,13 +77,13 @@ setRefClass(Class="api",
     },
     secureCall = function(url){
       c.handle<-.self$secureHandle()
-      con=curl(url,handle =c.handle)
+      con<-curl(url,handle =c.handle)
       tryCatch({
         html<-suppressWarnings(readLines(con))
       }, error = function(e) {
         close(con)
         if(grepl("HTTP error 503.",e$message)){
-          .self$status="Offline"
+          .self$status<-"Offline"
           stop("Service on maintenace. HTTP error 503.")
         }else if(grepl("HTTP error 401.",e$message)){
           stop("Unauthorized error (HTTP error 401). Check your credentials.")
@@ -101,9 +101,9 @@ setRefClass(Class="api",
         html<-.self$secureCall(gsub("/$value","",d,fixed = TRUE))
         html<-paste(html,collapse = "\n ")
         if(gsub(".*d:Online>","",gsub("</d:Online.*","",html))=="false"){
-          order=c(order,TRUE)
+          order<-c(order,TRUE)
         }else{
-          order=c(order,FALSE)
+          order<-c(order,FALSE)
         }
       }
       order
@@ -111,7 +111,7 @@ setRefClass(Class="api",
     secureDownload = function(url,f){
       if(.self$api_name=="earthexplorer"){
           c.handle<-.self$secureHandle()
-          con=curl("https://ers.cr.usgs.gov/login/",handle =c.handle)
+          con<-curl("https://ers.cr.usgs.gov/login/",handle =c.handle)
           html<-suppressWarnings(readLines(con))
           html<-paste(html,collapse = "\n ")
           html<-read_html(html)
@@ -183,7 +183,7 @@ setRefClass(Class="api",
         .self$espaGetOrders(verbose)
       c.handle<-.self$secureHandle()
       if(!img_name%in%.self$order.list$id ){
-        url.products = paste0(.self$api_server,'/available-products/', img_name)
+        url.products <- paste0(.self$api_server,'/available-products/', img_name)
         json_data <- rjson::fromJSON(paste(.self$secureCall(url.products), collapse=""))
         #if(verbose){message(paste0("ESPA response r obj: \n",json_data))}
         json_data2<-unlist(json_data,recursive=TRUE)
@@ -212,7 +212,7 @@ setRefClass(Class="api",
         query<-toEspaJSON(json_post)
 
         #if(verbose){message(paste0("ESPA query: \n",query))}
-        res = POST(paste0(.self$api_server,"/order"),
+        res <- POST(paste0(.self$api_server,"/order"),
                    authenticate(.self$username, .self$password),
                    body = as.character(query))
         if(verbose){
@@ -331,7 +331,7 @@ setRefClass(Class="api",
         stop(res$errorMessage)
       }
       if(verbose) message('Logged into EE API.')
-      .self$api_key=res$data
+      .self$api_key<-res$data
     },
     postApiEE = function(url,body,key){
       names(key)<-"X-Auth-Token"
@@ -407,7 +407,7 @@ setRefClass(Class="api",
         res <- content(post.res)
         if(res$error!=""){
           message('Logged out from EE API.')
-          .self$api_key=NULL
+          .self$api_key<-NULL
         }else{
           message('You are not logged in EE API.')
           stop(res$error)
@@ -431,7 +431,7 @@ setRefClass(Class="api",
       }
     },
     request = function(request){
-      .self$request=request
+      .self$request<-request
     }
   )
 )
@@ -440,22 +440,22 @@ setRefClass(Class="api",
 setMethod("api",
           signature("character","character","character","character","missing"),
           function(api_name,server,api_server,credentials) {
-            api=new("api")
-            api$api_name=api_name
-            api$server=server
-            api$api_server=api_server
-            api$credentials=credentials
+            api<-new("api")
+            api$api_name<-api_name
+            api$server<-server
+            api$api_server<-api_server
+            api$credentials<-credentials
             api
           })
 setMethod("api",
           signature("character","character","character","character","character"),
           function(api_name,server,api_server,credentials,request) {
-            api=new("api")
-            api$api_name=api_name
-            api$server=server
-            api$api_server=api_server
-            api$credentials=credentials
-            api$request=request
+            api<-new("api")
+            api$api_name<-api_name
+            api$server<-server
+            api$api_server<-api_server
+            api$credentials<-credentials
+            api$request<-request
             api
           })
 

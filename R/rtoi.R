@@ -87,7 +87,7 @@ setMethod("new_rtoi",
               stop("This rtoi already exists. Give it a new name or rtoi_path.")
             }
             dir.create(rtoi_path,showWarnings = FALSE)
-            newobj=new("rtoi")
+            newobj<-new("rtoi")
             newobj$records<-new("records")
             newobj$name<-name
             newobj$region<-list(region)
@@ -638,7 +638,7 @@ setMethod("read_rtoi",
             files<-list.files(path,pattern = "\\.rtoi$",full.names = TRUE,...)
             if(length(files)>1){warning("More than one rtoi found! loading the first one.")}
             if(length(files)==0)stop("There is no rtoi in this path.")
-            newobj=new("rtoi")
+            newobj<-new("rtoi")
             #aux<-readRDS(file=files[1])
             lines<-readLines(files[1])
 

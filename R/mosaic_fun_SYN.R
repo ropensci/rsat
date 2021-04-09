@@ -80,7 +80,7 @@ mosaic_fun_SY_2_SYN<-function(mfiles,...){
                      destination = out.tmp.file.name,
                      options = c("-of","VRT")
           )
-          d=readLines(out.tmp.file.name)
+          d<-readLines(out.tmp.file.name)
           lines<-c(as.character(d[1]),
                    '<metadata domain="GEOLOCATION">',
                    paste0('<mdi key="X_DATASET">',lon,'</mdi>'),

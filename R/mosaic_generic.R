@@ -31,7 +31,7 @@ genMosaicGdalUtils<-function(typechunks,temp="temp.vrt",nodata,out.name,verbose=
       if(grepl("gdalbuildvrt does not support heterogeneous projection",warning_condition)){
         tryCatch({
           #reproject the images
-          diffproj=TRUE
+          diffproj<-TRUE
           suppressWarnings(file.remove(temp))
           proj<-gdal_crs(typechunks[1])$input
           newchunks<-c(typechunks[1])

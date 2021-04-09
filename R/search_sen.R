@@ -10,7 +10,7 @@ setMethod(f="sen_query",
             arg<-list(...)
             query<-file.path(server,"search?q=")
             if(!"verbose"%in%names(arg)){
-              arg$verbose=FALSE
+              arg$verbose<-FALSE
             }
             #add ingestion date to query
             if("startDate"%in%names(arg)){
@@ -174,7 +174,7 @@ setMethod(f="sen_search",
 
                 bounds<-rbind(bounds,c(xmin=min(x),ymin=min(y),xmax=max(x),ymax=max(y)))
               }
-              nlen=length(name)
+              nlen<-length(name)
 
               if(is.null(tileid)){
                 if(product=="S2MSI2A"){
@@ -186,7 +186,7 @@ setMethod(f="sen_search",
 
               #TODO define order by product
               #order = con$scihubIsLTA(download)
-              order = rep(FALSE,nlen)
+              order <- rep(FALSE,nlen)
 
 
               records<-new_record(sat = sat,
@@ -216,7 +216,7 @@ setMethod(f="sen_search",
            Try the search using a smaller region.")
                 }
                 if(sum(dt==mn.date)>50){
-                  mn.date=mn.date-1
+                  mn.date<-mn.date-1
                 }
                 records<-c(records,sen_search(region=region,
                                               product=product,

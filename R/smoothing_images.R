@@ -282,15 +282,15 @@ dateNeighbours<-function(ts.raster,
                          nYears=1){
   targetyear<-as.integer(format(target.date,"%Y"))
   tempolarPeriods<-format(as.Date((target.date-nPeriods):(target.date+nPeriods)),"%j")
-  if("365"%in%tempolarPeriods&!"366"%in%tempolarPeriods){tempolarPeriods=c(tempolarPeriods,"366")}
+  if("365"%in%tempolarPeriods&!"366"%in%tempolarPeriods){tempolarPeriods<-c(tempolarPeriods,"366")}
   temporalYears<-(targetyear-nYears):(targetyear+nYears)
   temporalWindow<-paste0(rep(temporalYears,each=length(tempolarPeriods)),
                          rep(tempolarPeriods,length(temporalYears)))
   return(raster::subset(ts.raster,which(format(r.dates,"%Y%j")%in%temporalWindow)))
 }
 
-MinSeg=function(fim, ini){
-  dif=as.numeric(difftime(fim, ini, units='mins'))
+MinSeg<-function(fim, ini){
+  dif<-as.numeric(difftime(fim, ini, units='mins'))
   return(paste0(sprintf('%02dm', as.integer(dif)), " ",
                 sprintf('%02.0fs', (dif-as.integer(dif))*60),"."))
 }

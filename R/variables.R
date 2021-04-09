@@ -5,9 +5,9 @@ variables<-setRefClass("variables",
                   ),
                   methods = list(
                    EVI=function(blue,red,nir,scfun=function(r){r}){
-                      blue=scfun(blue)
-                      red=scfun(red)
-                      nir=scfun(nir)
+                      blue<-scfun(blue)
+                      red<-scfun(red)
+                      nir<-scfun(nir)
                       evi <- 2.5*((nir - red) / (nir+6 * red-7.5*blue+1))
                       return(evi)
                     },
@@ -48,8 +48,8 @@ variables<-setRefClass("variables",
                      return(image)
                    },
                    SAVI=function(red,nir,L=0.5,scfun=function(r){r}){
-                     red=scfun(red)
-                     nir=scfun(nir)
+                     red<-scfun(red)
+                     nir<-scfun(nir)
                      savi<-((nir-red)/(nir+red+L))*(1+L)
                      return(savi)
                    },

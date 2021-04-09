@@ -68,7 +68,7 @@ setMethod("new_extent_crs",
 setMethod("print",
           signature(x = "extent_crs"),
           function(x){
-            len=length(x@EPSG)
+            len<-length(x@EPSG)
             if(len==0){
               return(cat("Empty extent_crs object"))
             }else if(len==1){
@@ -119,7 +119,7 @@ setMethod(f="c",
 
             for(z in args){
               if(length(x)==0){
-                x=z
+                x<-z
                 next
               }
               for(s in names(getSlots("extent_crs"))){
