@@ -40,7 +40,7 @@ lsGetDates <- function(str, ...) {
   # sizes<-sapply(str,nchar)
   sizes <- vapply(str, nchar)
   sday <- c()
-  for (s in 1:length(sizes)) {
+  for (s in seq_len(length(sizes))) {
     if (sizes[s] == 21) { # new name convention
       sday <- c(sday, as.Date(substr(basename(str[s]), 10, 16), "%Y%j"))
     } else { # old name convention
@@ -69,7 +69,7 @@ genGetDates <- function(str, ...) {
 toEspaJSON <- function(json_list, is.array = c("products", "inputs")) {
   nam <- names(json_list)
   resjson <- "{"
-  for (n in 1:length(nam)) {
+  for (n in seq_len(length(nam))) {
     resjson <- paste0(resjson, '"', nam[n], '":')
     nlist <- json_list[[n]]
     if (class(nlist) == "list") {

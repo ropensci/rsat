@@ -28,7 +28,7 @@ createMap <- function() {
 updateLayersControl <- function(map,
                                 addBaseGroups = NULL,
                                 addOverlayGroups = NULL) {
-  for (i in 1:length(map$x$calls)) {
+  for (i in seq_len(length(map$x$calls))) {
     if (map$x$calls[[i]]$method == "addLayersControl") {
       map$x$calls[[i]][[2]][[1]] <- c(map$x$calls[[i]][[2]][[1]],
                                       addBaseGroups)
@@ -218,7 +218,7 @@ setMethod(
            ...) {
     if (!add.layer) setPreviewMap(createMap())
     r <- x[dates(x) %in% n]
-    for (n in 1:length(r)) {
+    for (n in seq_len(length(r))) {
       preview(r,
               n,
               lpos,

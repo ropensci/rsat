@@ -711,13 +711,13 @@ setMethod("write_rtoi",
     df <- as.data.frame(records(x))
     cat(paste0(names(df), collapse = ","),
         file = get_rtoi_path(x), sep = "\n", append = TRUE)
-    if (nrow(df) > 0) {
-      df$date <- as.character(dates(records(x)))
-      for (i in 1:nrow(df)) {
-        cat(paste0(df[i, ], collapse = ","),
-            file = get_rtoi_path(x), sep = "\n", append = TRUE)
-      }
+
+    df$date <- as.character(dates(records(x)))
+    for (i in seq_len(nrow(df))) {
+      cat(paste0(df[i, ], collapse = ","),
+          file = get_rtoi_path(x), sep = "\n", append = TRUE)
     }
+
     # sf
     dir.create(file.path(get_dir(x), "region"), showWarnings = FALSE)
     st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),

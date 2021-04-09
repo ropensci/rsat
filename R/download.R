@@ -81,7 +81,7 @@ setMethod(
     if (missing(out.dir)) stop("out.dir needed for image downloading.")
     # petitions for order images
     message("Checking records for long term access data.")
-    for (i in length(x):1) {
+    for (i in rev(seq_len(length(x)))) {
       out.name <- file.path(out.dir, get_file_path(x[i]))
       if (get_order(x[i]) & !file.exists(out.name)) {
         if (grepl("^Landsat", sat_name(x[i]))) {
@@ -118,26 +118,26 @@ setMethod(
       }
     }
     # download images without orders
-    if (length(x) > 0) {
-      for (i in 1:length(x)) {
-        out.name <- file.path(out.dir, get_file_path(x[i]))
-        dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
-        if (!file.exists(out.name)) {
-          if (!get_order(x[i])) {
-            con <- connection$getApi(api_name = get_api_name(x[i]))
-            message(paste0("Downloading ", names(x[i]), " image."))
-            con$secureDownload(get_download(x[i]), out.name)
-          }
-        } else {
-          message(paste0(names(x[i]), " already in your database."))
+
+    for (i in seq_len(length(x))) {
+      out.name <- file.path(out.dir, get_file_path(x[i]))
+      dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
+      if (!file.exists(out.name)) {
+        if (!get_order(x[i])) {
+          con <- connection$getApi(api_name = get_api_name(x[i]))
+          message(paste0("Downloading ", names(x[i]), " image."))
+          con$secureDownload(get_download(x[i]), out.name)
         }
+      } else {
+        message(paste0(names(x[i]), " already in your database."))
       }
     }
 
 
+
     # after download all data without order check and download ordered data
     while (length(ordered.list) > 0) {
-      for (i in length(ordered.list):1) {
+      for (i in rev(seq_len(length(ordered.list)))) {
         out.name <- file.path(out.dir, get_file_path(ordered.list[i]))
         dir.create(dirname(out.name),
                    showWarnings = FALSE,

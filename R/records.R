@@ -474,7 +474,7 @@ setMethod(
       cols <- which(names(x) %in% na)
       x <- x[, cols]
 
-      for (ty in 1:length(type)) {
+      for (ty in seq_len(length(type))) {
         if (type[ty] == "Date") {
           x[, ty] <- as.Date(x[, ty])
         } else {
@@ -495,7 +495,7 @@ setMethod(
           ymax = as.numeric(ecrs.df[, "ymax"])
         )
         r <- new("records")
-        for (i in 1:nrow(x)) {
+        for (i in seq_len(nrow(x))) {
           r <- c(r, do.call(new_record, c(as.list(x[i, ]),
                                           list(extent_crs = extent_crs[i]))))
         }

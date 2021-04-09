@@ -75,7 +75,7 @@ genMosaicGdalUtils <- function(typechunks,
               if (grepl("Read error at scanline", warning_condition)) {
                 warning(paste0("Error reading an image, ",
                                "check the following input images:\n",
-                               paste(paste0(1:length(typechunks),
+                               paste(paste0(seq_len(length(typechunks)),
                                             ". ", typechunks),
                                      collapse = "\n")))
                 return(FALSE)

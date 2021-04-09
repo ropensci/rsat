@@ -213,7 +213,7 @@ setMethod(
                         "lightsalmon",
                         "brown",
                         "blue",
-                        colors())[1:length(unique(n.product))],
+                        colors())[seq_len(length(unique(n.product)))],
         legend.pos = "right"
       ))
     } else if (y == "preview") {
@@ -253,7 +253,7 @@ setMethod(
             next
           }
           if (!file.exists(preview.path.img)) {
-            for (i in 1:length(preview.records)) { # download all preview
+            for (i in seq_len(length(preview.records))) { # download all preview
               r <- preview.records[i]
               proj_file <- get_preview_proj(r, get_database(x))
               if (!file.exists(proj_file)) {
@@ -372,7 +372,7 @@ setMethod(
         message("It may take a while to download the previews.")
       img.list <- list()
       lname <- c()
-      for (i in 1:length(x)) {
+      for (i in seq_len(length(x))) {
         r <- x[i]
         p.url <- get_preview(r)
         na <- names(r)
