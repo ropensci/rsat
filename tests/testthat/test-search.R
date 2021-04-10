@@ -1,5 +1,5 @@
 test_that("search test", {
-  set_credentials("rgistools", "EspacialUPNA88")
+  set_credentials("rsat.package", "UpnaSSG.2021")
   rtoi.path <- tempdir()
 
   show_variables()
