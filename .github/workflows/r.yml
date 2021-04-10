@@ -35,3 +35,6 @@ jobs:
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
+      - name: Install XQuartz on macOS
+        if: runner.os == 'macOS'
+        run: brew cask install xquartz
