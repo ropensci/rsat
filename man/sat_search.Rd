@@ -33,11 +33,10 @@ function returns nothing and the records are added to the \code{rtoi}.
 }
 \details{
 MODIS images are found through the
-\href{https://lpdaacsvc.cr.usgs.gov/
-services/inventory}{NASA Common Metadata Repository}
+\href{\url{https://lpdaacsvc.cr.usgs.gov/services/inventory}}{NASA
+Common Metadata Repository}
 (CMR). The inventory of MODIS products can be found
-\href{https://modis.gsfc.nasa.gov/
-data/dataprod/}{here}.
+\href{https://modis.gsfc.nasa.gov/data/dataprod}{here}.
 The catalog shows the product short names and detailed information.
 MODIS surface reflectance products are named `mod09ga' and `myd09ga' for
 Terra and Aqua satellites. By the time \code{rsat} is
@@ -46,19 +45,16 @@ which may cause an error when connecting to their server.
 
 We use \href{http://scihub.copernicus.eu}{ESA's powered API} (`SciHub') to
 find Sentinel images. The catalog of Sentinel-2 and -3 products can be found
-\href{https://sentinel.esa.int/web/sentinel/missions/
-sentinel-2/data-products}{here}
+\href{\url{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}}{here}
 and
-\href{https://sentinels.copernicus.eu/web/sentinel/missions/
-sentinel-3/data-products}{here},
+\href{\url{https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3/data-products}}{here},
 respectively. Sentinel-2 and -3 surface reflectance product names are
 referred to as `S2MSI2A' and `SY_2_SYN___'.
 
 Landsat images are accessed via the
 \href{https://m2m.cr.usgs.gov/}{Machine-to-Machine API}.
 Details about the Landsat products can be found
-\href{https://www.usgs.gov/core-science-systems/nli/landsat/
-product-information}{here}.
+\href{\url{https://www.usgs.gov/core-science-systems/nli/landsat/product-information}}{here}.
 The names of Landsat products are `LANDSAT_TM_C1', `LANDSAT_ETM_C1', and
 `LANDSAT_8_C1' for missions 4-5, 7, and 8.
 }
