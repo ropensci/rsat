@@ -130,6 +130,7 @@ setMethod(
            startDate,
            endDate,
            verbose = FALSE,
+           test.mode = FALSE,
            ...) {
     if (!missing(dates)) {
       startDate <- min(dates)
@@ -141,6 +142,7 @@ setMethod(
     } else {
       apiname <- "scihub"
     }
+
     con <- connection$getApi(apiname)
 
     query <- sen_query(
@@ -152,7 +154,11 @@ setMethod(
       verbose = verbose,
       ...
     )
-
+    if(verbose) message(paste0("Sentinel_query: ",query))
+    if(test.mode){
+      query<-paste0("https://unai-perez.github.io/rsat-test/",
+                    "api-res-test/sentinel-json-test.json")
+    }
     res.download <- fromJSON(con$secureCall(query))
     ndownload <- as.numeric(res.download$feed$`opensearch:totalResults`)
     if (!is.na(ndownload) & ndownload > 0) {

@@ -211,6 +211,7 @@ setMethod(
   function(region,
            collection = 6,
            verbose = FALSE,
+           test.mode = FALSE,
            ...) {
     args <- list(...)
     con <- connection$getApi("nasa_inventory")
@@ -224,6 +225,11 @@ setMethod(
       ...
     )
     if (verbose) message(query)
+    if (test.mode){
+      # use an url from github
+      query<-paste0("https://unai-perez.github.io/rsat-test/",
+                    "api-res-test/modis-json-test.xml")
+    }
     res.download <- con$simpleCall(query)
     res.download <- xmlRoot(xmlNativeTreeParse(res.download))
     res.download <- xmlSApply(

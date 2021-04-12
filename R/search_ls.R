@@ -79,13 +79,14 @@ setMethod(
            logoout = TRUE,
            lvl = 2,
            verbose = FALSE,
+           test.mode = FALSE,
            ...) {
     if (!missing(dates)) {
       startDate <- min(dates)
       endDate <- max(dates)
     }
     con <- connection$getApi("earthexplorer")
-    if (con$api_key == "") {
+    if (con$api_key == ""&!test.mode) {
       con$loginEEApiKey(verbose = verbose)
     }
     attempts <- 5
@@ -99,7 +100,16 @@ setMethod(
         sf.obj = st_transform(region, st_crs(4326)),
         ...
       )
+      if(verbose) message(paste0("Landsat_query: ",query))
+
       jsonres <- con$postApiEE(query$url, query$json, con$api_key)
+      if(test.mode){
+        query<-paste0("https://unai-perez.github.io/rsat-test/",
+                      "api-res-test/landsat-json-test.json")
+        jsonres<-NULL
+        jsonres$data<-fromJSON(con$simpleCall(query))
+        break
+      }
       attempts <- attempts - 1
       if (is.null(jsonres$errorCode)) {
         break
