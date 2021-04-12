@@ -228,7 +228,7 @@ setMethod(
     if (test.mode){
       # use an url from github
       query<-paste0("https://unai-perez.github.io/rsat-test/",
-                    "api-res-test/modis-json-test.xml")
+                    "api-res-test/modis-json-test-url.xml")
     }
     res.download <- con$simpleCall(query)
     res.download <- xmlRoot(xmlNativeTreeParse(res.download))
