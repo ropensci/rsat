@@ -36,6 +36,7 @@
 #' @param product a character vector of product names.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
+#' @param test.mode logical argument. If \code{TRUE}, the function gets test data from github.
 #' @param ... additional arguments for searching
 #'
 #' @import sf
