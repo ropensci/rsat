@@ -106,8 +106,7 @@ setMethod(
       if(test.mode){
         query<-paste0("https://unai-perez.github.io/rsat-test/",
                       "api-res-test/landsat-json-test.json")
-        jsonres<-NULL
-        jsonres$data<-fromJSON(con$simpleCall(query))
+        jsonres<-fromJSON(con$simpleCall(query))
         break
       }
       attempts <- attempts - 1
