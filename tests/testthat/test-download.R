@@ -5,11 +5,6 @@ test_that("download test", {
   rcds.df$row<-as.numeric(rcds.df$row)
   rcds<-as.records(rcds.df)
 
-  # rcds@download<-
-  #          c("https://github.com/unai-perez/unai-perez.github.io/raw/master/rsat-test/downloadImg/MOD09GA.A2021061.h17v04.006.2021063025039.hdf",
-  #            "https://github.com/unai-perez/unai-perez.github.io/raw/master/rsat-test/downloadImg/LC08_L1GT_062213_20210303_20210312_01_T2.tar.gz",
-  #            "https://github.com/unai-perez/unai-perez.github.io/raw/master/rsat-test/downloadImg/S2B_MSIL2A_20210321T104639_N0214_R051_T30TXM_20210321T134504.zip")
-  # write.csv(as.data.frame(rcds),"D:/OneDrive - UPNA/GitHub/unai-perez.github.io/rsat-test/downloadImg/records.csv",row.names =F)
   set_credentials("username", "password")
   download(rcds,out.dir=tempdir(),test.mode=T)
 
@@ -18,7 +13,6 @@ test_that("download test", {
   show_variables()
 
   # path where downloads are stored
-  #db.path <- file.path(tempdir(), "DATABASE")
   db.path <- file.path("E:/TESTDATABASE/Database")
   navarre <- new_rtoi(
     "Navarre2",
