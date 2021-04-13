@@ -1,4 +1,5 @@
 test_that("records test", {
+  print("Testing records...")
   data(ex.navarre)
 
   # credential test
@@ -36,4 +37,7 @@ test_that("records test", {
       "S2B_MSIL2A_20210321T104639_N0214_R051_T30TXM_20210321T134504-ql.jpg"))
 
   plot(rcds.subset,"preview")
+
+  preview(rcds.subset,1)
+  preview(rcds.subset,dates(rcds.subset[1]))
 })

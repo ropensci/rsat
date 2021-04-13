@@ -64,7 +64,14 @@ genGetDates <- function(str, ...) {
     return(as.Date(gsub(".*\\s*(\\d{7}).*", "\\1", str), "%Y%j"))
   }
 }
-
+#' @importFrom sf st_crs
+st_crs<-function(x,...){
+  if(is.numeric(x)&&x==54008){
+    return(st_crs("ESRI:54008"))
+  }else{
+    return(sf::st_crs(x))
+  }
+}
 
 toEspaJSON <- function(json_list, is.array = c("products", "inputs")) {
   nam <- names(json_list)

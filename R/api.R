@@ -1,8 +1,7 @@
-#' @import curl
-#' @importFrom httr POST content_type content authenticate
+#' @importFrom curl curl new_handle handle_setopt curl_download curl_fetch_memory handle_setform
+#' @importFrom httr POST content_type content authenticate add_headers content_type
 #' @importFrom xml2 read_html xml_attr
 #' @importFrom rvest html_nodes
-
 setGeneric("api",
            function(api_name, server, api_server, credentials, request, ...) {
   standardGeneric("api")

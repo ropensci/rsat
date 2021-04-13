@@ -1,28 +1,29 @@
-#' @import  leaflet leafem
+#' @importFrom leaflet addProviderTiles addLayersControl addPolygons
+#' @importFrom leaflet providerTileOptions layersControlOptions
 createMap <- function() {
-  leaflet() %>%
-    addProviderTiles("OpenStreetMap",
-                     group = "OpenStreetMap",
-                     options = providerTileOptions(zIndex = 0)) %>%
-    addProviderTiles("Esri.WorldImagery",
-                     group = "Esri.WorldImagery",
-                     options = providerTileOptions(zIndex = 0)) %>%
-    addProviderTiles("CartoDB.Positron",
-                     group = "CartoDB.Positron",
-                     options = providerTileOptions(zIndex = 0)) %>%
-    addProviderTiles("CartoDB.DarkMatter",
-                     group = "CartoDB.DarkMatter",
-                     options = providerTileOptions(zIndex = 0)) %>%
-    addLayersControl(
-      baseGroups = c(
-        "OpenStreetMap",
-        "Esri.WorldImagery",
-        "CartoDB.Positron",
-        "CartoDB.DarkMatter"
-      ),
-      position = "topleft",
-      options = layersControlOptions(autoZIndex = FALSE)
-    )
+  theMap<-leaflet::leaflet()
+  theMap<-addProviderTiles(theMap,"OpenStreetMap",
+                           group = "OpenStreetMap",
+                           options = providerTileOptions(zIndex = 0))
+  theMap<-addProviderTiles(theMap,"Esri.WorldImagery",
+                           group = "Esri.WorldImagery",
+                           options = providerTileOptions(zIndex = 0))
+  theMap<-addProviderTiles(theMap,"CartoDB.Positron",
+                           group = "CartoDB.Positron",
+                           options = providerTileOptions(zIndex = 0))
+  theMap<-addProviderTiles(theMap,"CartoDB.DarkMatter",
+                           group = "CartoDB.DarkMatter",
+                           options = providerTileOptions(zIndex = 0))
+  addLayersControl(theMap,
+    baseGroups = c(
+      "OpenStreetMap",
+      "Esri.WorldImagery",
+      "CartoDB.Positron",
+      "CartoDB.DarkMatter"
+    ),
+    position = "topleft",
+    options = layersControlOptions(autoZIndex = FALSE)
+  )
 }
 
 updateLayersControl <- function(map,
@@ -39,10 +40,13 @@ updateLayersControl <- function(map,
   return(map)
 }
 
+#' @importFrom leafem updateLayersControl addRasterRGB
+#' @importFrom stars st_as_stars
 addMapRasterRGB <- function(img, lname, lpos, project = project) {
-  nmap <- getPreviewMap() %>%
+  nmap <- getPreviewMap() #%>%
     # addRasterRGB(subset(img,lpos), group=lname) #%>%
-    addRasterRGB(st_as_stars(subset(img, lpos)),
+  nmap <- addRasterRGB(nmap,
+                 st_as_stars(subset(img, lpos)),
                  group = lname,
                  project = project)
   # addHomeButton(st_bbox(transform_multiple_proj(img,
@@ -54,6 +58,9 @@ addMapRasterRGB <- function(img, lname, lpos, project = project) {
   setPreviewMap(updateLayersControl(nmap, addOverlayGroups = lname))
 }
 
+#' @importFrom leaflet addPolygons
+#' @importFrom leafem addHomeButton addFeatures
+#' @importFrom sf st_bbox st_crs
 addMapFeature <- function(sfobj, lname) {
   nmap <- getPreviewMap()
   if (!any(unlist(lapply(nmap$x$calls, function(x) {
@@ -64,13 +71,14 @@ addMapFeature <- function(sfobj, lname) {
     }
     return(FALSE)
   }), recursive = TRUE))) {
-    nmap <- nmap %>%
-      addFeatures(sfobj,
+    nmap <- addFeatures(nmap,
+                  sfobj,
                   group = lname,
                   label = lname,
                   color = "#3f8dfc",
-                  fillOpacity = 0.2) %>%
-      addHomeButton(st_bbox(transform_multiple_proj(sfobj,
+                  fillOpacity = 0.2)
+    nmap <- addHomeButton(nmap,
+                          st_bbox(transform_multiple_proj(sfobj,
                                                     proj4 = st_crs(4326))),
                     group = lname,
                     position = "bottomright",
@@ -109,7 +117,6 @@ setPreviewMap <- function(map) {
 #'
 #' @include rtoi.R records.R
 #' @export
-#' @import leafem
 #' @examples
 #' \dontrun{
 #' library(rsat)
@@ -287,7 +294,8 @@ get_preview_file <- function(r, tmp_dir) {
 get_preview_proj <- function(r, tmp_dir) {
   return(paste0(get_preview_file(r, tmp_dir), "_proj"))
 }
-
+#' @importFrom raster stack writeRaster extent
+#' @importFrom sf gdal_utils
 download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   pre.file <- get_preview_file(r, tmp_dir)
   if (verbose) message(paste0("Preview file download file: ",
@@ -297,7 +305,7 @@ download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
     con <- connection$getApi(get_api_name(r))
     con$pictureDownload(p.url, pre.file)
   }
-  img <- raster::stack(pre.file)
+  img <- stack(pre.file)
   # check if we have projection from search result
   if (any(is.na(as.vector(extent(r))))) {
     # plotRGB(img)
@@ -306,11 +314,7 @@ download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   } else {
     ext <- extent(r)
     extent(img) <- ext
-    if (crs(r) == 54008) {
-      projection(img) <- st_crs("ESRI:54008")$proj4string
-    } else {
-      projection(img) <- st_crs(crs(r))$proj4string
-    }
+    projection(img) <- st_crs(crs(r))$proj4string
     tmp.img <- paste0(pre.file, "_tmp.tif")
     writeRaster(img, tmp.img, overwrite = TRUE)
     gdal_utils(
