@@ -111,7 +111,8 @@ setMethod("list_data",
         full.names <- gsub(paste0(get_dir(x), "/"), "", full.names)
         full.names <- gsub("\\.zip", "", full.names)
         dl <- do.call(rbind, strsplit(full.names, "/"))
-        dl[, 1] <- ""
+        if(!is.null(dl))
+          dl[, 1] <- ""
         n.col <- ncol(dl)
         dl <- dl[, c(n.col - 3, n.col - 2, 1, n.col)]
         data.list <- rbind(dl, data.list)

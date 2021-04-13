@@ -74,6 +74,9 @@ test_that("records test", {
       "S2B_MSIL2A_20210321T104639_N0214_R051_T30TXM_20210321T134504-ql.jpg"))
   records(navarre)<-rcds.subset
 
+  # records convertion
+  as.records(as.data.frame(rcds.subset))
+
   print(navarre)
   navarre
   plot(navarre,"preview")
@@ -86,4 +89,6 @@ test_that("records test", {
   })
 
   preview(navarre,dates(navarre)[2])
+
+  unlink(file.path(rtoi.path,"Navarre"),recursive = T)
 })

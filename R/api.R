@@ -1,5 +1,7 @@
-#' @importFrom curl curl new_handle handle_setopt curl_download curl_fetch_memory handle_setform
-#' @importFrom httr POST content_type content authenticate add_headers content_type
+#' @importFrom curl curl new_handle handle_setopt curl_download
+#' @importFrom curl curl_fetch_memory handle_setform
+#' @importFrom httr POST content_type content authenticate
+#' @importFrom httr add_headers content_type
 #' @importFrom xml2 read_html xml_attr
 #' @importFrom rvest html_nodes
 #' @importFrom methods new

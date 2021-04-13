@@ -25,7 +25,8 @@ class objects defining the region of interest.}
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
 
-\item{test.mode}{logical argument. If \code{TRUE}, the function gets test data from github.}
+\item{test.mode}{logical argument. If \code{TRUE}, the function gets test
+data from github.}
 }
 \description{
 Search satellite images concerning a particular location, data product, and
@@ -35,8 +36,8 @@ function returns nothing and the records are added to the \code{rtoi}.
 }
 \details{
 MODIS images are found through the
-\href{\url{https://lpdaacsvc.cr.usgs.gov/services/inventory}}{NASA
-Common Metadata Repository}
+\href{https://lpdaacsvc.cr.usgs.gov/services/inventory}{NASA Common
+ Metadata Repository}
 (CMR). The inventory of MODIS products can be found
 \href{https://modis.gsfc.nasa.gov/data/dataprod}{here}.
 The catalog shows the product short names and detailed information.
@@ -47,16 +48,16 @@ which may cause an error when connecting to their server.
 
 We use \href{http://scihub.copernicus.eu}{ESA's powered API} (`SciHub') to
 find Sentinel images. The catalog of Sentinel-2 and -3 products can be found
-\href{\url{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}}{here}
+\href{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}{here}
 and
-\href{\url{https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3/data-products}}{here},
+\href{https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3/data-products}{here},
 respectively. Sentinel-2 and -3 surface reflectance product names are
 referred to as `S2MSI2A' and `SY_2_SYN___'.
 
 Landsat images are accessed via the
 \href{https://m2m.cr.usgs.gov/}{Machine-to-Machine API}.
 Details about the Landsat products can be found
-\href{\url{https://www.usgs.gov/core-science-systems/nli/landsat/product-information}}{here}.
+\href{https://www.usgs.gov/core-science-systems/nli/landsat/product-information}{here}.
 The names of Landsat products are `LANDSAT_TM_C1', `LANDSAT_ETM_C1', and
 `LANDSAT_8_C1' for missions 4-5, 7, and 8.
 }

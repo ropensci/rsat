@@ -9,6 +9,8 @@
 #' @param out.dir path where the outputs are stored when using a \code{records}.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
+#' @param test.mode logical argument. If \code{TRUE}, the function gets test
+#' data from github.
 #' @param ... additional arguments.
 #'
 #' @include rtoi.R records.R
@@ -51,19 +53,24 @@ setGeneric("download", function(x, ...) {
 setMethod(
   f = "download",
   signature = c("rtoi"),
-  function(x, db_path, ...) {
-    # args<-list(...) remove out.dir from args
-    # if("out.dir")
+  function(x, db_path, verbose = FALSE, test.mode = FALSE, ...) {
     if (missing(db_path)) {
       if (x$db_path == "") {
         stop(paste0("db_path not defined in rtoi. Define db_path or",
                     " use records with out.dir argument."))
       } else {
-        download(x = records(x), out.dir = x$db_path, ...)
+        download(x = records(x),
+                 out.dir = x$db_path,
+                 test.mode = test.mode,
+                 verbose = verbose,...)
       }
     } else {
       x$db_path <- db_path
-      download(x = records(x), out.dir = x$db_path, ...)
+      download(x = records(x),
+               out.dir = x$db_path,
+               test.mode = test.mode,
+               verbose = verbose,
+               ...)
     }
   }
 )
@@ -73,7 +80,7 @@ setMethod(
 setMethod(
   f = "download",
   signature = c("records"),
-  function(x, out.dir, verbose = FALSE, ...) {
+  function(x, out.dir, verbose = FALSE, test.mode = FALSE, ...) {
     # dates<-as.Date("2016-01-25")
     # out.dir<-"E:/testnewpackage"
     ordered <- FALSE
@@ -84,7 +91,7 @@ setMethod(
     for (i in rev(seq_len(length(x)))) {
       out.name <- file.path(out.dir, get_file_path(x[i]))
       if (get_order(x[i]) & !file.exists(out.name)) {
-        if (grepl("^Landsat", sat_name(x[i]))) {
+        if (grepl("^Landsat", sat_name(x[i]))&!test.mode) {
           # ls order petition
           con <- connection$getApi(api_name = get_api_name(x[i]))
           if (i == length(x)) {
@@ -96,7 +103,7 @@ setMethod(
           }
           ordered.list <- c(ordered.list, x[i])
           x <- x[-i]
-        } else if (grepl("^Sentinel", sat_name(x[i]))) {
+        } else if (grepl("^Sentinel", sat_name(x[i]))&!test.mode) {
           # sentinel petition
           # con<-connection$getApi(api_name = get_api_name(x[i]))
           # if(con$scihubIsLTA(get_download(x[i]))){#is lta?
@@ -112,8 +119,6 @@ setMethod(
           # }else{
           #   get_order(x)[i]<-FALSE
           # }
-        } else {
-          message(paste0("Product not supported for downloading"))
         }
       }
     }
@@ -123,10 +128,14 @@ setMethod(
       out.name <- file.path(out.dir, get_file_path(x[i]))
       dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
       if (!file.exists(out.name)) {
-        if (!get_order(x[i])) {
+        if (!test.mode) {
           con <- connection$getApi(api_name = get_api_name(x[i]))
           message(paste0("Downloading ", names(x[i]), " image."))
           con$secureDownload(get_download(x[i]), out.name)
+        }else{
+          con <- connection$getApi(api_name = get_api_name(x[i]))
+          message(paste0("Downloading ", names(x[i]), " image."))
+          con$pictureDownload(get_download(x[i]), out.name)
         }
       } else {
         message(paste0(names(x[i]), " already in your database."))

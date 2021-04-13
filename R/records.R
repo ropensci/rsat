@@ -478,7 +478,7 @@ setMethod(
 
       for (ty in seq_len(length(type))) {
         if (type[ty] == "Date") {
-          x[, ty] <- as.Date(x[, ty])
+          x[, ty] <- as.Date(x[, ty],"%Y-%m-%d")
         } else {
           x[, ty] <- as(x[, ty], type[ty])
         }

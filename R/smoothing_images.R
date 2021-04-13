@@ -89,6 +89,7 @@
 #' @importFrom raster beginCluster endCluster clusterR getValues ncell
 #' @importFrom raster nlayers xyFromCell getValues predict aggregate
 #' @importFrom raster addLayer
+#' @importFrom Rdpack reprompt
 #' @examples
 #' \dontrun{
 #' # load an example of NDVI time series in Navarre

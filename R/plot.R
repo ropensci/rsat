@@ -24,7 +24,7 @@
 #' @importFrom calendR calendR
 #' @importFrom grDevices colors
 #' @importFrom sf gdal_utils
-#' @importFrom raster stack
+#' @importFrom raster raster stack
 #' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export
@@ -338,7 +338,7 @@ setMethod(
           files <- list.files(var.dir, full.names = TRUE)
           files <- files[grepl(variable, files)]
 
-          if (length(files) == 0) stop(paste0("Plotting requires mosaicked",
+          if (length(files) == 0) warning(paste0("Plotting requires mosaicked",
                                               " images, and there is none."))
           if (length(files) > 1) {
             warning(paste0("More than one record for the same variable ",
@@ -438,8 +438,9 @@ read_variables <- function(zip.file, product, var.name, date, xsize, ysize) {
   names(raster.list) <- n
   return(raster.list) # TODO change to stars
 }
-#' @importFrom raster stretch
+#' @importFrom raster raster stretch as.matrix
 #' @importFrom methods as
+#' @importFrom stars read_stars
 read_rgb <- function(files.p,
                      product,
                      bands,
@@ -481,8 +482,8 @@ read_rgb <- function(files.p,
 
   # stretch only the data using raster
   red[[1]] <- as.matrix(stretch(raster(red[[1]])))
-  green[[1]] <- as.matrix(stretch(raster(green[[1]])))
-  blue[[1]] <- as.matrix(stretch(raster(blue[[1]])))
+  green[[1]] <- as.matrix(stretch(raster::raster(green[[1]])))
+  blue[[1]] <- as.matrix(stretch(raster::raster(blue[[1]])))
 
   aux <- merge(c(red, green, blue))
   # aux<-as(aux,"Raster")

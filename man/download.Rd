@@ -10,9 +10,9 @@
 \usage{
 download(x, ...)
 
-\S4method{download}{rtoi}(x, db_path, ...)
+\S4method{download}{rtoi}(x, db_path, verbose = FALSE, test.mode = FALSE, ...)
 
-\S4method{download}{records}(x, out.dir, verbose = FALSE, ...)
+\S4method{download}{records}(x, out.dir, verbose = FALSE, test.mode = FALSE, ...)
 }
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
@@ -22,10 +22,13 @@ download(x, ...)
 \item{db_path}{path to the database. By default, the path
 is defined by the \code{rtoi}.}
 
-\item{out.dir}{path where the outputs are stored when using a \code{records}.}
-
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
+
+\item{test.mode}{logical argument. If \code{TRUE}, the function gets test
+data from github.}
+
+\item{out.dir}{path where the outputs are stored when using a \code{records}.}
 }
 \description{
 The function saves the raw images in the database or the specified directory.
