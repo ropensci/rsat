@@ -8,9 +8,7 @@ test_that("records test", {
 
   # path where downloads are stored
   db.path <- file.path(tempdir(), "DATABASE")
-  unlink(file.path(rtoi.path,"Navarre"),recursive = T)
-
-
+  unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
   navarre <- new_rtoi(
     "Navarre_rtoi",
     ex.navarre,
@@ -18,8 +16,7 @@ test_that("records test", {
     db.path
   )
 
-
-  navarre <- read_rtoi(file.path(rtoi.path,"Navarre"))
+  navarre <- read_rtoi(file.path(rtoi.path,"Navarre_rtoi"))
 
 
 

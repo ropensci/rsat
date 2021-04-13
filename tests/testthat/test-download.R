@@ -14,7 +14,7 @@ test_that("download test", {
 
   # path where downloads are stored
   db.path <- file.path(tempdir(),"Database")
-
+  unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
   navarre <- new_rtoi(
     "Navarre_download",
     ex.navarre,
