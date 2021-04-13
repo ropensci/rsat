@@ -31,7 +31,7 @@ test_that("download test", {
   derive(navarre,product="S2MSI2A",variable="NDVI")
   plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[1])
   plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[2])
-  #plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[3])
+  #plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[3])# derive with s2
   navarre
   list_data(navarre)
   get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
