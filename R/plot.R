@@ -19,10 +19,13 @@
 #'
 #' @return \code{tmap} plot.
 #'
-#' @import tmap
+#' @importFrom tmap tm_shape tm_raster tm_layout tm_rgb tm_graticules
 #' @importFrom sp proj4string proj4string<-
 #' @importFrom calendR calendR
 #' @importFrom grDevices colors
+#' @importFrom sf gdal_utils
+#' @importFrom raster stack
+#' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export
 #' @examples
@@ -267,7 +270,7 @@ setMethod(
             }
             all.proj.path <- get_preview_proj(preview.records,
                                               get_database(x))
-            tmp.file <- file.path(tmpDir(), gsub("\\.tif", "",
+            tmp.file <- file.path(tempdir(), gsub("\\.tif", "",
                                                  basename(preview.path.img)))
             gdal_utils(
               util = "buildvrt",
@@ -376,7 +379,7 @@ setMethod(
         r <- x[i]
         p.url <- get_preview(r)
         na <- names(r)
-        pre_dir <- file.path(tmpDir(), get_dir(r), "rgt_preview")
+        pre_dir <- file.path(tempdir(), get_dir(r), "rgt_preview")
         dir.create(pre_dir, showWarnings = FALSE, recursive = TRUE)
         pre.file <- file.path(pre_dir, names(r))
         if (verbose) message(paste0("Preview downloaded: ", pre.file))
@@ -384,7 +387,7 @@ setMethod(
           con <- connection$getApi(get_api_name(r))
           con$pictureDownload(p.url, pre.file)
         }
-        img <- raster::stack(pre.file)
+        img <- stack(pre.file)
         extent(img) <- extent(r)
         projection(img) <- st_crs(crs(r))$proj4string
         img.list <- c(img.list, img)
@@ -435,7 +438,8 @@ read_variables <- function(zip.file, product, var.name, date, xsize, ysize) {
   names(raster.list) <- n
   return(raster.list) # TODO change to stars
 }
-
+#' @importFrom raster stretch
+#' @importFrom methods as
 read_rgb <- function(files.p,
                      product,
                      bands,
@@ -487,7 +491,9 @@ read_rgb <- function(files.p,
 }
 
 
-
+#' @importFrom tmap tm_facets tm_graticules tm_grid tm_compass tm_scale_bar
+#' @importFrom tmap tm_fill tm_polygons tm_borders tm_shape tmap_arrange
+#' @importFrom raster projectRaster minValue maxValue
 genPlotGIS <- function(r,
                        region,
                        breaks,

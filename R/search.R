@@ -39,7 +39,6 @@
 #' @param test.mode logical argument. If \code{TRUE}, the function gets test data from github.
 #' @param ... additional arguments for searching
 #'
-#' @import sf
 #' @export sat_search
 #' @include search_sen.R search_ls.R search_mod.R
 #' @examples

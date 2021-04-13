@@ -263,6 +263,7 @@ setMethod(
   }
 )
 
+#' @importFrom utils head
 #' @rdname print-rtoi-method
 #' @aliases print,records
 #' @export
@@ -447,6 +448,7 @@ setGeneric("as.records", function(x) {
   standardGeneric("as.records")
 })
 
+#' @importFrom methods as new slot<- show
 #' @rdname as.records
 #' @aliases as.records,data.frame
 setMethod(
@@ -791,6 +793,7 @@ setMethod(
   }
 )
 
+#' @importFrom raster crs
 setMethod(
   f = "crs",
   signature = "records",

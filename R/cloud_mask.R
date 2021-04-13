@@ -8,6 +8,7 @@
 #' images with the same name.
 #' @param ... additional arguments
 #'
+#' @importFrom raster readAll minValue NAvalue<- getValues
 #' @include rtoi.R
 #' @export
 #' @importFrom zip zip_list

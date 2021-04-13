@@ -17,6 +17,42 @@ test_that("records test", {
 
   navarre <- read_rtoi(file.path(rtoi.path,"Navarre"))
 
+  #######################################################
+  # Searching errors
+  #######################################################
+  tryCatch({
+    sat_search(
+      region = navarre,
+      product = c("mod09ga"),
+      dates = as.Date("2021-03-01") + seq(1, 20),
+      verbose=TRUE
+    )
+  }, error = function(e) {
+    print(e)
+  })
+
+  tryCatch({
+    sat_search(
+      region = navarre,
+      product = c("LANDSAT_8_C1"),
+      dates = as.Date("2021-03-01") + seq(1, 20),
+      verbose=TRUE
+    )
+  }, error = function(e) {
+    print(e)
+  })
+
+  tryCatch({
+    sat_search(
+      region = navarre,
+      product = c("S2MSI2A"),
+      dates = as.Date("2021-03-01") + seq(1, 20),
+      verbose=TRUE
+    )
+  }, error = function(e) {
+    print(e)
+  })
+
   # search mod09ga products
   sat_search(
     region = navarre,
@@ -42,4 +78,12 @@ test_that("records test", {
   navarre
   plot(navarre,"preview")
   plot(navarre,"dates")
+
+  tryCatch({
+    plot(navarre,"view")
+  }, error = function(e) {
+    print(e)
+  })
+
+  preview(navarre,dates(navarre)[2])
 })

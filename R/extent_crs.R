@@ -138,7 +138,7 @@ setMethod(
 
 #' @rdname c-records-method
 #' @aliases c,extent_crs
-#' @import methods
+#' @importFrom methods slot getSlots
 setMethod(
   f = "c",
   signature("extent_crs"),
@@ -194,7 +194,7 @@ setMethod(
   }
 )
 
-#' @import raster
+#' @importFrom raster extent
 setMethod(
   f = "extent",
   signature = "extent_crs",

@@ -200,7 +200,7 @@ setMethod(
 )
 
 
-#' @import XML
+#' @importFrom XML xmlRoot xmlSApply xmlNativeTreeParse xmlValue
 setGeneric("mod_search", function(region,
                                   ...) {
   standardGeneric("mod_search")

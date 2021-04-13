@@ -1,4 +1,3 @@
-#' @import Rdpack
 as.Date <- function(x, ...) {
   if (is.numeric(x)) {
     return(base::as.Date("1970-01-01") + x)
@@ -6,7 +5,9 @@ as.Date <- function(x, ...) {
     return(base::as.Date(x, ...))
   }
 }
-
+#' @importFrom sf st_transform st_as_sf st_crs<-
+#' @importFrom raster projection
+#' @importFrom methods is slot<-
 transform_multiple_proj <- function(obj, proj4) {
   # Object to be transformed
   if (is(obj, "sf")) {

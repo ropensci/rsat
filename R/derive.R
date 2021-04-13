@@ -225,6 +225,7 @@ deriveBandsData <- function(product) {
 }
 
 
+#' @importFrom methods formalArgs
 deriveVariables <- function(bands,
                             layers,
                             fun,

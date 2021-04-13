@@ -89,11 +89,14 @@ addMapFeature <- function(sfobj, lname) {
 
 previewmap <- new.env()
 assign("map",
-       createMap(),
+       NULL,
        env = previewmap)
 
 getPreviewMap <- function() {
-  get("map", envir = previewmap)
+  if(is.null(get("map", envir = previewmap)))
+    return(createMap())
+  else
+    return(get("map", envir = previewmap))
 }
 setPreviewMap <- function(map) {
   assign("map", map, envir = previewmap)
@@ -239,6 +242,7 @@ setMethod(
     }
   }
 )
+#' @importFrom raster projection<- stack
 #' @rdname preview
 #' @aliases preview,rtoi,numeric
 setMethod(
@@ -261,7 +265,7 @@ setMethod(
       if (!file.exists(proj_file)) {
         download_preview(r, tmp_dir, verbose = verbose, ...)
       }
-      img <- raster::stack(proj_file)
+      img <- stack(proj_file)
       # lname<-paste0(sat_name(r),"_",dates(r))
       lname <- names(r)
       addMapRasterRGB(img,
@@ -294,7 +298,7 @@ get_preview_file <- function(r, tmp_dir) {
 get_preview_proj <- function(r, tmp_dir) {
   return(paste0(get_preview_file(r, tmp_dir), "_proj"))
 }
-#' @importFrom raster stack writeRaster extent
+#' @importFrom raster stack writeRaster extent extent<-
 #' @importFrom sf gdal_utils
 download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   pre.file <- get_preview_file(r, tmp_dir)

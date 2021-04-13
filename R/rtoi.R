@@ -23,7 +23,6 @@
 #' @field db_path a character with the path to the database.
 #'
 #' @exportClass rtoi
-#' @import sf
 #' @include records.R
 #'
 #' @examples
@@ -242,7 +241,6 @@ setMethod("get_mosaic_dir",
 #'
 #' @return a raster stack.
 #'
-#' @import raster stars
 #' @export
 #' @examples
 #' \dontrun{
@@ -689,6 +687,7 @@ setMethod("get_rtoi_path",
   }
 )
 
+#' @importFrom sf st_write
 setGeneric("write_rtoi", function(x, ...) {
   standardGeneric("write_rtoi")
 })
@@ -754,6 +753,7 @@ setMethod("write_rtoi",
 setGeneric("read_rtoi", function(path, ...) {
   standardGeneric("read_rtoi")
 })
+#' @importFrom sf st_read
 #' @rdname read_rtoi
 #' @aliases read_rtoi,character
 setMethod("read_rtoi",

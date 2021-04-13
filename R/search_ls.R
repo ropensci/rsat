@@ -1,4 +1,4 @@
-#' @import rjson
+#' @importFrom rjson fromJSON toJSON
 #' @importFrom httr add_headers
 #'
 setGeneric("ls_query", function(server,

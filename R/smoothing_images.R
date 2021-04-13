@@ -85,7 +85,10 @@
 #' @return a \code{RasterStack} with the filled/smoothed images.
 #'
 #' @export
-#' @import fields
+#' @importFrom fields Tps
+#' @importFrom raster beginCluster endCluster clusterR getValues ncell
+#' @importFrom raster nlayers xyFromCell getValues predict aggregate
+#' @importFrom raster addLayer
 #' @examples
 #' \dontrun{
 #' # load an example of NDVI time series in Navarre

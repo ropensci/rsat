@@ -1,3 +1,4 @@
+#' @importFrom sf gdal_crs
 genMosaicGdalUtils <- function(typechunks,
                                temp = "temp.vrt",
                                nodata, out.name,

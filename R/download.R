@@ -102,7 +102,7 @@ setMethod(
           # if(con$scihubIsLTA(get_download(x[i]))){#is lta?
           #   message(paste0("Ordering ",names(x[i])," image."))
           #   if((con$secureDownload(get_download(x[i]),
-          #                          file.path(tmpDir(),
+          #                          file.path(tempdir(),
           #                                    "tmpImg")))%in%c(500,403,500)){
           #     message("Error ordering the image, try in other moment.")
           #   }else{

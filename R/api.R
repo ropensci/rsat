@@ -2,6 +2,7 @@
 #' @importFrom httr POST content_type content authenticate add_headers content_type
 #' @importFrom xml2 read_html xml_attr
 #' @importFrom rvest html_nodes
+#' @importFrom methods new
 setGeneric("api",
            function(api_name, server, api_server, credentials, request, ...) {
   standardGeneric("api")

@@ -19,8 +19,7 @@
 #' @param y omitted parameter.
 #' @param ... additional arguments.
 #'
-#' @importFrom zip zipr
-#' @import raster
+#' @importFrom raster raster
 #' @include rtoi.R records.R
 #' @export
 #' @examples
@@ -85,8 +84,8 @@ setMethod(
 
 #' @rdname mosaic-rtoi-ANY-method
 #' @aliases mosaic,records
+#' @importFrom raster mosaic
 #' @importFrom utils untar
-#' @importFrom zip zip_list
 #' @importFrom sp proj4string
 setMethod(
   f = "mosaic",
@@ -234,7 +233,6 @@ setMethod(
         }
         add2rtoi(infile = out.file.name, out.zip = out.zip)
       }
-      # zipr(out.zip,files=list.files(out.dir,full.names = T))
       unlink(out.dir, recursive = TRUE)
     }
   }
