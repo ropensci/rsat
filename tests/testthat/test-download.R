@@ -13,9 +13,9 @@ test_that("download test", {
   show_variables()
 
   # path where downloads are stored
-  db.path <- file.path("E:/TESTDATABASE/Database")
+  db.path <- file.path(tempdir(),"Database")
   navarre <- new_rtoi(
-    "Navarre2",
+    "Navarre",
     ex.navarre,
     rtoi.path,
     db.path
@@ -25,7 +25,9 @@ test_that("download test", {
   plot(navarre, "view", product = unique(product(navarre))[1])
   plot(navarre, "view", product = unique(product(navarre))[2])
   plot(navarre, "view", product = unique(product(navarre))[3])
+
   list_data(navarre)
+
   derive(navarre,product="LANDSAT_8_C1_lvl2",variable="NDVI")
   derive(navarre,product="mod09ga",variable="NDVI")
   derive(navarre,product="S2MSI2A",variable="NDVI")
