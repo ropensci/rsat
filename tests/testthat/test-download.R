@@ -14,13 +14,16 @@ test_that("download test", {
 
   # path where downloads are stored
   db.path <- file.path(tempdir(),"Database")
+
   navarre <- new_rtoi(
-    "Navarre",
+    "Navarre_download",
     ex.navarre,
     rtoi.path,
     db.path
   )
   records(navarre)<-rcds
+  download(navarre,test.mode=T)
+
   mosaic(navarre)
   plot(navarre, "view", product = unique(product(navarre))[1])
   plot(navarre, "view", product = unique(product(navarre))[2])
@@ -38,4 +41,6 @@ test_that("download test", {
   list_data(navarre)
   get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
   get_stars(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
+
+  unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })
