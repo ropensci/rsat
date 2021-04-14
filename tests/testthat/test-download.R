@@ -63,6 +63,10 @@ test_that("download test", {
   navarre
   tryCatch({
     list_data(navarre)
+
+  }, error = function(e) {
+  })
+  tryCatch({
     get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
     get_stars(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
   }, error = function(e) {
