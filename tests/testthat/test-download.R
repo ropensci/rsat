@@ -58,9 +58,12 @@ test_that("download test", {
 
   #plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[3])# derive with s2
   navarre
-  list_data(navarre)
-  get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
-  get_stars(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
+  tryCatch({
+    list_data(navarre)
+    get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
+    get_stars(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
+  }, error = function(e) {
+  })
 
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })
