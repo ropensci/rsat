@@ -87,7 +87,7 @@ setMethod("list_data",
           if(is.na(f)) return(NULL)
           vars <- gsub("\\s*(\\d{7}_)", "", utils::unzip(f, list = TRUE)$Name)
           vars <- gsub("\\.tif$", "", vars)
-          f <- gsub(paste0(get_dir(x), "/"), "", f)
+          f <- gsub(paste0(get_dir(x), "/"), "", f,fixed=TRUE)
           f <- gsub("\\.zip", "", f)
           dl <- do.call(rbind, lapply(vars, function(x, y) c(y, x),
                                       unlist(strsplit(f, "/"))))
