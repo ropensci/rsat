@@ -43,7 +43,10 @@ test_that("download test", {
   plot(navarre, "view", product = unique(product(navarre))[3])
 
   print(navarre)
-  list_data(navarre)
+  tryCatch({
+    list_data(navarre)
+  }, error = function(e) {
+  })
 
   derive(navarre,product="LANDSAT_8_C1_lvl2",variable="NDVI")
   derive(navarre,product="mod09ga",variable="NDVI")
