@@ -63,7 +63,7 @@ setMethod(
         message(paste0("Creating cloud mask of date ",
                        genGetDates(f),
                        " in product ", p, "."))
-        if (fun_clkmsk(
+        if(fun_clkmsk(
           infile = f,
           outfile = file.path(out_dir,
                               paste0(format(genGetDates(f), "%Y%j"), ".tif")),
@@ -130,7 +130,6 @@ lsCloudMask <- function(infile,
     ras.cloud[ras.cloud != 1] <- NA
     NAvalue(ras.cloud) <- 0
 
-    NAvalue(ras.cloud) <- 0
     writeRaster(ras.cloud, outfile, overwrite = overwrite)
     add2rtoi(outfile, paste0(dirname(outfile), ".zip"))
     return(FALSE)

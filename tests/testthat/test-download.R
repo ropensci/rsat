@@ -8,17 +8,9 @@ test_that("download test", {
 
   dir.create(file.path(tempdir(),"Database"))
   set_credentials("username", "password")
-  tryCatch({
-    download(rcds[1],out.dir=file.path(tempdir(),"Database"),test.mode=T)
-  }, error = function(e) {
-    print(e)
-  })
-
-  download(rcds[2:3],out.dir=file.path(tempdir(),"Database"),test.mode=T)
 
   data(ex.navarre)
   rtoi.path <- tempdir()
-  show_variables()
 
   # path where downloads are stored
   db.path <- file.path(tempdir(),"Database")
@@ -29,10 +21,50 @@ test_that("download test", {
     rtoi.path,
     db.path
   )
-  records(navarre)<-rcds
+  set_credentials("rsat.package", "UpnaSSG.2021")
+  tryCatch({
+    sat_search(
+      region = navarre,
+      product = c("mod09ga"),
+      dates = as.Date("2021-03-01") + seq(1, 2),
+      verbose=TRUE
+    )
+    download(navarre,test.mode=T)
+  }, error = function(e) {
+    print(e)
+  })
 
   tryCatch({
-    download(rcds[1],out.dir=file.path(tempdir(),"Database"),test.mode=T)
+    r<-sat_search(
+      region = ex.navarre,
+      product = c("LANDSAT_8_C1"),
+      dates = as.Date("2021-03-01") + seq(1, 20),
+      verbose=TRUE
+    )
+    records(navarre)<-c(records(navarre),r[1])
+    download(r[1],out.dir=file.path(tempdir(),"Database"))
+  }, error = function(e) {
+    print(e)
+  })
+
+  tryCatch({
+    r<-sat_search(
+      region = ex.navarre,
+      product = c("S2MSI2A"),
+      dates = as.Date("2021-03-01") + seq(1, 20),
+      verbose=TRUE
+    )
+    records(navarre)<-c(records(navarre),r[1])
+    download(r[1],out.dir=file.path(tempdir(),"Database"))
+  }, error = function(e) {
+    print(e)
+  })
+
+  records(navarre)<-rcds
+  download(rcds[2:3],out.dir=file.path(tempdir(),"Database"),test.mode=T)
+  #records(navarre)<-rcds
+
+  tryCatch({
     mosaic(navarre)
     plot(navarre, "view", product = unique(product(navarre))[1])
   }, error = function(e) {
@@ -52,24 +84,39 @@ test_that("download test", {
   derive(navarre,product="mod09ga",variable="NDVI")
   derive(navarre,product="S2MSI2A",variable="NDVI")
 
+  tryCatch({
+    list_data(navarre)[list_data(navarre)$variable=="NDVI",]
+  }, error = function(e) {
+    print(e)
+  })
 
   tryCatch({
+    derive(navarre,product="mod09ga",variable="NDVI")
     plot(navarre,"view",variable="NDVI",product = "mod09ga")
   }, error = function(e) {
+    print(e)
   })
   plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[2])
-
-  #plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[3])# derive with s2
   navarre
   tryCatch({
     list_data(navarre)
-
   }, error = function(e) {
+    print(e)
   })
+
   tryCatch({
     get_raster(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
     get_stars(navarre,p="LANDSAT_8_C1_lvl2",v="NDVI")
   }, error = function(e) {
+    print(e)
+  })
+
+  tryCatch({
+    cloud_mask(navarre,products="mod09ga")
+    list_data(navarre)
+    get_raster(navarre,p="mod09ga",v="CloudMask")
+  }, error = function(e) {
+    print(e)
   })
 
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
