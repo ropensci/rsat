@@ -22,7 +22,7 @@ test_that("download test", {
     rtoi.path,
     db.path
   )
-  #set_credentials("rsat.package", "UpnaSSG.2021")
+  set_credentials("rsat.package", "UpnaSSG.2021")
   tryCatch({
     sat_search(
       region = navarre,
@@ -99,7 +99,10 @@ test_that("download test", {
   tryCatch({
     derive(navarre,product="mod09ga",variable="NDVI")
     plot(navarre,"view",variable="NDVI",product = "mod09ga")
-    smoothing_images(navarre,"IMA",variable="NDVI",product = "mod09ga")
+    smoothing_images(navarre,"IMA",
+                     variable="NDVI",
+                     product = "mod09ga",
+                     test.mode=TRUE)
   }, error = function(e) {
     print(e)
   })
@@ -121,9 +124,11 @@ test_that("download test", {
   tryCatch({
     cloud_mask(navarre,products="mod09ga")
     cloud_mask(navarre,products="S2MSI2A")
-    cloud_mask(navarre,products="LANDSAT_8_C1_lvl2")
+
     list_data(navarre)
     get_raster(navarre,p="mod09ga",v="CloudMask")
+    get_raster(navarre,p="S2MSI2A",v="CloudMask")
+    cloud_mask(navarre,products="LANDSAT_8_C1_lvl2")
   }, error = function(e) {
     print(e)
   })
