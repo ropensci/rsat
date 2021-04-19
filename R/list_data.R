@@ -66,8 +66,8 @@ setGeneric("list_data", function(x,
 setMethod("list_data",
   signature = c("rtoi"),
   function(x, ...) {
-    allfiles <- list.files(get_dir(x), full.names = TRUE)
-    allfiles <- gsub("\\", "/", allfiles, fixed = TRUE)
+    allfiles <- normalizePath(list.files(get_dir(x), full.names = TRUE),"/")
+    #allfiles <- gsub("\\", "/", allfiles, fixed = TRUE)
     allfiles <- allfiles[!grepl("\\.rtoi$", allfiles)]
     allfiles <- allfiles[!grepl("region$", allfiles)]
 

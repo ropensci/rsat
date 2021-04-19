@@ -1,5 +1,6 @@
 test_that("download test", {
-  rcds.df<-as.data.frame(read.csv("https://github.com/unai-perez/unai-perez.github.io/raw/master/rsat-test/downloadImg/records.csv"))
+  rcds.df<-as.data.frame(read.csv(paste0("https://github.com/unai-perez/",
+    "unai-perez.github.io/raw/master/rsat-test/downloadImg/records.csv")))
   rcds.df$date<-as.Date(rcds.df$date,"%Y-%m-%d")
   rcds.df$path<-as.numeric(rcds.df$path)
   rcds.df$row<-as.numeric(rcds.df$row)

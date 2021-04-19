@@ -544,31 +544,8 @@ genPlotGIS <- function(r,
                 "RasterStack, or a list of RasterBrick or RasterStack."))
   }
 
-
-
   # layout preconfigured arguments
-  tm_layout_args <- args[names(args) %in% names(formals(tm_layout))]
-  if (!("legend.bg.color" %in% names(tm_layout_args))) {
-    tm_layout_args$legend.bg.color <- "white"
-  }
-  if (!("panel.show" %in% names(tm_layout_args))) {
-    tm_layout_args$panel.show <- TRUE
-  }
-  if (!("panel.labels" %in% names(tm_layout_args))) {
-    tm_layout_args$panel.labels <- names(r)
-  }
-  if (!("legend.outside" %in% names(tm_layout_args))) {
-    tm_layout_args$legend.outside <- TRUE
-  }
-  if (!("legend.outside.size" %in% names(tm_layout_args))) {
-    tm_layout_args$legend.outside.size <- 0.08
-  }
-  if (!("legend.outside.position" %in% names(tm_layout_args))) {
-    tm_layout_args$legend.outside.position <- "right"
-  }
-  if (!("frame" %in% names(tm_layout_args))) {
-    tm_layout_args$frame <- TRUE
-  }
+  tm_layout_args<-initialize.tm.layout(names(r),...)
 
   if (!missing(layout)) {
     lyt <- tm_facets(ncol = layout[2], nrow = layout[1])
@@ -576,43 +553,13 @@ genPlotGIS <- function(r,
     lyt <- NULL
   }
 
-  graticules_args <- c(names(formals(tm_graticules)), names(formals(tm_grid)))
-  names(graticules_args) <- paste0("tm.graticules.", graticules_args)
-  tm_graticules_args <- args[names(args) %in% names(graticules_args)]
-  names(tm_graticules_args) <- graticules_args[names(tm_graticules_args)]
-  if (!("lines" %in% names(tm_graticules_args))) {
-    tm_graticules_args$lines <- FALSE
-  }
-  if (as.grid) {
-    tm_layout_args$between.margin <- -.1
-    if (!("labels.space.x" %in% names(tm_layout_args))) {
-      tm_graticules_args$labels.space.x <- .10
-    }
-    if (!("labels.space.y" %in% names(tm_layout_args))) {
-      tm_graticules_args$labels.space.y <- .10
-    }
-  }
-  grid <- do.call(tm_graticules, tm_graticules_args)
+  # create grid
+  grid <- create.tm.grid(as.grid,...)
+
 
   # compass arguments and preconfigured assignation
   if (!compass.rm) {
-    compass_args <- names(formals(tm_compass))
-    names(compass_args) <- paste0("tm.compass.", compass_args)
-    tm_compass_args <- args[names(args) %in% names(compass_args)]
-    names(tm_compass_args) <- compass_args[names(tm_compass_args)]
-    if (!("type" %in% names(tm_compass_args))) {
-      tm_compass_args$type <- "arrow"
-    }
-    if (!("position" %in% names(tm_compass_args))) {
-      tm_compass_args$position <- c("right", "top")
-    }
-    if (!("size" %in% names(tm_compass_args))) {
-      tm_compass_args$size <- 2
-    }
-    if (!("show.labels" %in% names(tm_compass_args))) {
-      tm_compass_args$show.labels <- 0
-    }
-    compass <- do.call(tm_compass, tm_compass_args)
+    compass <- create.compass(...)
   } else {
     compass <- NULL
   }
@@ -620,52 +567,13 @@ genPlotGIS <- function(r,
 
   # scale bar arguments and preconfigured assignation
   if (!scale.bar.rm) {
-    scale_bar_args <- names(formals(tm_scale_bar))
-    names(scale_bar_args) <- paste0("tm.scale.bar.", scale_bar_args)
-    tm_scale_bar_args <- args[names(args) %in% names(scale_bar_args)]
-    names(tm_scale_bar_args) <- scale_bar_args[names(tm_scale_bar_args)]
-    if (!("position" %in% names(tm_scale_bar_args))) {
-      tm_scale_bar_args$position <- c("left", "bottom")
-    }
-    if (!(any(c("text.size", "size") %in% names(tm_scale_bar_args)))) {
-      tm_scale_bar_args$text.size <- 0.8
-    }
-    scale.bar <- do.call(tm_scale_bar, tm_scale_bar_args)
+    scale.bar <- create.scale.bar()
   } else {
     scale.bar <- NULL
   }
 
   if (!missing(region)) {
-    # region default arguments
-    shape_region_args <- names(formals(tm_shape))
-    shape_region_args <- shape_region_args[!(shape_region_args %in% "...")]
-    names(shape_region_args) <- paste0("tm.shape.region.", shape_region_args)
-    tm_shape_region_args <- args[names(args) %in% names(shape_region_args)]
-    names(tm_shape_region_args) <-
-      shape_region_args[names(tm_shape_region_args)]
-    tm_shape_region_args$shp <- region
-
-
-    polygon_region_args <- c(names(formals(tm_polygons)),
-                             names(formals(tm_fill)),
-                             names(formals(tm_borders)))
-    polygon_region_args <- unique(polygon_region_args[!(polygon_region_args
-                                                        %in% "...")])
-    names(polygon_region_args) <- paste0("tm.polygon.region.",
-                                         polygon_region_args)
-    tm_polygon_region_args <- args[names(args) %in%
-                                     names(polygon_region_args)]
-    names(tm_polygon_region_args) <-
-      polygon_region_args[names(tm_polygon_region_args)]
-    if (!("alpha" %in% names(tm_polygon_region_args))) {
-      tm_polygon_region_args$alpha <- 0
-    }
-    if (!("lwd" %in% names(tm_polygon_region_args))) {
-      tm_polygon_region_args$lwd <- 1
-    }
-
-    reg <- do.call(tm_shape, tm_shape_region_args) +
-      do.call(tm_polygons, tm_polygon_region_args)
+    reg <-tm.add.region(...)
   } else {
     reg <- NULL
   }
@@ -674,7 +582,6 @@ genPlotGIS <- function(r,
     ####################################################
     # RGB plot
     ####################################################
-
     maplist <- lapply(
       r, function(shp, compass, scale.bar, grid, reg) {
         tm_layout_args$panel.labels <- names(shp)
@@ -804,4 +711,123 @@ genPlotGIS <- function(r,
            scale.bar + # scale
            grid +
            lyt)
+}
+
+initialize.tm.layout<-function(panel.names,...){
+  args<-list(...)
+  tm_layout_args <- args[names(args) %in% names(formals(tm_layout))]
+  if (!("legend.bg.color" %in% names(tm_layout_args))) {
+    tm_layout_args$legend.bg.color <- "white"
+  }
+  if (!("panel.show" %in% names(tm_layout_args))) {
+    tm_layout_args$panel.show <- TRUE
+  }
+  if (!("panel.labels" %in% names(tm_layout_args))) {
+    tm_layout_args$panel.labels <- panel.names
+  }
+  if (!("legend.outside" %in% names(tm_layout_args))) {
+    tm_layout_args$legend.outside <- TRUE
+  }
+  if (!("legend.outside.size" %in% names(tm_layout_args))) {
+    tm_layout_args$legend.outside.size <- 0.08
+  }
+  if (!("legend.outside.position" %in% names(tm_layout_args))) {
+    tm_layout_args$legend.outside.position <- "right"
+  }
+  if (!("frame" %in% names(tm_layout_args))) {
+    tm_layout_args$frame <- TRUE
+  }
+  tm_layout_args
+}
+
+
+create.tm.grid<-function(as.grid,...){
+  args<-list(...)
+  graticules_args <- c(names(formals(tm_graticules)), names(formals(tm_grid)))
+  names(graticules_args) <- paste0("tm.graticules.", graticules_args)
+  tm_graticules_args <- args[names(args) %in% names(graticules_args)]
+  names(tm_graticules_args) <- graticules_args[names(tm_graticules_args)]
+  if (!("lines" %in% names(tm_graticules_args))) {
+    tm_graticules_args$lines <- FALSE
+  }
+  if (as.grid) {
+    tm_layout_args$between.margin <- -.1
+    if (!("labels.space.x" %in% names(tm_layout_args))) {
+      tm_graticules_args$labels.space.x <- .10
+    }
+    if (!("labels.space.y" %in% names(tm_layout_args))) {
+      tm_graticules_args$labels.space.y <- .10
+    }
+  }
+  do.call(tm_graticules, tm_graticules_args)
+}
+
+create.compass<-function(...){
+  args<-list(...)
+  compass_args <- names(formals(tm_compass))
+  names(compass_args) <- paste0("tm.compass.", compass_args)
+  tm_compass_args <- args[names(args) %in% names(compass_args)]
+  names(tm_compass_args) <- compass_args[names(tm_compass_args)]
+  if (!("type" %in% names(tm_compass_args))) {
+    tm_compass_args$type <- "arrow"
+  }
+  if (!("position" %in% names(tm_compass_args))) {
+    tm_compass_args$position <- c("right", "top")
+  }
+  if (!("size" %in% names(tm_compass_args))) {
+    tm_compass_args$size <- 2
+  }
+  if (!("show.labels" %in% names(tm_compass_args))) {
+    tm_compass_args$show.labels <- 0
+  }
+  do.call(tm_compass, tm_compass_args)
+}
+
+create.scale.bar<-function(...){
+  args<-list(...)
+  scale_bar_args <- names(formals(tm_scale_bar))
+  names(scale_bar_args) <- paste0("tm.scale.bar.", scale_bar_args)
+  tm_scale_bar_args <- args[names(args) %in% names(scale_bar_args)]
+  names(tm_scale_bar_args) <- scale_bar_args[names(tm_scale_bar_args)]
+  if (!("position" %in% names(tm_scale_bar_args))) {
+    tm_scale_bar_args$position <- c("left", "bottom")
+  }
+  if (!(any(c("text.size", "size") %in% names(tm_scale_bar_args)))) {
+    tm_scale_bar_args$text.size <- 0.8
+  }
+  do.call(tm_scale_bar, tm_scale_bar_args)
+}
+
+tm.add.region<-function(...){
+  args<-list(...)
+  # region default arguments
+  shape_region_args <- names(formals(tm_shape))
+  shape_region_args <- shape_region_args[!(shape_region_args %in% "...")]
+  names(shape_region_args) <- paste0("tm.shape.region.", shape_region_args)
+  tm_shape_region_args <- args[names(args) %in% names(shape_region_args)]
+  names(tm_shape_region_args) <-
+    shape_region_args[names(tm_shape_region_args)]
+  tm_shape_region_args$shp <- region
+
+
+  polygon_region_args <- c(names(formals(tm_polygons)),
+                           names(formals(tm_fill)),
+                           names(formals(tm_borders)))
+  polygon_region_args <- unique(polygon_region_args[!(polygon_region_args
+                                                      %in% "...")])
+  names(polygon_region_args) <- paste0("tm.polygon.region.",
+                                       polygon_region_args)
+  tm_polygon_region_args <- args[names(args) %in%
+                                   names(polygon_region_args)]
+  names(tm_polygon_region_args) <-
+    polygon_region_args[names(tm_polygon_region_args)]
+  if (!("alpha" %in% names(tm_polygon_region_args))) {
+    tm_polygon_region_args$alpha <- 0
+  }
+  if (!("lwd" %in% names(tm_polygon_region_args))) {
+    tm_polygon_region_args$lwd <- 1
+  }
+
+  return(do.call(tm_shape, tm_shape_region_args) +
+    do.call(tm_polygons, tm_polygon_region_args))
 }
