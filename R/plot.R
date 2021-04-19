@@ -554,8 +554,17 @@ genPlotGIS <- function(r,
   }
 
   # create grid
-  grid <- create.tm.grid(as.grid,...)
-
+  tm_graticules_args <- create.tm.grid(...)
+  if (as.grid) {
+    tm_layout_args$between.margin <- -.1
+    if (!("labels.space.x" %in% names(tm_layout_args))) {
+      tm_graticules_args$labels.space.x <- .10
+    }
+    if (!("labels.space.y" %in% names(tm_layout_args))) {
+      tm_graticules_args$labels.space.y <- .10
+    }
+  }
+  grid <-do.call(tm_graticules, tm_graticules_args)
 
   # compass arguments and preconfigured assignation
   if (!compass.rm) {
@@ -741,7 +750,7 @@ initialize.tm.layout<-function(panel.names,...){
 }
 
 
-create.tm.grid<-function(as.grid,...){
+create.tm.grid<-function(...){
   args<-list(...)
   graticules_args <- c(names(formals(tm_graticules)), names(formals(tm_grid)))
   names(graticules_args) <- paste0("tm.graticules.", graticules_args)
@@ -750,16 +759,7 @@ create.tm.grid<-function(as.grid,...){
   if (!("lines" %in% names(tm_graticules_args))) {
     tm_graticules_args$lines <- FALSE
   }
-  if (as.grid) {
-    tm_layout_args$between.margin <- -.1
-    if (!("labels.space.x" %in% names(tm_layout_args))) {
-      tm_graticules_args$labels.space.x <- .10
-    }
-    if (!("labels.space.y" %in% names(tm_layout_args))) {
-      tm_graticules_args$labels.space.y <- .10
-    }
-  }
-  do.call(tm_graticules, tm_graticules_args)
+  tm_graticules_args
 }
 
 create.compass<-function(...){

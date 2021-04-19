@@ -22,7 +22,7 @@ test_that("download test", {
     rtoi.path,
     db.path
   )
-  set_credentials("rsat.package", "UpnaSSG.2021")
+  #set_credentials("rsat.package", "UpnaSSG.2021")
   tryCatch({
     sat_search(
       region = navarre,
