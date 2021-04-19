@@ -127,36 +127,43 @@ setMethod("smoothing_images",
            satellite = "ALL",
            stage = "ALL",
            variable = "ALL",
+           test.mode = FALSE,
            ...) {
     var_to_process <- list_data(x)
     if (!product == "ALL") {
       var_to_process <- var_to_process[var_to_process$product %in% product, ]
-    } else if (!satellite == "ALL") {
+    }
+    if (!satellite == "ALL") {
       var_to_process <-
         var_to_process[var_to_process$satellite %in% satellite, ]
-    } else if (!stage == "ALL") {
+    }
+    if (!stage == "ALL") {
       var_to_process <- var_to_process[var_to_process$stage %in% stage, ]
-    } else if (!variable == "ALL") {
+    }
+    if (!variable == "ALL") {
       var_to_process <- var_to_process[var_to_process$variable %in% variable, ]
     }
 
     # remove imasmoothing
     var_to_process <- var_to_process[!var_to_process$stage %in%
-                                       "ima_smoothing", ]
+                                       "IMA", ]
 
     apply(var_to_process, 1, function(p,
                                       rtoi_dir,
-                                      process_folder = "ima_smoothing",
-                                      ...) {
-      process_list <- read_rtoi_dir(p, rtoi_dir)
+                                      process_folder = "IMA",
+                                      ...
+                                      ) {
+      process_list <- read_rtoi_dir(unlist(p), rtoi_dir)
       rStack <- stack(process_list)
       names(rStack) <- format(genGetDates(process_list), "%Y%j")
-      genSmoothingIMA(rStack,
-        AppRoot = file.path(rtoi_dir, p[1], p[2], process_folder),
-        out.name = p[4],
-        ...
-      )
-    }, rtoi_dir = get_dir(x), ...)
+      if(!test.mode)
+        genSmoothingIMA(rStack,
+                        AppRoot = file.path(rtoi_dir, p[1], p[2], process_folder),
+                        out.name = p[4],
+                        ...
+        )
+    }, rtoi_dir = get_dir(x), ...
+    )
   }
 )
 #' @rdname smoothing_images

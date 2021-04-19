@@ -71,7 +71,7 @@ test_that("download test", {
   }, error = function(e) {
     mosaic(navarre)
   })
-
+  plot(navarre, "view", product = unique(product(navarre))[1])
   plot(navarre, "view", product = unique(product(navarre))[2])
   plot(navarre, "view", product = unique(product(navarre))[3])
 
@@ -83,7 +83,12 @@ test_that("download test", {
 
   derive(navarre,product="LANDSAT_8_C1_lvl2",variable="NDVI")
   derive(navarre,product="mod09ga",variable="NDVI")
-  derive(navarre,product="S2MSI2A",variable="NDVI")
+
+  derive(navarre, "NDVI", product = "S2MSI2A",fun= function(red, blue) {
+    ndvi <- (blue - red) / (blue + red)
+    return(ndvi)
+  })
+
 
   tryCatch({
     list_data(navarre)[list_data(navarre)$variable=="NDVI",]
@@ -94,6 +99,7 @@ test_that("download test", {
   tryCatch({
     derive(navarre,product="mod09ga",variable="NDVI")
     plot(navarre,"view",variable="NDVI",product = "mod09ga")
+    smoothing_images(navarre,"IMA",variable="NDVI",product = "mod09ga")
   }, error = function(e) {
     print(e)
   })
@@ -114,6 +120,8 @@ test_that("download test", {
 
   tryCatch({
     cloud_mask(navarre,products="mod09ga")
+    cloud_mask(navarre,products="S2MSI2A")
+    cloud_mask(navarre,products="LANDSAT_8_C1_lvl2")
     list_data(navarre)
     get_raster(navarre,p="mod09ga",v="CloudMask")
   }, error = function(e) {

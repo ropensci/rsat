@@ -51,6 +51,14 @@ test_that("records test", {
   plot(navarre,"preview")
   plot(navarre,"dates")
 
+
+  set_database(navarre)<-get_database(navarre)
+  region(navarre)<-region(navarre)
+  rename(navarre,names(navarre))
+  dates(navarre)
+  product(navarre)
+  sat_name(navarre)
+
   tryCatch({
     plot(navarre,"view")
   }, error = function(e) {

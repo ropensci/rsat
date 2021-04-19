@@ -115,7 +115,7 @@ setMethod("list_data",
         if(!is.null(dl))
           dl[, 1] <- ""
         n.col <- ncol(dl)
-        dl <- dl[, c(n.col - 3, n.col - 2, 1, n.col)]
+        dl <- dl[, c(n.col - 3, n.col - 2, n.col-1, n.col)]
         data.list <- rbind(dl, data.list)
         df <- as.data.frame(data.list)
         colnames(df) <- c("satellite", "product", "stage", "variable")
@@ -151,7 +151,7 @@ setMethod("read_rtoi_dir",
                        unzip(mos.zip, list = TRUE)$Name))
     }
 
-    mos.zip <- file.path(rtoi_dir, paste0(paste(x, collapse = "/"), ".zip"))
+    mos.zip <- file.path(rtoi_dir, paste0(paste(unlist(x), collapse = "/"), ".zip"))
     # return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
     return(file.path("/vsizip", mos.zip,
                      unzip(mos.zip, list = TRUE)$Name))
