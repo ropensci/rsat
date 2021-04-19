@@ -109,7 +109,7 @@ setMethod("list_data",
           allproducts <- allproducts[!grepl("CloudMask", allproducts)]
         }
         full.names <- list.files(allproducts, full.names = TRUE)
-        full.names <- gsub(paste0(get_dir(x), "/"), "", full.names)
+        full.names <- gsub(paste0(get_dir(x), "/"), "", full.names,fixed=TRUE)
         full.names <- gsub("\\.zip", "", full.names)
         dl <- do.call(rbind, strsplit(full.names, "/"))
         if(!is.null(dl))
