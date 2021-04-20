@@ -17,6 +17,7 @@ smoothing_images(x, method, ...)
   satellite = "ALL",
   stage = "ALL",
   variable = "ALL",
+  test.mode = FALSE,
   ...
 )
 
@@ -80,6 +81,9 @@ of the data. Check the name of the parameter with
 \item{variable}{character argument.The name of the variable to
 be processed. Check the name of the parameter with
 \code{\link{list_data}} function. By default, "ALL".}
+
+\item{test.mode}{logical argument. If \code{TRUE}, the function runs some
+lines to test \code{smoothing_images} with rtoi object.}
 }
 \value{
 a \code{RasterStack} with the filled/smoothed images.

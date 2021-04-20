@@ -49,6 +49,8 @@
 #' @param variable character argument.The name of the variable to
 #' be processed. Check the name of the parameter with
 #' \code{\link{list_data}} function. By default, "ALL".
+#' @param test.mode logical argument. If \code{TRUE}, the function runs some
+#' lines to test \code{smoothing_images} with rtoi object.
 #' @param ... arguments for nested functions:
 #' \itemize{
 #'   \item \code{Img2Fill}  a \code{vector} defining the
