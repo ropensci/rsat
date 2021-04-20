@@ -52,7 +52,7 @@ test_that("records test", {
   plot(navarre,"dates")
 
 
-  set_database(navarre)<-get_database(navarre)
+  set_database(navarre,get_database(navarre))
   region(navarre)<-region(navarre)
   rename(navarre,names(navarre))
   dates(navarre)
