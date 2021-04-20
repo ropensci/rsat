@@ -140,8 +140,9 @@ setMethod(
         mosaicFunctions <- mosaic_fun_ls(mfiles)
       } else if ("Sentinel-3" == sat_name(dr)[1]) {
         if (product(dr[1]) == "SY_2_SYN___") {
-          mosaicFunctions <- mosaic_fun_SY_2_SYN(mfiles,
-                                                 scratch.tmp = scratch.tmp)
+          #mosaicFunctions <- mosaic_fun_SY_2_SYN(mfiles,
+          #                                       scratch.tmp = scratch.tmp)
+          warning("SY_2_SYN___ not supported yet.")
         } else {
           message(paste0("Product ", product(dr[1]), " not supported"))
         }
