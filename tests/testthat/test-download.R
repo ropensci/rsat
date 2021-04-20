@@ -132,6 +132,6 @@ test_that("download test", {
   }, error = function(e) {
     print(e)
   })
-
+  test_function()
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })

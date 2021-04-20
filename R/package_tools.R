@@ -39,7 +39,7 @@ lsGetDates <- function(str, ...) {
   bname <- basename(str)
   str <- gsub("\\..*", "", bname)
   # sizes<-sapply(str,nchar)
-  sizes <- vapply(str, nchar,FUN.VALUE = character(1))
+  sizes <- vapply(str, nchar,FUN.VALUE = numeric(1))
   sday <- c()
   for (s in seq_len(length(sizes))) {
     if (sizes[s] == 21) { # new name convention
@@ -111,7 +111,7 @@ toEspaJSON <- function(json_list, is.array = c("products", "inputs")) {
 genCheckMD5 <- function(path.file, oficial.md5, verbose = FALSE, ...) {
   file.md5 <- md5sum(path.file)
   file.md5 <- toupper(file.md5)
-  if (file.md5 == oficial.md5) {
+  if (toupper(file.md5) == toupper(oficial.md5)) {
     if (verbose) {
       message(paste0("File md5:", file.md5))
       message(paste0("Oficial md5:", oficial.md5))
