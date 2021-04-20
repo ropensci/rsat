@@ -49,5 +49,6 @@ Collate:
     'search_sen.R'
     'search.R'
     'smoothing_images.R'
+    'testing_function.R'
     'variables.R'
 VignetteBuilder: knitr
