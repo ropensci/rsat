@@ -24,7 +24,7 @@
 #' @importFrom calendR calendR
 #' @importFrom grDevices colors
 #' @importFrom sf gdal_utils
-#' @importFrom raster raster stack
+#' @importFrom raster raster stack clamp
 #' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export
