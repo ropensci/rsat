@@ -30,7 +30,63 @@ test_function<-function(){
   variables$SAVI(1,2)
 
 
-  new_extent_crs()
-  new_extent_crs(1,2,1,1,1)
+  print(new_extent_crs())
+  print(new_extent_crs(1,2,1,1,1))
   new_extent_crs(0,2,1,1,1)
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            dates=as.Date("2021-11-01"),
+            lonlat=c(1,2),
+            resType="url")
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            startDate=as.Date("2021-11-01"),
+            endDate=as.Date("2021-11-01"),
+            lonlat=c(1,2),
+            resType="url")
+
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            dates=as.Date("2021-11-01"),
+            extent=extent(1,1,1,1),
+            resType="url")
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            startDate=as.Date("2021-11-01"),
+            endDate=as.Date("2021-11-01"),
+            extent=extent(1,1,1,1),
+            resType="url")
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            startDate=as.Date("2021-11-01"),
+            endDate=as.Date("2021-11-01"),
+            extent=extent(1,1,1,1),
+            resType="url")
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            startDate=as.Date("2021-11-01"),
+            endDate=as.Date("2021-11-01"),
+            region=ex.navarre,
+            resType="url")
+
+  mod_query(server="aa",
+            product="",
+            collection=6,
+            startDate=as.Date("2021-11-01"),
+            endDate=as.Date("2021-11-01"),
+            region=ex.navarre,
+            resType="url")
+  new("api")
 }

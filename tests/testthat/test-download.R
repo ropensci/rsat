@@ -71,7 +71,9 @@ test_that("download test", {
   }, error = function(e) {
     mosaic(navarre)
   })
-  plot(navarre, "view", product = unique(product(navarre))[1])
+  plot(navarre,
+       "view",
+       product = unique(product(navarre))[1])
   plot(navarre, "view", product = unique(product(navarre))[2])
   plot(navarre, "view", product = unique(product(navarre))[3])
 
