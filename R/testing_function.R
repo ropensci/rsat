@@ -17,8 +17,8 @@ test_function<-function(){
   f<-list.files(file.path(system.file (package = 'rsat'),
                           "data"),recursive=TRUE,full.names = TRUE)
   md5<-md5sum(f[1])
-  genCheckMD5(f[1],md5[[1]])
-  genCheckMD5(f[1],paste0(md5[[1]],"1"))
+  genCheckMD5(f[1],md5[[1]],verbose=TRUE)
+  genCheckMD5(f[1],paste0(md5[[1]],"1"),verbose=TRUE)
 
   variables$EVI(1,2,3)
   variables$NBR(1,2)
@@ -26,8 +26,10 @@ test_function<-function(){
   variables$NDMI(1,2)
   variables$RGB(raster(matrix(1)),
                 raster(matrix(1)),
-                raster(matrix(1)))
+                raster(matrix(1)),q.range=c(0,1))
   variables$SAVI(1,2)
+  variables$MSAVI2(1,2)
+  variables$NDWI(1,2)
 
 
   print(new_extent_crs())
@@ -88,5 +90,34 @@ test_function<-function(){
             endDate=as.Date("2021-11-01"),
             region=ex.navarre,
             resType="url")
+  ls_query(server="a",
+           datasetName="a",
+           startDate=as.Date("2021-11-01"),
+           endDate=as.Date("2021-11-01"),
+           sf.obj=ex.navarre,
+           apiKey="a",
+           cloudCover=c(0,20))
+  sen_query("aa","aa",verbose=TRUE,
+            startDate=as.Date("2021-11-01"),
+            platform="a",
+            extent=extent(1,1,1,1),
+            lonlat=c(1,1),
+            relativeorbit="",
+            cloudCover=c(0,20),
+            qformat="json")
+
   new("api")
+  new_record(sat = "character",
+             name = "character",
+             date = as.Date("2021-11-01"),
+             product = "character",
+             download = "character",
+             file_path = "character",
+             path =2,
+             row = 1,
+             tileid = "character",
+             preview = "character",
+             api_name = "character",
+             order = FALSE
+  )
 }

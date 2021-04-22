@@ -7,8 +7,17 @@ test_that("smoothing IMA", {
 
   tiles.mod.ndvi.filled <- smoothing_images(ex.ndvi.navarre,
                                             method = "IMA",
-                                            only.na = TRUE
+                                            only.na = TRUE,
+                                            predictSE = FALSE,
+                                            snow.mode = FALSE
   )
+  tiles.mod.ndvi.filled <- smoothing_images(ex.ndvi.navarre,
+                                            method = "IMA",
+                                            only.na = TRUE,
+                                            predictSE = TRUE,
+                                            snow.mode = TRUE
+  )
+
 
 
 })
