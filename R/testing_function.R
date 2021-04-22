@@ -19,4 +19,18 @@ test_function<-function(){
   md5<-md5sum(f[1])
   genCheckMD5(f[1],md5[[1]])
   genCheckMD5(f[1],paste0(md5[[1]],"1"))
+
+  variables$EVI(1,2,3)
+  variables$NBR(1,2)
+  variables$NBR2(1,1)
+  variables$NDMI(1,2)
+  variables$RGB(raster(matrix(1)),
+                raster(matrix(1)),
+                raster(matrix(1)))
+  variables$SAVI(1,2)
+
+
+  new_extent_crs()
+  new_extent_crs(1,2,1,1,1)
+  new_extent_crs(0,2,1,1,1)
 }
