@@ -582,7 +582,7 @@ genPlotGIS <- function(r,
   }
 
   if (!missing(region)) {
-    reg <-tm.add.region(...)
+    reg <-tm.add.region(region,...)
   } else {
     reg <- NULL
   }
@@ -710,7 +710,6 @@ genPlotGIS <- function(r,
   if (!("title" %in% names(tm_raster_r_args))) {
     tm_raster_r_args$title <- ""
   }
-
   # Base tmap
   return(do.call(tm_shape, tm_shape_r_args) +
            do.call(tm_raster, tm_raster_r_args) + # raster conf
@@ -721,6 +720,7 @@ genPlotGIS <- function(r,
            grid +
            lyt)
 }
+
 
 initialize.tm.layout<-function(panel.names,...){
   args<-list(...)
@@ -798,7 +798,7 @@ create.scale.bar<-function(...){
   do.call(tm_scale_bar, tm_scale_bar_args)
 }
 
-tm.add.region<-function(...){
+tm.add.region<-function(region,...){
   args<-list(...)
   # region default arguments
   shape_region_args <- names(formals(tm_shape))
