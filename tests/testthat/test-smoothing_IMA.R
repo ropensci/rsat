@@ -10,11 +10,13 @@ test_that("smoothing IMA", {
                                             only.na = TRUE,
                                             predictSE = FALSE
   )
-  tiles.mod.ndvi.filled <- smoothing_images(ex.ndvi.navarre,
-                                            method = "IMA",
-                                            only.na = TRUE,
-                                            predictSE = TRUE
-  )
+
+
+  tiles.mod.ndvi.filled <- suppressWarnings(smoothing_images(ex.ndvi.navarre,
+                                                             method = "IMA",
+                                                             only.na = TRUE,
+                                                             predictSE = TRUE
+  ))
 
 
 

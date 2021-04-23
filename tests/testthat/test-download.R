@@ -17,12 +17,19 @@ test_that("download test", {
   # path where downloads are stored
   db.path <- file.path(tempdir(),"Database")
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
-  navarre <- new_rtoi(
-    "Navarre_download",
-    ex.navarre,
-    rtoi.path,
-    db.path
-  )
+  tryCatch({
+    navarre <- new_rtoi(
+      "Navarre_download",
+      ex.navarre,
+      rtoi.path,
+      db.path
+    )
+  }, error = function(e) {
+    print(e)
+  })
+  navarre <- read_rtoi(file.path(rtoi.path,"Navarre_download"))
+
+
   set_credentials("rsat.package", "UpnaSSG.2021")
   tryCatch({
     sat_search(
@@ -72,9 +79,6 @@ test_that("download test", {
   }, error = function(e) {
     mosaic(navarre)
   })
-  plot(navarre,
-       "view",
-       product = unique(product(navarre))[1])
   plot(navarre, "view", product = unique(product(navarre))[2])
   plot(navarre, "view", product = unique(product(navarre))[3])
 
