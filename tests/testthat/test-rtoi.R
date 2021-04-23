@@ -9,12 +9,18 @@ test_that("records test", {
   # path where downloads are stored
   db.path <- file.path(tempdir(), "DATABASE")
   unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
-  navarre <- new_rtoi(
-    "Navarre_rtoi",
-    ex.navarre,
-    rtoi.path,
-    db.path
-  )
+
+  tryCatch({
+    navarre <- new_rtoi(
+      "Navarre_rtoi",
+      ex.navarre,
+      rtoi.path,
+      db.path
+    )
+  }, error = function(e) {
+    print(e)
+  })
+
 
   navarre <- read_rtoi(file.path(rtoi.path,"Navarre_rtoi"))
 

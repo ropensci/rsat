@@ -1,4 +1,5 @@
 test_that("download test", {
+  data(ex.navarre)
   rcds.df<-as.data.frame(read.csv(paste0("https://github.com/unai-perez/",
     "unai-perez.github.io/raw/master/rsat-test/downloadImg/records.csv")))
   rcds.df$date<-as.Date(rcds.df$date,"%Y-%m-%d")
