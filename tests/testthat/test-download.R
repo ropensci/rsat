@@ -112,7 +112,10 @@ test_that("download test", {
                      test.mode=TRUE)
   }, error = function(e) {
     print(e)
+  }, warning = function(w) {
+    print(w)
   })
+
   plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[2])
   navarre
   tryCatch({
@@ -139,6 +142,10 @@ test_that("download test", {
   }, error = function(e) {
     print(e)
   })
-  test_function()
+  tryCatch({
+    test_function()
+  }, warning = function(w) {
+    print(w)
+  })
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })

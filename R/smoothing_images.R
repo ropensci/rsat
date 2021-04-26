@@ -160,7 +160,10 @@ setMethod("smoothing_images",
       names(rStack) <- format(genGetDates(process_list), "%Y%j")
       if(!test.mode)
         genSmoothingIMA(rStack,
-                        AppRoot = file.path(rtoi_dir, p[1], p[2], process_folder),
+                        AppRoot = file.path(rtoi_dir,
+                                            p[1],
+                                            p[2],
+                                            process_folder),
                         out.name = p[4],
                         ...
         )

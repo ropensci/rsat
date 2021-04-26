@@ -7,5 +7,8 @@
 test_function()
 }
 \description{
-Function used for testing some internal functions in continious integration.
+Function used for testing some internal functions in continuous integration.
+}
+\examples{
+test_function()
 }

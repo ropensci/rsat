@@ -151,7 +151,10 @@ setMethod("read_rtoi_dir",
                        unzip(mos.zip, list = TRUE)$Name))
     }
 
-    mos.zip <- file.path(rtoi_dir, paste0(paste(unlist(x), collapse = "/"), ".zip"))
+    mos.zip <- file.path(rtoi_dir,
+                         paste0(paste(unlist(x), collapse = "/"),
+                                ".zip")
+                         )
     # return(file.path("/vsizip",mos.zip,zip_list(mos.zip)$filename))
     return(file.path("/vsizip", mos.zip,
                      unzip(mos.zip, list = TRUE)$Name))

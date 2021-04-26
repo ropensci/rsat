@@ -1,12 +1,15 @@
 #' Testing function
 #'
-#' Function used for testing some internal functions in continious integration.
+#' Function used for testing some internal functions in continuous integration.
 #'
 #' @return NULL
 #' @export
-#'
+#' @importFrom utils data
 #' @examples
+#' test_function()
 test_function<-function(){
+  ex.navarre<-rsat::ex.navarre
+
   lsGetPathRow("LC8200030")
   lsGetDates ("LC80390222013076EDC00")
   lsGetDates ("LC80390222013076EDC00",format="%Y%j")
@@ -14,8 +17,8 @@ test_function<-function(){
   json_list$a<-list(b=1)
   toEspaJSON(json_list, is.array = c("products", "inputs"))
 
-  f<-list.files(file.path(system.file (package = 'rsat'),
-                          "data"),recursive=TRUE,full.names = TRUE)
+  f<-list.files(system.file (package = 'rsat'),
+                recursive=TRUE,full.names = TRUE)[1]
   md5<-md5sum(f[1])
   genCheckMD5(f[1],md5[[1]],verbose=TRUE)
   genCheckMD5(f[1],paste0(md5[[1]],"1"),verbose=TRUE)
