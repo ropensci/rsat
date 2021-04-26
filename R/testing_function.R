@@ -29,7 +29,7 @@ test_function<-function(){
   variables$NDMI(1,2)
   variables$RGB(raster(matrix(1)),
                 raster(matrix(1)),
-                raster(matrix(1)),q.range=c(0,1))
+                raster(matrix(1)))
   variables$SAVI(1,2)
   variables$MSAVI2(1,2)
   variables$NDWI(1,2)
