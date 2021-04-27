@@ -106,14 +106,12 @@ test_that("download test", {
   tryCatch({
     derive(navarre,product="mod09ga",variable="NDVI")
     plot(navarre,"view",variable="NDVI",product = "mod09ga")
-    smoothing_images(navarre,"IMA",
-                     variable="NDVI",
-                     product = "mod09ga",
-                     test.mode=TRUE)
+    suppressWarnings(smoothing_images(navarre,"IMA",
+                                      variable="NDVI",
+                                      product = "mod09ga",
+                                      test.mode=TRUE))
   }, error = function(e) {
     print(e)
-  }, warning = function(w) {
-    print(w)
   })
 
   plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[2])
@@ -142,10 +140,8 @@ test_that("download test", {
   }, error = function(e) {
     print(e)
   })
-  tryCatch({
-    test_function()
-  }, warning = function(w) {
-    print(w)
-  })
+
+  suppressWarnings(test_function())
+
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })
