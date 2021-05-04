@@ -4,6 +4,8 @@
 <!-- badges: start -->
 
 [![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://cran.r-project.org/web/packages/rsat/)
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/437_status.svg)](https://github.com/ropensci/software-review/issues/437)
+
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 [![Codecov test coverage](https://codecov.io/gh/spatialstatisticsupna/rsat/branch/master/graph/badge.svg)](https://codecov.io/gh/spatialstatisticsupna/rsat?branch=master)
