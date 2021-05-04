@@ -111,6 +111,6 @@ citation(rsat)[1]
 
 To cite the package:
 
-U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2020).
-rsat: Handling Multiplatform Satellite Images. R package version 0.1.3.
-<https://CRAN.R-project.org/package=rsat>.
+U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2021).
+rsat: Dealing with Multiplatform Satellite Images.  R package version 0.1.14.
+<https://github.com/spatialstatisticsupna/rsat>.

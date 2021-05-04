@@ -56,18 +56,18 @@ test_that("download test", {
     print(e)
   })
 
-  tryCatch({
-    r<-sat_search(
-      region = ex.navarre,
-      product = c("S2MSI2A"),
-      dates = as.Date("2021-03-01") + seq(1, 20),
-      verbose=TRUE
-    )
-    records(navarre)<-c(records(navarre),r[1])
-    download(r[1],out.dir=file.path(tempdir(),"Database"))
-  }, error = function(e) {
-    print(e)
-  })
+  # tryCatch({
+  #   r<-sat_search(
+  #     region = ex.navarre,
+  #     product = c("S2MSI2A"),
+  #     dates = as.Date("2021-03-01") + seq(1, 20),
+  #     verbose=TRUE
+  #   )
+  #   records(navarre)<-c(records(navarre),r[1])
+  #   download(r[1],out.dir=file.path(tempdir(),"Database"))
+  # }, error = function(e) {
+  #   print(e)
+  # })
 
   records(navarre)<-rcds
   download(rcds[2:3],out.dir=file.path(tempdir(),"Database"),test.mode=T)
@@ -105,7 +105,9 @@ test_that("download test", {
 
   tryCatch({
     derive(navarre,product="mod09ga",variable="NDVI")
-    plot(navarre,"view",variable="NDVI",product = "mod09ga")
+    suppressWarnings(plot(navarre,"view",
+                          variable="NDVI",
+                          product = "mod09ga"))
     suppressWarnings(smoothing_images(navarre,"IMA",
                                       variable="NDVI",
                                       product = "mod09ga",
