@@ -231,6 +231,7 @@ setMethod(
                     "api-res-test/modis-json-test-url.xml")
     }
     res.download <- con$simpleCall(query)
+    if(verbose) message("Response received!")
     res.download <- xmlRoot(xmlNativeTreeParse(res.download))
     res.download <- xmlSApply(
       res.download,
@@ -249,17 +250,22 @@ setMethod(
     pt <- as.numeric(substr(pr, 2, 3))
     rw <- as.numeric(substr(pr, 5, 6))
     bounds <- c()
+    mod.tiles.sinusoidal<-st_transform(mod.tiles,crs = st_crs("ESRI:54008"))
     for (n in paste0("h:", pt, " v:", rw)) {
       bounds <- rbind(bounds,
-                      st_bbox(extent(
-                        st_transform(mod.tiles[mod.tiles$Name == n, ],
-        crs = st_crs("ESRI:54008")
-      ))))
+                      st_bbox(#extent(
+                        #st_transform(
+                        mod.tiles.sinusoidal[mod.tiles.sinusoidal$Name == n, ]#,
+        #crs = st_crs("ESRI:54008")
+      #)
+      #)
+      ))
     }
 
     nlen <- length(res.download)
     prdc <- list(...)$product
     img.name <- gsub("\\.hdf", "", basename(res.download))
+
     return(new_record(
       sat = rep("Modis", nlen),
       name = img.name,
@@ -281,6 +287,7 @@ setMethod(
         xmax = bounds[, "xmax"],
         ymax = bounds[, "ymax"]
       )
-    ))
+    )
+    )
   }
 )
