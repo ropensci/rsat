@@ -41,17 +41,17 @@
 #'   product = "LANDSAT_TM_C1",
 #'   dates = as.Date("1988-08-01") + seq(1, 35)
 #' )
-#' download(navarre)
+#' rsat_download(navarre)
 #' }
 #' @export
-setGeneric("download", function(x, ...) {
-  standardGeneric("download")
+setGeneric("rsat_download", function(x, ...) {
+  standardGeneric("rsat_download")
 })
 
-#' @rdname download
-#' @aliases download,rtoi
+#' @rdname rsat_download
+#' @aliases rsat_download,rtoi
 setMethod(
-  f = "download",
+  f = "rsat_download",
   signature = c("rtoi"),
   function(x, db_path, verbose = FALSE, test.mode = FALSE, ...) {
     if (missing(db_path)) {
@@ -59,14 +59,14 @@ setMethod(
         stop(paste0("db_path not defined in rtoi. Define db_path or",
                     " use records with out.dir argument."))
       } else {
-        download(x = records(x),
+        rsat_download(x = records(x),
                  out.dir = x$db_path,
                  test.mode = test.mode,
                  verbose = verbose,...)
       }
     } else {
       x$db_path <- db_path
-      download(x = records(x),
+      rsat_download(x = records(x),
                out.dir = x$db_path,
                test.mode = test.mode,
                verbose = verbose,
@@ -75,10 +75,10 @@ setMethod(
   }
 )
 
-#' @rdname download
-#' @aliases download,records
+#' @rdname rsat_download
+#' @aliases rsat_download,records
 setMethod(
-  f = "download",
+  f = "rsat_download",
   signature = c("records"),
   function(x, out.dir, verbose = FALSE, test.mode = FALSE, ...) {
     # dates<-as.Date("2016-01-25")

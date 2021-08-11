@@ -64,16 +64,16 @@
 #'
 #' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
 #' }
-setGeneric("derive", function(x,
+setGeneric("rsat_derive", function(x,
                               variable,
                               ...) {
-  standardGeneric("derive")
+  standardGeneric("rsat_derive")
 })
 
-#' @rdname derive
-#' @aliases derive,rtoi,character
+#' @rdname rsat_derive
+#' @aliases rsat_derive,rtoi,character
 #' @importFrom zip zip_list
-setMethod("derive",
+setMethod("rsat_derive",
   signature = c("rtoi", "character"),
   function(x,
            variable,

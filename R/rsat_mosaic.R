@@ -43,19 +43,26 @@
 #'   db.path
 #' ) #'
 #' # Landsat-5
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "LANDSAT_TM_C1",
 #'   dates = as.Date("1988-08-01") + seq(1, 35)
 #' )
-#' download(navarre)
+#' rsat_download(navarre)
 #'
-#' mosaic(navarre, overwrite = T)
+#' rsat_mosaic(navarre, overwrite = T)
 #'
-#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+#' rsat_derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
 #' }
+#'
+setGeneric("rsat_mosaic", function(x, ...) {
+  standardGeneric("rsat_mosaic")
+})
+
+#' @rdname rsat_mosaic
+#' @aliases rsat_mosaic,sf,character
 setMethod(
-  f = "mosaic",
+  f = "rsat_mosaic",
   signature = c("rtoi"),
   function(x, ...) {
     rtoi_size_cal(x)
@@ -69,7 +76,7 @@ setMethod(
       stop("db_path in rtoi must be defined.")
     }
     for (p in unique(product(r))) {
-      mosaic(
+      rsat_mosaic(
         x = subset(r, p, "product"),
         out_path = get_dir(x),
         db_path = get_database(x),
@@ -80,15 +87,14 @@ setMethod(
     rtoi_size_cal(x)
   }
 )
-# subset(navarre$records,"mod","sat")
 
-#' @rdname mosaic-rtoi-ANY-method
-#' @aliases mosaic,records
+#' @rdname rsat_mosaic-rtoi-ANY-method
+#' @aliases rsat_mosaic,records
 #' @importFrom raster mosaic
 #' @importFrom utils untar
 #' @importFrom sp proj4string
 setMethod(
-  f = "mosaic",
+  f = "rsat_mosaic",
   signature = c("records"),
   function(x,
            out_path,

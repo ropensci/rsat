@@ -40,7 +40,7 @@
 #' data from github.
 #' @param ... additional arguments for searching
 #'
-#' @export sat_search
+#' @export
 #' @include search_sen.R search_ls.R search_mod.R
 #' @examples
 #' \dontrun{
@@ -116,14 +116,14 @@
 #'
 #' print(navarre.records)
 #' }
-setGeneric("sat_search", function(region, product, ...) {
-  standardGeneric("sat_search")
+setGeneric("rsat_search", function(region, product, ...) {
+  standardGeneric("rsat_search")
 })
 
-#' @rdname sat_search
-#' @aliases sat_search,rtoi,character
+#' @rdname rsat_search
+#' @aliases rsat_search,rtoi,character
 setMethod(
-  f = "sat_search",
+  f = "rsat_search",
   signature = c("rtoi", "character"),
   function(region, product, verbose = FALSE, test.mode = FALSE,...) {
     searchres <- new("records")
@@ -157,10 +157,10 @@ setMethod(
   }
 )
 
-#' @rdname sat_search
-#' @aliases sat_search,sf,character
+#' @rdname rsat_search
+#' @aliases rsat_search,sf,character
 setMethod(
-  f = "sat_search",
+  f = "rsat_search",
   signature = c("sf", "character"),
   function(region, product, verbose = FALSE, test.mode = FALSE,...) {
     searchres <- new("records")
