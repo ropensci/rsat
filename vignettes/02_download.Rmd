@@ -63,17 +63,17 @@ filomena <- new_rtoi(name = "filomena",
 To limit the amount of data and processing times, the assessment is conducted over MODIS imagery. A total number of $24$ images are found for the region over the $6$-day period:
 
 ```{r}
-sat_search(region = filomena, product = c("mod09ga"), dates = toi)
+rsat_search(region = filomena, product = c("mod09ga"), dates = toi)
 ```
 
 ------------------------------------------------------------------------
 
 ## Image acquisition
 
-Downloading is straightforward with the function `download()`. The simplest way to use this function is passing the `rtoi` as an input. Depending on the speed of the internet connection, the following instruction may take from few to several minutes to run:
+Downloading is straightforward with the function `rsat_download()`. The simplest way to use this function is passing the `rtoi` as an input. Depending on the speed of the internet connection, the following instruction may take from few to several minutes to run:
 
 ```{r download_rtoi}
-download(filomena)
+rsat_download(filomena)
 ```
 
 The function saves the satellite images automatically in the database. The path to the database is provided by the `rtoi`:
@@ -85,7 +85,7 @@ list.files(get_database(filomena), recursive = TRUE)
 Another way to download images is using a `records`. This variant requires defining a path for saving the resulting files (`out.dir`). The next line is equivalent to the `rtoi` version but using its `records` class object:
 
 ```{r download_records}
-download(records(filomena), out.dir = get_database(filomena))
+rsat_download(records(filomena), out.dir = get_database(filomena))
 ```
 
 This second time, the message reveals that the function reads the database first and checks which images in the `rtoi` are already available in the destination path. If it is available, the function skips its download. This feature becomes handy when teams share a common database.

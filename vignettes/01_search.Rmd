@@ -62,7 +62,7 @@ set_credentials("rsat.package","UpnaSSG.2021")
 
 #### Finding data records
 
-The function `sat_search()` performs the search of satellite imagery. One way to use this function is providing; (1) a geo-referenced polygon (`sf` class object), (2) the initial and final dates of the relevant time period (`date` vector), and (3) the name(s) of the satellite data product(s) (`character` vector). `rsat` gives access to several satellite data products. Among them, the *surface reflectance* products are frequently used in applied research studies. Their names are:
+The function `rsat_search()` performs the search of satellite imagery. One way to use this function is providing; (1) a geo-referenced polygon (`sf` class object), (2) the initial and final dates of the relevant time period (`date` vector), and (3) the name(s) of the satellite data product(s) (`character` vector). `rsat` gives access to several satellite data products. Among them, the *surface reflectance* products are frequently used in applied research studies. Their names are:
 
 -   for the Landsat program:
 
@@ -102,7 +102,7 @@ rcd <- rsat_search(region = ex.navarre,
 class(rcd)
 ```
 
-The output from `sat_search()` is a `records` object. This object stores the search results metadata from the various *APIs* in standardized manner. A `records` works as a vector and every element of the vector refers to an image. Information about an image is saved in the following *slots*:
+The output from `rsat_search()` is a `records` object. This object stores the search results metadata from the various *APIs* in standardized manner. A `records` works as a vector and every element of the vector refers to an image. Information about an image is saved in the following *slots*:
 
 -   sat (`character`): name of the satellite (e.g., Landsat, MODIS, Sentinel-2, Sentinel-3, etc.).
 -   name (`character`): name of the file.
@@ -248,16 +248,16 @@ print(filomena)
 
 ### Search with an `rtoi`
 
-You can use an `rtoi` to search satellite images with `sat_search()`:
+You can use an `rtoi` to search satellite images with `rsat_search()`:
 
 ```{r rtoi_search_2}
 toi <- as.Date("2021-01-10") + 0:5
-sat_search(region = filomena,
-           product = c("mod09ga", "SY_2_SYN___"),
-           dates = toi)
+rsat_search(region = filomena,
+            product = c("mod09ga", "SY_2_SYN___"),
+            dates = toi)
 ```
 
-An `rtoi` is an S6 class object, so it behaves like any object in other programming languages. That is, if the `rtoi` is passed as an argument and modifies the `rtoi`, the object in the main environment is also updated. The function `sat_search()` places the resulting `records` into the `rtoi`:
+An `rtoi` is an S6 class object, so it behaves like any object in other programming languages. That is, if the `rtoi` is passed as an argument and modifies the `rtoi`, the object in the main environment is also updated. The function `rsat_search()` places the resulting `records` into the `rtoi`:
 
 ```{r rtoi_r_update}
 print(filomena)

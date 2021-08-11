@@ -63,13 +63,13 @@ filomena <- new_rtoi(name = "filomena",
 To limit the amount of data and processing times, the assessment is conducted over MODIS imagery. A total number of $24$ images are found for the region over the $6$-day period:
 
 ```{r}
-sat_search(region = filomena, product = c("mod09ga"), dates = toi)
+rsat_search(region = filomena, product = c("mod09ga"), dates = toi)
 ```
 
 The way to download the search results is as follows:
 
 ```{r}
-download(filomena)
+rsat_download(filomena)
 ```
 
 ------------------------------------------------------------------------
@@ -79,7 +79,7 @@ download(filomena)
 ***Mosaicking*** involves binding together several images of a region from the same date. The function `mosaic()` finds automatically the relevant images in the database and joins them together in a single file. Additionally, by default, the function crops around the *roi* of the `rtoi` to remove unnecessary information and save space on your hard disk drive:
 
 ```{r, eval=FALSE}
-mosaic(filomena)
+rsat_mosaic(filomena)
 ```
 
 The cropping option can be disabled with the argument `warp = NULL`. Here, cropping is appropriate since images extend far beyond our region of interest.
