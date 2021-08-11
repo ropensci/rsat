@@ -88,17 +88,17 @@ The following code looks for satellite images (*surface reflectance*) of a regio
 ```{r records_search}
 data("ex.navarre")
 toi <- as.Date("2021-01-01") + 0:15
-rcd <- sat_search(region = ex.navarre,
-                  product = c("mod09ga"),
-                  dates = toi)
+rcd <- rsat_search(region = ex.navarre,
+                   product = c("mod09ga"),
+                   dates = toi)
 ```
 
 A search can involve several products simultaneously. In addition to MODIS, the instruction below also considers images from Sentinel-3:
 
 ```{r records_search_multiple}
-rcd <- sat_search(region = ex.navarre,
-                  product = c("mod09ga", "SY_2_SYN___"),
-                  dates = toi)
+rcd <- rsat_search(region = ex.navarre,
+                   product = c("mod09ga", "SY_2_SYN___"),
+                   dates = toi)
 class(rcd)
 ```
 
