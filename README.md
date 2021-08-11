@@ -90,13 +90,18 @@ dbp <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi("Navarre", roi, rtp, dbp)
 
 # search, acquire, customize, and process
-sat_search(region = navarre, product = "mod09ga", dates = toi)
-download(navarre)
-mosaic(navarre, overwrite = TRUE)
-derive(navarre, product = "mod09ga", variable = "NDVI")
+rsat_search(region = navarre, product = "mod09ga", dates = toi)
+
+rsat_download(navarre)
+
+rsat_mosaic(navarre, overwrite = TRUE)
+rsat_derive(navarre, product = "mod09ga", variable = "NDVI")
 
 # plot the results
-plot(navarre, "mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
+plot(navarre, "view", product="mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
+
+plot(navarre,"dates")
+
 ```
 See the vignettes for more examples:
 ```
