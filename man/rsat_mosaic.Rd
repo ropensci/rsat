@@ -60,16 +60,16 @@ navarre <- new_rtoi(
   db.path
 ) #'
 # Landsat-5
-sat_search(
+rsat_search(
   region = navarre,
   product = "LANDSAT_TM_C1",
   dates = as.Date("1988-08-01") + seq(1, 35)
 )
-download(navarre)
+rsat_download(navarre)
 
-mosaic(navarre, overwrite = T)
+rsat_mosaic(navarre, overwrite = T)
 
-derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+rsat_derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
 }
 
 }
