@@ -82,6 +82,7 @@ setMethod("rsat_derive",
            fun,
            overwrite = FALSE,
            verbose = FALSE,
+           suppressWarnings = TRUE,
            ...) {
     if (missing(product)) {
       p <- unique(product(records(x)))
@@ -145,9 +146,15 @@ setMethod("rsat_derive",
                                     layers = layer.size,
                                     fun,
                                     verbose = verbose,
+                                    suppressWarnings = suppressWarnings,
                                     i = i, ...)
           if (!is.null(result)) {
-            writeRaster(result, out.file, overwrite = overwrite)
+            if(suppressWarnings){
+              suppressWarnings(writeRaster(result, out.file, overwrite = overwrite))
+            }else{
+              writeRaster(result, out.file, overwrite = overwrite)
+            }
+
             # write_stars(result,out.file,update=overwrite)
             add2rtoi(out.file, zip.file)
           }
@@ -230,6 +237,7 @@ deriveVariables <- function(bands,
                             layers,
                             fun,
                             verbose = FALSE,
+                            suppressWarnings = TRUE,
                             i = NULL, ...) {
   bjump <- FALSE
   result <- NULL
@@ -254,7 +262,11 @@ deriveVariables <- function(bands,
     # eval(parse( text=paste0(arg, "<-read_stars('",
     #                         band,
     #                         "',normalize_path = FALSE)")))
-    eval(parse(text = paste0(arg, "<-raster('", band, "')")))
+    if(suppressWarnings){
+      suppressWarnings(eval(parse(text = paste0(arg, "<-raster('", band, "')"))))
+    }else{
+      eval(parse(text = paste0(arg, "<-raster('", band, "')")))
+    }
     funString <- paste0(funString, arg, "=", arg, ",")
   }
   # arguments asignation
@@ -270,7 +282,12 @@ deriveVariables <- function(bands,
   # if(verbose){message(paste0("Function for evaluation: \n",funString))}
   tryCatch(
     {
-      eval(parse(text = funString))
+      if(suppressWarnings){
+        suppressWarnings(eval(parse(text = funString)))
+      }else{
+        eval(parse(text = funString))
+      }
+
       return(result)
     },
     error = function(e) {
