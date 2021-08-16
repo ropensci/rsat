@@ -103,7 +103,7 @@ setMethod("rsat_derive",
                                         recursive = FALSE))
     if (!any(grepl(product, rtoi_products))) {
       message(paste0("Product not mosaicked, mosaic the product ",
-                     "from you will derive variables."))
+                     "from which you will derive variables."))
       stop(paste0("\nAvailable products: ", paste(rtoi_products,
                                                   collapse = ", "), "."))
     }
