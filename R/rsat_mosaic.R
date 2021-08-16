@@ -88,7 +88,7 @@ setMethod(
   }
 )
 
-#' @rdname rsat_mosaic-rtoi-ANY-method
+#' @rdname rsat_mosaic
 #' @aliases rsat_mosaic,records
 #' @importFrom raster mosaic
 #' @importFrom utils untar

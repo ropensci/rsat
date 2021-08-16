@@ -528,15 +528,17 @@ setMethod(
   }
 )
 
+
 #' Get the dates from a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
-#' @param value date argument. The new value for \code{x}.
+#' @return
 #'
 #' @export
 setGeneric("dates", function(x) standardGeneric("dates"))
+
 #' @rdname dates
-#' @aliases dates,records
+#' @export
 setMethod(
   f = "dates",
   signature = "records",
@@ -550,12 +552,11 @@ setMethod(
   }
 )
 
+#' @rdname dates
 #' @export
-#' @rdname dates
-#' @aliases dates<-,records
 setGeneric("dates<-", function(x, value) standardGeneric("dates<-"))
+
 #' @rdname dates
-#' @aliases dates<-,records
 setMethod(
   f = "dates<-",
   signature = "records",
