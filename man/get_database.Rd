@@ -4,11 +4,14 @@
 \alias{get_database}
 \alias{get_database,rtoi-method}
 \alias{get_database,rtoi}
+\alias{get_database,missing-method}
 \title{Extracts the path to the database}
 \usage{
 get_database(x)
 
 \S4method{get_database}{rtoi}(x)
+
+\S4method{get_database}{missing}()
 }
 \arguments{
 \item{x}{an rtoi object.}

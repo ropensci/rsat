@@ -3,12 +3,9 @@
 \name{dates}
 \alias{dates}
 \alias{dates,records-method}
-\alias{dates,records}
 \alias{dates<-}
-\alias{dates<-,records}
 \alias{dates<-,records-method}
 \alias{dates,rtoi-method}
-\alias{dates,rtoi}
 \title{Get the dates from a \code{records} or an \code{rtoi}}
 \usage{
 dates(x)
@@ -23,8 +20,6 @@ dates(x) <- value
 }
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
-
-\item{value}{date argument. The new value for \code{x}.}
 }
 \description{
 Get the dates from a \code{records} or an \code{rtoi}

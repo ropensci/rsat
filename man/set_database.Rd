@@ -4,11 +4,14 @@
 \alias{set_database}
 \alias{set_database,rtoi-method}
 \alias{set_database,rtoi}
+\alias{set_database,character-method}
 \title{set database path}
 \usage{
-set_database(x, value)
+set_database(x, ...)
 
 \S4method{set_database}{rtoi}(x, value)
+
+\S4method{set_database}{character}(x)
 }
 \arguments{
 \item{x}{rtoi object}

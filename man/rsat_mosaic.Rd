@@ -4,33 +4,46 @@
 \alias{rsat_mosaic}
 \alias{rsat_mosaic,rtoi-method}
 \alias{rsat_mosaic,sf,character}
+\alias{rsat_mosaic,records-method}
+\alias{rsat_mosaic,records}
 \title{Mosaic the tiles intersecting the region of interest}
 \usage{
 rsat_mosaic(x, ...)
 
 \S4method{rsat_mosaic}{rtoi}(x, ...)
+
+\S4method{rsat_mosaic}{records}(
+  x,
+  out_path,
+  db_path,
+  bfilter,
+  warp = "extent",
+  region,
+  overwrite = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{an \code{rtoi} object.}
 
 \item{...}{additional arguments.}
 
-\item{db_path}{path to the database. By default, the path
+\item{out_path}{path to save the mosaicked images. By default, the path
 is defined by \code{x}.}
 
-\item{region}{an sf object. Region for cropping the images around.
-By default, the path is defined by \code{x}.}
-
-\item{out_path}{path to save the mosaicked images. By default, the path
+\item{db_path}{path to the database. By default, the path
 is defined by \code{x}.}
 
 \item{bfilter}{a vector of bands to. If not supplied, all are used.}
 
-\item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
-images with the same name.}
-
 \item{warp}{character. If equal to "extent", it also crops the images
 around the \code{rtoi}. Use "" otherwise.}
+
+\item{region}{an sf object. Region for cropping the images around.
+By default, the path is defined by \code{x}.}
+
+\item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
+images with the same name.}
 
 \item{y}{omitted parameter.}
 }
