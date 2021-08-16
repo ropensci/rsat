@@ -55,19 +55,19 @@ setMethod(
   signature = c("rtoi"),
   function(x, db_path, verbose = FALSE, test.mode = FALSE, ...) {
     if (missing(db_path)) {
-      if (x$db_path == "") {
+      if (get_database(x) == "") {
         stop(paste0("db_path not defined in rtoi. Define db_path or",
                     " use records with out.dir argument."))
       } else {
         rsat_download(x = records(x),
-                 out.dir = x$db_path,
+                 out.dir = get_database(x),
                  test.mode = test.mode,
                  verbose = verbose,...)
       }
     } else {
-      x$db_path <- db_path
+      set_database(x,db_path)
       rsat_download(x = records(x),
-               out.dir = x$db_path,
+               out.dir = get_database(x),
                test.mode = test.mode,
                verbose = verbose,
                ...)

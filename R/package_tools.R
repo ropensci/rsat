@@ -192,3 +192,14 @@ SENPRODUCTS <- list(
                    "L2__O3____",
                    "L2__SO2___")
 )
+
+optEnv <- new.env()
+
+assign("RSAT_DATABASE", "", env=optEnv)
+setRSATOpt <- function(opt,value,env=optEnv) {
+  assign(opt, value, envir=env)
+}
+
+getRSATOpt <- function(opt,env=optEnv) {
+  return(get(opt, envir=env))
+}

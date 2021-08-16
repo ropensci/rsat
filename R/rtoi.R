@@ -445,10 +445,22 @@ setMethod(
   "get_database",
   signature(x = "rtoi"),
   function(x) {
-    return(x$db_path)
+    if(x$db_path=="")
+      return(x$db_path)
+    else
+      return(get_database())
   }
 )
 
+#' @rdname get_database
+#' @aliases get_database
+setMethod(
+  "get_database",
+  signature = c(x = "missing"),
+  function() {
+    return(getRSATOpt("RSAT_DATABASE"))
+  }
+)
 #' set database path
 #'
 #' set_database set a new database  directory in x.
@@ -458,7 +470,7 @@ setMethod(
 #' change the database directory of x.
 #'
 #' @export
-setGeneric("set_database", function(x, value) standardGeneric("set_database"))
+setGeneric("set_database", function(x, ...) standardGeneric("set_database"))
 
 #' @rdname set_database
 #' @aliases set_database,rtoi
@@ -468,6 +480,16 @@ setMethod(
   function(x, value) {
     x$db_path <- value
     write_rtoi(x)
+  }
+)
+
+#' @rdname set_database
+#' @aliases set_database,rtoi
+setMethod(
+  "set_database",
+  signature(x = "character"),
+  function(x) {
+    setRSATOpt("RSAT_DATABASE",x)
   }
 )
 
@@ -547,7 +569,6 @@ setMethod(
 )
 
 #' @rdname dates
-#' @aliases dates,rtoi
 setMethod(
   "dates",
   signature(x = "rtoi"),
@@ -784,7 +805,7 @@ setMethod("read_rtoi",
 
     db_path <- gsub("db_path:", "", lines[grepl("db_path:", lines)])
     if (length(db_path) != 0) {
-      newobj$db_path <- db_path
+      set_database(x,db_path)
     }
     size <- as.numeric(gsub("size:", "", lines[grepl("size:", lines)]))
     if (length(size) != 0) {
