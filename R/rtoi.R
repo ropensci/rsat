@@ -825,7 +825,7 @@ setMethod("read_rtoi",
     }
 
     db_path <- gsub("db_path:", "", lines[grepl("db_path:", lines)])
-    if (length(db_path) != 0) {
+    if (db_path != "") {
       set_database(x,db_path)
     }
     size <- as.numeric(gsub("size:", "", lines[grepl("size:", lines)]))
