@@ -102,7 +102,9 @@ setMethod(
            bfilter,
            warp = "extent",
            region,
-           overwrite = FALSE, ...) {
+           overwrite = FALSE,
+           suppressWarnings = TRUE,
+           ...) {
     args <- list(...)
     if ("dates" %in% names(args)) {
       days <- args$dates
@@ -167,9 +169,9 @@ setMethod(
 
       allfiles <- c()
       for (m in mfiles) {
-        allfiles <- c(allfiles, readfromscratch(m,
-                                                bands.files,
-                                                scratch.tmp = scratch.tmp))
+          allfiles <- c(allfiles, readfromscratch(m,
+                                                  bands.files,
+                                                  scratch.tmp = scratch.tmp))
       }
       ######################################
       # Bands
@@ -198,7 +200,12 @@ setMethod(
             {
               switch(tolower(warp),
                 "extent" = {
-                  r.tmp <- raster(cmpfile)
+                  if(suppressWarnings){
+                    suppressWarnings(r.tmp <- raster(cmpfile))
+                  }else{
+                    r.tmp <- raster(cmpfile)
+                  }
+
                   region <- st_transform(region, proj4string(r.tmp))
                   rm(r.tmp)
 
