@@ -694,7 +694,7 @@ setMethod(
   f = "unique",
   signature = "records",
   definition = function(x) {
-    return(x[which(names(x) %in% unique(names(x)))])
+    return(x[which(!duplicated(names(x)))])
   }
 )
 
