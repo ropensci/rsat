@@ -81,16 +81,22 @@ roi <- ex.navarre
 toi <- as.Date("2020-01-11")
 rtp <- tempdir()
 dbp <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi("Navarre", roi, rtp, dbp)
+
+navarre <- new_rtoi("Navarre2", roi, rtp, dbp)
 
 # search, acquire, customize, and process
-sat_search(region = navarre, product = "mod09ga", dates = toi)
-download(navarre)
-mosaic(navarre, overwrite = TRUE)
-derive(navarre, product = "mod09ga", variable = "NDVI")
+rsat_search(region = navarre, product = "mod09ga", dates = toi)
+rsat_download(navarre)
+rsat_mosaic(navarre, overwrite = TRUE)
+rsat_derive(navarre, 
+            product = "mod09ga", 
+            variable = "NDVI")
 
 # plot the results
-plot(navarre, "mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
+plot(navarre, "view" , 
+      product="mod09ga", 
+      variable = "NDVI", 
+      breaks = seq(0, 1, 0.1))
 ```
 See the vignettes for more examples:
 ```
@@ -104,4 +110,4 @@ citation(rsat)[1]
 
 To cite the package:
 
-U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2021). rsat: Dealing with Multiplatform Satellite Images. R package version 0.1.14. <https://github.com/spatialstatisticsupna/rsat>.
+U. Pérez-Goya, M. Montesino-SanMartin, A F Militino, M D Ugarte (2021). rsat: Dealing with Multiplatform Satellite Images. R package version 0.1.15. <https://github.com/spatialstatisticsupna/rsat>.
