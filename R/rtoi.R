@@ -123,10 +123,6 @@ setMethod(
     size = "missing"
   ),
   function(name, region, rtoi_path, db_path) {
-    rtoi_path <- file.path(rtoi_path, name)
-    if (length(list.files(rtoi_path, pattern = "\\.rtoi$")) > 0) {
-      stop("This rtoi already exists. Give it a new name or rtoi_path.")
-    }
     newobj <- new_rtoi(name, region, rtoi_path)
     newobj$db_path <- db_path
     write_rtoi(newobj)
