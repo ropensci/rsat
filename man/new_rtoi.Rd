@@ -2,8 +2,10 @@
 % Please edit documentation in R/rtoi.R
 \name{new_rtoi}
 \alias{new_rtoi}
+\alias{new_rtoi,character,sf,character,missing,missing,missing-method}
+\alias{new_rtoi,character,sf,character,missing,missing}
 \alias{new_rtoi,character,sf,character,character,missing,missing-method}
-\alias{new_rtoi,character,sf,character,character,missing}
+\alias{character,sf,character,character}
 \alias{new_rtoi,character,sf,character,character,records,missing-method}
 \alias{character,sf,character,character,records}
 \alias{new_rtoi,character,sf,character,character,records,numeric-method}
@@ -11,6 +13,8 @@
 \title{Creates a new \code{rtoi} object}
 \usage{
 new_rtoi(name, region, rtoi_path, db_path, records, size)
+
+\S4method{new_rtoi}{character,sf,character,missing,missing,missing}(name, region, rtoi_path)
 
 \S4method{new_rtoi}{character,sf,character,character,missing,missing}(name, region, rtoi_path, db_path)
 

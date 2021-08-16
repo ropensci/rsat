@@ -81,7 +81,37 @@ setGeneric("new_rtoi", function(name,
 })
 
 #' @rdname new_rtoi
-#' @aliases new_rtoi,character,sf,character,character,missing
+#' @aliases new_rtoi,character,sf,character,missing,missing
+setMethod(
+  "new_rtoi",
+  signature(
+    name = "character",
+    region = "sf",
+    rtoi_path = "character",
+    db_path = "missing",
+    records = "missing",
+    size = "missing"
+  ),
+  function(name, region, rtoi_path) {
+    rtoi_path <- file.path(rtoi_path, name)
+    if (length(list.files(rtoi_path, pattern = "\\.rtoi$")) > 0) {
+      stop("This rtoi already exists. Give it a new name or rtoi_path.")
+    }
+    dir.create(rtoi_path, showWarnings = FALSE)
+    newobj <- new("rtoi")
+    newobj$records <- new("records")
+    newobj$name <- name
+    newobj$region <- list(region)
+    newobj$rtoi_path <- rtoi_path
+    newobj$db_path <- ""
+    newobj$size <- 0
+    write_rtoi(newobj)
+    return(newobj)
+  }
+)
+
+#' @rdname new_rtoi
+#' @aliases character,sf,character,character
 setMethod(
   "new_rtoi",
   signature(
@@ -97,18 +127,13 @@ setMethod(
     if (length(list.files(rtoi_path, pattern = "\\.rtoi$")) > 0) {
       stop("This rtoi already exists. Give it a new name or rtoi_path.")
     }
-    dir.create(rtoi_path, showWarnings = FALSE)
-    newobj <- new("rtoi")
-    newobj$records <- new("records")
-    newobj$name <- name
-    newobj$region <- list(region)
-    newobj$rtoi_path <- rtoi_path
+    newobj <- new_rtoi(name, region, rtoi_path)
     newobj$db_path <- db_path
-    newobj$size <- 0
     write_rtoi(newobj)
     return(newobj)
   }
 )
+
 
 #' @rdname new_rtoi
 #' @aliases character,sf,character,character,records
@@ -446,9 +471,9 @@ setMethod(
   signature(x = "rtoi"),
   function(x) {
     if(x$db_path=="")
-      return(x$db_path)
-    else
       return(get_database())
+    else
+      return(x$db_path)
   }
 )
 

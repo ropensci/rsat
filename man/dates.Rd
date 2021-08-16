@@ -21,6 +21,9 @@ dates(x) <- value
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
 }
+\value{
+
+}
 \description{
 Get the dates from a \code{records} or an \code{rtoi}
 }
