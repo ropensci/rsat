@@ -532,8 +532,7 @@ setMethod(
 #' Get the dates from a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
-#' @return
-#'
+#' @return returns a vector of \code{Date} class
 #' @export
 setGeneric("dates", function(x) standardGeneric("dates"))
 
