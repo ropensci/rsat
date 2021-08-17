@@ -86,20 +86,26 @@ set_credentials("username", "password")
 roi <- ex.navarre
 toi <- as.Date("2020-01-11")
 rtp <- tempdir()
-dbp <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi("Navarre", roi, rtp, dbp)
+
+set_database(file.path(tempdir(), "DATABASE"))
+
+navarre <- new_rtoi("Navarre", roi, rtp)
 
 # search, acquire, customize, and process
 rsat_search(region = navarre, product = "mod09ga", dates = toi)
-
 rsat_download(navarre)
-
 rsat_mosaic(navarre, overwrite = TRUE)
-rsat_derive(navarre, product = "mod09ga", variable = "NDVI")
+
+rsat_derive(navarre, 
+            product = "mod09ga", 
+            variable = "NDVI")
 
 # plot the results
-plot(navarre, "view", product="mod09ga", variable = "NDVI", breaks = seq(0, 1, 0.1))
-
+plot(navarre, "view" , 
+      product = "mod09ga", 
+      variable = "NDVI", 
+      breaks = seq(0, 1, 0.1))
+      
 plot(navarre,"dates")
 
 ```
