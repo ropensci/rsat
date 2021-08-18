@@ -20,6 +20,7 @@
 #' @param ... additional arguments.
 #'
 #' @importFrom terra rast
+#' @importFrom sf st_bbox
 #' @include rtoi.R records.R
 #' @export
 #' @examples
@@ -207,14 +208,14 @@ setMethod(
                   # TODO get projection using gdal_crs,
                   #cannot close the connection and remove the file
                   # region <- st_transform(region,gdal_crs(cmpfile)$input)
-                  ext <- extent(region)
+                  ext <- st_bbox(region)
 
                   gdal_utils(
                     util = "warp",
                     source = cmpfile,
                     destination = out.file.name,
                     options = c(
-                      "-te", ext@xmin, ext@ymin, ext@xmax, ext@ymax,
+                      "-te", ext$xmin, ext$ymin, ext$xmax, ext$ymax,
                       "-te_srs", st_crs(region)$proj4string
                     )
                   )

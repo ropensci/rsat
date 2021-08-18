@@ -20,6 +20,7 @@ rsat_mosaic(x, ...)
   warp = "extent",
   region,
   overwrite = FALSE,
+  suppressWarnings = TRUE,
   ...
 )
 }
