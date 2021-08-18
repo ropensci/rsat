@@ -95,7 +95,7 @@ setMethod(
   function(name, region, rtoi_path) {
     rtoi_path <- file.path(rtoi_path, name)
     if (length(list.files(rtoi_path, pattern = "\\.rtoi$")) > 0) {
-      stop("This rtoi already exists. Give it a new name or rtoi_path.")
+      stop(paste0("Trying to write in: ",rtoi_path,". This rtoi already exists. Give it a new name or rtoi_path."))
     }
     dir.create(rtoi_path, showWarnings = FALSE)
     newobj <- new("rtoi")
