@@ -5,33 +5,13 @@
 \alias{rsat}
 \title{`rsat':}
 \description{
-This package enables you searching, downloading, customizing, and processing time series
-of satellite images from Landsat, MODIS and Sentinel in a standardized way.
+Downloading, customizing, and processing time series of satellite images for
+ a region of interest. 'rsat' functions allow a unified access to
+ multispectral images from Landsat, MODIS and Sentinel repositories.
+ 'rsat' also offers capabilities for customizing satellite images,
+ such as tile mosaicking, image cropping and new variables computation.
+ Finally, 'rsat' covers the processing, including cloud masking,
+ compositing and gap-filling/smoothing time series of images
+ (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019
+ <doi:10.1109/TGRS.2019.2904193>).
 }
-\details{
-El paquete crea
-
-\enumerate{
-  \item \code{mod} identifies MODIS Terra and Aqua satellite functions.
-  \item \code{sen} identifies Sentinel functions.
-  \item \code{ls7} identifies Landsat-7 functions.
-  \item \code{ls8} identifies Landsat-8 functions.
-  \item \code{ls} identifies both Landsat-7 and Landsat-8 functions.
-  \item \code{gen} identifies function for being used in any of the three platforms.
-  \item \code{var} identifies function for deriving variables in any of the three platforms.
-}
-
-Below, there is a list of the most important functions grouped by satellite
-programs, and listed in operational order. These functions include searching,
-previewing, downloading, mosaicking, deriving new variables, compositing,
-cloud masking and filling/smoothing satellite imagery.
-}
-\section{I. Landsat functions}{
-
-The Landsat program is currently releasing imagery captured by two satellites;
-the Landsat-7 and Lansat-8. The functions for both satellites are separate due
-to discrepancies in their spectral coverage and data formats. To download
-Landsat imagery with the following functions, a USGS's `EarthExplorer' account
-is required. Please, register \href{https://ers.cr.usgs.gov/register/}{here}.
-}
-
