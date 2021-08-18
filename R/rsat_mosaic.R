@@ -19,7 +19,7 @@
 #' @param y omitted parameter.
 #' @param ... additional arguments.
 #'
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @include rtoi.R records.R
 #' @export
 #' @examples
@@ -90,7 +90,7 @@ setMethod(
 
 #' @rdname rsat_mosaic
 #' @aliases rsat_mosaic,records
-#' @importFrom raster mosaic
+#' @importFrom terra mosaic
 #' @importFrom utils untar
 #' @importFrom sp proj4string
 setMethod(
@@ -103,7 +103,6 @@ setMethod(
            warp = "extent",
            region,
            overwrite = FALSE,
-           suppressWarnings = TRUE,
            ...) {
     args <- list(...)
     if ("dates" %in% names(args)) {
@@ -200,13 +199,9 @@ setMethod(
             {
               switch(tolower(warp),
                 "extent" = {
-                  if(suppressWarnings){
-                    suppressWarnings(r.tmp <- raster(cmpfile))
-                  }else{
-                    r.tmp <- raster(cmpfile)
-                  }
+                  r.tmp <- rast(cmpfile)
 
-                  region <- st_transform(region, proj4string(r.tmp))
+                  region <- st_transform(region, crs(r.tmp))
                   rm(r.tmp)
 
                   # TODO get projection using gdal_crs,
