@@ -41,7 +41,7 @@ Collate:
     'package_tools.R'
     'plot.R'
     'preview.R'
-    'rsat-package.R'
+    'rsat.R'
     'rsat_derive.R'
     'rsat_download.R'
     'rsat_mosaic.R'
