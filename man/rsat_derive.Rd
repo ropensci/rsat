@@ -16,6 +16,7 @@ rsat_derive(x, variable, ...)
   fun,
   overwrite = FALSE,
   verbose = FALSE,
+  suppressWarnings = TRUE,
   ...
 )
 }
