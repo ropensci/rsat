@@ -793,7 +793,7 @@ setMethod(
   }
 )
 
-#' @importFrom raster crs
+#' @importFrom terra crs
 setMethod(
   f = "crs",
   signature = "records",
