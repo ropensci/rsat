@@ -4,12 +4,26 @@
 \alias{get_raster}
 \alias{get_raster,rtoi-method}
 \alias{get_raster,rtoi}
+\alias{get_SpatRaster}
+\alias{get_SpatRaster,rtoi-method}
+\alias{get_SpatRaster,rtoi}
+\alias{get_stars}
+\alias{get_stars,rtoi-method}
+\alias{get_stars,rtoi}
 \title{Loads into R a time series of images regarding an rtoi, satellite product,
 and remote sensing index.}
 \usage{
 get_raster(x, p, v, ...)
 
 \S4method{get_raster}{rtoi}(x, p, v, ...)
+
+get_SpatRaster(x, p, v, ...)
+
+\S4method{get_SpatRaster}{rtoi}(x, p, v, ...)
+
+get_stars(x, p, v, ...)
+
+\S4method{get_stars}{rtoi}(x, p, v, ...)
 }
 \arguments{
 \item{x}{an rtoi.}
@@ -58,6 +72,8 @@ download(navarre)
 mosaic(navarre, overwrite = T)
 
 derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
-ls6.ndvi <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
+ls6.ndvi.raster <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
+ls6.ndvi.rast <- get_SpatRaster(navarre, "LANDSAT_TM_C1", "NDVI")
+ls6.ndvi.stars <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
 }
 }

@@ -22,7 +22,7 @@ dates(x) <- value
 \item{x}{a \code{records} or an \code{rtoi} object.}
 }
 \value{
-
+returns a vector of \code{Date} class
 }
 \description{
 Get the dates from a \code{records} or an \code{rtoi}
