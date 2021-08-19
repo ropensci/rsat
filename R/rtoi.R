@@ -294,7 +294,9 @@ setMethod("get_mosaic_dir",
 #' mosaic(navarre, overwrite = T)
 #'
 #' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
-#' ls6.ndvi <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
+#' ls6.ndvi.raster <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
+#' ls6.ndvi.rast <- get_SpatRaster(navarre, "LANDSAT_TM_C1", "NDVI")
+#' ls6.ndvi.stars <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
 #' }
 setGeneric("get_raster", function(x, p, v, ...) standardGeneric("get_raster"))
 
@@ -303,153 +305,86 @@ setGeneric("get_raster", function(x, p, v, ...) standardGeneric("get_raster"))
 setMethod(
   "get_raster",
   signature(x = "rtoi"),
-  function(x, p, v, ...) {
-    # layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
-
-    dirs <- get_var_dir(x, p)
-    files <- list.files(dirs, recursive = TRUE, pattern = "\\.zip$",
-                        full.names = TRUE)
-    files <- files[grepl(v, files)]
-    if (length(files) == 0) {
-      p.df <- list_data(x)
-      p.df <- p.df[p.df$product == p, ]
-      p.df <- p.df[p.df$variable == v, ]
-
-      if (grepl("CloudMask", v)) {
-        files <- paste0(paste0(c(get_dir(x),
-                                 unlist(p.df[1:3])),
-                               collapse = "/"), v, ".zip")
-        mos.zip <- file.path("/vsizip",
-                             files,
-                             utils::unzip(files, list = TRUE)$Name)
-        return(stack(mos.zip))
-      }
-
-      dirs <- paste0(c(get_dir(x), unlist(p.df[1:3])), collapse = "/")
-      files <- list.files(dirs,
-                          recursive = TRUE,
-                          pattern = "\\.zip$",
-                          full.names = TRUE)
-
-      mos.zip <- c()
-      for (f in files) {
-        bnds <- utils::unzip(f, list = TRUE)$Name
-        bnds <- bnds[grepl(v, bnds)]
-        if (length(bnds) == 1) {
-          mos.zip <- c(mos.zip, file.path("/vsizip", f, bnds))
-        }
-      }
-      if (length(mos.zip) == 0)
-        message("There are no images for this product and variable.")
-    } else {
-      if (length(files) == 1) {
-        mos.zip <- file.path("/vsizip",
-                             files, utils::unzip(files, list = TRUE)$Name)
-      }
-    }
-    return(stack(mos.zip))
+  function(x, p, v, ...){
+    files<-get_processed_files(x, p, v, ...)
+    return(stack(files))
   }
 )
 
-#' Loads into R a time series of images regarding an rtoi, satellite product,
-#' and remote sensing index.
-#'
-#' @param x an rtoi.
-#' @param p a character with the name of the satellite data product.
-#' @param v a character with the name of the index.
-#' @param ... additional arguments.
-#'
-#' @return a stars object.
-#'
+#' @rdname get_raster
 #' @export
-#' @examples
-#' \dontrun{
-#' library(rsat)
-#'
-#' # load navarre sf from the package
-#' data(ex.navarre)
-#'
-#' # set the credentials
-#' set_credentials("username", "password")
-#'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' ) #'
-#' # Landsat-5
-#' sat_search(
-#'   region = navarre,
-#'   product = "LANDSAT_TM_C1",
-#'   dates = as.Date("1988-08-101") + seq(1, 35)
-#' )
-#' download(navarre)
-#'
-#' mosaic(navarre, overwrite = T)
-#'
-#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
-#' ls6.ndvi <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
-#' }
-setGeneric("get_stars", function(x, p, v, ...) standardGeneric("get_stars"))
+setGeneric("get_SpatRaster", function(x, p, v, ...) standardGeneric("get_SpatRaster"))
+#' @rdname get_raster
+#' @aliases get_SpatRaster,rtoi
+setMethod(
+  "get_SpatRaster",
+  signature(x = "rtoi"),
+  function(x, p, v, ...){
+    files<-get_processed_files(x, p, v, ...)
+    return(rast(files))
+  }
+)
 
-#' @rdname get_stars
+#' @rdname get_raster
+#' @export
+setGeneric("get_stars", function(x, p, v, ...) standardGeneric("get_stars"))
+#' @rdname get_raster
 #' @aliases get_stars,rtoi
 setMethod(
   "get_stars",
   signature(x = "rtoi"),
-  function(x, p, v) {
-    dirs <- get_var_dir(x, p)
+  function(x, p, v, ...){
+    files<-get_processed_files(x, p, v, ...)
+    return(st_as_stars(stack(files)))
+  }
+)
+
+get_processed_files<-  function(x, p, v, ...) {
+  # layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
+
+  dirs <- get_var_dir(x, p)
+  files <- list.files(dirs, recursive = TRUE, pattern = "\\.zip$",
+                      full.names = TRUE)
+  files <- files[grepl(v, files)]
+  if (length(files) == 0) {
+    p.df <- list_data(x)
+    p.df <- p.df[p.df$product == p, ]
+    p.df <- p.df[p.df$variable == v, ]
+
+    if (grepl("CloudMask", v)) {
+      files <- paste0(paste0(c(get_dir(x),
+                               unlist(p.df[1:3])),
+                             collapse = "/"), v, ".zip")
+      mos.zip <- file.path("/vsizip",
+                           files,
+                           utils::unzip(files, list = TRUE)$Name)
+      return(stack(mos.zip))
+    }
+
+    dirs <- paste0(c(get_dir(x), unlist(p.df[1:3])), collapse = "/")
     files <- list.files(dirs,
                         recursive = TRUE,
                         pattern = "\\.zip$",
                         full.names = TRUE)
-    files <- files[grepl(v, files)]
-    if (length(files) == 0) {
-      p.df <- list_data(x)
-      p.df <- p.df[p.df$product == p, ]
-      p.df <- p.df[p.df$variable == v, ]
 
-      if (grepl("CloudMask", v)) {
-        files <- paste0(paste0(c(get_dir(x), p.df[1:3]), collapse = "/"),
-                        v,
-                        ".zip")
-        mos.zip <- file.path("/vsizip",
-                             files,
-                             utils::unzip(files, list = TRUE)$Name)
-        return(stack(mos.zip))
-      }
-
-      dirs <- paste0(c(get_dir(x), p.df[1:3]), collapse = "/")
-      files <- list.files(dirs,
-                          recursive = TRUE,
-                          pattern = "\\.zip$",
-                          full.names = TRUE)
-
-      mos.zip <- c()
-      for (f in files) {
-        bnds <- utils::unzip(f, list = TRUE)$Name
-        bnds <- bnds[grepl(v, bnds)]
-        if (length(bnds) == 1) {
-          mos.zip <- c(mos.zip, file.path("/vsizip", f, bnds))
-        }
-      }
-      if (length(mos.zip) == 0)
-        message("There are no images for this product and variable.")
-    } else {
-      if (length(files) == 1) {
-        mos.zip <- file.path("/vsizip",
-                             files,
-                             utils::unzip(files, list = TRUE)$Name)
+    mos.zip <- c()
+    for (f in files) {
+      bnds <- utils::unzip(f, list = TRUE)$Name
+      bnds <- bnds[grepl(v, bnds)]
+      if (length(bnds) == 1) {
+        mos.zip <- c(mos.zip, file.path("/vsizip", f, bnds))
       }
     }
-    return(st_as_stars(stack(mos.zip)))
+    if (length(mos.zip) == 0)
+      message("There are no images for this product and variable.")
+  } else {
+    if (length(files) == 1) {
+      mos.zip <- file.path("/vsizip",
+                           files, utils::unzip(files, list = TRUE)$Name)
+    }
   }
-)
+  return(mos.zip)
+}
 
 #' Extracts the path to the database
 #'
@@ -826,8 +761,11 @@ setMethod("read_rtoi",
 
     db_path <- gsub("db_path:", "", lines[grepl("db_path:", lines)])
     if (db_path != "") {
-      set_database(x,db_path)
+      set_database(newobj,db_path)
+    }else{
+      newobj$db_path<-""
     }
+
     size <- as.numeric(gsub("size:", "", lines[grepl("size:", lines)]))
     if (length(size) != 0) {
       newobj$size <- size
@@ -846,7 +784,6 @@ setMethod("read_rtoi",
     } else {
       records(newobj) <- new("records")
     }
-
 
     return(newobj)
   }
