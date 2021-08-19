@@ -146,7 +146,6 @@ setMethod("rsat_derive",
                                     layers = layer.size,
                                     fun,
                                     verbose = verbose,
-                                    suppressWarnings = suppressWarnings,
                                     i = i, ...)
           if (!is.null(result)) {
             if(suppressWarnings){
@@ -233,11 +232,11 @@ deriveBandsData <- function(product) {
 
 
 #' @importFrom methods formalArgs
+#' @importFrom terra rast
 deriveVariables <- function(bands,
                             layers,
                             fun,
                             verbose = FALSE,
-                            suppressWarnings = TRUE,
                             i = NULL, ...) {
   bjump <- FALSE
   result <- NULL
@@ -256,17 +255,12 @@ deriveVariables <- function(bands,
     }
     band <- gsub("\\", "/", band, fixed = TRUE)
     if (verbose) message(paste0("Reading band: ",
-                                paste0(arg, "<-read_stars('",
-                                       band,
-                                       "',normalize_path = FALSE)")))
+                                paste0(arg, "<-rast('", band, "')")))
     # eval(parse( text=paste0(arg, "<-read_stars('",
     #                         band,
     #                         "',normalize_path = FALSE)")))
-    if(suppressWarnings){
-      suppressWarnings(eval(parse(text = paste0(arg, "<-raster('", band, "')"))))
-    }else{
-      eval(parse(text = paste0(arg, "<-raster('", band, "')")))
-    }
+
+    eval(parse(text = paste0(arg, "<-rast('", band, "')")))
     funString <- paste0(funString, arg, "=", arg, ",")
   }
   # arguments asignation
@@ -282,12 +276,7 @@ deriveVariables <- function(bands,
   # if(verbose){message(paste0("Function for evaluation: \n",funString))}
   tryCatch(
     {
-      if(suppressWarnings){
-        suppressWarnings(eval(parse(text = funString)))
-      }else{
-        eval(parse(text = funString))
-      }
-
+      eval(parse(text = funString))
       return(result)
     },
     error = function(e) {
