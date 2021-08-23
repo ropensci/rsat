@@ -112,8 +112,8 @@ setMethod("rsat_list_data",
         full.names <- gsub(paste0(get_dir(x), "/"), "", full.names,fixed=TRUE)
         full.names <- gsub("\\.zip", "", full.names)
         dl <- do.call(rbind, strsplit(full.names, "/"))
-        if(!is.null(dl))
-          dl[, 1] <- ""
+        #if(!is.null(dl))
+        #  dl[, 1] <- ""
         n.col <- ncol(dl)
         dl <- dl[, c(n.col - 3, n.col - 2, n.col-1, n.col)]
         data.list <- rbind(dl, data.list)
