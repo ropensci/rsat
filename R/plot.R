@@ -24,7 +24,8 @@
 #' @importFrom calendR calendR
 #' @importFrom grDevices colors
 #' @importFrom sf gdal_utils
-#' @importFrom raster raster stack clamp
+#' @importFrom terra clamp
+#' @importFrom raster raster stack
 #' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export
@@ -40,17 +41,18 @@
 #'
 #' # path where the region is stored
 #' rtoi.path <- tempdir()
+#'
 #' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
+#' set_database(file.path(tempdir(), "DATABASE"))
+#'
 #' navarre <- new_rtoi(
 #'   "Navarre",
 #'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
+#'   rtoi.path
 #' )
 #'
 #' # search mod09ga products
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "mod09ga",
 #'   dates = as.Date("2021-03-01") + seq(1, 20)
@@ -69,20 +71,35 @@
 #' plot(navarre, "preview")
 #'
 #' # download the images
-#' download(navarre)
+#' rsat_download(navarre)
 #'
 #' #
 #' plot(navarre, "preview")
 #' # mosaic the tiles
-#' mosaic(navarre)
+#' rsat_mosaic(navarre)
 #'
-#' # plot mosaicked images
+#' # check the product mosaicked
+#' list_data(navarre)
+#'
+#' # plot mosaicked images as rgb
 #' plot(navarre, "view", product = "mod09ga")
 #'
 #' # plot with false color
 #' plot(navarre, "view",
 #'      product = "mod09ga",
 #'      band_name = c("nir", "red", "green"))
+#'
+#' # plot derived NDVI values
+#' plot(navarre,"view",
+#'      variable="NDVI",
+#'      product="mod09ga")
+#'
+#' # Set the max and min value in plot
+#' plot(navarre,"view",
+#'      variable="NDVI",
+#'      product="mod09ga",
+#'      zlim=c(0,1))
+#'
 #' }
 setMethod(
   f = "plot",
@@ -359,7 +376,7 @@ setMethod(
     }
 
     # plot
-    genPlotGIS(r = plot.list, region(x), ...)
+    genPlotGIS(r = plot.list, region(x), verbose=verbose, ...)
   }
 )
 
@@ -387,15 +404,15 @@ setMethod(
           con <- connection$getApi(get_api_name(r))
           con$pictureDownload(p.url, pre.file)
         }
-        img <- stack(pre.file)
-        extent(img) <- extent(r)
-        projection(img) <- st_crs(crs(r))$proj4string
+        img <- rast(pre.file)
+        ext(img) <- ext(r)
+        crs(img) <- crs(r)
         img.list <- c(img.list, img)
         lname <- c(lname, paste0(sat_name(r), "_", dates(r)))
       }
 
       # plot
-      genPlotGIS(r = img.list, ...)
+      genPlotGIS(r = img.list, verbose=verbose, ...)
     } else {
       message("Empty records.")
     }
@@ -434,11 +451,11 @@ read_variables <- function(zip.file, product, var.name, date, xsize, ysize) {
                        RasterIO = rasterio,
                        proxy = FALSE)
   stars.list <- do.call(c, stars.list)
-  raster.list <- as(stars.list, "Raster")
+  raster.list <- stars.list#as(stars.list, "Raster")
   names(raster.list) <- n
   return(raster.list) # TODO change to stars
 }
-#' @importFrom raster raster stretch as.matrix
+#' @importFrom terra stretch as.matrix rast
 #' @importFrom methods as
 #' @importFrom stars read_stars
 read_rgb <- function(files.p,
@@ -481,9 +498,9 @@ read_rgb <- function(files.p,
   )
 
   # stretch only the data using raster
-  red[[1]] <- as.matrix(stretch(raster(red[[1]])))
-  green[[1]] <- as.matrix(stretch(raster::raster(green[[1]])))
-  blue[[1]] <- as.matrix(stretch(raster::raster(blue[[1]])))
+  red[[1]] <- as.matrix(stretch(rast(red[[1]])))
+  green[[1]] <- as.matrix(stretch(rast(green[[1]])))
+  blue[[1]] <- as.matrix(stretch(rast(blue[[1]])))
 
   aux <- merge(c(red, green, blue))
   # aux<-as(aux,"Raster")
@@ -494,7 +511,7 @@ read_rgb <- function(files.p,
 
 #' @importFrom tmap tm_facets tm_graticules tm_grid tm_compass tm_scale_bar
 #' @importFrom tmap tm_fill tm_polygons tm_borders tm_shape tmap_arrange
-#' @importFrom raster projectRaster minValue maxValue
+#' @importFrom terra project minmax
 genPlotGIS <- function(r,
                        region,
                        breaks,
@@ -507,41 +524,38 @@ genPlotGIS <- function(r,
                        as.grid = TRUE,
                        compass.rm = FALSE,
                        scale.bar.rm = FALSE,
+                       verbose=FALSE,
                        ...) {
   args <- list(...)
 
   # r and region projection management
   if (inherits(r, "list")) {
-    if (inherits(r[[1]], "RasterBrick") ||
-        inherits(r[[1]], "RasterStack") ||
-        inherits(r, "RasterLayer")) {
+    if (inherits(r[[1]], "rast")) {
       if (!missing(proj)) {
-        r <- lapply(r, projectRaster, crs = proj)
+        r <- lapply(r, project, crs = proj)
         if (!missing(region)) {
-          region <- transform_multiple_proj(region, proj4 = projection(r[[1]]))
+          region <- transform_multiple_proj(region, proj4 = crs(r[[1]]))
         }
       }
     } else if (inherits(r[[1]], "stars")) {
 
     } else {
-      stop(paste0("genPlotGIS only supports stars, RasterBrick ",
-                  "or RasterStack, or a list of RasterBrick or RasterStack."))
+      stop(paste0("genPlotGIS only supports stars, ",
+                  "."))
     }
-  } else if (inherits(r, "RasterBrick") ||
-             inherits(r, "RasterStack") ||
-             inherits(r, "RasterLayer")) {
+  } else if (inherits(r, "rast")) {
     if (!missing(proj)) {
-      r <- projectRaster(r, crs = proj)
+      r <- project(r, crs = proj)
       if (!missing(region)) {
         region <- transform_multiple_proj(region,
-                                          proj4 = projection(r))
+                                          proj4 = crs(r))
       }
     }
   } else if (inherits(r, "stars")) {
 
   } else {
-    stop(paste0("genPlotGIS only supports stars, RasterBrick or ",
-                "RasterStack, or a list of RasterBrick or RasterStack."))
+    stop(paste0("genPlotGIS only supports stars, ",
+                "."))
   }
 
   # layout preconfigured arguments
@@ -646,11 +660,32 @@ genPlotGIS <- function(r,
   # default label and breaks for the raster
   if (missing(zlim)) {
     if (inherits(r, "stars")) {
-      lower <- min(st_apply(merge(r), MARGIN = 3, min, na.rm = TRUE)[[1]])
-      upper <- max(st_apply(merge(r), MARGIN = 3, max, na.rm = TRUE)[[1]])
+      min.vector<-st_apply(merge(r), MARGIN = 3, min, na.rm = TRUE)[[1]]
+      min.vector[!min.vector> -Inf]<-NA
+      lower <- min(min.vector,na.rm = TRUE)
+      max.vector<-st_apply(merge(r), MARGIN = 3, max, na.rm = TRUE)[[1]]
+      max.vector[!max.vector< Inf]<-NA
+      upper <- max(max.vector,na.rm = TRUE)
+      if(verbose){
+        message(paste0("lower value",lower))
+        message(paste0("upper value",upper))
+      }
     } else {
-      lower <- min(minValue(r))
-      upper <- max(maxValue(r))
+      #lower <- min(minValue(r))
+      #upper <- max(maxValue(r))
+      mm <- minmax(x)
+
+      min.vector<-mm[1,]
+      min.vector[!min.vector> -Inf]<-NA
+      lower <- min(min.vector,na.rm = TRUE)
+      max.vector<-mm[1,]
+      max.vector[!max.vector> -Inf]<-NA
+      upper <- max(max.vector,na.rm = TRUE)
+
+      if(verbose){
+        message(paste0("lower value",lower))
+        message(paste0("upper value",upper))
+      }
     }
   } else {
     if ((class(zlim) != "numeric") & (length(zlim) != 0)) {
@@ -664,9 +699,11 @@ genPlotGIS <- function(r,
 
   nbreaks <- nbreaks - 2
   if (missing(breaks)) {
-    breaks <- c(-Inf, seq(from = lower,
+    breaks <- c(-Inf,
+                seq(from = lower,
                           to = upper,
-                          by = ((upper - lower) / nbreaks)), Inf)
+                          by = ((upper - lower) / nbreaks))
+                ,Inf)
   }
   if (missing(labels)) {
     labels <- c("", as.character(round(breaks[-c(1, length(breaks))],
@@ -710,6 +747,7 @@ genPlotGIS <- function(r,
   if (!("title" %in% names(tm_raster_r_args))) {
     tm_raster_r_args$title <- ""
   }
+  tm_raster_r_args$midpoint <- NA
   # Base tmap
   return(do.call(tm_shape, tm_shape_r_args) +
            do.call(tm_raster, tm_raster_r_args) + # raster conf
