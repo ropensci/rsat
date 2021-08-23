@@ -46,7 +46,7 @@ addMapRasterRGB <- function(img, lname, lpos, project = project) {
   nmap <- getPreviewMap() #%>%
     # addRasterRGB(subset(img,lpos), group=lname) #%>%
   nmap <- addRasterRGB(nmap,
-                 st_as_stars(subset(img, lpos)),
+                       img[,,,lpos],
                  group = lname,
                  project = project)
   # addHomeButton(st_bbox(transform_multiple_proj(img,
@@ -242,7 +242,7 @@ setMethod(
     }
   }
 )
-#' @importFrom raster projection<- stack
+#' @importFrom terra rast
 #' @rdname preview
 #' @aliases preview,rtoi,numeric
 setMethod(
@@ -265,7 +265,7 @@ setMethod(
       if (!file.exists(proj_file)) {
         download_preview(r, tmp_dir, verbose = verbose, ...)
       }
-      img <- stack(proj_file)
+      img <- read_stars(proj_file)
       # lname<-paste0(sat_name(r),"_",dates(r))
       lname <- names(r)
       addMapRasterRGB(img,
@@ -298,7 +298,8 @@ get_preview_file <- function(r, tmp_dir) {
 get_preview_proj <- function(r, tmp_dir) {
   return(paste0(get_preview_file(r, tmp_dir), "_proj"))
 }
-#' @importFrom raster stack writeRaster extent extent<-
+#' @importFrom terra writeRaster
+#' @importFrom raster extent extent<- stack
 #' @importFrom sf gdal_utils
 download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   pre.file <- get_preview_file(r, tmp_dir)
@@ -309,17 +310,20 @@ download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
     con <- connection$getApi(get_api_name(r))
     con$pictureDownload(p.url, pre.file)
   }
-  img <- stack(pre.file)
+  suppressWarnings(img <- rast(pre.file))
+
+
   # check if we have projection from search result
   if (any(is.na(as.vector(extent(r))))) {
     # plotRGB(img)
     warning("Image without projection, cannot mosaick")
     return(NULL)
   } else {
-    ext <- extent(r)
-    extent(img) <- ext
-    projection(img) <- st_crs(crs(r))$proj4string
+
+    ext(img) <- ext(r)
+    crs(img) <- crs(r)
     tmp.img <- paste0(pre.file, "_tmp.tif")
+
     writeRaster(img, tmp.img, overwrite = TRUE)
     gdal_utils(
       util = "warp",
