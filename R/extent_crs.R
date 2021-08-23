@@ -194,6 +194,7 @@ setMethod(
   }
 )
 
+#' @aliases extent,extent_crs
 #' @importFrom raster extent
 setMethod(
   f = "extent",
@@ -203,10 +204,23 @@ setMethod(
   }
 )
 
+
+#' @importFrom terra ext
+setMethod(
+  f = "ext",
+  signature = "extent_crs",
+  definition = function(x) {
+    return(ext(c(x@xmin, x@xmax, x@ymin, x@ymax)))
+  }
+)
+
 setMethod(
   f = "crs",
   signature = "extent_crs",
   definition = function(x) {
+    if(x@EPSG==54008){
+      return("ESRI:54008")
+    }
     return(x@EPSG)
   }
 )
