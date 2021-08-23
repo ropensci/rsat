@@ -88,9 +88,9 @@
 #'
 #' @export
 #' @importFrom fields Tps
-#' @importFrom raster beginCluster endCluster clusterR getValues ncell
-#' @importFrom raster nlayers xyFromCell getValues predict aggregate
-#' @importFrom raster addLayer
+#' @importFrom raster beginCluster endCluster clusterR
+#' @importFrom terra nlyr xyFromCell values predict aggregate
+#' @importFrom terra add<- values ncell
 #' @importFrom Rdpack reprompt
 #' @examples
 #' \dontrun{
@@ -114,14 +114,14 @@
 #' )
 #' spplot(tiles.mod.ndvi.comp, layout = c(2, 2))
 #' }
-setGeneric("smoothing_images", function(x,
+setGeneric("rsat_smoothing_images", function(x,
                                         method,
                                         ...) {
-  standardGeneric("smoothing_images")
+  standardGeneric("rsat_smoothing_images")
 })
-#' @rdname smoothing_images
+#' @rdname rsat_smoothing_images
 #' @aliases smoothing_images,rtoi,character
-setMethod("smoothing_images",
+setMethod("rsat_smoothing_images",
   signature = c("rtoi", "character"),
   function(x,
            method,
@@ -171,8 +171,8 @@ setMethod("smoothing_images",
     )
   }
 )
-#' @rdname smoothing_images
-setMethod("smoothing_images",
+#' @rdname rsat_smoothing_images
+setMethod("rsat_smoothing_images",
   signature = c("RasterBrick", "character"),
   function(x,
            method,
@@ -184,8 +184,8 @@ setMethod("smoothing_images",
     }
   }
 )
-#' @rdname smoothing_images
-setMethod("smoothing_images",
+#' @rdname rsat_smoothing_images
+setMethod("rsat_smoothing_images",
   signature = c("RasterStack", "character"),
   function(x,
            method,
@@ -223,9 +223,9 @@ genSmoothingIMA <- function(rStack,
   }
   # select images to predict
   if (is.null(Img2Fill)) {
-    Img2Fill <- 1:nlayers(rStack)
+    Img2Fill <- 1:nlyr(rStack)
   } else {
-    aux <- Img2Fill[Img2Fill %in% 1:nlayers(rStack)]
+    aux <- Img2Fill[Img2Fill %in% 1:nlyr(rStack)]
     if (is.null(aux)) {
       stop("Target images in Img2Fill do not exist.")
     }
@@ -235,7 +235,7 @@ genSmoothingIMA <- function(rStack,
     Img2Fill <- aux
   }
   if (!missing(r.dates)) {
-    if (length(r.dates) != nlayers(rStack))
+    if (length(r.dates) != nlyr(rStack))
       stop("r.dates and rStack must have the same length.")
     alldates <- r.dates
   } else {
@@ -261,7 +261,7 @@ genSmoothingIMA <- function(rStack,
       nPeriods = nDays,
       nYears = nYears
     )
-    message(paste0("   - Size of the neighbourhood: ", nlayers(neighbours)))
+    message(paste0("   - Size of the neighbourhood: ", nlyr(neighbours)))
     # calculate mean image
     meanImage <- raster::calc(neighbours, fun = fun, na.rm = TRUE)
     # get target image
@@ -280,7 +280,7 @@ genSmoothingIMA <- function(rStack,
 
     # Tps model
     xy <- data.frame(xyFromCell(aggAnomaly, 1:ncell(aggAnomaly)))
-    v <- getValues(aggAnomaly)
+    v <- values(aggAnomaly)
     tps <- suppressWarnings(Tps(xy, v))
 
     # smooth anomaly
@@ -325,7 +325,7 @@ genSmoothingIMA <- function(rStack,
       add2rtoi(outfile, out.zip)
     }
     if (get.stack) {
-      result <- addLayer(result, target.prediction)
+      add(result) <- target.prediction
     }
   }
   if (snow.mode) {
