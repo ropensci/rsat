@@ -298,7 +298,7 @@ get_preview_file <- function(r, tmp_dir) {
 get_preview_proj <- function(r, tmp_dir) {
   return(paste0(get_preview_file(r, tmp_dir), "_proj"))
 }
-#' @importFrom terra writeRaster
+#' @importFrom terra writeRaster ext ext<-
 #' @importFrom raster extent extent<- stack
 #' @importFrom sf gdal_utils
 download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
