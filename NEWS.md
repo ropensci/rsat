@@ -2,8 +2,10 @@ rsat 0.1.15 (2021-08-18)
 =========================
 ### NEW FEATURES
   
-  * Added database path to global environment with the function `set_database("character")` and `get_database()`
-  * Added `get_SpatRaster` function to get `SpatRaster` object from `terra` package 
+  * Added database path to global environment with the function 
+  `set_database("character")` and `get_database()`
+  * Added `get_SpatRaster` function to get `SpatRaster` 
+  object from `terra` package 
 
 ### MINOR IMPROVEMENTS
 
@@ -21,8 +23,12 @@ rsat 0.1.15 (2021-08-18)
 
 ### DEPRECATED AND DEFUNCT
 
-  * Function name changes `sat_search()` -> `rsat_search()`, `download()` -> `rsat_download()`,
-  `mosaic()` -> `rsat_mosaic()`, `derive()` -> `rsat_derive()`
+  * Function name change `sat_search()` -> `rsat_search()`
+  * Function name change `download()` -> `rsat_download()`
+  * Function name change `mosaic()` -> `rsat_mosaic()` 
+  * Function name change `derive()` -> `rsat_derive()`
+  * Function name change `cloud_mask()` -> `rsat_cloudMask()`
+  * Function name change `smoothing_images()` -> `rsat_smoothing_images()`
 
 ### DOCUMENTATION
 
