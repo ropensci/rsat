@@ -8,18 +8,19 @@
 #' images with the same name.
 #' @param ... additional arguments
 #'
-#' @importFrom raster readAll minValue NAvalue<- getValues
+#' @importFrom terra minmax NAflag<- values
+#' @importFrom raster readAll
 #' @include rtoi.R
 #' @export
 #' @importFrom zip zip_list
-setGeneric("cloud_mask", function(x, ...) {
-  standardGeneric("cloud_mask")
+setGeneric("rsat_cloudMask", function(x, ...) {
+  standardGeneric("rsat_cloudMask")
 })
 
 #' @rdname cloud_mask
 #' @aliases cloud_mask,rtoi
 setMethod(
-  f = "cloud_mask",
+  f = "rsat_cloudMask",
   signature = c("rtoi"),
   function(x, products = "ALL", verbose = FALSE, overwrite = FALSE, ...) {
     if (products == "ALL") products <- product(x)
@@ -87,8 +88,8 @@ modCloudMask <- function(infile,
                          overwrite = FALSE,
                          verbose = FALSE, ...) {
   if ((!file.exists(outfile)) | overwrite) {
-    r <- raster(infile)
-    v <- matrix(as.numeric(matrix(intToBits(getValues(r)),
+    r <- rast(infile)
+    v <- matrix(as.numeric(matrix(intToBits(values(r)),
                                   ncol = 32,
                                   byrow = TRUE)[, 1:3]), ncol = 3)
     # clouds
@@ -117,8 +118,8 @@ lsCloudMask <- function(infile,
                         overwrite = FALSE,
                         verbose = FALSE, ...) {
   if ((!file.exists(outfile)) | overwrite) {
-    ras.cloud <- readAll(raster(infile))
-    mn <- minValue(ras.cloud)
+    ras.cloud <- rast(infile)
+    mn <- min(minmax(ras.cloud)[1,])
     if (verbose) {
       message(paste0("Minimun: ", mn))
     }
@@ -128,7 +129,7 @@ lsCloudMask <- function(infile,
 
     ras.cloud[ras.cloud %in% cldcl] <- 1
     ras.cloud[ras.cloud != 1] <- NA
-    NAvalue(ras.cloud) <- 0
+    NAflag(ras.cloud) <- 0
 
     writeRaster(ras.cloud, outfile, overwrite = overwrite)
     add2rtoi(outfile, paste0(dirname(outfile), ".zip"))
@@ -143,8 +144,8 @@ senCloudMask <- function(infile,
                          verbose = FALSE,
                          sensitivity = 50, ...) {
   if ((!file.exists(outfile)) | overwrite) {
-    ras.cloud <- readAll(raster(infile))
-    mn <- minValue(ras.cloud)
+    ras.cloud <- rast(infile)
+    mn <- min(minmax(ras.cloud)[1,])
     if (verbose) {
       message(paste0("Minimun: ", mn))
     }
