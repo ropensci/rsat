@@ -783,13 +783,20 @@ setMethod(
   }
 )
 
-
-
 setMethod(
   f = "extent",
   signature = "records",
   definition = function(x) {
     return(extent(x@extent_crs))
+  }
+)
+
+#' @importFrom terra ext
+setMethod(
+  f = "ext",
+  signature = "records",
+  definition = function(x) {
+    return(ext(x@extent_crs))
   }
 )
 
