@@ -5,7 +5,6 @@
 \alias{rsat_smoothing_images,rtoi,character-method}
 \alias{rsat_smoothing_images,rtoi,character}
 \alias{rsat_smoothing_images,RasterBrick,character-method}
-\alias{rsat_smoothing_images,RasterStack,character-method}
 \title{Fill data gaps and smooth outliers in a time series of satellite images}
 \usage{
 rsat_smoothing_images(x, method, ...)
@@ -22,8 +21,6 @@ rsat_smoothing_images(x, method, ...)
 )
 
 \S4method{rsat_smoothing_images}{RasterBrick,character}(x, method, ...)
-
-\S4method{rsat_smoothing_images}{RasterStack,character}(x, method, ...)
 }
 \arguments{
 \item{x}{\code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing

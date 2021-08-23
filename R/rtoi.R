@@ -298,12 +298,12 @@ setMethod("get_mosaic_dir",
 #' ls6.ndvi.rast <- get_SpatRaster(navarre, "LANDSAT_TM_C1", "NDVI")
 #' ls6.ndvi.stars <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
 #' }
-setGeneric("get_raster", function(x, p, v, ...) standardGeneric("get_raster"))
+setGeneric("rsat_get_raster", function(x, p, v, ...) standardGeneric("rsat_get_raster"))
 
-#' @rdname get_raster
-#' @aliases get_raster,rtoi
+#' @rdname rsat_get_raster
+#' @aliases rsat_get_raster,rtoi
 setMethod(
-  "get_raster",
+  "rsat_get_raster",
   signature(x = "rtoi"),
   function(x, p, v, ...){
     files<-get_processed_files(x, p, v, ...)
@@ -311,13 +311,13 @@ setMethod(
   }
 )
 
-#' @rdname get_raster
+#' @rdname rsat_get_raster
 #' @export
-setGeneric("get_SpatRaster", function(x, p, v, ...) standardGeneric("get_SpatRaster"))
-#' @rdname get_raster
-#' @aliases get_SpatRaster,rtoi
+setGeneric("rsat_get_SpatRaster", function(x, p, v, ...) standardGeneric("rsat_get_SpatRaster"))
+#' @rdname rsat_get_raster
+#' @aliases rsat_get_SpatRaster,rtoi
 setMethod(
-  "get_SpatRaster",
+  "rsat_get_SpatRaster",
   signature(x = "rtoi"),
   function(x, p, v, ...){
     files<-get_processed_files(x, p, v, ...)
@@ -325,13 +325,13 @@ setMethod(
   }
 )
 
-#' @rdname get_raster
+#' @rdname rsat_get_raster
 #' @export
-setGeneric("get_stars", function(x, p, v, ...) standardGeneric("get_stars"))
-#' @rdname get_raster
-#' @aliases get_stars,rtoi
+setGeneric("rsat_get_stars", function(x, p, v, ...) standardGeneric("rsat_get_stars"))
+#' @rdname rsat_get_raster
+#' @aliases rsat_get_stars,rtoi
 setMethod(
-  "get_stars",
+  "rsat_get_stars",
   signature(x = "rtoi"),
   function(x, p, v, ...){
     files<-get_processed_files(x, p, v, ...)
