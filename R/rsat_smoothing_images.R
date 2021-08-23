@@ -101,7 +101,7 @@
 #' spplot(ex.ndvi.navarre)
 #'
 #' # smoothin and fill all the time series
-#' tiles.mod.ndvi.filled <- smoothing_images(ex.ndvi.navarre,
+#' tiles.mod.ndvi.filled <- rsat_smoothing_images(ex.ndvi.navarre,
 #'   method = "IMA",
 #'   only.na = TRUE
 #' )

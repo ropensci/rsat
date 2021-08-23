@@ -57,13 +57,13 @@
 #' # print mosaicked bands
 #' list_data(filomena)
 #' }
-setGeneric("list_data", function(x,
+setGeneric("rsat_list_data", function(x,
                                  ...) {
-  standardGeneric("list_data")
+  standardGeneric("rsat_list_data")
 })
-#' @rdname list_data
-#' @aliases list_data,rtoi
-setMethod("list_data",
+#' @rdname rsat_list_data
+#' @aliases rsat_list_data,rtoi
+setMethod("rsat_list_data",
   signature = c("rtoi"),
   function(x, ...) {
     allfiles <- normalizePath(list.files(get_dir(x), full.names = TRUE),"/")
