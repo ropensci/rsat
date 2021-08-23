@@ -134,18 +134,21 @@ setMethod(
                                              product = s,
                                              verbose = verbose,
                                              test.mode = test.mode, ...))
+        records.summary(searchres)
       } else if (grepl("LANDSAT", s)) {
         message(paste0("Searching scenes in the ", s, " product..."))
         searchres <- c(searchres, ls_search(region(region),
                                             product = s,
                                             verbose = verbose,
                                             test.mode = test.mode, ...))
+        records.summary(searchres)
       } else if (s %in% unlist(SENPRODUCTS)) {
         message(paste0("Searching scenes in the ", s, " product..."))
         searchres <- c(searchres, sen_search(region(region),
                                              product = s,
                                              verbose = verbose,
                                              test.mode = test.mode, ...))
+        records.summary(searchres)
       } else {
         warning(paste0("Satellite not supported, only modis, ",
                        "landsat and sentinel related products."))
@@ -154,6 +157,7 @@ setMethod(
     if (length(searchres) != 0) {
       records(region) <- unique(c(records(region), searchres))
     }
+
   }
 )
 
@@ -171,18 +175,21 @@ setMethod(
                                              verbose = verbose,
                                              test.mode = test.mode,
                                              ...))
+        records.summary(searchres)
       } else if (grepl("LANDSAT", s)) {
         searchres <- c(searchres, ls_search(region,
                                             product = s,
                                             verbose = verbose,
                                             test.mode = test.mode,
                                             ...))
+        records.summary(searchres)
       } else if (s %in% unlist(SENPRODUCTS)) {
         searchres <- c(searchres, sen_search(region,
                                              product = s,
                                              verbose = verbose,
                                              test.mode = test.mode,
                                              ...))
+        records.summary(searchres)
       } else {
         warning(paste0("Satellite not supported, only modis, ",
                        "landsat and sentinel related products."))
@@ -191,3 +198,11 @@ setMethod(
     return(searchres)
   }
 )
+
+records.summary<-function(r){
+  if(length(r)>0){
+    message(paste0("Attached ",length(r)," new entries of product ",product(r)[1]," to your rtoi."))
+  }else{
+    message(paste0("No entry found for product ",product(r),"."))
+  }
+}
