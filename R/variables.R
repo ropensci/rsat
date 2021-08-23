@@ -1,4 +1,4 @@
-#' @importFrom raster quantile
+#' @importFrom terra quantile
 variables <- setRefClass("variables",
   # Define the slots
   fields = list(
