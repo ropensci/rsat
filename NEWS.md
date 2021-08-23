@@ -29,6 +29,7 @@ rsat 0.1.15 (2021-08-18)
   * Function name change `derive()` -> `rsat_derive()`
   * Function name change `cloud_mask()` -> `rsat_cloudMask()`
   * Function name change `smoothing_images()` -> `rsat_smoothing_images()`
+  * Function name change `list_data()` -> `rsat_list_data()`
 
 ### DOCUMENTATION
 
