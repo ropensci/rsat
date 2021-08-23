@@ -81,17 +81,18 @@ set_credentials("username", "password")
 
 # path where the region is stored
 rtoi.path <- tempdir()
+
 # path where downloads are stored
-db.path <- file.path(tempdir(), "DATABASE")
+set_database(file.path(tempdir(), "DATABASE"))
+
 navarre <- new_rtoi(
   "Navarre",
   ex.navarre,
-  rtoi.path,
-  db.path
+  rtoi.path
 )
 
 # search mod09ga products
-sat_search(
+rsat_search(
   region = navarre,
   product = "mod09ga",
   dates = as.Date("2021-03-01") + seq(1, 20)
@@ -110,12 +111,15 @@ records(navarre) <- rcds
 plot(navarre, "preview")
 
 # download the images
-download(navarre)
+rsat_download(navarre)
 
 #
 plot(navarre, "preview")
 # mosaic the tiles
-mosaic(navarre)
+rsat_mosaic(navarre)
+
+# check the product mosaicked
+list_data(navarre)
 
 # plot mosaicked images
 plot(navarre, "view", product = "mod09ga")
