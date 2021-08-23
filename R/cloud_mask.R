@@ -17,7 +17,7 @@ setGeneric("rsat_cloudMask", function(x, ...) {
   standardGeneric("rsat_cloudMask")
 })
 
-#' @rdname cloud_mask
+#' @rdname rsat_cloudMask
 #' @aliases cloud_mask,rtoi
 setMethod(
   f = "rsat_cloudMask",
