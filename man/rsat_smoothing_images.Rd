@@ -3,7 +3,7 @@
 \name{rsat_smoothing_images}
 \alias{rsat_smoothing_images}
 \alias{rsat_smoothing_images,rtoi,character-method}
-\alias{smoothing_images,rtoi,character}
+\alias{rsat_smoothing_images,rtoi,character}
 \alias{rsat_smoothing_images,RasterBrick,character-method}
 \alias{rsat_smoothing_images,RasterStack,character-method}
 \title{Fill data gaps and smooth outliers in a time series of satellite images}
@@ -66,24 +66,24 @@ Mandatory when layer names of \code{x} do not contain their
 }}
 
 \item{product}{character argument. The name of the product to
-be processed. Check the name of the parameter with \code{\link{list_data}}
+be processed. Check the name of the parameter with \code{\link{rsat_list_data}}
 function. Check the name of the parameter with
-\code{\link{list_data}} function. By default, "ALL".}
+\code{\link{rsat_list_data}} function. By default, "ALL".}
 
 \item{satellite}{character argument. The name of the satellite to
 be processed. Check the name of the parameter with
-\code{\link{list_data}} function. By default, "ALL".}
+\code{\link{rsat_list_data}} function. By default, "ALL".}
 
 \item{stage}{character argument. The name of the processed stage
 of the data. Check the name of the parameter with
-\code{\link{list_data}} function. By default, "ALL".}
+\code{\link{rsat_list_data}} function. By default, "ALL".}
 
 \item{variable}{character argument.The name of the variable to
 be processed. Check the name of the parameter with
-\code{\link{list_data}} function. By default, "ALL".}
+\code{\link{rsat_list_data}} function. By default, "ALL".}
 
 \item{test.mode}{logical argument. If \code{TRUE}, the function runs some
-lines to test \code{smoothing_images} with rtoi object.}
+lines to test \code{rsat_smoothing_images} with rtoi object.}
 }
 \value{
 a \code{RasterStack} with the filled/smoothed images.

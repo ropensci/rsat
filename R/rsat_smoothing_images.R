@@ -37,20 +37,20 @@
 #' @param method character argument. Defines the method used
 #' for processing the images, e.a. "IMA".
 #' @param product character argument. The name of the product to
-#' be processed. Check the name of the parameter with \code{\link{list_data}}
+#' be processed. Check the name of the parameter with \code{\link{rsat_list_data}}
 #' function. Check the name of the parameter with
-#' \code{\link{list_data}} function. By default, "ALL".
+#' \code{\link{rsat_list_data}} function. By default, "ALL".
 #' @param satellite character argument. The name of the satellite to
 #' be processed. Check the name of the parameter with
-#' \code{\link{list_data}} function. By default, "ALL".
+#' \code{\link{rsat_list_data}} function. By default, "ALL".
 #' @param stage character argument. The name of the processed stage
 #' of the data. Check the name of the parameter with
-#' \code{\link{list_data}} function. By default, "ALL".
+#' \code{\link{rsat_list_data}} function. By default, "ALL".
 #' @param variable character argument.The name of the variable to
 #' be processed. Check the name of the parameter with
-#' \code{\link{list_data}} function. By default, "ALL".
+#' \code{\link{rsat_list_data}} function. By default, "ALL".
 #' @param test.mode logical argument. If \code{TRUE}, the function runs some
-#' lines to test \code{smoothing_images} with rtoi object.
+#' lines to test \code{rsat_smoothing_images} with rtoi object.
 #' @param ... arguments for nested functions:
 #' \itemize{
 #'   \item \code{Img2Fill}  a \code{vector} defining the
@@ -120,7 +120,7 @@ setGeneric("rsat_smoothing_images", function(x,
   standardGeneric("rsat_smoothing_images")
 })
 #' @rdname rsat_smoothing_images
-#' @aliases smoothing_images,rtoi,character
+#' @aliases rsat_smoothing_images,rtoi,character
 setMethod("rsat_smoothing_images",
   signature = c("rtoi", "character"),
   function(x,
