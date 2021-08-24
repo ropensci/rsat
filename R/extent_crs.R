@@ -120,7 +120,7 @@ setMethod(
   }
 )
 
-#' @rdname as.data.frame-records-method
+#' @rdname as.data.frame
 #' @aliases as.data.frame,extent_crs
 setMethod(
   "as.data.frame",
