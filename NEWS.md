@@ -9,7 +9,7 @@ rsat 0.1.15 (2021-08-18)
 
 ### MINOR IMPROVEMENTS
 
-  * Improved the examples in the documentation
+  * Improved the examples in the documentation and added new datasets
   * Added vignettes enumeration
   * Improved the performance of search function
   * Fixed the warnings produced by mosaic and derive functions
