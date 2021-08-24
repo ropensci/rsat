@@ -117,7 +117,7 @@ browseVignettes("rsat")
 ## Citation
 
 ``` r
-citation(rsat)[1]
+citation("rsat")[1]
 ```
 
 To cite the package:
