@@ -5,22 +5,22 @@ rsat 0.1.15 (2021-08-18)
   * Added database path to global environment with the function 
   `set_database("character")` and `get_database()`
   * Added `get_SpatRaster` function to get `SpatRaster` 
-  object from `terra` package 
+  class from `terra` package 
 
 ### MINOR IMPROVEMENTS
 
-  * Improved the examples in documentation
-  * Vignettes enumeration
+  * Improved the examples in the documentation
+  * Added vignettes enumeration
   * Improved the performance of search function
-  * Fixed unique in records
   * Fixed the warnings produced by mosaic and derive functions
-  * Updated `sf` objects
-  * Use `terra` package instead of `raster` 
+  * Updated `sf` objects to the last version
+  * Use `terra` package instead of `raster` internally
 
 ### BUG FIXES
 
   * Fixed error searching modis images
-
+  * Fixed `unique` function in records
+  
 ### DEPRECATED AND DEFUNCT
 
   * Function name change `sat_search()` -> `rsat_search()`
