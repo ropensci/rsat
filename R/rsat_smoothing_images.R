@@ -32,7 +32,7 @@
 #'
 #' @references \insertRef{militino2019interpolation}{rsat}
 #'
-#' @param x \code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
+#' @param x \code{rtoi}, \code{RastespatRaster} or \code{RasterBrick} containing
 #' a time series of satellite images.
 #' @param method character argument. Defines the method used
 #' for processing the images, e.a. "IMA".
@@ -84,35 +84,36 @@
 #' \code{FALSE}  by default.
 #' }
 #'
-#' @return a \code{RasterStack} with the filled/smoothed images.
+#' @return a \code{RastespatRaster} with the filled/smoothed images.
 #'
 #' @export
-#' @importFrom fields Tps
-#' @importFrom raster beginCluster endCluster clusterR
+#' @importFrom fields Tps predictSE
 #' @importFrom terra nlyr xyFromCell values predict aggregate
-#' @importFrom terra add<- values ncell
+#' @importFrom terra add<- values ncell app interpolate
 #' @importFrom Rdpack reprompt
 #' @examples
 #' \dontrun{
-#' # load an example of NDVI time series in Navarre
+#' require(terra)
 #' data(ex.ndvi.navarre)
 #'
+#' # load an example of NDVI time series in Navarre
+#' ex.ndvi.navarre <- rast(ex.ndvi.navarre)
 #' # the raster stack with the date in julian format as name
-#' spplot(ex.ndvi.navarre)
+#' plot(ex.ndvi.navarre)
 #'
 #' # smoothin and fill all the time series
 #' tiles.mod.ndvi.filled <- rsat_smoothing_images(ex.ndvi.navarre,
-#'   method = "IMA",
-#'   only.na = TRUE
+#'   method = "IMA"
 #' )
 #' # show the filled images
-#' spplot(tiles.mod.ndvi.filled)
+#' plot(tiles.mod.ndvi.filled)
+#'
 #' # plot comparison of the cloud and the filled images
-#' tiles.mod.ndvi.comp <- stack(
+#' tiles.mod.ndvi.comp <- c(
 #'   ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
 #'   ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]]
 #' )
-#' spplot(tiles.mod.ndvi.comp, layout = c(2, 2))
+#' plot(tiles.mod.ndvi.comp)
 #' }
 setGeneric("rsat_smoothing_images", function(x,
                                         method,
@@ -131,7 +132,7 @@ setMethod("rsat_smoothing_images",
            variable = "ALL",
            test.mode = FALSE,
            ...) {
-    var_to_process <- list_data(x)
+    var_to_process <- rsat_list_data(x)
     if (!product == "ALL") {
       var_to_process <- var_to_process[var_to_process$product %in% product, ]
     }
@@ -155,11 +156,12 @@ setMethod("rsat_smoothing_images",
                                       process_folder = "IMA",
                                       ...
                                       ) {
-      process_list <- read_rtoi_dir(unlist(p), rtoi_dir)
-      rStack <- stack(process_list)
-      names(rStack) <- format(genGetDates(process_list), "%Y%j")
+      p<-unlist(p)
+      process_list <- read_rtoi_dir(p, rtoi_dir)
+      spatRaster <- rast(process_list)
+      names(spatRaster) <- format(genGetDates(process_list), "%Y%j")
       if(!test.mode)
-        genSmoothingIMA(rStack,
+        genSmoothingIMA(spatRaster,
                         AppRoot = file.path(rtoi_dir,
                                             p[1],
                                             p[2],
@@ -173,32 +175,19 @@ setMethod("rsat_smoothing_images",
 )
 #' @rdname rsat_smoothing_images
 setMethod("rsat_smoothing_images",
-  signature = c("RasterBrick", "character"),
+  signature = c("SpatRaster", "character"),
   function(x,
            method,
            ...) {
     if (method == "IMA") {
-      return(genSmoothingIMA(rStack = x, get.stack = TRUE, ...))
-    } else {
-      stop("Method not supported.")
-    }
-  }
-)
-#' @rdname rsat_smoothing_images
-setMethod("rsat_smoothing_images",
-  signature = c("RasterStack", "character"),
-  function(x,
-           method,
-           ...) {
-    if (method == "IMA") {
-      return(genSmoothingIMA(rStack = x, get.stack = TRUE, ...))
+      return(genSmoothingIMA(spatRaster = x, get.spatRaster = TRUE, ...))
     } else {
       stop("Method not supported.")
     }
   }
 )
 
-genSmoothingIMA <- function(rStack,
+genSmoothingIMA <- function(spatRaster,
                             Img2Fill = NULL,
                             nDays = 3,
                             nYears = 1,
@@ -211,21 +200,18 @@ genSmoothingIMA <- function(rStack,
                             predictSE = FALSE,
                             snow.mode = FALSE,
                             out.name = "outname",
-                            get.stack = FALSE,
+                            get.spatRaster = FALSE,
                             ...) {
   args <- list(...)
   stime <- Sys.time()
-  if (snow.mode) {
-    beginCluster()
-  }
   if ("AppRoot" %in% names(args)) {
-    dir.create(args$AppRoot, showWarnings = TRUE, recursive = TRUE)
+    dir.create(args$AppRoot, showWarnings = FALSE, recursive = TRUE)
   }
   # select images to predict
   if (is.null(Img2Fill)) {
-    Img2Fill <- 1:nlyr(rStack)
+    Img2Fill <- 1:nlyr(spatRaster)
   } else {
-    aux <- Img2Fill[Img2Fill %in% 1:nlyr(rStack)]
+    aux <- Img2Fill[Img2Fill %in% 1:nlyr(spatRaster)]
     if (is.null(aux)) {
       stop("Target images in Img2Fill do not exist.")
     }
@@ -235,14 +221,15 @@ genSmoothingIMA <- function(rStack,
     Img2Fill <- aux
   }
   if (!missing(r.dates)) {
-    if (length(r.dates) != nlyr(rStack))
-      stop("r.dates and rStack must have the same length.")
+    if (length(r.dates) != nlyr(spatRaster))
+      stop("r.dates and spatRaster must have the same length.")
     alldates <- r.dates
   } else {
-    alldates <- genGetDates(names(rStack))
+    alldates <- genGetDates(names(spatRaster))
   }
-  if (get.stack) {
-    result <- raster::stack()
+  if (get.spatRaster) {
+    result <- rast()
+    result <- project(result,spatRaster)
   }
   if (all(is.na(alldates))) {
     stop(paste0("The name of the layers has to include the",
@@ -255,7 +242,7 @@ genSmoothingIMA <- function(rStack,
 
     # define temporal neighbourhood
     neighbours <- dateNeighbours(
-      ts.raster = rStack,
+      ts.raster = spatRaster,
       target.date = target.date,
       r.dates = alldates,
       nPeriods = nDays,
@@ -263,54 +250,41 @@ genSmoothingIMA <- function(rStack,
     )
     message(paste0("   - Size of the neighbourhood: ", nlyr(neighbours)))
     # calculate mean image
-    meanImage <- raster::calc(neighbours, fun = fun, na.rm = TRUE)
+    meanImage <- app(neighbours, fun = fun, na.rm = TRUE)
     # get target image
-    targetImage <- raster::subset(rStack,
-                                  which(format(genGetDates(names(rStack)),
+    targetImage <- subset(spatRaster,
+                          which(format(genGetDates(names(spatRaster)),
                                                "%Y%j")
                                         %in%
                                           format(target.date, "%Y%j")))
     # calculate anomaly
     anomaly <- targetImage - meanImage
     # remove extreme values
-    qrm <- raster::quantile(anomaly, aFilter)
+    qrm <- quantile(na.omit(values(anomaly)), aFilter)
     anomaly[anomaly < qrm[1] | anomaly > qrm[2]] <- NA
     # reduce the resolution for tps
-    aggAnomaly <- raster::aggregate(anomaly, fact = fact, fun = fun)
+    aggAnomaly <-aggregate(anomaly, fact = fact, fun = fun)
 
     # Tps model
     xy <- data.frame(xyFromCell(aggAnomaly, 1:ncell(aggAnomaly)))
     v <- values(aggAnomaly)
-    tps <- suppressWarnings(Tps(xy, v))
+    idx <- !is.na(v)
+    xy<-xy[idx,]
+    v<-v[idx]
+    tps <- Tps(xy, v)
 
     # smooth anomaly
-    if (snow.mode) {
-      if (!predictSE) {
-        anomaly.prediction <- clusterR(anomaly,
-                                       raster::interpolate,
-                                       args = list(model = tps, fun = predict))
-        # add mean image to predicted anomaly
-        target.prediction <- anomaly.prediction + meanImage
-      } else {
-        se.size <- raster::aggregate(anomaly, fact = factSE, fun = fun)
-        target.prediction <- clusterR(se.size,
-                                      raster::interpolate,
-                                      args = list(model = tps,
-                                                  fun = fields::predictSE))
-      }
+    if (!predictSE) {
+      anomaly.prediction <- interpolate(rast(anomaly),
+                                        tps,
+                                        fun =predict)
+      # add mean image to predicted anomaly
+      target.prediction <- anomaly.prediction + meanImage
     } else {
-      if (!predictSE) {
-        anomaly.prediction <- raster::interpolate(object = anomaly,
-                                                  model = tps,
-                                                  fun = predict)
-        # add mean image to predicted anomaly
-        target.prediction <- anomaly.prediction + meanImage
-      } else {
-        se.size <- aggregate(anomaly, fact = factSE, fun = fun)
-        target.prediction <- raster::interpolate(object = se.size,
-                                                 model = tps,
-                                                 fun = fields::predictSE)
-      }
+      se.size <- aggregate(anomaly, fact = factSE, fun = fun)
+      target.prediction <- interpolate(object = se.size,
+                                       model = tps,
+                                       fun = predictSE)
     }
 
     if (only.na) {
@@ -324,18 +298,16 @@ genSmoothingIMA <- function(rStack,
       writeRaster(target.prediction, outfile)
       add2rtoi(outfile, out.zip)
     }
-    if (get.stack) {
+    if (get.spatRaster) {
       add(result) <- target.prediction
     }
   }
-  if (snow.mode) {
-    endCluster()
-  }
+
   etime <- Sys.time()
   message(paste0(length(Img2Fill),
                  " images processed in ",
                  MinSeg(etime, stime)))
-  if (get.stack) {
+  if (get.spatRaster) {
     return(result)
   }
 }
@@ -356,8 +328,8 @@ dateNeighbours <- function(ts.raster,
     rep(temporalYears, each = length(tempolarPeriods)),
     rep(tempolarPeriods, length(temporalYears))
   )
-  return(raster::subset(ts.raster, which(format(r.dates, "%Y%j") %in%
-                                           temporalWindow)))
+  return(subset(ts.raster, which(format(r.dates, "%Y%j") %in%
+                                 temporalWindow)))
 }
 
 MinSeg <- function(fim, ini) {
