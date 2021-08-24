@@ -315,7 +315,7 @@ setMethod(
 #'
 #' @param x Any R object.
 #' @rdname as.data.frame
-#' @value returns a data frame, normally with all row names
+#' @returns returns a data frame, normally with all row names
 #' @examples
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -436,7 +436,7 @@ setMethod(
 #'
 #' @param x  a \code{data.frame} with columns representing the slots of
 #' records.
-#' @value returns a records objects with the columns values in \code{x}
+#' @returns returns a records objects with the columns values in \code{x}
 #' @export
 #' @examples
 #' # load example rtoi
@@ -525,6 +525,13 @@ setMethod(
 #' @param x a \code{records} or an \code{rtoi} object.
 #'
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' # get the records
+#' rcds <- records(navarre)
+#' # coerce the records to dataframr
+#' sat_name(rcds)
 setGeneric("sat_name", function(x) standardGeneric("sat_name"))
 #' @rdname sat_name
 #' @aliases sat_name,records
@@ -542,6 +549,18 @@ setMethod(
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @return returns a vector of \code{Date} class
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get a vector of dates includes in rtoi
+#' dates(navarre)
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' # coerce the records to dataframr
+#' dates(rcds)
 setGeneric("dates", function(x) standardGeneric("dates"))
 
 #' @rdname dates
@@ -826,6 +845,15 @@ setMethod(
 #' @return a character vector containing the API names of the
 #' elements in \code{x}.
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' # coerce the records to dataframr
+#' get_api_name(rcds)
 setGeneric("get_api_name", function(x) {
   standardGeneric("get_api_name")
 })

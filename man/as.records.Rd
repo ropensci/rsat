@@ -14,6 +14,24 @@ as.records(x)
 \item{x}{a \code{data.frame} with columns representing the slots of
 records.}
 }
+\value{
+returns a records objects with the columns values in \code{x}
+}
 \description{
 Create records object from data frame
+}
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+# get the records
+rcds <- records(navarre)
+# coerce the records to dataframr
+df <- as.data.frame(rcds)
+# print the dataframe
+print(df)
+
+# coerce the dataframe to records
+rcds2 <- as.records(df)
+# check the conversion
+identical(rcds,rcds2)
 }

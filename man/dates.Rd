@@ -27,3 +27,16 @@ returns a vector of \code{Date} class
 \description{
 Get the dates from a \code{records} or an \code{rtoi}
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get a vector of dates includes in rtoi
+dates(navarre)
+
+# get the records
+rcds <- records(navarre)
+
+# coerce the records to dataframr
+dates(rcds)
+}

@@ -29,6 +29,7 @@
 #' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export
+#' @rdname plot
 #' @examples
 #' \dontrun{
 #' library(rsat)
@@ -166,7 +167,7 @@ setMethod(
   }
 )
 
-#' @rdname plot-rtoi-Date-method
+#' @rdname plot
 #' @aliases plot,character
 setMethod(
   f = "plot",
@@ -380,7 +381,7 @@ setMethod(
   }
 )
 
-#' @rdname plot-rtoi-Date-method
+#' @rdname plot
 #' @aliases plot,records
 setMethod(
   f = "plot",
@@ -420,7 +421,7 @@ setMethod(
 )
 
 
-#' @rdname plot-rtoi-Date-method
+#' @rdname plot
 #' @aliases plot,rtoi,missing
 setMethod(
   f = "plot",

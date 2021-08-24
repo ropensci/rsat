@@ -20,3 +20,13 @@ elements in \code{x}.
 \description{
 A function to get or set the api names of an object.
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the records
+rcds <- records(navarre)
+
+# coerce the records to dataframr
+get_api_name(rcds)
+}
