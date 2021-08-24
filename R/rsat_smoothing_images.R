@@ -103,7 +103,9 @@
 #'
 #' # smoothin and fill all the time series
 #' tiles.mod.ndvi.filled <- rsat_smoothing_images(ex.ndvi.navarre,
-#'   method = "IMA"
+#'   method = "IMA",
+#'   predictSE =TRUE
+#'
 #' )
 #' # show the filled images
 #' plot(tiles.mod.ndvi.filled)
@@ -277,19 +279,24 @@ genSmoothingIMA <- function(spatRaster,
     if (!predictSE) {
       anomaly.prediction <- interpolate(rast(anomaly),
                                         tps,
-                                        fun =predict)
+                                        fun = predict)
       # add mean image to predicted anomaly
       target.prediction <- anomaly.prediction + meanImage
     } else {
       se.size <- aggregate(anomaly, fact = factSE, fun = fun)
-      target.prediction <- interpolate(object = se.size,
+
+      target.prediction <- interpolate(object = rast(se.size),
                                        model = tps,
-                                       fun = predictSE)
+                                       fun = fields::predictSE)
+      target.prediction<-project(target.prediction,anomaly)
     }
 
     if (only.na) {
-      targetImage[is.na(targetImage)] <- target.prediction[is.na(targetImage)]
+      vs<-is.na(values(targetImage))
+      vsti<-values(targetImage)
+      vsti[vs] <- values(target.prediction)[vs]
       target.prediction <- targetImage
+      values(target.prediction)<-vsti
     }
     # write filled images
     if ("AppRoot" %in% names(args)) {

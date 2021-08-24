@@ -119,25 +119,29 @@ is the sum of the interpolated anomalies and the average image.
 }
 \examples{
 \dontrun{
-# load an example of NDVI time series in Navarre
+require(terra)
 data(ex.ndvi.navarre)
 
+# load an example of NDVI time series in Navarre
+ex.ndvi.navarre <- rast(ex.ndvi.navarre)
 # the raster stack with the date in julian format as name
-spplot(ex.ndvi.navarre)
+plot(ex.ndvi.navarre)
 
 # smoothin and fill all the time series
 tiles.mod.ndvi.filled <- rsat_smoothing_images(ex.ndvi.navarre,
   method = "IMA",
-  only.na = TRUE
+  predictSE =TRUE
+
 )
 # show the filled images
-spplot(tiles.mod.ndvi.filled)
+plot(tiles.mod.ndvi.filled)
+
 # plot comparison of the cloud and the filled images
-tiles.mod.ndvi.comp <- stack(
+tiles.mod.ndvi.comp <- c(
   ex.ndvi.navarre[[1]], tiles.mod.ndvi.filled[[1]],
   ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]]
 )
-spplot(tiles.mod.ndvi.comp, layout = c(2, 2))
+plot(tiles.mod.ndvi.comp)
 }
 }
 \references{
