@@ -123,6 +123,10 @@ setMethod("rsat_list_data",
         return(df)
       })
     }), recursive = FALSE)
+    if(is.null(allvariables)){
+      message("There is no processed images in the rtoi.")
+      return(NULL)
+    }
     as.data.frame(do.call(rbind, allvariables))
   }
 )
