@@ -314,7 +314,17 @@ setMethod(
 #' Functions to check if an object is a data frame, or coerce it if possible.
 #'
 #' @param x Any R object.
-#'
+#' @rdname as.data.frame
+#' @value returns a data frame, normally with all row names
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' # get the records
+#' rcds <- records(navarre)
+#' # coerce the records to rtoi
+#' df <- as.data.frame(rcds)
+#' # print the dataframe
+#' print(df)
 #' @export
 setMethod(
   "as.data.frame",
@@ -333,22 +343,6 @@ setMethod(
     return(cbind(df, as.data.frame(x@extent_crs)))
   }
 )
-
-#' Create vector
-#'
-#' Create a vector from \code{x}.
-#'
-#' @param x records object.
-#'
-#' @export
-setMethod(
-  "as.vector",
-  signature(x = "records"),
-  function(x) {
-    return(c(x@path, x@row))
-  }
-)
-
 
 #' Combine values into a vector or a list
 #'
@@ -442,8 +436,22 @@ setMethod(
 #'
 #' @param x  a \code{data.frame} with columns representing the slots of
 #' records.
-#'
+#' @value returns a records objects with the columns values in \code{x}
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' # get the records
+#' rcds <- records(navarre)
+#' # coerce the records to dataframr
+#' df <- as.data.frame(rcds)
+#' # print the dataframe
+#' print(df)
+#'
+#' # coerce the dataframe to records
+#' rcds2 <- as.records(df)
+#' # check the conversion
+#' identical(rcds,rcds2)
 setGeneric("as.records", function(x) {
   standardGeneric("as.records")
 })
