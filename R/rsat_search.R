@@ -130,25 +130,28 @@ setMethod(
     for (s in product) {
       if (tolower(substr(s, 1, 3)) %in% c("mod", "myd", "mcd")) {
         message(paste0("Searching scenes in the ", s, " product..."))
-        searchres <- c(searchres, mod_search(region(region),
-                                             product = s,
-                                             verbose = verbose,
-                                             test.mode = test.mode, ...))
-        records.summary(searchres)
+        aux <- mod_search(region(region),
+                          product = s,
+                          verbose = verbose,
+                          test.mode = test.mode, ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else if (grepl("LANDSAT", s)) {
         message(paste0("Searching scenes in the ", s, " product..."))
-        searchres <- c(searchres, ls_search(region(region),
-                                            product = s,
-                                            verbose = verbose,
-                                            test.mode = test.mode, ...))
-        records.summary(searchres)
+        aux <- ls_search(region(region),
+                         product = s,
+                         verbose = verbose,
+                         test.mode = test.mode, ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else if (s %in% unlist(SENPRODUCTS)) {
         message(paste0("Searching scenes in the ", s, " product..."))
-        searchres <- c(searchres, sen_search(region(region),
-                                             product = s,
-                                             verbose = verbose,
-                                             test.mode = test.mode, ...))
-        records.summary(searchres)
+        aux <- sen_search(region(region),
+                          product = s,
+                          verbose = verbose,
+                          test.mode = test.mode, ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else {
         warning(paste0("Satellite not supported, only modis, ",
                        "landsat and sentinel related products."))
@@ -170,26 +173,29 @@ setMethod(
     searchres <- new("records")
     for (s in product) {
       if (tolower(substr(s, 1, 3)) %in% c("mod", "myd")) {
-        searchres <- c(searchres, mod_search(region,
-                                             product = s,
-                                             verbose = verbose,
-                                             test.mode = test.mode,
-                                             ...))
-        records.summary(searchres)
+        aux <- mod_search(region,
+                          product = s,
+                          verbose = verbose,
+                          test.mode = test.mode,
+                          ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else if (grepl("LANDSAT", s)) {
-        searchres <- c(searchres, ls_search(region,
-                                            product = s,
-                                            verbose = verbose,
-                                            test.mode = test.mode,
-                                            ...))
-        records.summary(searchres)
+        auxs <- ls_search(region,
+                          product = s,
+                          verbose = verbose,
+                          test.mode = test.mode,
+                          ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else if (s %in% unlist(SENPRODUCTS)) {
-        searchres <- c(searchres, sen_search(region,
-                                             product = s,
-                                             verbose = verbose,
-                                             test.mode = test.mode,
-                                             ...))
-        records.summary(searchres)
+        aux <- sen_search(region,
+                          product = s,
+                          verbose = verbose,
+                          test.mode = test.mode,
+                          ...)
+        records.summary(aux)
+        searchres <- c(searchres,aux)
       } else {
         warning(paste0("Satellite not supported, only modis, ",
                        "landsat and sentinel related products."))
