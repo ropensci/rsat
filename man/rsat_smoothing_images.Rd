@@ -4,7 +4,7 @@
 \alias{rsat_smoothing_images}
 \alias{rsat_smoothing_images,rtoi,character-method}
 \alias{rsat_smoothing_images,rtoi,character}
-\alias{rsat_smoothing_images,RasterBrick,character-method}
+\alias{rsat_smoothing_images,SpatRaster,character-method}
 \title{Fill data gaps and smooth outliers in a time series of satellite images}
 \usage{
 rsat_smoothing_images(x, method, ...)
@@ -20,10 +20,10 @@ rsat_smoothing_images(x, method, ...)
   ...
 )
 
-\S4method{rsat_smoothing_images}{RasterBrick,character}(x, method, ...)
+\S4method{rsat_smoothing_images}{SpatRaster,character}(x, method, ...)
 }
 \arguments{
-\item{x}{\code{rtoi}, \code{RasterStack} or \code{RasterBrick} containing
+\item{x}{\code{rtoi}, \code{RastespatRaster} or \code{RasterBrick} containing
 a time series of satellite images.}
 
 \item{method}{character argument. Defines the method used
@@ -83,7 +83,7 @@ be processed. Check the name of the parameter with
 lines to test \code{rsat_smoothing_images} with rtoi object.}
 }
 \value{
-a \code{RasterStack} with the filled/smoothed images.
+a \code{RastespatRaster} with the filled/smoothed images.
 }
 \description{
 \code{apply_ima} is the implementation of a spatio-temporal method
