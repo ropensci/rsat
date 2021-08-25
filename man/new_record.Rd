@@ -94,13 +94,12 @@ records object
 Create a new \code{records} object from scratch
 }
 \examples{
-\dontrun{
-a <- new_record(
+# create a new record from scrach
+rcds <- new_record(
   sat = "modis",
   name = "mod09a",
   date = as.Date("2011087", "\%Y\%j"),
   product = "product",
   download = "url/aaa/download"
 )
-}
 }

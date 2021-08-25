@@ -27,29 +27,14 @@ all the names in \code{x}.
 A function to get or set the names of an object.
 }
 \examples{
-\dontrun{
-data(ex.navarre)
-# path where the data will be
-rtoi.path <- tempdir()
-# path where downloads are stored
-db.path <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi(
-  "Navarre",
-  ex.navarre,
-  rtoi.path,
-  db.path
-)
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+names(navarre)
+names(navarre) <- "New name"
 names(navarre)
 
-# Create a set of records using sat_search function
-s2.lvl2.result <- sat_search(
-  region = ex.navarre,
-  product = "S2MSI2A",
-  dates = as.Date("2019-01-01") + seq(1, 30, 1)
-)
-names(s2.lvl2.result)
+rcrds <- records(navarre)
 
-names(s2.lvl2.result) <- "New name"
-names(s2.lvl2.result)
-}
+names(rcrds)
 }

@@ -38,16 +38,15 @@ your region and time of interest.}
 
 
 \examples{
-\dontrun{
 data(ex.navarre)
-
+## Create an rtoi with database
 # path where the region is stored
 rtoi.path <- tempdir()
 
 # path where downloads are stored
 db.path <- file.path(tempdir(), "DATABASE")
 navarre <- new_rtoi(
-  name = "Navarre",
+  name = "Navarre_rtoi",
   region = ex.navarre,
   rtoi_path = rtoi.path,
   db_path = db.path
@@ -55,8 +54,12 @@ navarre <- new_rtoi(
 
 print(navarre)
 
-navarre.records <- records(navarre)
+## Create an rtoi without database
+navarre2 <- new_rtoi(
+  name = "Navarre_rtoi2",
+  region = ex.navarre,
+  rtoi_path = rtoi.path
+)
 
-print(navarre.records)
-}
+print(navarre2)
 }

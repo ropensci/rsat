@@ -70,33 +70,10 @@ running steps and warnings.}
 Plot (a map of) the values of an \code{rtoi} or \code{records} object.
 }
 \examples{
-\dontrun{
 library(rsat)
 
-# load navarre sf from the package
-data(ex.navarre)
-
-# set the credentials
-set_credentials("username", "password")
-
-# path where the region is stored
-rtoi.path <- tempdir()
-
-# path where downloads are stored
-set_database(file.path(tempdir(), "DATABASE"))
-
-navarre <- new_rtoi(
-  "Navarre",
-  ex.navarre,
-  rtoi.path
-)
-
-# search mod09ga products
-rsat_search(
-  region = navarre,
-  product = "mod09ga",
-  dates = as.Date("2021-03-01") + seq(1, 20)
-)
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 
 # plot the dates as calendar
 plot(navarre, y = "dates")
@@ -140,5 +117,4 @@ plot(navarre,"view",
      product="mod09ga",
      zlim=c(0,1))
 
-}
 }
