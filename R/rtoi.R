@@ -171,7 +171,7 @@ setMethod(
   }
 )
 
-#' @rdname names-records-method
+#' @rdname names
 #' @aliases names,rtoi
 #' @include records.R
 setMethod(
@@ -182,7 +182,7 @@ setMethod(
   }
 )
 
-#' @rdname names-records-method
+#' @rdname names
 #' @aliases names<-,rtoi,character
 setReplaceMethod(
   f = "names",
@@ -706,11 +706,11 @@ setMethod("write_rtoi",
     }
 
     # sf
-    dir.create(file.path(get_dir(x), "region"), showWarnings = FALSE)
+    #dir.create(file.path(get_dir(x), "region"), showWarnings = FALSE)
     #st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
     #         driver = "ESRI Shapefile",
     #         quiet = TRUE, append = !args$overwrite)
-    st_write(sf.obj,dsn=poly.path,
+    st_write(x$region[[1]],dsn=file.path(get_dir(x), "region"),
              driver="GeoJSON",
              quiet=TRUE,
              delete_dsn=TRUE)
@@ -792,7 +792,8 @@ setMethod("read_rtoi",
     }else{
       region <- st_read(poly.path, quiet = TRUE)
       unlink(poly.path,recursive =TRUE)
-      st_write(sf.obj,dsn=poly.path,
+      st_write(sf.obj,
+               dsn=poly.path,
                driver="GeoJSON",
                quiet=TRUE,
                delete_dsn=TRUE)
