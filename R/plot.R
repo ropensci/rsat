@@ -31,77 +31,59 @@
 #' @export
 #' @rdname plot
 #' @examples
-#' \dontrun{
 #' library(rsat)
 #'
-#' # load navarre sf from the package
-#' data(ex.navarre)
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 #'
-#' # set the credentials
+#' print(navarre)
+#'
+#' # plot the calendar
+#' plot(navarre, "dates")
+#'
+#'
+#' \dontrun{
+#' # replace with your own "username" and "password"
 #' set_credentials("username", "password")
 #'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#'
-#' # path where downloads are stored
-#' set_database(file.path(tempdir(), "DATABASE"))
-#'
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path
-#' )
-#'
-#' # search mod09ga products
-#' rsat_search(
-#'   region = navarre,
-#'   product = "mod09ga",
-#'   dates = as.Date("2021-03-01") + seq(1, 20)
-#' )
-#'
-#' # plot the dates as calendar
-#' plot(navarre, y = "dates")
-#'
 #' # plot the quicklook images before the download
+#' # needs credentials to download preview images
 #' plot(navarre, y = "preview")
 #'
 #' # select partially cloud free
 #' rcds <- records(navarre)
 #' rcds <- rcds[dates(rcds) %in% as.Date(c("20210310", "20210313"), "%Y%m%d")]
 #' records(navarre) <- rcds
+#'
 #' plot(navarre, "preview")
+#' }
 #'
-#' # download the images
-#' rsat_download(navarre)
+#' # plot already mosaicked rtoi ("view" mode)
+#' pamplona <- read_rtoi(system.file("ex/Pamplona",package="rsat"))
 #'
-#' #
-#' plot(navarre, "preview")
-#' # mosaic the tiles
-#' rsat_mosaic(navarre)
+#' rsat_list_data(pamplona)
 #'
-#' # check the product mosaicked
-#' list_data(navarre)
+#' plot can compute the rgb image on the fly from mosaicek bands
+#' plot(pamplona, "view", product="mod09ga")
 #'
-#' # plot mosaicked images as rgb
-#' plot(navarre, "view", product = "mod09ga")
-#'
-#' # plot with false color
-#' plot(navarre, "view",
+#' # plot on the fly with false color
+#' plot(pamplona, "view",
 #'      product = "mod09ga",
 #'      band_name = c("nir", "red", "green"))
 #'
-#' # plot derived NDVI values
-#' plot(navarre,"view",
-#'      variable="NDVI",
-#'      product="mod09ga")
+#' pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
+#' rsat_list_data(pamplona.derived)
+#'
+#' # plot derived variables
+#' plot(pamplona, "view",
+#'      product = "mod09ga",
+#'      variable = "NDVI")
 #'
 #' # Set the max and min value in plot
-#' plot(navarre,"view",
+#' plot(pamplona,"view",
 #'      variable="NDVI",
 #'      product="mod09ga",
 #'      zlim=c(0,1))
-#'
-#' }
 setMethod(
   f = "plot",
   signature = c("rtoi", "Date"),
@@ -182,6 +164,11 @@ setMethod(
            ysize = 250) {
     if (y == "dates") {
       r <- records(x)
+      if(length(r)==0){
+        message("The calendar cannot be created without records. Use
+                rsat_search to get new records.")
+        return(NULL)
+      }
       if (!is.null(dates)) {
         r <- r[dates(r) %in% dates]
       }

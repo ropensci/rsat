@@ -26,16 +26,15 @@
 #' @include records.R
 #'
 #' @examples
-#' \dontrun{
 #' data(ex.navarre)
-#'
+#' ## Create an rtoi with database
 #' # path where the region is stored
 #' rtoi.path <- tempdir()
 #'
 #' # path where downloads are stored
 #' db.path <- file.path(tempdir(), "DATABASE")
 #' navarre <- new_rtoi(
-#'   name = "Navarre",
+#'   name = "Navarre_rtoi",
 #'   region = ex.navarre,
 #'   rtoi_path = rtoi.path,
 #'   db_path = db.path
@@ -43,10 +42,14 @@
 #'
 #' print(navarre)
 #'
-#' navarre.records <- records(navarre)
+#' ## Create an rtoi without database
+#' navarre2 <- new_rtoi(
+#'   name = "Navarre_rtoi2",
+#'   region = ex.navarre,
+#'   rtoi_path = rtoi.path
+#' )
 #'
-#' print(navarre.records)
-#' }
+#' print(navarre2)
 setRefClass("rtoi",
   # Define the slots
   fields = list(
@@ -266,37 +269,35 @@ setMethod("get_mosaic_dir",
 #' @examples
 #' \dontrun{
 #' library(rsat)
+#' # load example rtoi
+#' pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
 #'
-#' # load navarre sf from the package
-#' data(ex.navarre)
+#' # print available variables
+#' rsat_list_data(pamplona.derived)
 #'
-#' # set the credentials
-#' set_credentials("username", "password")
+#' # get RasterStack from raster package
+#' suppressWarnings(mod.ndvi.raster <-
+#'            rsat_get_raster(pamplona.derived, "mod09ga", "NDVI"))
+#' plot(mod.ndvi.raster)
 #'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' )
-#' # Landsat-5
-#' sat_search(
-#'   region = navarre,
-#'   product = "LANDSAT_TM_C1",
-#'   dates = as.Date("1988-08-01") + seq(1, 35)
-#' )
-#' download(navarre)
+#' # get spatraster from terra package
+#' mod.ndvi.rast <- rsat_get_SpatRaster(pamplona.derived, "mod09ga", "NDVI")
+#' plot(mod.ndvi.rast)
 #'
-#' mosaic(navarre, overwrite = T)
+#' # get stars from stars package
+#' suppressWarnings(mod.ndvi.stars <-
+#' rsat_get_stars(pamplona.derived, "mod09ga", "NDVI"))
+#' plot(mod.ndvi.stars)
 #'
-#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
-#' ls6.ndvi.raster <- get_raster(navarre, "LANDSAT_TM_C1", "NDVI")
-#' ls6.ndvi.rast <- get_SpatRaster(navarre, "LANDSAT_TM_C1", "NDVI")
-#' ls6.ndvi.stars <- get_stars(navarre, "LANDSAT_TM_C1", "NDVI")
+#'
+#' ## get any band in rtoi
+#' # list available data
+#' rsat_list_data(pamplona.derived)
+#' # select band 1: MODIS_Grid_500m_2D_sur_refl_b01_1
+#' mod.ndvi.rast <- rsat_get_SpatRaster(pamplona.derived,
+#'                                      "mod09ga",
+#'                                      "MODIS_Grid_500m_2D_sur_refl_b01_1")
+#' plot(mod.ndvi.rast)
 #' }
 setGeneric("rsat_get_raster", function(x, p, v, ...) standardGeneric("rsat_get_raster"))
 
@@ -745,7 +746,7 @@ setMethod("write_rtoi",
 setGeneric("read_rtoi", function(path, ...) {
   standardGeneric("read_rtoi")
 })
-#' @importFrom sf st_read
+#' @importFrom sf st_read read_sf
 #' @rdname read_rtoi
 #' @aliases read_rtoi,character
 setMethod("read_rtoi",

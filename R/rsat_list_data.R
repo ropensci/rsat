@@ -11,52 +11,23 @@
 #' @importFrom utils unzip
 #'
 #' @examples
-#' \dontrun{
-#' # set-up the region of interest
-#' ip <- st_sf(st_as_sfc(st_bbox(c(
-#'   xmin = -9.755859,
-#'   xmax = 4.746094,
-#'   ymin = 35.91557,
-#'   ymax = 44.02201
-#' ),
-#' crs = 4326
-#' )))
-#' # set-up the time of interest
-#' toi <- seq(as.Date("2021-01-10"), as.Date("2021-01-15"), 1)
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 #'
-#' # set-up the folders
-#' db.path <- "C:/database"
-#' ds.path <- "C:/datasets"
-#' dir.create(db.path)
-#' dir.create(ds.path)
-#'
-#' # set-up rtoi
-#' filomena <- new_rtoi(
-#'   name = "filomena",
-#'   region = ip,
-#'   db_path = db.path,
-#'   rtoi_path = ds.path
-#' )
-#'
-#' # search the images
-#' sat_search(
-#'   region = filomena,
-#'   product = "mod09ga",
-#'   dates = toi
-#' )
-#'
-#' # download into the database
-#' download(filomena)
+#' print(navarre)
 #'
 #' # print empty rtoi
-#' list_data(filomena)
+#' rsat_list_data(navarre)
 #'
-#' # mosaic and crop the images
-#' mosaic(filomena)
+#' pamplona <- read_rtoi(system.file("ex/Pamplona",package="rsat"))
+#' print(pamplona)
 #'
+#' rtoi.data <- rsat_list_data(pamplona)
 #' # print mosaicked bands
-#' list_data(filomena)
-#' }
+#' print(rtoi.data)
+#'
+#' # print mosaicked bands + derived NDVI
+#' pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
+#' rsat_list_data(pamplona.derived)
 setGeneric("rsat_list_data", function(x,
                                  ...) {
   standardGeneric("rsat_list_data")
