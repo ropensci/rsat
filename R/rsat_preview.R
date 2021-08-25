@@ -124,48 +124,32 @@ setPreviewMap <- function(map) {
 #' \dontrun{
 #' library(rsat)
 #'
-#' # load navarre sf from the package
-#' data(ex.navarre)
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 #'
-#' # set the credentials
 #' set_credentials("username", "password")
+#' set_database(file.path(tempdir(), "DATABASE"))
 #'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' ) #'
-#'
-#' sat_search(
-#'   region = navarre,
-#'   product = "S2MSI1C",
-#'   dates = as.Date("2018-01-01") + seq(1, 30, 1)
-#' )
-#'
-#' preview(navarre)
+#' # by default the first date in rtoi is previewed
+#' rsat_preview(navarre)
 #'
 #'
-#' sat_search(
-#'   region = ex.navarre,
-#'   product = "S2MSI1C",
-#'   dates = as.Date("2018-01-01") + seq(1, 30, 1)
-#' )
+#' preview.dates <- dates(navarre)
+#' # use add.layer to preview images of several days
+#' rsat_preview(navarre,preview.dates[2],add.layer = TRUE)
 #'
-#' preview(navarre, n = 1)
+#' # you can also preview records
+#' rcrds <- records(navarre)
+#' rsat_preview(rcrds, n = 1)
 #' }
 #' @export
-setGeneric("preview", function(x, n, ...) {
-  standardGeneric("preview")
+setGeneric("rsat_preview", function(x, n, ...) {
+  standardGeneric("rsat_preview")
 })
-#' @rdname preview
-#' @aliases preview,rtoi,date
+#' @rdname rsat_preview
+#' @aliases rsat_preview,rtoi,date
 setMethod(
-  f = "preview",
+  f = "rsat_preview",
   signature = c("rtoi", "Date"),
   function(x,
            n,
@@ -174,7 +158,7 @@ setMethod(
            verbose = FALSE,
            ...) {
     # plot the rgb files
-    preview(records(x),
+    rsat_preview(records(x),
             n,
             lpos,
             tmp_dir = get_database(x),
@@ -188,10 +172,10 @@ setMethod(
   }
 )
 
-#' @rdname preview
-#' @aliases preview,rtoi,missing
+#' @rdname rsat_preview
+#' @aliases rsat_preview,rtoi,missing
 setMethod(
-  f = "preview",
+  f = "rsat_preview",
   signature = c("rtoi", "missing"),
   function(x,
            n,
@@ -200,7 +184,7 @@ setMethod(
            verbose = FALSE,
            ...) {
     # plot the rgb files
-    preview(records(x),
+    rsat_preview(records(x),
             dates(x)[1],
             lpos,
             tmp_dir = get_database(x),
@@ -213,10 +197,10 @@ setMethod(
     return(getPreviewMap())
   }
 )
-#' @rdname preview
-#' @aliases preview,records,date
+#' @rdname rsat_preview
+#' @aliases rsat_preview,records,date
 setMethod(
-  f = "preview",
+  f = "rsat_preview",
   signature = c("records", "Date"),
   function(x,
            n,
@@ -229,7 +213,7 @@ setMethod(
     if (!add.layer) setPreviewMap(createMap())
     r <- x[dates(x) %in% n]
     for (n in seq_len(length(r))) {
-      preview(r,
+      rsat_preview(r,
               n,
               lpos,
               tmp_dir,
@@ -243,10 +227,10 @@ setMethod(
   }
 )
 #' @importFrom terra rast
-#' @rdname preview
-#' @aliases preview,rtoi,numeric
+#' @rdname rsat_preview
+#' @aliases rsat_preview,rtoi,numeric
 setMethod(
-  f = "preview",
+  f = "rsat_preview",
   signature = c("records", "numeric"),
   function(x,
            n,
@@ -265,6 +249,7 @@ setMethod(
       if (!file.exists(proj_file)) {
         download_preview(r, tmp_dir, verbose = verbose, ...)
       }
+      if (!add.layer) setPreviewMap(createMap())
       img <- read_stars(proj_file)
       # lname<-paste0(sat_name(r),"_",dates(r))
       lname <- names(r)
@@ -298,9 +283,9 @@ get_preview_file <- function(r, tmp_dir) {
 get_preview_proj <- function(r, tmp_dir) {
   return(paste0(get_preview_file(r, tmp_dir), "_proj"))
 }
-#' @importFrom terra writeRaster ext ext<-
+#' @importFrom terra writeRaster ext ext<- crs<-
 #' @importFrom raster extent extent<- stack
-#' @importFrom sf gdal_utils
+#' @importFrom sf gdal_utils st_crs
 download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   pre.file <- get_preview_file(r, tmp_dir)
   if (verbose) message(paste0("Preview file download file: ",
@@ -321,7 +306,7 @@ download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   } else {
 
     ext(img) <- ext(r)
-    crs(img) <- crs(r)
+    crs(img) <- st_crs(crs(r))$proj4string
     tmp.img <- paste0(pre.file, "_tmp.tif")
 
     writeRaster(img, tmp.img, overwrite = TRUE)

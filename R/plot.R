@@ -63,7 +63,7 @@
 #'
 #' rsat_list_data(pamplona)
 #'
-#' plot can compute the rgb image on the fly from mosaicek bands
+#' # plot can compute the rgb image on the fly from mosaicek bands
 #' plot(pamplona, "view", product="mod09ga")
 #'
 #' # plot on the fly with false color
