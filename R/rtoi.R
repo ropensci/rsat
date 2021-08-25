@@ -710,7 +710,7 @@ setMethod("write_rtoi",
     #st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
     #         driver = "ESRI Shapefile",
     #         quiet = TRUE, append = !args$overwrite)
-    st_write(sf.obj,dsn="poly.path",
+    st_write(sf.obj,dsn=poly.path,
              driver="GeoJSON",
              quiet=TRUE,
              delete_dsn=TRUE)
