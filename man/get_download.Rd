@@ -12,3 +12,12 @@ get_download(x)
 \description{
 It returns a character with the url to download the image.
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+# get the records
+rcds <- records(navarre)
+# coerce the records to rtoi
+get_download(rcds)
+
+}

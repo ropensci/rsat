@@ -33,3 +33,21 @@ get_dir(x) <- value
 \description{
 Get the file path of a \code{records} or an \code{rtoi}
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the path of the
+get_dir(navarre)
+
+\dontrun{
+# set new rtoi path
+get_dir(navarre)<-"Example_path"
+}
+
+# get the records
+rcds <- records(navarre)
+
+# gets the relative path to store records data
+get_dir(rcds)
+}

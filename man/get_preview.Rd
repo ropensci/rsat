@@ -19,3 +19,13 @@ get_preview(x)
 \description{
 It returns a character vector of urls to preview the data records.
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the records
+rcds <- records(navarre)
+
+# get a vector with the preview url of each record
+get_api_name(rcds)
+}

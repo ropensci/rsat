@@ -13,7 +13,19 @@
 \arguments{
 \item{x}{a \code{records} object to compute its length.}
 }
+\value{
+Length currently returns a non-negative integer of length 1
+}
 \description{
 Get or set the length of vectors (including lists) and factors,
 and of any other R object for which a method has been defined.
+}
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the records
+rcds <- records(navarre)
+
+length(rcds)
 }

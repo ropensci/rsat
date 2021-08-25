@@ -2,7 +2,6 @@
 % Please edit documentation in R/extent_crs.R, R/records.R
 \name{c,extent_crs-method}
 \alias{c,extent_crs-method}
-\alias{c,extent_crs}
 \alias{c,records-method}
 \title{Combine values into a vector or a list}
 \usage{

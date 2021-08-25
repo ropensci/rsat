@@ -9,7 +9,7 @@
 \alias{show,rtoi}
 \alias{show,variables-method}
 \alias{show,records}
-\title{Show an object}
+\title{Show an Object}
 \usage{
 \S4method{show}{extent_crs}(object)
 
@@ -20,14 +20,25 @@
 \S4method{show}{variables}(object)
 }
 \arguments{
-\item{object}{Any R Object}
+\item{object}{Any R object}
+}
+\value{
+show returns an invisible NULL.
 }
 \description{
-Display the object, by printing, plotting or whatever suits its class.
-This function has specialized methods. Use \code{showDefault()} to call
-the default method.
+Display the object, by printing, plotting or whatever suits its class. This
+function exists to be specialized by methods.
+The default method calls showDefault.
 }
-\details{
-Formal methods for the function \code{show} will usually be invoked
-automatically (see the details).
+\examples{
+## load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+## The method will now be used for automatic printing of navarre
+navarre
+
+## get records
+rcds <- records(navarre)
+
+rcds
 }

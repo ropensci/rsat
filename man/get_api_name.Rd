@@ -27,6 +27,6 @@ navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 # get the records
 rcds <- records(navarre)
 
-# coerce the records to dataframr
+# get a vector with the api name of each records
 get_api_name(rcds)
 }

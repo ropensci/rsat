@@ -21,3 +21,13 @@ get_order(x) <- value
 \description{
 Get the slot called order from a \code{records} or an \code{rtoi}
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the records
+rcds <- records(navarre)
+
+# gets a boolean
+get_order(rcds)
+}
