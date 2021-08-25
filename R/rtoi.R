@@ -347,7 +347,7 @@ get_processed_files<-  function(x, p, v, ...) {
                       full.names = TRUE)
   files <- files[grepl(v, files)]
   if (length(files) == 0) {
-    p.df <- list_data(x)
+    p.df <- rsat_list_data(x)
     p.df <- p.df[p.df$product == p, ]
     p.df <- p.df[p.df$variable == v, ]
 
@@ -707,9 +707,13 @@ setMethod("write_rtoi",
 
     # sf
     dir.create(file.path(get_dir(x), "region"), showWarnings = FALSE)
-    st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
-             driver = "ESRI Shapefile",
-             quiet = TRUE, append = !args$overwrite)
+    #st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
+    #         driver = "ESRI Shapefile",
+    #         quiet = TRUE, append = !args$overwrite)
+    st_write(sf.obj,dsn="poly.path",
+             driver="GeoJSON",
+             quiet=TRUE,
+             delete_dsn=TRUE)
    }
 )
 
@@ -782,7 +786,17 @@ setMethod("read_rtoi",
       newobj$size <- size
     }
     # sf
-    region <- st_read(file.path(path, "region"), quiet = TRUE)
+    poly.path <- file.path(path, "region")
+    if(identical(list.files(poly.path),character(0))){
+      region <- read_sf(poly.path, quiet = TRUE,drivers="GeoJSON")
+    }else{
+      region <- st_read(poly.path, quiet = TRUE)
+      unlink(poly.path,recursive =TRUE)
+      st_write(sf.obj,dsn=poly.path,
+               driver="GeoJSON",
+               quiet=TRUE,
+               delete_dsn=TRUE)
+    }
     newobj$region <- list(region)
 
     # records
