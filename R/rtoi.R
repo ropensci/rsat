@@ -261,7 +261,7 @@ setMethod("get_mosaic_dir",
 #' @param ... additional arguments.
 #'
 #' @return a raster stack.
-#'
+#' @rdname extract_data
 #' @export
 #' @examples
 #' \dontrun{
@@ -300,7 +300,7 @@ setMethod("get_mosaic_dir",
 #' }
 setGeneric("rsat_get_raster", function(x, p, v, ...) standardGeneric("rsat_get_raster"))
 
-#' @rdname rsat_get_raster
+#' @rdname extract_data
 #' @aliases rsat_get_raster,rtoi
 setMethod(
   "rsat_get_raster",
@@ -311,10 +311,10 @@ setMethod(
   }
 )
 
-#' @rdname rsat_get_raster
+#' @rdname extract_data
 #' @export
 setGeneric("rsat_get_SpatRaster", function(x, p, v, ...) standardGeneric("rsat_get_SpatRaster"))
-#' @rdname rsat_get_raster
+#' @rdname extract_data
 #' @aliases rsat_get_SpatRaster,rtoi
 setMethod(
   "rsat_get_SpatRaster",
@@ -325,10 +325,10 @@ setMethod(
   }
 )
 
-#' @rdname rsat_get_raster
+#' @rdname extract_data
 #' @export
 setGeneric("rsat_get_stars", function(x, p, v, ...) standardGeneric("rsat_get_stars"))
-#' @rdname rsat_get_raster
+#' @rdname extract_data
 #' @aliases rsat_get_stars,rtoi
 setMethod(
   "rsat_get_stars",
@@ -386,16 +386,36 @@ get_processed_files<-  function(x, p, v, ...) {
   return(mos.zip)
 }
 
-#' Extracts the path to the database
+#' Extracts or assign the path of the database
 #'
-#' extracts the path to the database from an rtoi.
+#' Extracts the path to the database from an rtoi/package environment.
+#' If both, environment and rtoi database are defined the rtoi
+#' database is used.
 #'
 #' @param x an rtoi object.
+#' @param value character argument. The value for
+#' change the database directory of x.
 #'
 #' @export
+#' @rdname get-set_database
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the databse used by navarre
+#' get_database(navarre)
+#'
+#' # set the a new database path
+#' set_database(navarre,"new_path")
+#'
+#' # get the databse used by navarre
+#' get_database()
+#'
+#' # set the a new database path for the entire environment
+#' set_database("new_path")
 setGeneric("get_database", function(x) standardGeneric("get_database"))
 
-#' @rdname get_database
+#' @rdname get-set_database
 #' @aliases get_database,rtoi
 setMethod(
   "get_database",
@@ -408,8 +428,7 @@ setMethod(
   }
 )
 
-#' @rdname get_database
-#' @aliases get_database
+#' @rdname get-set_database
 setMethod(
   "get_database",
   signature = c(x = "missing"),
@@ -417,19 +436,12 @@ setMethod(
     return(getRSATOpt("RSAT_DATABASE"))
   }
 )
-#' set database path
-#'
-#' set_database set a new database  directory in x.
-#'
-#' @param x rtoi object
-#' @param value character argument. The value for
-#' change the database directory of x.
-#'
+
 #' @export
+#' @rdname get-set_database
 setGeneric("set_database", function(x, ...) standardGeneric("set_database"))
 
-#' @rdname set_database
-#' @aliases set_database,rtoi
+#' @rdname get-set_database
 setMethod(
   "set_database",
   signature(x = "rtoi"),
@@ -439,8 +451,7 @@ setMethod(
   }
 )
 
-#' @rdname set_database
-#' @aliases set_database,rtoi
+#' @rdname get-set_database
 setMethod(
   "set_database",
   signature(x = "character"),
@@ -645,7 +656,7 @@ setMethod(
   }
 )
 
-#' @rdname show-records-method
+#' @rdname show
 #' @aliases show,rtoi
 setMethod("show",
   signature = c("rtoi"),

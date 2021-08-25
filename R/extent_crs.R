@@ -110,7 +110,7 @@ setMethod(
   }
 )
 
-#' @rdname show-records-method
+#' @rdname show
 #' @aliases show,extent_crs
 setMethod(
   f = "show",
@@ -136,8 +136,7 @@ setMethod(
   }
 )
 
-#' @rdname c-records-method
-#' @aliases c,extent_crs
+#' @rdname c
 #' @importFrom methods slot getSlots
 setMethod(
   f = "c",
@@ -158,7 +157,7 @@ setMethod(
   }
 )
 
-#' @rdname sub-records-ANY-ANY-ANY-method
+#' @rdname sub
 #' @aliases sub,extent_crs
 setMethod(
   f = "[", signature = "extent_crs",
@@ -171,7 +170,7 @@ setMethod(
 )
 
 # operator ([<-)
-#' @rdname sub-records-ANY-ANY-ANY-method
+#' @rdname sub
 #' @aliases sub<-,extent_crs
 setReplaceMethod(
   f = "[",
@@ -184,7 +183,7 @@ setReplaceMethod(
   }
 )
 
-#' @rdname length-records-method
+#' @rdname length
 #' @aliases length,extent_crs
 setMethod(
   f = "length",

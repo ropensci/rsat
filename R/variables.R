@@ -224,7 +224,7 @@ setMethod(
   }
 )
 
-#' @rdname show-records-method
+#' @rdname show
 #' @aliases show,records
 setMethod(
   "show",

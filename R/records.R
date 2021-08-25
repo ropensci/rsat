@@ -289,17 +289,27 @@ setMethod(
   }
 )
 
-#' Show an object
+#' Show an Object
 #'
-#' Display the object, by printing, plotting or whatever suits its class.
-#' This function has specialized methods. Use \code{showDefault()} to call
-#' the default method.
+#' Display the object, by printing, plotting or whatever suits its class. This
+#' function exists to be specialized by methods.
+#' The default method calls showDefault.
 #'
-#' Formal methods for the function \code{show} will usually be invoked
-#' automatically (see the details).
+#' @param object Any R object
+#' @returns show returns an invisible NULL.
+#' @examples
+#' ## load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 #'
-#' @param object Any R Object
+#' ## The method will now be used for automatic printing of navarre
+#' navarre
 #'
+#' ## get records
+#' rcds <- records(navarre)
+#'
+## The method will now be used for automatic printing of rcds
+#' rcds
+#' @rdname show
 #' @export
 setMethod(
   f = "show",
@@ -354,7 +364,7 @@ setMethod(
 #'
 #' @param x a \code{records} object.
 #' @param ... additional arguments.
-#'
+#' @rdname c
 #' @export
 setMethod(
   f = "c",
@@ -389,7 +399,7 @@ setMethod(
 #' select/modify.
 #' @param value a \code{records} argument. The slot of the records
 #' to be changed.
-#'
+#' @rdname sub
 #' @export
 setMethod(
   f = "[", signature = "records",
@@ -402,7 +412,8 @@ setMethod(
 )
 
 #' Extract or replace parts of an object
-#' @rdname sub-records-ANY-ANY-ANY-method
+#'
+#' @rdname sub
 #' @aliases '[<-',records,records
 setReplaceMethod(
   f = "[",
@@ -422,7 +433,17 @@ setReplaceMethod(
 #'
 #' @param x a \code{records} object to compute its length.
 #'
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' length(rcds)
+#' @return Length currently returns a non-negative integer of length 1
 #' @export
+#' @rdname length
 setMethod(
   f = "length",
   signature = "records",
@@ -615,6 +636,23 @@ setMethod(
 #' @param value character argument. The new directory of \code{x}.
 #'
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the path of the
+#' get_dir(navarre)
+#'
+#' \dontrun{
+#' # set new rtoi path
+#' get_dir(navarre)<-"Example_path"
+#' }
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' # gets the relative path to store records data
+#' get_dir(rcds)
 setGeneric("get_dir", function(x) standardGeneric("get_dir"))
 #' @rdname get_dir
 #' @aliases get_dir,records
@@ -653,6 +691,15 @@ setMethod(
 #' @param value logical argument. The new value for \code{x}.
 #'
 #' @export
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' # gets a boolean
+#' get_order(rcds)
 setGeneric("get_order", function(x) {
   standardGeneric("get_order")
 })
@@ -730,6 +777,15 @@ setMethod(
 #'
 #' @param x a \code{records} object.
 #'
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' # get a vector with the preview url of each record
+#' get_api_name(rcds)
 #' @export
 setGeneric("get_preview", function(x) {
   standardGeneric("get_preview")
@@ -749,6 +805,13 @@ setMethod(
 #' It returns a character with the url to download the image.
 #'
 #' @param x a \code{records} object.
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' # get the records
+#' rcds <- records(navarre)
+#' # coerce the records to rtoi
+#' get_download(rcds)
 #'
 #' @export
 setGeneric("get_download", function(x) {
@@ -852,7 +915,7 @@ setMethod(
 #' # get the records
 #' rcds <- records(navarre)
 #'
-#' # coerce the records to dataframr
+#' # get a vector with the api name of each records
 #' get_api_name(rcds)
 setGeneric("get_api_name", function(x) {
   standardGeneric("get_api_name")
