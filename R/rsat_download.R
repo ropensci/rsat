@@ -18,30 +18,26 @@
 #' \dontrun{
 #' library(rsat)
 #'
-#' # load navarre sf from the package
-#' data(ex.navarre)
-#'
 #' # set the credentials
 #' set_credentials("username", "password")
 #'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' )
+#' library(rsat)
 #'
-#' # Landsat-5
-#' sat_search(
-#'   region = navarre,
-#'   product = "LANDSAT_TM_C1",
-#'   dates = as.Date("1988-08-01") + seq(1, 35)
-#' )
+#' # create a copy of navarre in temp file
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' # load example rtoi
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+#'
+#' # assign the path of the database
+#' set_database(file.path(tempdir(),"DATABASE"))
 #' rsat_download(navarre)
+#'
+#' rcrds <-  records(navarre)
+#'
+#' rsat_download(rcrds)
 #' }
 #' @export
 setGeneric("rsat_download", function(x, ...) {
