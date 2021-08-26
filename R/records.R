@@ -264,7 +264,7 @@ setMethod(
 )
 
 #' @importFrom utils head
-#' @rdname print-rtoi-method
+#' @rdname print
 #' @aliases print,records
 #' @export
 setMethod(

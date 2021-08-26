@@ -192,7 +192,7 @@ setMethod(
   }
 )
 
-#' @rdname print-rtoi-method
+#' @rdname print
 #' @aliases print,records
 setMethod(
   "print",

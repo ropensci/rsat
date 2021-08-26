@@ -519,7 +519,7 @@ setMethod(
   }
 )
 
-#' @rdname print-rtoi-method
+#' @rdname print
 #' @aliases print,api
 setMethod(
   "print",

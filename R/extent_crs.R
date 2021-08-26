@@ -78,7 +78,7 @@ setMethod(
   }
 )
 
-#' @rdname print-rtoi-method
+#' @rdname print
 #' @aliases print,extent_crs
 setMethod(
   "print",

@@ -506,6 +506,24 @@ setMethod(
 #' @param value a records object to be set to x.
 #'
 #' @export
+#' @examples
+#' #' library(rsat)
+#' # create a copy of navarre
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#' # load example rtoi
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+#' print(navarre)
+#'
+#' rcrds <- records(navarre)
+#'
+#' records(navarre)<-rcrds[1]
+#' print(navarre)
+#'
+#' records(navarre) <- rcrds
+#' print(navarre)
+#' unlink(file.path(tempdir(),"Navarre"),recursive=TRUE)
 setGeneric("records", function(x) {
   standardGeneric("records")
 })
@@ -625,19 +643,19 @@ setMethod(
 #'
 #' @examples
 #' \dontrun{
-#' data(ex.navarre)
-#' # path where the data will be
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' )
+#' library(rsat)
+#'
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
 #' print(navarre)
+#'
+#' # get records
+#' rcrds <- records(navarre)
+#'
+#' print(rcrds)
 #' }
+#' @rdname print
 setMethod(
   "print",
   signature(x = "rtoi"),
@@ -725,24 +743,11 @@ setMethod("write_rtoi",
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' #' data(ex.navarre)
-#' # path where the data will be
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' )
-#' rm(navarre)
+#' library(rsat)
 #'
-#' rtoi.path <- file.path(tempdir(), "Navarre")
-#' new.navarre <- read_rtoi(rtoi.path)
-#' print(new.navarre)
-#' }
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' print(navarre)
 setGeneric("read_rtoi", function(path, ...) {
   standardGeneric("read_rtoi")
 })

@@ -32,17 +32,16 @@ prints an object and returns it invisibly (via invisible(x)).
 }
 \examples{
 \dontrun{
-data(ex.navarre)
-# path where the data will be
-rtoi.path <- tempdir()
-# path where downloads are stored
-db.path <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi(
-  "Navarre",
-  ex.navarre,
-  rtoi.path,
-  db.path
-)
+library(rsat)
+
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
 print(navarre)
+
+# get records
+rcrds <- records(navarre)
+
+print(rcrds)
 }
 }
