@@ -3,7 +3,7 @@
 %   R/variables.R
 \name{show,extent_crs-method}
 \alias{show,extent_crs-method}
-\alias{show,extent_crs}
+\alias{show}
 \alias{show,records-method}
 \alias{show,rtoi-method}
 \alias{show,rtoi}

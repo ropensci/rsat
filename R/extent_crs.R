@@ -111,7 +111,7 @@ setMethod(
 )
 
 #' @rdname show
-#' @aliases show,extent_crs
+#' @aliases show
 setMethod(
   f = "show",
   signature = "extent_crs",
@@ -137,6 +137,7 @@ setMethod(
 )
 
 #' @rdname c
+#' @aliases c
 #' @importFrom methods slot getSlots
 setMethod(
   f = "c",
@@ -157,8 +158,8 @@ setMethod(
   }
 )
 
-#' @rdname sub
 #' @aliases sub,extent_crs
+#' @rdname sub
 setMethod(
   f = "[", signature = "extent_crs",
   definition = function(x, i) {
@@ -169,9 +170,8 @@ setMethod(
   }
 )
 
-# operator ([<-)
+#' @aliases sub,extent_crs,extent_crs
 #' @rdname sub
-#' @aliases sub<-,extent_crs
 setReplaceMethod(
   f = "[",
   signature = "extent_crs",
@@ -184,7 +184,6 @@ setReplaceMethod(
 )
 
 #' @rdname length
-#' @aliases length,extent_crs
 setMethod(
   f = "length",
   signature = "extent_crs",

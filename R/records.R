@@ -366,6 +366,7 @@ setMethod(
 #' @param ... additional arguments.
 #' @rdname c
 #' @export
+#' @aliases c
 setMethod(
   f = "c",
   signature("records"),
@@ -411,8 +412,6 @@ setMethod(
   }
 )
 
-#' Extract or replace parts of an object
-#'
 #' @rdname sub
 #' @aliases '[<-',records,records
 setReplaceMethod(
@@ -776,6 +775,7 @@ setMethod(
 #' print(single.record)
 #' @rdname unique
 #' @export
+#' @aliases unique
 setMethod(
   f = "unique",
   signature = "records",

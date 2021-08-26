@@ -4,7 +4,7 @@
 \alias{[,extent_crs,ANY,ANY,ANY-method}
 \alias{sub,extent_crs}
 \alias{[<-,extent_crs,ANY,ANY,ANY-method}
-\alias{sub<-,extent_crs}
+\alias{sub,extent_crs,extent_crs}
 \alias{[,records,ANY,ANY,ANY-method}
 \alias{[<-,records,ANY,ANY,ANY-method}
 \alias{'[<-',records,records}

@@ -2,7 +2,6 @@
 % Please edit documentation in R/extent_crs.R, R/records.R
 \name{length,extent_crs-method}
 \alias{length,extent_crs-method}
-\alias{length,extent_crs}
 \alias{length,records-method}
 \title{Length of an object}
 \usage{

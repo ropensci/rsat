@@ -2,6 +2,7 @@
 % Please edit documentation in R/records.R
 \name{unique,records,ANY-method}
 \alias{unique,records,ANY-method}
+\alias{unique}
 \title{Extract unique elements}
 \usage{
 \S4method{unique}{records,ANY}(x)
