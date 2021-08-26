@@ -470,8 +470,14 @@ setMethod(
 #'
 #' @export
 #' @examples
-#' ## load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' library(rsat)
+#' # create a copy of navarre
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' # load example rtoi
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the region from rtoi
 #' sf.obj <-  region(navarre)

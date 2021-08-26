@@ -18,11 +18,6 @@
 #' \dontrun{
 #' library(rsat)
 #'
-#' # set the credentials
-#' set_credentials("username", "password")
-#'
-#' library(rsat)
-#'
 #' # create a copy of navarre in temp file
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),

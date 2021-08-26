@@ -145,7 +145,7 @@ setMethod(
     )
 
     # plot
-    genPlotGIS(r = plot.list, region(x), ...)
+    genPlotGIS(r = plot.list, region=region(x), verbose=verbose,...)
   }
 )
 
@@ -305,7 +305,7 @@ setMethod(
         return(message(paste0("No preview is available for this time",
                               " interval and product.")))
       }
-      return(genPlotGIS(r = plot.list, region(x), ...))
+      return(genPlotGIS(r = plot.list, region=region(x),...,verbose=verbose))
     } else if (y == "view") {
       if (product == "ALL") {
         stop("view mode requires product argument.")
@@ -364,7 +364,7 @@ setMethod(
     }
 
     # plot
-    genPlotGIS(r = plot.list, region(x), verbose=verbose, ...)
+    genPlotGIS(r = plot.list, region=region(x), ...,verbose=verbose)
   }
 )
 
@@ -400,7 +400,7 @@ setMethod(
       }
 
       # plot
-      genPlotGIS(r = img.list, verbose=verbose, ...)
+      genPlotGIS(r = img.list, ...,verbose=verbose)
     } else {
       message("Empty records.")
     }
@@ -502,6 +502,7 @@ read_rgb <- function(files.p,
 #' @importFrom terra project minmax
 genPlotGIS <- function(r,
                        region,
+                       ...,
                        breaks,
                        labels,
                        zlim,
@@ -512,8 +513,7 @@ genPlotGIS <- function(r,
                        as.grid = TRUE,
                        compass.rm = FALSE,
                        scale.bar.rm = FALSE,
-                       verbose=FALSE,
-                       ...) {
+                       verbose=FALSE) {
   args <- list(...)
 
   # r and region projection management

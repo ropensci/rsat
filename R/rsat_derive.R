@@ -33,37 +33,31 @@
 #' @include rtoi.R
 #' @export
 #' @examples
-#' \dontrun{
 #' library(rsat)
 #'
-#' # load navarre sf from the package
-#' data(ex.navarre)
+#' # create a copy of pamplona in temp file
+#' file.copy(from=system.file("ex/Pamplona",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
 #'
-#' # set the credentials
-#' set_credentials("username", "password")
+#' # load example rtoi
+#' pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
 #'
-#' # path where the region is stored
-#' rtoi.path <- tempdir()
-#' # path where downloads are stored
-#' db.path <- file.path(tempdir(), "DATABASE")
-#' navarre <- new_rtoi(
-#'   "Navarre",
-#'   ex.navarre,
-#'   rtoi.path,
-#'   db.path
-#' )
-#' # Landsat-5
-#' sat_search(
-#'   region = navarre,
-#'   product = "LANDSAT_TM_C1",
-#'   dates = as.Date("1988-08-01") + seq(1, 35)
-#' )
-#' download(navarre)
+#' rsat_list_data(pamplona)
 #'
-#' mosaic(navarre, overwrite = T)
+#' rsat_derive(pamplona, "NDVI", product = "mod09ga")
+#' # now NDVI is processed
+#' rsat_list_data(pamplona)
 #'
-#' derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+#' # ad-hoc variable
+#' NDSI = function(green, swir1){
+#' ndsi <- (green - swir1)/(green + swir1)
+#' return(ndsi)
 #' }
+#' rsat_derive(pamplona, "NDSI", product = "mod09ga",fun=NDSI)
+#' # now NDVI is processed
+#' rsat_list_data(pamplona)
+#' plot(pamplona, product="mod09ga",variable="NDSI")
 setGeneric("rsat_derive", function(x,
                               variable,
                               ...) {
