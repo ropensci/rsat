@@ -85,7 +85,13 @@ setMethod(
     # out.dir<-"E:/testnewpackage"
     ordered <- FALSE
     ordered.list <- new("records")
-    if (missing(out.dir)) stop("out.dir needed for image downloading.")
+    if (missing(out.dir)){
+      if(get_database()==""){
+        stop("out.dir or global environment database needed for image downloading.")
+      }else{
+        out.dir<-get_database()
+      }
+    }
     # petitions for order images
     message("Checking records for long term access data.")
     for (i in rev(seq_len(length(x)))) {
