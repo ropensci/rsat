@@ -469,6 +469,18 @@ setMethod(
 #' @param value an sf object to define the region in x.
 #'
 #' @export
+#' @examples
+#' ## load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#'
+#' # get the region from rtoi
+#' sf.obj <-  region(navarre)
+#' plot(sf.obj)
+#'
+#' # asign new region value
+#' region(navarre)<-NULL
+#'
+#' region(navarre)<-sf.obj
 setGeneric("region", function(x) {
   standardGeneric("region")
 })
@@ -491,6 +503,15 @@ setGeneric("region<-", function(x, value) standardGeneric("region<-"))
 setMethod(
   f = "region<-",
   signature = c(x = "rtoi", value = "sf"),
+  definition = function(x, value) {
+    x$region <- list(value)
+    write_rtoi(x)
+    x
+  }
+)
+setMethod(
+  f = "region<-",
+  signature = c(x = "rtoi", value = "NULL"),
   definition = function(x, value) {
     x$region <- list(value)
     write_rtoi(x)
@@ -729,10 +750,14 @@ setMethod("write_rtoi",
     #st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
     #         driver = "ESRI Shapefile",
     #         quiet = TRUE, append = !args$overwrite)
-    st_write(x$region[[1]],dsn=file.path(get_dir(x), "region"),
-             driver="GeoJSON",
-             quiet=TRUE,
-             delete_dsn=TRUE)
+    if(!is.null(x$region[[1]])){
+      st_write(x$region[[1]],dsn=file.path(get_dir(x), "region"),
+               driver="GeoJSON",
+               quiet=TRUE,
+               delete_dsn=TRUE)
+    }else{
+      file.remove(file.path(get_dir(x), "region"))
+    }
    }
 )
 
@@ -793,16 +818,20 @@ setMethod("read_rtoi",
     }
     # sf
     poly.path <- file.path(path, "region")
-    if(identical(list.files(poly.path),character(0))){
-      region <- read_sf(poly.path, quiet = TRUE,drivers="GeoJSON")
+    if(!file.exists(poly.path)){
+      region<-NULL
     }else{
-      region <- st_read(poly.path, quiet = TRUE)
-      unlink(poly.path,recursive =TRUE)
-      st_write(sf.obj,
-               dsn=poly.path,
-               driver="GeoJSON",
-               quiet=TRUE,
-               delete_dsn=TRUE)
+      if(identical(list.files(poly.path),character(0))){
+        region <- read_sf(poly.path, quiet = TRUE,drivers="GeoJSON")
+      }else{
+        region <- st_read(poly.path, quiet = TRUE)
+        unlink(poly.path,recursive =TRUE)
+        st_write(sf.obj,
+                 dsn=poly.path,
+                 driver="GeoJSON",
+                 quiet=TRUE,
+                 delete_dsn=TRUE)
+      }
     }
     newobj$region <- list(region)
 
