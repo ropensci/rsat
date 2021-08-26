@@ -13,17 +13,17 @@
 \title{Loads into R a time series of images regarding an rtoi, satellite product,
 and remote sensing index.}
 \usage{
-rsat_get_raster(x, p, v, ...)
+rsat_get_raster(x, p, v, s, ...)
 
-\S4method{rsat_get_raster}{rtoi}(x, p, v, ...)
+\S4method{rsat_get_raster}{rtoi}(x, p, v, s, ...)
 
-rsat_get_SpatRaster(x, p, v, ...)
+rsat_get_SpatRaster(x, p, v, s, ...)
 
-\S4method{rsat_get_SpatRaster}{rtoi}(x, p, v, ...)
+\S4method{rsat_get_SpatRaster}{rtoi}(x, p, v, s, ...)
 
-rsat_get_stars(x, p, v, ...)
+rsat_get_stars(x, p, v, s, ...)
 
-\S4method{rsat_get_stars}{rtoi}(x, p, v, ...)
+\S4method{rsat_get_stars}{rtoi}(x, p, v, s, ...)
 }
 \arguments{
 \item{x}{an rtoi.}
@@ -31,6 +31,8 @@ rsat_get_stars(x, p, v, ...)
 \item{p}{a character with the name of the satellite data product.}
 
 \item{v}{a character with the name of the index.}
+
+\item{s}{a character with the name of the stage wanted.}
 
 \item{...}{additional arguments.}
 }

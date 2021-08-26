@@ -118,7 +118,32 @@ interpolate the values at the original resolution, and (6) the output
 is the sum of the interpolated anomalies and the average image.
 }
 \examples{
-\dontrun{
+## Smooth data in rtoi
+library(rsat)
+require(terra)
+
+# create a copy of pamplona in temp file
+file.copy(from=system.file("ex/PamplonaDerived",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+# load example rtoi
+pamplona <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
+rsat_smoothing_images(pamplona,
+                      method = "IMA",
+                      variable="NDVI"
+)
+rsat_list_data(pamplona)
+# get smoothed
+smoothed <- rsat_get_SpatRaster(pamplona,p="mod09ga",v="NDVI",s="IMA")
+plot(smoothed)
+
+# get original
+original <- rsat_get_SpatRaster(pamplona,p="mod09ga",v="NDVI",s="variables")
+plot(original)
+plot(smoothed[[1]]-original[[1]])
+
+## smooth user defined SpatRaster dataset
 require(terra)
 data(ex.ndvi.navarre)
 
@@ -129,9 +154,7 @@ plot(ex.ndvi.navarre)
 
 # smoothin and fill all the time series
 tiles.mod.ndvi.filled <- rsat_smoothing_images(ex.ndvi.navarre,
-  method = "IMA",
-  predictSE =TRUE
-
+  method = "IMA"
 )
 # show the filled images
 plot(tiles.mod.ndvi.filled)
@@ -142,7 +165,6 @@ tiles.mod.ndvi.comp <- c(
   ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]]
 )
 plot(tiles.mod.ndvi.comp)
-}
 }
 \references{
 \insertRef{militino2019interpolation}{rsat}

@@ -133,13 +133,13 @@ As mentioned earlier, a `records` object behaves like a vector. It works with co
 For instance, the code below counts the results found from each mission:
 
 ```{r records_filter_basic}
-mod.rcd <- subset(rcd, "Modis", "sat")
-sn3.rcd <- subset(rcd, "Sentinel-3", "sat")
+mod.rcd <- subset(rcd, "sat", "Modis")
+sn3.rcd <- subset(rcd, "sat", "Sentinel-3")
 length(mod.rcd)
 length(sn3.rcd)
 ```
 
-The first, second, and third argument in `subset()` correspond to, (1) the `records` object, (2) the value of the slot we are interested in, and (3) the name of the slot used for subsetting. The next lines of code show a more advance filtering example where a new `records` is built from images captured by both missions on the same dates:
+The first, second, and third argument in `subset()` correspond to, (1) the `records` object, (2) the name of the slot used for subsetting, and (3) the value of the slot we are interested in. The next lines of code show a more advance filtering example where a new `records` is built from images captured by both missions on the same dates:
 
 ```{r records_filter_advanced}
 mod.mtch <- mod.rcd[dates(mod.rcd) %in% dates(sn3.rcd)]
@@ -300,5 +300,5 @@ The following vignette explains how to download the satellite images and the rol
 
 ```{r rtoi_lightening}
 rcd <- records(filomena)
-records(filomena) <- subset(rcd, "mod09ga", "product")
+records(filomena) <- subset(rcd, "product", "mod09ga")
 ```

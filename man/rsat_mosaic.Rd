@@ -82,7 +82,7 @@ rsat_download(navarre)
 
 rsat_mosaic(navarre, overwrite = T)
 
-rsat_derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+rsat_list_data(navarre)
 }
 
 }

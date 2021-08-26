@@ -12,6 +12,21 @@
 #' @importFrom raster readAll
 #' @include rtoi.R
 #' @export
+#' @examples
+#' ## Smooth data in rtoi
+#' library(rsat)
+#'
+#' # create a copy of pamplona in temp file
+#' file.copy(from=system.file("ex/Pamplona",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' # load example rtoi
+#' pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
+#'
+#' rsat_cloudMask(pamplona)
+#'
+#' rsat_list_data(pamplona)
 #' @importFrom zip zip_list
 setGeneric("rsat_cloudMask", function(x, ...) {
   standardGeneric("rsat_cloudMask")

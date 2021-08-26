@@ -38,29 +38,20 @@ It skips the images that already exist in the database or directory.
 \dontrun{
 library(rsat)
 
-# load navarre sf from the package
-data(ex.navarre)
+# create a copy of navarre in temp file
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
 
-# set the credentials
-set_credentials("username", "password")
+# load example rtoi
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 
-# path where the region is stored
-rtoi.path <- tempdir()
-# path where downloads are stored
-db.path <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi(
-  "Navarre",
-  ex.navarre,
-  rtoi.path,
-  db.path
-)
-
-# Landsat-5
-sat_search(
-  region = navarre,
-  product = "LANDSAT_TM_C1",
-  dates = as.Date("1988-08-01") + seq(1, 35)
-)
+# assign the path of the database
+set_database(file.path(tempdir(),"DATABASE"))
 rsat_download(navarre)
+
+rcrds <-  records(navarre)
+
+rsat_download(rcrds)
 }
 }

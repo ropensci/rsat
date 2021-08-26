@@ -38,9 +38,9 @@ test_that("records test", {
   )
 
   rcds <- records(navarre)
-  rcds1 <- subset(rcds, unique(product(rcds))[1], "product")[1]
-  rcds2 <- subset(rcds, unique(product(rcds))[2], "product")[1]
-  rcds3 <- subset(rcds, unique(product(rcds))[3], "product")[1]
+  rcds1 <- subset(rcds, "product", unique(product(rcds))[1])[1]
+  rcds2 <- subset(rcds, "product", unique(product(rcds))[2])[1]
+  rcds3 <- subset(rcds, "product", unique(product(rcds))[3])[1]
   rcds.subset <- c(rcds1, rcds2, rcds3)
   rcds.subset@preview<-paste0(
     "https://unai-perez.github.io/rsat-test/previewImg/",

@@ -128,6 +128,13 @@ sat_search(
   dates = as.Date("2019-01-01") + seq(1, 2, 1)
 )
 
+# search Landsat-5 images using rtoi
+sat_search(
+  region = navarre,
+  product = "LANDSAT_TM_C1",
+  dates = as.Date("1988-08-01") + seq(1, 35)
+)
+
 print(navarre)
 
 # get all records from rtoi

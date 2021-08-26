@@ -13,3 +13,17 @@
 It returns a \code{records} like \code{x} but with duplicate
 elements/rows removed.
 }
+\examples{
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+
+# get the records
+rcds <- records(navarre)
+
+duplicate.records <- c(rcds[1],rcds[1])
+length(duplicate.records)
+print(duplicate.records)
+single.record <- unique(duplicate.records)
+length(single.record)
+print(single.record)
+}

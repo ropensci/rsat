@@ -233,7 +233,7 @@ setMethod(
       }
       plot.list <- list()
       for (prdct in product) {
-        sat.records <- subset(records(x), prdct, "product")
+        sat.records <- subset(records(x), "product", prdct)
         if (length(sat.records) == 0) {
           if (verbose) message(paste0("No records for product", prdct))
           next
@@ -252,7 +252,7 @@ setMethod(
           preview.path.img <- file.path(preview.path,
                                         paste0(format(as.Date(d), "%Y%m%d"),
                                                ".tif"))
-          preview.records <- subset(sat.records, as.Date(d), "date")
+          preview.records <- subset(sat.records, "date", as.Date(d))
           if (length(preview.records) == 0) {
             if (verbose) message(paste0("No records for the product ",
                                         prdct,

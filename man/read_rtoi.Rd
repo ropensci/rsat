@@ -19,22 +19,9 @@ read_rtoi(path, ...)
 Reads an rtoi from the hard drive
 }
 \examples{
-\dontrun{
-#' data(ex.navarre)
-# path where the data will be
-rtoi.path <- tempdir()
-# path where downloads are stored
-db.path <- file.path(tempdir(), "DATABASE")
-navarre <- new_rtoi(
-  "Navarre",
-  ex.navarre,
-  rtoi.path,
-  db.path
-)
-rm(navarre)
+library(rsat)
 
-rtoi.path <- file.path(tempdir(), "Navarre")
-new.navarre <- read_rtoi(rtoi.path)
-print(new.navarre)
-}
+# load example rtoi
+navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+print(navarre)
 }

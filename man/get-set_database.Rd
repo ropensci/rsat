@@ -43,7 +43,7 @@ get_database(navarre)
 # set the a new database path
 set_database(navarre,"new_path")
 
-# get the databse used by navarre
+# get the database used by rsat by default
 get_database()
 
 # set the a new database path for the entire environment

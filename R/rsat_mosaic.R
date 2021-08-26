@@ -53,7 +53,7 @@
 #'
 #' rsat_mosaic(navarre, overwrite = T)
 #'
-#' rsat_derive(navarre, "NDVI", product = "LANDSAT_TM_C1")
+#' rsat_list_data(navarre)
 #' }
 #'
 setGeneric("rsat_mosaic", function(x, ...) {
@@ -78,7 +78,7 @@ setMethod(
     }
     for (p in unique(product(r))) {
       rsat_mosaic(
-        x = subset(r, p, "product"),
+        x = subset(r, "product", p),
         out_path = get_dir(x),
         db_path = get_database(x),
         region = region(x),

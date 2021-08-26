@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
 
-\item{subset}{an R object with the value for subsetting.}
+\item{subset}{character argument indicating the name of the slot.}
 
-\item{select}{character argument indicating the name of the slot.}
+\item{select}{character with the value for subsetting.}
 }
 \description{
 Filter the satellite records of a \code{records} or an \code{rtoi}

@@ -261,6 +261,7 @@ setMethod("get_mosaic_dir",
 #' @param x an rtoi.
 #' @param p a character with the name of the satellite data product.
 #' @param v a character with the name of the index.
+#' @param s a character with the name of the stage wanted.
 #' @param ... additional arguments.
 #'
 #' @return a raster stack.
@@ -299,54 +300,59 @@ setMethod("get_mosaic_dir",
 #'                                      "MODIS_Grid_500m_2D_sur_refl_b01_1")
 #' plot(mod.ndvi.rast)
 #' }
-setGeneric("rsat_get_raster", function(x, p, v, ...) standardGeneric("rsat_get_raster"))
+setGeneric("rsat_get_raster", function(x, p, v, s, ...) standardGeneric("rsat_get_raster"))
 
 #' @rdname extract_data
 #' @aliases rsat_get_raster,rtoi
 setMethod(
   "rsat_get_raster",
   signature(x = "rtoi"),
-  function(x, p, v, ...){
-    files<-get_processed_files(x, p, v, ...)
+  function(x, p, v, s, ...){
+    files<-get_processed_files(x, p, v, s, ...)
     return(stack(files))
   }
 )
 
 #' @rdname extract_data
 #' @export
-setGeneric("rsat_get_SpatRaster", function(x, p, v, ...) standardGeneric("rsat_get_SpatRaster"))
+setGeneric("rsat_get_SpatRaster", function(x, p, v, s, ...) standardGeneric("rsat_get_SpatRaster"))
 #' @rdname extract_data
 #' @aliases rsat_get_SpatRaster,rtoi
 setMethod(
   "rsat_get_SpatRaster",
   signature(x = "rtoi"),
-  function(x, p, v, ...){
-    files<-get_processed_files(x, p, v, ...)
+  function(x, p, v, s, ...){
+    files<-get_processed_files(x, p, v, s, ...)
     return(rast(files))
   }
 )
 
 #' @rdname extract_data
 #' @export
-setGeneric("rsat_get_stars", function(x, p, v, ...) standardGeneric("rsat_get_stars"))
+setGeneric("rsat_get_stars", function(x, p, v, s, ...) standardGeneric("rsat_get_stars"))
 #' @rdname extract_data
 #' @aliases rsat_get_stars,rtoi
 setMethod(
   "rsat_get_stars",
   signature(x = "rtoi"),
   function(x, p, v, ...){
-    files<-get_processed_files(x, p, v, ...)
+    files<-get_processed_files(x, p, v, s, ...)
     return(st_as_stars(stack(files)))
   }
 )
 
-get_processed_files<-  function(x, p, v, ...) {
+get_processed_files<-  function(x, p, v, s, ...) {
   # layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
-
-  dirs <- get_var_dir(x, p)
+  dirs <- list.files(list.files(get_dir(x), full.names = TRUE),
+                     pattern = p, full.names = TRUE)
   files <- list.files(dirs, recursive = TRUE, pattern = "\\.zip$",
                       full.names = TRUE)
   files <- files[grepl(v, files)]
+  if(missing(s)){
+    files <- files[grepl("variables", files)]
+  }else{
+    files <- files[grepl(s, files)]
+  }
   if (length(files) == 0) {
     p.df <- rsat_list_data(x)
     p.df <- p.df[p.df$product == p, ]
@@ -409,7 +415,7 @@ get_processed_files<-  function(x, p, v, ...) {
 #' # set the a new database path
 #' set_database(navarre,"new_path")
 #'
-#' # get the databse used by navarre
+#' # get the database used by rsat by default
 #' get_database()
 #'
 #' # set the a new database path for the entire environment

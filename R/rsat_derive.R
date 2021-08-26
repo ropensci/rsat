@@ -44,7 +44,8 @@
 #' pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
 #'
 #' rsat_list_data(pamplona)
-#'
+#' # show prefedined varibles
+#' show_variables()
 #' rsat_derive(pamplona, "NDVI", product = "mod09ga")
 #' # now NDVI is processed
 #' rsat_list_data(pamplona)

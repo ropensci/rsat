@@ -25,3 +25,22 @@ region(x) <- value
 \description{
 gets the sf that specifies the region of an rtoi.
 }
+\examples{
+library(rsat)
+# create a copy of navarre
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+# load example rtoi
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+
+# get the region from rtoi
+sf.obj <-  region(navarre)
+plot(sf.obj)
+
+# asign new region value
+region(navarre)<-NULL
+
+region(navarre)<-sf.obj
+}

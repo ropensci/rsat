@@ -736,22 +736,22 @@ setMethod(
 #' Filter the satellite records of a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
-#' @param subset an R object with the value for subsetting.
-#' @param select character argument indicating the name of the slot.
-#'
+#' @param subset character argument indicating the name of the slot.
+#' @param select character with the value for subsetting.
+#' @rdname subset
 #' @export
 setMethod(
   f = "subset",
   signature = "records",
   definition = function(x, subset, select) {
-    if (inherits(subset, "numeric") & !select %in% c("path", "row")) {
-      return(x[subset])
+    if (inherits(select, "numeric") & !subset %in% c("path", "row")) {
+      return(x[select])
     }
     records.names <- names(getSlots("records"))
-    if (!select %in% records.names) {
-      stop("'select' must be a slot name from the class records.")
+    if (!subset %in% records.names) {
+      stop("'subset' must be a slot name from the class records.")
     }
-    return(x[which(slot(x, select) %in% subset)])
+    return(x[which(slot(x, subset) %in% select)])
   }
 )
 
@@ -761,7 +761,20 @@ setMethod(
 #' elements/rows removed.
 #'
 #' @param x a \code{records} object.
+#' @examples
+#' # load example rtoi
+#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
 #'
+#' # get the records
+#' rcds <- records(navarre)
+#'
+#' duplicate.records <- c(rcds[1],rcds[1])
+#' length(duplicate.records)
+#' print(duplicate.records)
+#' single.record <- unique(duplicate.records)
+#' length(single.record)
+#' print(single.record)
+#' @rdname unique
 #' @export
 setMethod(
   f = "unique",
