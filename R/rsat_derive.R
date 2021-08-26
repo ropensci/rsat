@@ -25,6 +25,7 @@
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
 #' @param variable the name of the variable.
+#' @param suppressWarnings evaluates its expression in a context that ignores all warnings.
 #' @param ... additional argument for variable deriving
 #'
 #' @return nothing. The derived variables will be save in the hard drive.

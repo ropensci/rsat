@@ -44,8 +44,6 @@ By default, the path is defined by \code{x}.}
 
 \item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
 images with the same name.}
-
-\item{y}{omitted parameter.}
 }
 \description{
 Satellite measurements are divided into indivisible units called tiles. The

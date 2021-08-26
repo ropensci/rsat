@@ -13,7 +13,7 @@ test_that("records test", {
 
   print(credentials)
 
-  rcds<-sat_search(
+  rcds<-rsat_search(
     region = ex.navarre,
     product = c("mod09ga", "LANDSAT_8_C1","S2MSI2A"),
     dates = as.Date("2021-03-01") + seq(1, 20),
@@ -21,7 +21,6 @@ test_that("records test", {
     test.mode=TRUE
   )
 
-  # select partially cloud free
   dates(rcds)
   print(rcds)
   print(rcds[1])
@@ -38,6 +37,6 @@ test_that("records test", {
 
   plot(rcds.subset,"preview")
 
-  preview(rcds.subset,1)
-  preview(rcds.subset,dates(rcds.subset[1]))
+  rsat_preview(rcds.subset,1)
+  rsat_preview(rcds.subset,dates(rcds.subset[1]))
 })

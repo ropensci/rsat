@@ -25,6 +25,8 @@ set_database(x, ...)
 \arguments{
 \item{x}{an rtoi object.}
 
+\item{...}{additional arguments.}
+
 \item{value}{character argument. The value for
 change the database directory of x.}
 }

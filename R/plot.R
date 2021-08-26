@@ -75,12 +75,12 @@
 #' rsat_list_data(pamplona.derived)
 #'
 #' # plot derived variables
-#' plot(pamplona, "view",
+#' plot(pamplona.derived, "view",
 #'      product = "mod09ga",
 #'      variable = "NDVI")
 #'
 #' # Set the max and min value in plot
-#' plot(pamplona,"view",
+#' plot(pamplona.derived,"view",
 #'      variable="NDVI",
 #'      product="mod09ga",
 #'      zlim=c(0,1))
@@ -392,15 +392,15 @@ setMethod(
           con <- connection$getApi(get_api_name(r))
           con$pictureDownload(p.url, pre.file)
         }
-        img <- rast(pre.file)
+        img <- suppressWarnings(rast(pre.file))
         ext(img) <- ext(r)
-        crs(img) <- crs(r)
+        crs(img) <- st_crs(crs(r))$proj4string
         img.list <- c(img.list, img)
         lname <- c(lname, paste0(sat_name(r), "_", dates(r)))
       }
 
       # plot
-      genPlotGIS(r = img.list, ...,verbose=verbose)
+      genPlotGIS(r = img.list, ..., verbose=verbose)
     } else {
       message("Empty records.")
     }
@@ -518,7 +518,7 @@ genPlotGIS <- function(r,
 
   # r and region projection management
   if (inherits(r, "list")) {
-    if (inherits(r[[1]], "rast")) {
+    if (inherits(r[[1]], "SpatRaster")) {
       if (!missing(proj)) {
         r <- lapply(r, project, crs = proj)
         if (!missing(region)) {
@@ -531,7 +531,7 @@ genPlotGIS <- function(r,
       stop(paste0("genPlotGIS only supports stars, ",
                   "."))
     }
-  } else if (inherits(r, "rast")) {
+  } else if (inherits(r, "SpatRaster")) {
     if (!missing(proj)) {
       r <- project(r, crs = proj)
       if (!missing(region)) {
@@ -660,8 +660,8 @@ genPlotGIS <- function(r,
       }
     } else {
       #lower <- min(minValue(r))
-      #upper <- max(maxValue(r))
-      mm <- minmax(x)
+      #upper <- maxxmaxValue(r))
+      mm <- minmax(r)
 
       min.vector<-mm[1,]
       min.vector[!min.vector> -Inf]<-NA

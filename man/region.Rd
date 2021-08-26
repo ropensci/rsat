@@ -5,8 +5,11 @@
 \alias{region,rtoi-method}
 \alias{region,rtoi}
 \alias{region<-}
+\alias{region<-,rtoi}
 \alias{region<-,rtoi,sf-method}
 \alias{region<-,rtoi,sf}
+\alias{region<-,rtoi,NULL-method}
+\alias{region<-,rtoi,NULL}
 \title{Extracts region from an rtoi}
 \usage{
 region(x)
@@ -16,6 +19,8 @@ region(x)
 region(x) <- value
 
 \S4method{region}{rtoi,sf}(x) <- value
+
+\S4method{region}{rtoi,`NULL`}(x) <- value
 }
 \arguments{
 \item{x}{an rtoi object.}

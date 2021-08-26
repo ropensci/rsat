@@ -115,8 +115,17 @@ setClass(
 #'   name = "mod09a",
 #'   date = as.Date("2011087", "%Y%j"),
 #'   product = "product",
-#'   download = "url/aaa/download"
+#'   download = "url/aaa/download",
+#'   file_path = "file_path",
+#'   path = 1,
+#'   row = 1,
+#'   tileid = "exampleid",
+#'   preview = "url",
+#'   api_name = "nasa_inventory",
+#'   order = FALSE
 #' )
+#' rcds
+#'
 #' @export
 setGeneric("new_record", function(sat,
                                   name,
@@ -564,9 +573,10 @@ setMethod(
 )
 
 
-#' Get the dates from a \code{records} or an \code{rtoi}
+#' Get/set the dates from a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
+#' @param value the new date to asign
 #' @return returns a vector of \code{Date} class
 #' @export
 #' @examples

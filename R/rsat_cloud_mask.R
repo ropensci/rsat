@@ -168,7 +168,7 @@ senCloudMask <- function(infile,
     ras.cloud[ras.cloud >= sensitivity] <- 1
     ras.cloud[ras.cloud != 1] <- NA
 
-    NAvalue(ras.cloud) <- 0
+    NAflag(ras.cloud) <- 0
     writeRaster(ras.cloud, outfile, overwrite = overwrite)
     add2rtoi(outfile, paste0(dirname(outfile), ".zip"))
     return(FALSE)

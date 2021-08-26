@@ -38,6 +38,8 @@ images with the same name.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
+
+\item{suppressWarnings}{evaluates its expression in a context that ignores all warnings.}
 }
 \value{
 nothing. The derived variables will be save in the hard drive.

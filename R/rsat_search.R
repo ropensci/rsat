@@ -188,7 +188,7 @@ setMethod(
         records.summary(aux)
         searchres <- c(searchres,aux)
       } else if (grepl("LANDSAT", s)) {
-        auxs <- ls_search(region,
+        aux <- ls_search(region,
                           product = s,
                           verbose = verbose,
                           test.mode = test.mode,

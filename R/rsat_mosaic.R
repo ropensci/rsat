@@ -16,7 +16,6 @@
 #' images with the same name.
 #' @param warp character. If equal to "extent", it also crops the images
 #' around the \code{rtoi}. Use "" otherwise.
-#' @param y omitted parameter.
 #' @param ... additional arguments.
 #'
 #' @importFrom terra rast

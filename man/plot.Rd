@@ -114,12 +114,12 @@ pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
 rsat_list_data(pamplona.derived)
 
 # plot derived variables
-plot(pamplona, "view",
+plot(pamplona.derived, "view",
      product = "mod09ga",
      variable = "NDVI")
 
 # Set the max and min value in plot
-plot(pamplona,"view",
+plot(pamplona.derived,"view",
      variable="NDVI",
      product="mod09ga",
      zlim=c(0,1))

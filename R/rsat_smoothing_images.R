@@ -88,7 +88,7 @@
 #'
 #' @export
 #' @importFrom fields Tps predictSE
-#' @importFrom terra nlyr xyFromCell values predict aggregate
+#' @importFrom terra nlyr xyFromCell values<- predict aggregate
 #' @importFrom terra add<- values ncell app interpolate
 #' @importFrom Rdpack reprompt
 #' @examples
@@ -210,7 +210,7 @@ setMethod("rsat_smoothing_images",
     }
   }
 )
-
+#' @importFrom stats na.omit
 genSmoothingIMA <- function(spatRaster,
                             Img2Fill = NULL,
                             nDays = 3,

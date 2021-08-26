@@ -6,7 +6,7 @@
 \alias{dates<-}
 \alias{dates<-,records-method}
 \alias{dates,rtoi-method}
-\title{Get the dates from a \code{records} or an \code{rtoi}}
+\title{Get/set the dates from a \code{records} or an \code{rtoi}}
 \usage{
 dates(x)
 
@@ -20,12 +20,14 @@ dates(x) <- value
 }
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
+
+\item{value}{the new date to asign}
 }
 \value{
 returns a vector of \code{Date} class
 }
 \description{
-Get the dates from a \code{records} or an \code{rtoi}
+Get/set the dates from a \code{records} or an \code{rtoi}
 }
 \examples{
 # load example rtoi

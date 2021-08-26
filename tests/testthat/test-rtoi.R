@@ -29,7 +29,7 @@ test_that("records test", {
   #######################################################
 
   # search mod09ga products
-  sat_search(
+  rsat_search(
     region = navarre,
     product = c("mod09ga", "LANDSAT_8_C1", "S2MSI2A"),
     dates = as.Date("2021-03-01") + seq(1, 20),
@@ -71,7 +71,7 @@ test_that("records test", {
     print(e)
   })
 
-  preview(navarre,dates(navarre)[2])
+  rsat_preview(navarre,dates(navarre)[2])
 
   unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
 })

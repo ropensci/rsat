@@ -402,6 +402,7 @@ get_processed_files<-  function(x, p, v, s, ...) {
 #' @param x an rtoi object.
 #' @param value character argument. The value for
 #' change the database directory of x.
+#' @param ... additional arguments.
 #'
 #' @export
 #' @rdname get-set_database
@@ -508,7 +509,7 @@ setMethod(
 
 #' @export
 #' @rdname region
-#' @aliases region<-
+#' @aliases region<-,rtoi
 setGeneric("region<-", function(x, value) standardGeneric("region<-"))
 #' @rdname region
 #' @aliases region<-,rtoi,sf
@@ -521,6 +522,8 @@ setMethod(
     x
   }
 )
+#' @rdname region
+#' @aliases region<-,rtoi,NULL
 setMethod(
   f = "region<-",
   signature = c(x = "rtoi", value = "NULL"),
@@ -762,7 +765,7 @@ setMethod("write_rtoi",
     #st_write(x$region[[1]], dsn = file.path(get_dir(x), "region"),
     #         driver = "ESRI Shapefile",
     #         quiet = TRUE, append = !args$overwrite)
-    if(!is.null(x$region[[1]])){
+    if(!is.null(region(x))){
       st_write(x$region[[1]],dsn=file.path(get_dir(x), "region"),
                driver="GeoJSON",
                quiet=TRUE,
@@ -819,7 +822,7 @@ setMethod("read_rtoi",
 
     db_path <- gsub("db_path:", "", lines[grepl("db_path:", lines)])
     if (db_path != "") {
-      set_database(newobj,db_path)
+      newobj$db_path <- db_path
     }else{
       newobj$db_path<-""
     }
@@ -838,7 +841,7 @@ setMethod("read_rtoi",
       }else{
         region <- st_read(poly.path, quiet = TRUE)
         unlink(poly.path,recursive =TRUE)
-        st_write(sf.obj,
+        st_write(region,
                  dsn=poly.path,
                  driver="GeoJSON",
                  quiet=TRUE,
