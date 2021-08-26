@@ -61,14 +61,14 @@ The instruction below applies the *IMA* to the entire series. It uses a temporal
 
 ```{r advanced_ima}
 library(rsat)
-ndvi.fill <- smoothing_images(method = "IMA",
-                              ex.ndvi.navarre,
-                              nDays = 2,
-                              nYears = 1,
-                              fun = mean,
-                              aFilter = c(0.01,0.99),
-                              fact = 10,
-                              only.na = TRUE)
+ndvi.fill <- rsat_smoothing_images(method = "IMA",
+                                   ex.ndvi.navarre,
+                                   nDays = 2,
+                                   nYears = 1,
+                                   fun = mean,
+                                   aFilter = c(0.01,0.99),
+                                   fact = 10,
+                                   only.na = TRUE)
 ```
 
 The algorithm predicts the value for the missing and the existing pixels. The last argument, `only.na = TRUE`, indicates that the results should preserve the original values wherever available. *IMA* is able to run when neighborhoods are incomplete. In those situations, the algorithm simply uses the imagery available within the temporal neighborhood. The function prints a message specifying the actual number of images being used in each case.

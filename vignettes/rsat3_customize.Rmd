@@ -142,7 +142,7 @@ show_variables()
 To use the `NDSI()` function over the series of satellite images of the Iberian peninsula, use the function `derive()` as follows;
 
 ```{r basic_derive, eval = FALSE}
-derive(filomena, product = "mod09ga", variable = "ndsi", fun = NDSI)
+rsat_derive(filomena, product = "mod09ga", variable = "ndsi", fun = NDSI)
 ```
 
 Again, you can plot the results without loading the scenes in `R`:
@@ -165,20 +165,20 @@ Some data providers apply algorithms over their data-sets to detect the presence
 The function `cloud_mask()` interprets the *QA* band to obtain images showing the presence/absence of clouds. Its application is straightforward;
 
 ```{r basic_cloud, eval=FALSE}
-cloud_mask(filomena)
+rsat_cloudMask(filomena)
 ```
 
 To apply the cloud mask, we need to import the *NDSI* images into `R` using the `get_raster()` function. The values of the index must be truncated between $-1$ and $1$ to avoid values outside the feasible range (sun reflections on mirror-like surfaces, such as water, can lead to misleading results):
 
 ```{r basic_ndsi_import, eval = FALSE}
-ndsi.img <- get_raster(filomena, "mod09ga", "ndsi")
+ndsi.img <- rsat_get_raster(filomena, "mod09ga", "ndsi")
 ndsi.img <- clamp(ndsi.img, -1, 1)
 ```
 
 For every image in the `rtoi`, the `cloud_mask()` function generates a new image, called ***mask***, in which $1$s and $NA$s indicate clear and covered pixels. The function identifies the mission/program and applies the appropriate interpretation of bits to create the cloud mask. To import the result run;
 
 ```{r basic_mask, eval = FALSE}
-clds.msk <- get_raster(filomena, "mod09ga", "CloudMask")
+clds.msk <- rsat_get_raster(filomena, "mod09ga", "CloudMask")
 ```
 
 In MODIS, cloud-masks have a different resolution than the multispectral image. To adjust the resolution, *resample* the cloud mask to math the resolution of the *NDSI* images (`resample()`) using the nearest neighbor method (`"ngb"`):
