@@ -34,7 +34,7 @@ You can install the development version from
 devtools::install_github("spatialstatisticsupna/rsat")
 
 # you can install the vignette in rsat using the following commands
-# install.packages(rmarkdown)
+# install.packages("rmarkdown")
 # devtools::install_github("spatialstatisticsupna/rsat", build_vignettes=TRUE)
 ```
 

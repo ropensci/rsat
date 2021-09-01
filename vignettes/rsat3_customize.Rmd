@@ -1,5 +1,5 @@
 ---
-title: "customize"
+title: "rsat3_customize"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{customize}
