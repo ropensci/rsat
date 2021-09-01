@@ -1,5 +1,5 @@
 ---
-title: "rsat4_process"
+title: "4. Process"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rsat4_process}

@@ -1,5 +1,5 @@
 ---
-title: "rsat1_search"
+title: "1. Search"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rsat1_search}

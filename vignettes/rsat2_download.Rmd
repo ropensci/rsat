@@ -1,5 +1,5 @@
 ---
-title: "rsat2_download"
+title: "2. Download"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rsat2_download}
