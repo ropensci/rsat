@@ -2,7 +2,7 @@
 title: "rsat2_download"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{download}
+  %\VignetteIndexEntry{rsat2_download}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

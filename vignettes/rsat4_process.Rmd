@@ -2,7 +2,7 @@
 title: "rsat4_process"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{process}
+  %\VignetteIndexEntry{rsat4_process}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

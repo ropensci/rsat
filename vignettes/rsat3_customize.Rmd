@@ -2,7 +2,7 @@
 title: "rsat3_customize"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{customize}
+  %\VignetteIndexEntry{rsat3_customize}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

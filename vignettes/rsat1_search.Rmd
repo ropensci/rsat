@@ -2,7 +2,7 @@
 title: "rsat1_search"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{search}
+  %\VignetteIndexEntry{rsat1_search}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
