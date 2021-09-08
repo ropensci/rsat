@@ -17,6 +17,3 @@ way. The package provides tools to;
 satellite images from Landsat, MODIS, and Sentinel for a region and time
 of interest.
 }
-\details{
-# Get Started
-}
