@@ -1,6 +1,7 @@
 ---
 title: "4. Process"
 output: rmarkdown::html_vignette
+bibliography: '`r system.file("REFERENCES.bib", package="rsat")`'
 vignette: >
   %\VignetteIndexEntry{rsat4_process}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,7 +18,7 @@ knitr::opts_chunk$set(
 
 # Processing
 
-Processing encapsulates the operations applied to satellite images to solve particular issues derived from errors, anomalies or discrepancies from sensors. For instance, cloud removal or sensor failures can lead to data gaps in time-series of satellite images. Additionally, noise from aerosols, dust, and sensor measurement errors can reduce the quality of the remotely sensed data. The ***Interpolation of Mean Anomalies (IMA***) is a gap-filling and smoothing approach that mitigates these issues [@ima2019].
+Processing encapsulates the operations applied to satellite images to solve particular issues derived from errors, anomalies or discrepancies from sensors. For instance, cloud removal or sensor failures can lead to data gaps in time-series of satellite images. Additionally, noise from aerosols, dust, and sensor measurement errors can reduce the quality of the remotely sensed data. The ***Interpolation of Mean Anomalies (IMA***) is a gap-filling and smoothing approach that mitigates these issues [@militino2019interpolation].
 
 ### Filling missing data {#filling}
 

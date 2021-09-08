@@ -1,6 +1,7 @@
 ---
 title: "3. Customize"
 output: rmarkdown::html_vignette
+bibliography: '`r system.file("REFERENCES.bib", package="rsat")`'
 vignette: >
   %\VignetteIndexEntry{rsat3_customize}
   %\VignetteEngine{knitr::rmarkdown}
@@ -118,7 +119,7 @@ plot(filomena,
 
 A ***remote sensing index*** is an indicator that reveals the presence of a material in a satellite image. Indexes are the result of simple math applied to the bands of an image. The computation involves the bands with a distinctively high or low reflectance for the feature at hand. Over the years, researchers have developed a wide variety of indexes for different materials or processes which can be consulted [here](https://www.indexdatabase.de/db/i.php).
 
-For instance, the *Normalized Difference Snow Index* (NDSI) (see e.g., [@ndsi2004]) highlights the snow using the *green* and *shortwave-infrared* bands (around $1.5 \mu m$). The subtraction of this two bands gives a large number for those pixels depicting snow. The denominator ensures that values oscillate between $-1$ and $1$.
+For instance, the *Normalized Difference Snow Index* (NDSI) (see e.g., [@salomonson2004estimating]) highlights the snow using the *green* and *shortwave-infrared* bands (around $1.5 \mu m$). The subtraction of this two bands gives a large number for those pixels depicting snow. The denominator ensures that values oscillate between $-1$ and $1$.
 
 $$ NDSI = \frac{Green - SWIR1}{Green + SWIR1}$$
 
@@ -194,7 +195,7 @@ ndsi.filt <- ndsi.img * clds.msk
 names(ndsi.filt) <- names(clds.msk) # keep the names
 ```
 
-As an attempt to obtain a ***composite image***, we extract maximum value of the *NDSI* for each pixel in the time series. Maximum value compositions are frequent in this field [@mvc1986]. Compositing is as a way to summarize the information in a time-lapse and ignore the presence of clouds:
+As an attempt to obtain a ***composite image***, we extract maximum value of the *NDSI* for each pixel in the time series. Maximum value compositions are frequent in this field [@holben1986characteristics]. Compositing is as a way to summarize the information in a time-lapse and ignore the presence of clouds:
 
 ```{r basic_composite}
 snow.spain <- calc(ndsi.filt, max, na.rm = TRUE)

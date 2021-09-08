@@ -1,6 +1,7 @@
 ---
 title: "1. Search"
 output: rmarkdown::html_vignette
+bibliography: '`r system.file("REFERENCES.bib", package="rsat")`'
 vignette: >
   %\VignetteIndexEntry{rsat1_search}
   %\VignetteEngine{knitr::rmarkdown}

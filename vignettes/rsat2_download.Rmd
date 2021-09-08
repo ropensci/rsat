@@ -1,6 +1,7 @@
 ---
 title: "2. Download"
 output: rmarkdown::html_vignette
+bibliography: '`r system.file("REFERENCES.bib", package="rsat")`'
 vignette: >
   %\VignetteIndexEntry{rsat2_download}
   %\VignetteEngine{knitr::rmarkdown}
