@@ -3,15 +3,20 @@
 \docType{package}
 \name{rsat}
 \alias{rsat}
-\title{`rsat':}
+\title{`rsat'}
 \description{
-Downloading, customizing, and processing time series of satellite images for
- a region of interest. 'rsat' functions allow a unified access to
- multispectral images from Landsat, MODIS and Sentinel repositories.
- 'rsat' also offers capabilities for customizing satellite images,
- such as tile mosaicking, image cropping and new variables computation.
- Finally, 'rsat' covers the processing, including cloud masking,
- compositing and gap-filling/smoothing time series of images
- (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019
- <doi:10.1109/TGRS.2019.2904193>).
+The goal of `rsat` is to help you handling time-series of satellite
+images from multiple platforms in a local, efficient, and standardized
+way. The package provides tools to;
+\enumerate{
+  \item Search (run \code{vignette("rsat1_search", package = "rsat")})
+  \item Download (run \code{vignette("rsat2_download", package = "rsat")})
+  \item Customize, and (run \code{vignette("rsat3_customize", package = "rsat")})
+  \item Process (run \code{vignette("rsat4_process", package = "rsat")})
+}
+satellite images from Landsat, MODIS, and Sentinel for a region and time
+of interest.
+}
+\details{
+# Get Started
 }
