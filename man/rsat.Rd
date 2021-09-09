@@ -16,6 +16,9 @@ way. The package provides tools to;
 }
 satellite images from Landsat, MODIS, and Sentinel for a region and time
 of interest.
+}
+\section{Registration}{
+
 The registration in the following online portals is required to get a
 full access to satellite images with `rsat`;
 \itemize{
@@ -38,3 +41,11 @@ To satisfy the criteria of all web services make sure that the username is 4
  be 12 character long and should include characters with at least one capital
  letter, and numbers.
 }
+
+\section{Contributing}{
+
+If you want to contribute by adding new features or fixing bugs in the package you can do it from our github address:
+\url{https://github.com/spatialstatisticsupna/rsat}
+Bug report: \url{https://github.com/spatialstatisticsupna/rsat/issues}
+}
+

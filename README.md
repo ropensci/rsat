@@ -143,6 +143,17 @@ The last package dedicated to image downloading is `luna`.Searching and download
 
 `rsat` helps you to search, download and pre-process the images, but once these procedures are done it allows you to extract all the processed information into the most used raster classes in R (`raster`, `stars` or `spatRaster`). The image processing packages can be used for further analysis in these R classes.
 
+## Contributing
+
+We accept contributions to improve the package. Before contributing, please follow these steps:
+
+-    Contributions should be thoroughly tested with testthat.
+-    Code style should attempt to follow the tidyverse style guide.
+-    Please attempt to describe what you want to do prior to contributing by submitting an issue.
+-    Please follow the typical github fork - pull-request workflow.
+-    Make sure you use roxygen and run Check before contributing. More on this front as the package matures.
+
+
 ## Citation
 
 ``` r
