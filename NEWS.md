@@ -1,4 +1,4 @@
-rsat 0.1.15 (2021-08-18)
+rsat 0.1.15 (2021-09-09)
 =========================
 ### NEW FEATURES
   
@@ -16,6 +16,7 @@ rsat 0.1.15 (2021-08-18)
   * Updated `sf` objects to the last version
   * Use `terra` package instead of `raster` internally
   * Improved stored `rtoi` files
+  * Added `rsat` section in the manual
 
 ### BUG FIXES
 
