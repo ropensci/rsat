@@ -48,7 +48,7 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 ## Log-in profiles
 
 The registration in the following online portals is required to get a full access to satellite images with `rsat`;
--   [USGS](https://ers.cr.usgs.gov/register/) USGS is the sole science agency for the Department of the Interior of United States. Provide access to Modis Images. More information about EarthData can be found [Here](https://www.usgs.gov/).
+-   [USGS](https://ers.cr.usgs.gov/register/) USGS is the sole science agency for the Department of the Interior of United States. Provide access to Modis Images. More information about USGS can be found [Here](https://www.usgs.gov/).
 -   [EarthData](https://urs.earthdata.nasa.gov): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://earthdata.nasa.gov/earth-observation-data).
 -   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
 
