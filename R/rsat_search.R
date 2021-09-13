@@ -66,7 +66,7 @@
 #' print(navarre)
 #'
 #' # search modis images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "mod09ga",
 #'   dates = as.Date("2011-01-01") + seq(1, 10, 1)
@@ -76,7 +76,7 @@
 #' print(navarre)
 #'
 #' # search landsat images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "LANDSAT_8_C1",
 #'   dates = as.Date("2016-01-01") + seq(1, 30, 1)
@@ -86,7 +86,7 @@
 #' print(navarre)
 #'
 #' # search sentinel-2 (level 1 and level 2) images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = c("S2MSI1C", "S2MSI2A"),
 #'   dates = as.Date("2016-01-01") + seq(1, 30, 1)
@@ -96,21 +96,21 @@
 #' print(navarre)
 #'
 #' # search sentinel-3 level-2 images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "OL_2_LFR___",
 #'   dates = as.Date("2019-01-01") + seq(1, 2, 1)
 #' )
 #'
 #' # search sentinel-1 level-2 images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "GRD",
 #'   dates = as.Date("2019-01-01") + seq(1, 2, 1)
 #' )
 #'
 #' # search Landsat-5 images using rtoi
-#' sat_search(
+#' rsat_search(
 #'   region = navarre,
 #'   product = "LANDSAT_TM_C1",
 #'   dates = as.Date("1988-08-01") + seq(1, 35)
