@@ -347,7 +347,7 @@ get_processed_files<-  function(x, p, v, s, ...) {
                      pattern = p, full.names = TRUE)
   files <- list.files(dirs, recursive = TRUE, pattern = "\\.zip$",
                       full.names = TRUE)
-  files <- files[grepl(v, files)]
+  files <- files[grepl(paste0("/",v,"\\.zip"), files)]
   if(missing(s)){
     files <- files[grepl("variables", files)]
   }else{
