@@ -37,13 +37,16 @@ satellite images from Landsat, MODIS, and Sentinel for a region and time of inte
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-# install the package
-devtools::install_github("spatialstatisticsupna/rsat")
+# check and install devtools
+if(require("devtools")){
+   install.packages("devtools")
+}
+# check and install rmarkdown
+if(require("rmarkdown")){
+  install.packages("rmarkdown")
+}
 
-# you can install the vignette in rsat using the following commands
-# install.packages("rmarkdown")
-# devtools::install_github("spatialstatisticsupna/rsat", build_vignettes=TRUE)
+devtools::install_github("spatialstatisticsupna/rsat", build_vignettes=TRUE)
 ```
 
 ### Linux
