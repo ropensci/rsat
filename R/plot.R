@@ -648,10 +648,15 @@ genPlotGIS <- function(r,
   # default label and breaks for the raster
   if (missing(zlim)) {
     if (inherits(r, "stars")) {
-      min.vector<-st_apply(merge(r), MARGIN = 3, min, na.rm = TRUE)[[1]]
+      if(length(names(r))>1){
+        min.vector<-st_apply(merge(r), MARGIN = 3, min, na.rm = TRUE)[[1]]
+        max.vector<-st_apply(merge(r), MARGIN = 3, max, na.rm = TRUE)[[1]]
+      }else{
+        min.vector<-st_apply(r, MARGIN = 2, min, na.rm = TRUE)[[1]]
+        max.vector<-st_apply(r, MARGIN = 2, max, na.rm = TRUE)[[1]]
+      }
       min.vector[!min.vector> -Inf]<-NA
       lower <- min(min.vector,na.rm = TRUE)
-      max.vector<-st_apply(merge(r), MARGIN = 3, max, na.rm = TRUE)[[1]]
       max.vector[!max.vector< Inf]<-NA
       upper <- max(max.vector,na.rm = TRUE)
       if(verbose){
