@@ -21,11 +21,11 @@ You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # check and install devtools
-if(require("devtools")){
+if(!require("devtools")){
    install.packages("devtools")
 }
 # check and install rmarkdown
-if(require("rmarkdown")){
+if(!require("rmarkdown")){
   install.packages("rmarkdown")
 }
 
