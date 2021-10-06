@@ -1,3 +1,13 @@
+rsat 0.1.16 (2021-10-06)
+=========================
+### NEW FEATURES
+  * Added support to new landsat products landsat_ot_c2_l2, 
+  landsat_ot_c2_l1, lsr_landsat_8_c1, landsat_8_c1,landsat_etm_c2_l2, 
+  landsat_etm_c2_l1, lsr_landsat_etm_c1, landsat_etm_c1, 
+  landsat_tm_c2_l2, landsat_tm_c2_l1, landsat_mss_c2_l1, 
+  lsr_landsat_tm_tm_c1, landsat_tm_c1, landsat_mss_c1
+  
+  
 rsat 0.1.15 (2021-09-09)
 =========================
 ### NEW FEATURES
