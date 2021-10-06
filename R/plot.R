@@ -25,7 +25,7 @@
 #' @importFrom grDevices colors
 #' @importFrom sf gdal_utils
 #' @importFrom terra clamp
-#' @importFrom raster raster stack clamp
+#' @importFrom raster raster stack
 #' @importFrom stars st_apply read_stars
 #' @include rtoi.R records.R
 #' @export

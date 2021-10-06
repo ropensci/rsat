@@ -45,7 +45,7 @@ variables <- setRefClass("variables",
       if (!is.null(q.range)) {
         rgb <- lapply(rgb, FUN = function(r, q.range) {
           q <- raster::quantile(r, q.range, na.rm = TRUE)
-          r <- clamp(r, lower = q[1], upper = q[2])
+          r <- raster::clamp(r, lower = q[1], upper = q[2])
           return(r)
         }, q.range)
         names(rgb) <- c("red", "green", "blue")
