@@ -205,6 +205,11 @@ We accept contributions to improve the package. Before contributing, please foll
 -    Please attempt to describe what you want to do prior to contributing by submitting an issue.
 -    Please follow the typical github fork - pull-request workflow.
 -    Make sure you use roxygen and run Check before contributing. More on this front as the package matures.
+## Code of conduct
+Please note that this package is released with a [Contributor
+Code of Conduct](https://ropensci.org/code-of-conduct/). 
+By
+contributing to this project, you agree to abide by its terms.
 ## Citation
 
 ``` r
