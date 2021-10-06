@@ -205,7 +205,8 @@ setRefClass(
     espaOrderImage = function(img_name,
                               product = "sr",
                               update.orders = TRUE,
-                              verbose = FALSE) { # c("sr","source_metadata")
+                              verbose = FALSE,
+                              ...) { # c("sr","source_metadata")
       if (length(img_name) > 1)
         stop("Only one image is supported for each ESPA order.")
       if (update.orders) {

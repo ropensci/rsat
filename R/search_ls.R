@@ -187,11 +187,27 @@ setMethod(
     #######################################################################
     # if(logout){logoutEEAPI(verbose)}
     # file extension
-    if (startsWith(product, "LANDSAT_8")) {
+   if (tolower(product)%in%c("landsat_ot_c2_l2",
+                             "landsat_ot_c2_l1",
+                             "lsr_landsat_8_c1",
+                             "landsat_8_c1"
+                             )) {
       sat <- "Landsat-8"
-    } else if (startsWith(product, "LANDSAT_7")) {
+    } else if (tolower(product)%in%c("landsat_etm_c2_l2",
+                                     "landsat_etm_c2_l1",
+                                     "lsr_landsat_etm_c1",
+                                     "landsat_etm_c1",
+    )) {
       sat <- "Landsat-7"
-    } else {
+    } else if(tolower(product)%in%c("landsat_tm_c2_l2",
+                                    "landsat_tm_c2_l1",
+                                    "landsat_mss_c2_l1",
+                                    "lsr_landsat_tm_c1",
+                                    "landsat_tm_c1",
+                                    "landsat_mss_c1")){
+      sat <- "Landsat_1-5"
+    }else{
+      # for example landsat_ard_tile_c2, landsat_ard_tile_files_c2
       sat <- "Landsat"
       fe <- ".tar.gz"
     }
@@ -201,9 +217,10 @@ setMethod(
       sat = rep(sat, nlen),
       name = img.name,
       date = d,
-      product = rep(paste0(product, "_lvl", lvl), nlen),
+      product = rep(paste0(product),# "_lvl", lvl)
+                    nlen),
       download = download_url,
-      file_path = file.path(sat, paste0(product, "_lvl", lvl),
+      file_path = file.path(sat, paste0(product),# "_lvl", lvl),
                             paste0(img.name, fe)),
       path = path,
       row = row,

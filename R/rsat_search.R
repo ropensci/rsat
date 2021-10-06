@@ -48,7 +48,7 @@
 #' set_credentials("username", "password")
 #'
 #' # search navarre images using sf
-#' record.list <- sat_search(
+#' record.list <- rsat_search(
 #'   region = ex.navarre,
 #'   product = "mod09ga",
 #'   dates = as.Date("2011-01-01") + seq(1, 10, 1)
@@ -143,7 +143,7 @@ setMethod(
                           test.mode = test.mode, ...)
         records.summary(aux)
         searchres <- c(searchres,aux)
-      } else if (grepl("LANDSAT", s)) {
+      } else if (grepl("LANDSAT", s,ignore.case =TRUE)) {
         message(paste0("Searching scenes in the ", s, " product..."))
         aux <- ls_search(region(region),
                          product = s,

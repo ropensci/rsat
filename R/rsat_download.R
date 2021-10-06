@@ -74,6 +74,8 @@ setMethod(
   function(x, out.dir, verbose = FALSE, test.mode = FALSE, ...) {
     # dates<-as.Date("2016-01-25")
     # out.dir<-"E:/testnewpackage"
+    args <- list(...)
+
     ordered <- FALSE
     ordered.list <- new("records")
     if (missing(out.dir)){
@@ -90,13 +92,20 @@ setMethod(
       if (get_order(x[i]) & !file.exists(out.name)) {
         if (grepl("^Landsat", sat_name(x[i]))&!test.mode) {
           # ls order petition
+          if("product"%in%names(args)){
+            product=args$product
+          }else{
+            product="sr"
+          }
           con <- connection$getApi(api_name = get_api_name(x[i]))
           if (i == length(x)) {
-            con$espaOrderImage(names(x[i]), verbose = verbose)
+            con$espaOrderImage(names(x[i]), verbose = verbose,product=product)
           } else {
+
             con$espaOrderImage(names(x[i]),
                                update.orders = FALSE,
-                               verbose = verbose)
+                               verbose = verbose,
+                               product=product)
           }
           ordered.list <- c(ordered.list, x[i])
           x <- x[-i]
