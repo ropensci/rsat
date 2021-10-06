@@ -196,8 +196,7 @@ setMethod(
     } else if (tolower(product)%in%c("landsat_etm_c2_l2",
                                      "landsat_etm_c2_l1",
                                      "lsr_landsat_etm_c1",
-                                     "landsat_etm_c1",
-    )) {
+                                     "landsat_etm_c1")) {
       sat <- "Landsat-7"
     } else if(tolower(product)%in%c("landsat_tm_c2_l2",
                                     "landsat_tm_c2_l1",

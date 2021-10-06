@@ -67,7 +67,7 @@ library(rsat)
 set_credentials("username", "password")
 
 # search navarre images using sf
-record.list <- sat_search(
+record.list <- rsat_search(
   region = ex.navarre,
   product = "mod09ga",
   dates = as.Date("2011-01-01") + seq(1, 10, 1)
