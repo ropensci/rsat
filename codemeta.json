@@ -1,41 +1,45 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "rsat",
   "description": "Downloading, customizing, and processing time series of satellite images for a region of interest. 'rsat' functions allow a unified access to multispectral images from Landsat, MODIS and Sentinel repositories. 'rsat' also offers capabilities for customizing satellite images, such as tile mosaicking, image cropping and new variables computation. Finally, 'rsat' covers the processing, including cloud masking, compositing and gap-filling/smoothing time series of images (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019 <doi:10.1109/TGRS.2019.2904193>).",
   "name": "rsat: Tools for Downloading, Customizing, and Processing Time Series of Satellite Images from Landsat, MODIS, and Sentinel ",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.3",
+  "version": "0.1.16",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
+  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
   "author": [
     {
       "@type": "Person",
-      "givenName": ["U", "Pérez", "-"],
-      "familyName": "Goya",
-      "email": "unai.perez@unavarra.es"
+      "givenName": "Unai",
+      "familyName": "Pérez - Goya",
+      "email": "unai.perez@unavarra.es",
+      "@id": "https://orcid.org/0000-0002-2796-9079"
     },
     {
       "@type": "Person",
-      "givenName": ["M", "Montesino", "-"],
-      "familyName": "SanMartin",
-      "email": "manuel.montesino@unavarra.es"
+      "givenName": "Manuel",
+      "familyName": "Montesino - SanMartin",
+      "@id": "https://orcid.org/0000-0002-0822-600X"
     },
     {
       "@type": "Person",
-      "givenName": ["A", "F"],
-      "familyName": "Militino",
-      "email": "militino@unavarra.es"
+      "givenName": "Ana",
+      "familyName": "F Militino",
+      "@id": "https://orcid.org/-4552"
     },
     {
       "@type": "Person",
-      "givenName": ["M", "D"],
+      "givenName": "Maria Dolores",
       "familyName": "Ugarte",
-      "email": "lola@unavarra.es"
+      "@id": "https://orcid.org/-11907"
     }
   ],
   "contributor": {},
@@ -44,15 +48,10 @@
   "maintainer": [
     {
       "@type": "Person",
-      "givenName": ["U", "Pérez", "-"],
-      "familyName": "Goya",
-      "email": "unai.perez@unavarra.es"
-    },
-    {
-      "@type": "Person",
-      "givenName": ["U", "Perez", "-"],
-      "familyName": "Goya",
-      "email": "unai.perez@unavarra.es"
+      "givenName": "Unai",
+      "familyName": "Pérez - Goya",
+      "email": "unai.perez@unavarra.es",
+      "@id": "https://orcid.org/0000-0002-2796-9079"
     }
   ],
   "softwareSuggestions": [
@@ -67,6 +66,54 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rgdal"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "covr",
+      "name": "covr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=covr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
     }
   ],
   "softwareRequirements": [
@@ -74,43 +121,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 3.5.0"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "raster",
-      "name": "raster",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=raster"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "sf",
-      "name": "sf",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=sf"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "stars",
-      "name": "stars",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=stars"
+      "version": ">= 4.0.0"
     },
     {
       "@type": "SoftwareApplication",
@@ -284,12 +295,60 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=calendR"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "raster",
+      "name": "raster",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=raster"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "sf",
+      "name": "sf",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sf"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stars",
+      "name": "stars",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stars"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "terra",
+      "name": "terra",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=terra"
     }
   ],
-  "codeRepository": "https://github.com/spatialstatisticsupna/rsat",
-  "readme": "https://github.com/spatialstatisticsupna/rsat/blob/master/README.md",
-  "fileSize": "1901.557KB",
-  "developmentStatus": "https://www.tidyverse.org/lifecycle/#experimental",
+  "codeRepository": "https://github.com/ropensci/rsat",
+  "readme": "https://github.com/ropensci/rsat/blob/master/README.md",
+  "fileSize": "2714.835KB",
+  "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -393,5 +452,14 @@
         }
       }
     }
-  ]
+  ],
+  "issueTracker": "https://github.com/ropensci/rsat/issues",
+  "releaseNotes": "https://github.com/ropensci/rsat/blob/master/NEWS.md",
+  "contIntegration": ["https://codecov.io/gh/ropensci/rsat?branch=master", "https://github.com/ropensci/rsat/actions"],
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/437",
+    "provider": "https://ropensci.org"
+  },
+  "keywords": "satellite-images"
 }
