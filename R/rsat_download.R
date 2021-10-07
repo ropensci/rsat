@@ -93,9 +93,9 @@ setMethod(
         if (grepl("^Landsat", sat_name(x[i]))&!test.mode) {
           # ls order petition
           if("product"%in%names(args)){
-            product=args$product
+            product<-args$product
           }else{
-            product="sr"
+            product<-"sr"
           }
           con <- connection$getApi(api_name = get_api_name(x[i]))
           if (i == length(x)) {
