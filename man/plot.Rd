@@ -95,7 +95,6 @@ rcds <- rcds[dates(rcds) \%in\% as.Date(c("20210310", "20210313"), "\%Y\%m\%d")]
 records(navarre) <- rcds
 
 plot(navarre, "preview")
-}
 
 # plot already mosaicked rtoi ("view" mode)
 pamplona <- read_rtoi(system.file("ex/Pamplona",package="rsat"))
@@ -109,7 +108,7 @@ plot(pamplona, "view", product="mod09ga")
 plot(pamplona, "view",
      product = "mod09ga",
      band_name = c("nir", "red", "green"))
-
+}
 pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
 rsat_list_data(pamplona.derived)
 
