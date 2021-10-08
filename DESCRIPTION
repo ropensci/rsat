@@ -1,6 +1,6 @@
 Package: rsat
 Type: Package
-Title: Tools for Downloading, Customizing, and Processing Time Series of Satellite Images from Landsat, MODIS, and Sentinel 
+Title: Dealing with Multiplatform Satellite Images from Landsat, MODIS, and Sentinel 
 Version: 0.1.16
 Authors@R: 
   c(person(given = "Unai",
