@@ -8,7 +8,8 @@ mosaic_fun_ls <- function(mfiles) {
   }
 
   allfun$defineNodata <- function(chunks, bnds) {
-    if (grepl("BQA", bnds, ignore.case = TRUE) | grepl("_qa", bnds, ignore.case = TRUE)) {
+    if (grepl("BQA", bnds, ignore.case = TRUE) |
+        grepl("_qa", bnds, ignore.case = TRUE)) {
       nodata <- 1
     } else if (grepl("lvl2", chunks[1], ignore.case = TRUE) &
         !grepl("aerosol", bnds, ignore.case = TRUE)) {
