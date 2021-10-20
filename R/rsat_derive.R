@@ -187,7 +187,8 @@ deriveBandsData <- function(product) {
       additional.sizes = ""
     ))
     # landsat-8 product
-  } else if (grepl("LANDSAT_8_C1", product)) {
+  } else if (grepl("LANDSAT_8_C1", product)|
+             grepl("landsat_ot", product)) {
     return(list(
       bands = variables$bands$ls8,
       additional.sizes = ""
