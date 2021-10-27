@@ -39,14 +39,14 @@ MODIS images are found through the
 \href{https://lpdaacsvc.cr.usgs.gov/services/inventory}{NASA Common
  Metadata Repository}
 (CMR). The inventory of MODIS products can be found
-\href{https://modis.gsfc.nasa.gov/data/dataprod}{here}.
+\href{https://modis.gsfc.nasa.gov/data/dataprod/}{here}.
 The catalog shows the product short names and detailed information.
 MODIS surface reflectance products are named `mod09ga' and `myd09ga' for
 Terra and Aqua satellites. By the time \code{rsat} is
 released, NASA carries out the maintenance of its website on Wednesdays,
 which may cause an error when connecting to their server.
 
-We use \href{http://scihub.copernicus.eu}{ESA's powered API} (`SciHub') to
+We use \href{https://scihub.copernicus.eu/}{ESA's powered API} (`SciHub') to
 find Sentinel images. The catalog of Sentinel-2 and -3 products can be found
 \href{https://sentinel.esa.int/web/sentinel/missions/sentinel-2/data-products}{here}
 and

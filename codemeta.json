@@ -348,7 +348,7 @@
   "codeRepository": "https://github.com/ropensci/rsat",
   "readme": "https://github.com/ropensci/rsat/blob/master/README.md",
   "fileSize": "2714.835KB",
-  "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -455,7 +455,7 @@
   ],
   "issueTracker": "https://github.com/ropensci/rsat/issues",
   "releaseNotes": "https://github.com/ropensci/rsat/blob/master/NEWS.md",
-  "contIntegration": ["https://codecov.io/gh/ropensci/rsat?branch=master", "https://github.com/ropensci/rsat/actions"],
+  "contIntegration": ["https://app.codecov.io/gh/ropensci/rsat?branch=master", "https://github.com/ropensci/rsat/actions"],
   "review": {
     "@type": "Review",
     "url": "https://github.com/ropensci/software-review/issues/437",

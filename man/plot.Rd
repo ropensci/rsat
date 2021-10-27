@@ -71,6 +71,7 @@ Plot (a map of) the values of an \code{rtoi} or \code{records} object.
 }
 \examples{
 library(rsat)
+ \dontrun{
 
 # load example rtoi
 navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -81,7 +82,7 @@ print(navarre)
 plot(navarre, "dates")
 
 
-\dontrun{
+
 # replace with your own "username" and "password"
 set_credentials("username", "password")
 
@@ -108,7 +109,7 @@ plot(pamplona, "view", product="mod09ga")
 plot(pamplona, "view",
      product = "mod09ga",
      band_name = c("nir", "red", "green"))
-}
+
 pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
 rsat_list_data(pamplona.derived)
 
@@ -122,4 +123,5 @@ plot(pamplona.derived,"view",
      variable="NDVI",
      product="mod09ga",
      zlim=c(0,1))
+}
 }

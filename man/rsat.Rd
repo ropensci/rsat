@@ -22,17 +22,17 @@ of interest.
 The registration in the following online portals is required to get a
 full access to satellite images with `rsat`;
 \itemize{
-\item \href{https://ers.cr.usgs.gov/register/}{USGS} USGS is the sole
+\item \href{https://ers.cr.usgs.gov/register}{USGS} USGS is the sole
 science agency for the Department of the Interior of United States.
 Provide access to Modis Images. More information about EarthData
-can be found \href{Here}{https://www.usgs.gov/}.
+can be found \href{Here}{https://www.usgs.gov}.
 \item \href{https://urs.earthdata.nasa.gov}{EarthData}: A repository
 of NASA's earth observation data-sets. More information about
 EarthData can be found
 \href{here}{https://earthdata.nasa.gov/earth-observation-data}.
 \item \href{https://scihub.copernicus.eu/dhus/#/self-registration}{SciHub},
 a web service giving access to Copernicus' scientific data hub.
-Please go \href{here}{https://scihub.copernicus.eu/} to find more
+Please go \href{here}{https://scihub.copernicus.eu} to find more
 details about the data hub.
 }
 For convenience, try to use the same username and password for all of them.

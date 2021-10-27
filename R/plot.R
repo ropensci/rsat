@@ -32,6 +32,7 @@
 #' @rdname plot
 #' @examples
 #' library(rsat)
+#'  \dontrun{
 #'
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -42,7 +43,7 @@
 #' plot(navarre, "dates")
 #'
 #'
-#' \dontrun{
+#'
 #' # replace with your own "username" and "password"
 #' set_credentials("username", "password")
 #'
@@ -69,7 +70,7 @@
 #' plot(pamplona, "view",
 #'      product = "mod09ga",
 #'      band_name = c("nir", "red", "green"))
-#' }
+#'
 #' pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
 #' rsat_list_data(pamplona.derived)
 #'
@@ -83,6 +84,7 @@
 #'      variable="NDVI",
 #'      product="mod09ga",
 #'      zlim=c(0,1))
+#' }
 setMethod(
   f = "plot",
   signature = c("rtoi", "Date"),
