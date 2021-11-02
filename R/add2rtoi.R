@@ -1,6 +1,6 @@
 #' @importFrom zip zipr zipr_append
 setGeneric("add2rtoi", function(infile,
-                                out.zip,
+                                outfile,
                                 ...) {
   standardGeneric("add2rtoi")
 })
@@ -8,15 +8,15 @@ setGeneric("add2rtoi", function(infile,
 setMethod(
   f = "add2rtoi",
   signature = c("character", "character"),
-  function(infile, out.zip, ...) {
+  function(infile, outfile, ...) {
     if (!file.exists(infile)) {
       warning(paste0("File not created: ", infile))
       return(NULL)
     }
-    if (!file.exists(out.zip)) {
-      zip::zipr(out.zip, files = infile)
+    if (!file.exists(outfile)) {
+      zip::zipr(outfile, files = infile)
     } else {
-      zip::zipr_append(out.zip, infile,
+      zip::zipr_append(outfile, infile,
         recurse = TRUE,
         include_directories = TRUE
       )

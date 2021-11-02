@@ -44,7 +44,8 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 
 <!-- -->
 
-    sudo apt update sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl openssl-dev xml2 libxml2-dev libmagick++-dev
+    sudo apt update 
+    sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev
 
 -   **RedHat/Fedora**
 

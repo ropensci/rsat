@@ -240,7 +240,7 @@ setMethod(
             }
           )
         }
-        add2rtoi(infile = out.file.name, out.zip = out.zip)
+        add2rtoi(infile = out.file.name, outfile = out.zip)
       }
       unlink(out.dir, recursive = TRUE)
     }
