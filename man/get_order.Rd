@@ -18,6 +18,9 @@ get_order(x) <- value
 
 \item{value}{logical argument. The new value for \code{x}.}
 }
+\value{
+the value of called order
+}
 \description{
 Get the slot called order from a \code{records} or an \code{rtoi}
 }

@@ -15,6 +15,9 @@
 
 \item{...}{additional arguments.}
 }
+\value{
+a combination of 'x' class elements
+}
 \description{
 This is a generic function which combines its arguments.
 }

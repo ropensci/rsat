@@ -244,7 +244,14 @@ setMethod(
       res.preview,
       function(x) xmlSApply(x, xmlValue)
     )
-
+    if(length(res.preview)>length(res.download)){
+      if(length(res.preview)%%length(res.download)==0){
+        res.preview<-res.preview[seq(1,length(res.preview),length(res.preview)/length(res.download))]
+      }else{
+        warning("Preview image in the records may be incorrect.")
+        res.preview<-res.preview[seq(1,length(res.download),1)]
+      }
+    }
 
     pr <- modGetPathRow(res.download)
     pt <- as.numeric(substr(pr, 2, 3))

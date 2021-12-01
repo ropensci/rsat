@@ -117,7 +117,7 @@ setPreviewMap <- function(map) {
 #' return the leaflet map.
 #' @param n the date expressed as the temporal index in the time series.
 #' @param ... additional arguments
-#'
+#' @return nothing. Previews the region in the viewer.
 #' @include rtoi.R records.R
 #' @export
 #' @examples

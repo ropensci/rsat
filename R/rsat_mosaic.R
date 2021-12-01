@@ -17,7 +17,7 @@
 #' @param warp character. If equal to "extent", it also crops the images
 #' around the \code{rtoi}. Use "" otherwise.
 #' @param ... additional arguments.
-#'
+#' @return nothing. Mosaics the downloaded images and stored them on the hard disk
 #' @importFrom terra rast
 #' @importFrom sf st_bbox
 #' @include rtoi.R records.R
@@ -180,8 +180,11 @@ setMethod(
         chunks <- filterchunks(allfiles, bnds)
         if (length(chunks) > 0) {
           bname <- gsub(":", "_", bnds)
+          bname <- gsub("\"","",bname)
+          bname <- gsub(" ","_",bname)
           tmpfile <- file.path(tempdir(), paste0(bname, "1.vrt"))
           cmpfile <- file.path(out.dir, paste0(bname, "_tmp.tif"))
+
           out.file.name <- gsub("_tmp", "", cmpfile)
           out.file.name <- gsub("band", "B", out.file.name)
           if (basename(out.file.name) %in% mosaiced.bands) {

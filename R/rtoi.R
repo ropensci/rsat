@@ -323,7 +323,13 @@ setMethod(
   signature(x = "rtoi"),
   function(x, p, v, s, ...){
     files<-get_processed_files(x, p, v, s, ...)
-    return(rast(files))
+
+    spatras<- rast(files)
+    if((!missing(s))&&s=="mosaic"){
+      names(spatras)<-paste0(gsub(".tif","",basename(files),fixed =TRUE),"_",
+                format(genGetDates(files),"%Y%j"))
+    }
+    return(spatras)
   }
 )
 
@@ -403,7 +409,7 @@ get_processed_files<-  function(x, p, v, s, ...) {
 #' @param value character argument. The value for
 #' change the database directory of x.
 #' @param ... additional arguments.
-#'
+#' @return the database path of an rtoi
 #' @export
 #' @rdname get-set_database
 #' @examples
@@ -474,7 +480,7 @@ setMethod(
 #'
 #' @param x an rtoi object.
 #' @param value an sf object to define the region in x.
-#'
+#' @return the sf class with the region of an rtoi
 #' @export
 #' @examples
 #' library(rsat)
@@ -540,7 +546,7 @@ setMethod(
 #'
 #' @param x an rtoi object
 #' @param value a records object to be set to x.
-#'
+#' @return a set of records in x rtoi
 #' @export
 #' @examples
 #' #' library(rsat)
@@ -617,6 +623,7 @@ setMethod(
 #'
 #' @param x an rtoi object
 #' @param newname a character class to rename the \code{rtoi}.
+#' @return nothing. the  changes the internal name of the rtoi
 #' @export
 #' @examples
 #' \dontrun{
@@ -676,7 +683,7 @@ setMethod(
 #'
 #' @param x an object to be printed..
 #' @param ... additional arguments.
-#'
+#' @return prints rtoi metadata
 #' @examples
 #' \dontrun{
 #' library(rsat)
@@ -780,7 +787,7 @@ setMethod("write_rtoi",
 #'
 #' @param path an rtoi object.
 #' @param ... additional arguments.
-#'
+#' @return rtoi object readed from disk.
 #' @export
 #' @examples
 #' library(rsat)

@@ -30,6 +30,9 @@ set_database(x, ...)
 \item{value}{character argument. The value for
 change the database directory of x.}
 }
+\value{
+the database path of an rtoi
+}
 \description{
 Extracts the path to the database from an rtoi/package environment.
 If both, environment and rtoi database are defined the rtoi

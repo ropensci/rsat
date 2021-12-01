@@ -39,7 +39,7 @@
 #' @param test.mode logical argument. If \code{TRUE}, the function gets test
 #' data from github.
 #' @param ... additional arguments for searching
-#'
+#' @return nothing if x is an rtoi, records class if you search a region.
 #' @export
 #' @include search_sen.R search_ls.R search_mod.R
 #' @examples

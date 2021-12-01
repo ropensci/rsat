@@ -45,6 +45,9 @@ By default, the path is defined by \code{x}.}
 \item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
 images with the same name.}
 }
+\value{
+nothing. Mosaics the downloaded images and stored them on the hard disk
+}
 \description{
 Satellite measurements are divided into indivisible units called tiles. The
 mosaic function binds and crops the tiles to generate a single image

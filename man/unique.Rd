@@ -10,6 +10,9 @@
 \arguments{
 \item{x}{a \code{records} object.}
 }
+\value{
+unique elements in records class
+}
 \description{
 It returns a \code{records} like \code{x} but with duplicate
 elements/rows removed.

@@ -12,7 +12,7 @@
 #' @param test.mode logical argument. If \code{TRUE}, the function gets test
 #' data from github.
 #' @param ... additional arguments.
-#'
+#' @return nothing. Downloads the images into your database
 #' @include rtoi.R records.R
 #' @examples
 #' \dontrun{

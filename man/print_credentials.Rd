@@ -12,6 +12,9 @@ print_credentials(...)
 \arguments{
 \item{...}{additional arguments.}
 }
+\value{
+print the credentials asigned in the package environment variable
+}
 \description{
 Prints the credentials for the web services
 }

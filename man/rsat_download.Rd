@@ -30,6 +30,9 @@ data from github.}
 
 \item{out.dir}{path where the outputs are stored when using a \code{records}.}
 }
+\value{
+nothing. Downloads the images into your database
+}
 \description{
 The function saves the raw images in the database or the specified directory.
 It skips the images that already exist in the database or directory.

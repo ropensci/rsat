@@ -16,6 +16,9 @@ get_preview(x)
 \arguments{
 \item{x}{a \code{records} object.}
 }
+\value{
+preview url of a records
+}
 \description{
 It returns a character vector of urls to preview the data records.
 }

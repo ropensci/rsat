@@ -24,6 +24,9 @@ to search and download images}
 \item{credential}{optional argument to specify the name of the platform.
 Valid names are earthdata, scihub, scihubs5p, or ALL}
 }
+\value{
+nothing. set the credentials in the package environment variable
+}
 \description{
 Saves the credentials for the web services
 }

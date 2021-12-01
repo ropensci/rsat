@@ -13,6 +13,9 @@
 
 \item{select}{character with the value for subsetting.}
 }
+\value{
+filtered records class
+}
 \description{
 Filter the satellite records of a \code{records} or an \code{rtoi}
 }

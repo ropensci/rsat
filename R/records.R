@@ -374,6 +374,7 @@ setMethod(
 #' @param x a \code{records} object.
 #' @param ... additional arguments.
 #' @rdname c
+#' @return a combination of 'x' class elements
 #' @export
 #' @aliases c
 setMethod(
@@ -410,6 +411,7 @@ setMethod(
 #' @param value a \code{records} argument. The slot of the records
 #' to be changed.
 #' @rdname sub
+#' @return returns a selected value
 #' @export
 setMethod(
   f = "[", signature = "records",
@@ -554,6 +556,7 @@ setMethod(
 #' @param x a \code{records} or an \code{rtoi} object.
 #'
 #' @export
+#' @return the name of the satellite
 #' @examples
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -626,7 +629,7 @@ setMethod(
 #' Get the name of the product from a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
-#'
+#' @return the name of the product in the records
 #' @export
 setGeneric("product", function(x) standardGeneric("product"))
 #' @rdname product
@@ -643,7 +646,7 @@ setMethod(
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @param value character argument. The new directory of \code{x}.
-#'
+#' @return the file path in the records
 #' @export
 #' @examples
 #' # load example rtoi
@@ -698,7 +701,7 @@ setMethod(
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @param value logical argument. The new value for \code{x}.
-#'
+#' @return the value of called order
 #' @export
 #' @examples
 #' # load example rtoi
@@ -747,6 +750,7 @@ setMethod(
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @param subset character argument indicating the name of the slot.
 #' @param select character with the value for subsetting.
+#' @return filtered records class
 #' @rdname subset
 #' @export
 setMethod(
@@ -770,6 +774,7 @@ setMethod(
 #' elements/rows removed.
 #'
 #' @param x a \code{records} object.
+#' @return unique elements in records class
 #' @examples
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -799,7 +804,7 @@ setMethod(
 #' It returns a character vector of urls to preview the data records.
 #'
 #' @param x a \code{records} object.
-#'
+#' @return preview url of a records
 #' @examples
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
@@ -828,6 +833,7 @@ setMethod(
 #' It returns a character with the url to download the image.
 #'
 #' @param x a \code{records} object.
+#' @return download url of a records
 #' @examples
 #' # load example rtoi
 #' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))

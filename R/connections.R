@@ -124,6 +124,7 @@ setMethod("set_pass",
 #'  to search and download images
 #' @param credential optional argument to specify the name of the platform.
 #' Valid names are earthdata, scihub, scihubs5p, or ALL
+#' @return nothing. set the credentials in the package environment variable
 #' @export
 #' @examples
 #' print_credentials()
@@ -158,7 +159,7 @@ setMethod("set_credentials",
 #' Prints the credentials for the web services
 #'
 #' @param ... additional arguments.
-#'
+#' @return print the credentials asigned in the package environment variable
 #' @export
 #' @examples
 #' print_credentials()

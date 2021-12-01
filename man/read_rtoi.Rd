@@ -15,6 +15,9 @@ read_rtoi(path, ...)
 
 \item{...}{additional arguments.}
 }
+\value{
+rtoi object readed from disk.
+}
 \description{
 Reads an rtoi from the hard drive
 }

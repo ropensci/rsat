@@ -23,6 +23,10 @@ running steps and warnings.}
 \item{overwrite}{logical argument. If \code{TRUE}, overwrites the existing
 images with the same name.}
 }
+\value{
+nothing. The cloud masks will be save in the hard drive.
+Use get_stars to get the variables.
+}
 \description{
 Create cloud mask from an rtoi
 }

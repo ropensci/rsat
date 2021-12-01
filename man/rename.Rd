@@ -15,6 +15,9 @@ rename(x, newname)
 
 \item{newname}{a character class to rename the \code{rtoi}.}
 }
+\value{
+nothing. the  changes the internal name of the rtoi
+}
 \description{
 Renames all parameters and folder name of an \code{rtoi}.
 }

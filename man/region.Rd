@@ -27,6 +27,9 @@ region(x) <- value
 
 \item{value}{an sf object to define the region in x.}
 }
+\value{
+the sf class with the region of an rtoi
+}
 \description{
 gets the sf that specifies the region of an rtoi.
 }

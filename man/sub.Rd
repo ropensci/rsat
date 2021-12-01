@@ -28,6 +28,9 @@ select/modify.}
 \item{value}{a \code{records} argument. The slot of the records
 to be changed.}
 }
+\value{
+returns a selected value
+}
 \description{
 Operators acting on vectors, matrices, arrays and lists to
 extract or replace parts.

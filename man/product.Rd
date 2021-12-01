@@ -17,6 +17,9 @@ product(x)
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
 }
+\value{
+the name of the product in the records
+}
 \description{
 Get the name of the product from a \code{records} or an \code{rtoi}
 }

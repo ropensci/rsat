@@ -62,6 +62,9 @@ are located.}
 \item{get.map}{logical argument. If \code{TRUE}, the function
 return the leaflet map.}
 }
+\value{
+nothing. Previews the region in the viewer.
+}
 \description{
 Preview a \code{records} or an \code{rtoi} object
 }

@@ -28,6 +28,9 @@ running steps and warnings.}
 \item{test.mode}{logical argument. If \code{TRUE}, the function gets test
 data from github.}
 }
+\value{
+nothing if x is an rtoi, records class if you search a region.
+}
 \description{
 Search satellite images concerning a particular location, data product, and
 date interval. The function returns a \code{records} object if the

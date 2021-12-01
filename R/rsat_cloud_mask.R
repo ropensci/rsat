@@ -8,6 +8,9 @@
 #' images with the same name.
 #' @param ... additional arguments
 #'
+#' @return nothing. The cloud masks will be save in the hard drive.
+#' Use get_stars to get the variables.
+#'
 #' @importFrom terra minmax NAflag<- values
 #' @importFrom raster readAll
 #' @include rtoi.R

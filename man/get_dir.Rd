@@ -30,6 +30,9 @@ get_dir(x) <- value
 
 \item{value}{character argument. The new directory of \code{x}.}
 }
+\value{
+the file path in the records
+}
 \description{
 Get the file path of a \code{records} or an \code{rtoi}
 }

@@ -27,6 +27,9 @@
 
 \item{...}{additional arguments.}
 }
+\value{
+prints rtoi metadata
+}
 \description{
 prints an object and returns it invisibly (via invisible(x)).
 }

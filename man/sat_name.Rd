@@ -17,6 +17,9 @@ sat_name(x)
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
 }
+\value{
+the name of the satellite
+}
 \description{
 Get the name of the satellite(s) from a \code{records} or an \code{rtoi}
 }

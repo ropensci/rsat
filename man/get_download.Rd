@@ -9,6 +9,9 @@ get_download(x)
 \arguments{
 \item{x}{a \code{records} object.}
 }
+\value{
+download url of a records
+}
 \description{
 It returns a character with the url to download the image.
 }

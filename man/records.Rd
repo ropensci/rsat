@@ -22,6 +22,9 @@ records(x) <- value
 
 \item{value}{a records object to be set to x.}
 }
+\value{
+a set of records in x rtoi
+}
 \description{
 returns the object records from an rtoi.
 }
