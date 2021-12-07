@@ -73,5 +73,5 @@ test_that("records test", {
 
   rsat_preview(navarre,dates(navarre)[2])
 
-  unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
+  #unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
 })
