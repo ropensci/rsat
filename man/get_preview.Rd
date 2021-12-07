@@ -24,7 +24,11 @@ It returns a character vector of urls to preview the data records.
 }
 \examples{
 # load example rtoi
-navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 
 # get the records
 rcds <- records(navarre)

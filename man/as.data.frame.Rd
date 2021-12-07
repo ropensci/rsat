@@ -21,7 +21,12 @@ Functions to check if an object is a data frame, or coerce it if possible.
 }
 \examples{
 # load example rtoi
-navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+
 # get the records
 rcds <- records(navarre)
 # coerce the records to rtoi

@@ -25,6 +25,10 @@ Reads an rtoi from the hard drive
 library(rsat)
 
 # load example rtoi
-navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 print(navarre)
 }

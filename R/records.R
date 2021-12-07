@@ -308,7 +308,11 @@ setMethod(
 #' @returns show returns an invisible NULL.
 #' @examples
 #' ## load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' ## The method will now be used for automatic printing of navarre
 #' navarre
@@ -337,7 +341,12 @@ setMethod(
 #' @returns returns a data frame, normally with all row names
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+#'
 #' # get the records
 #' rcds <- records(navarre)
 #' # coerce the records to rtoi
@@ -445,7 +454,11 @@ setReplaceMethod(
 #'
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the records
 #' rcds <- records(navarre)
@@ -471,7 +484,12 @@ setMethod(
 #' @export
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+#'
 #' # get the records
 #' rcds <- records(navarre)
 #' # coerce the records to dataframr
@@ -559,10 +577,14 @@ setMethod(
 #' @return the name of the satellite
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #' # get the records
 #' rcds <- records(navarre)
-#' # coerce the records to dataframr
+#' # coerce the records to dataframe
 #' sat_name(rcds)
 setGeneric("sat_name", function(x) standardGeneric("sat_name"))
 #' @rdname sat_name
@@ -584,7 +606,11 @@ setMethod(
 #' @export
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get a vector of dates includes in rtoi
 #' dates(navarre)
@@ -645,20 +671,18 @@ setMethod(
 #' Get the file path of a \code{records} or an \code{rtoi}
 #'
 #' @param x a \code{records} or an \code{rtoi} object.
-#' @param value character argument. The new directory of \code{x}.
 #' @return the file path in the records
 #' @export
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the path of the
 #' get_dir(navarre)
-#'
-#' \dontrun{
-#' # set new rtoi path
-#' get_dir(navarre)<-"Example_path"
-#' }
 #'
 #' # get the records
 #' rcds <- records(navarre)
@@ -705,7 +729,11 @@ setMethod(
 #' @export
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the records
 #' rcds <- records(navarre)
@@ -777,7 +805,11 @@ setMethod(
 #' @return unique elements in records class
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the records
 #' rcds <- records(navarre)
@@ -807,7 +839,11 @@ setMethod(
 #' @return preview url of a records
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the records
 #' rcds <- records(navarre)
@@ -836,7 +872,12 @@ setMethod(
 #' @return download url of a records
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
+#'
 #' # get the records
 #' rcds <- records(navarre)
 #' # coerce the records to rtoi
@@ -870,7 +911,11 @@ setMethod(
 #'
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' names(navarre)
 #' names(navarre) <- "New name"
@@ -925,7 +970,11 @@ setMethod(
 #' @export
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the records
 #' rcds <- records(navarre)

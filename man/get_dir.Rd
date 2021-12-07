@@ -7,10 +7,6 @@
 \alias{get_order,records-method}
 \alias{get_dir,rtoi-method}
 \alias{get_dir,rtoi}
-\alias{get_dir<-}
-\alias{get_dir,rtoi,character-generic}
-\alias{get_dir<-,rtoi,character-method}
-\alias{get_dir,rtoi,character-method}
 \title{Get the file path of a \code{records} or an \code{rtoi}}
 \usage{
 get_dir(x)
@@ -20,15 +16,9 @@ get_dir(x)
 \S4method{get_order}{records}(x)
 
 \S4method{get_dir}{rtoi}(x)
-
-get_dir(x) <- value
-
-\S4method{get_dir}{rtoi,character}(x) <- value
 }
 \arguments{
-\item{x}{a \code{records} or an \code{rtoi} object.}
-
-\item{value}{character argument. The new directory of \code{x}.}
+\item{x}{.}
 }
 \value{
 the file path in the records
@@ -38,15 +28,14 @@ Get the file path of a \code{records} or an \code{rtoi}
 }
 \examples{
 # load example rtoi
-navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 
 # get the path of the
 get_dir(navarre)
-
-\dontrun{
-# set new rtoi path
-get_dir(navarre)<-"Example_path"
-}
 
 # get the records
 rcds <- records(navarre)

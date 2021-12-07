@@ -206,6 +206,8 @@ setMethod(
   }
 )
 
+#' @param x .
+#'
 #' @rdname get_dir
 #' @aliases get_dir,rtoi
 setMethod(
@@ -217,13 +219,7 @@ setMethod(
 )
 
 
-#' @rdname get_dir
-#' @export
-#' @aliases get_dir,rtoi,character-generic
 setGeneric("get_dir<-", function(x, value) standardGeneric("get_dir<-"))
-
-#' @rdname get_dir
-#' @aliases get_dir,rtoi,character-method
 setMethod(
   "get_dir<-",
   signature(x = "rtoi", value = "character"),
@@ -233,7 +229,6 @@ setMethod(
     return(x)
   }
 )
-
 
 setGeneric("get_var_dir", function(x, p) standardGeneric("get_var_dir"))
 setMethod(
@@ -414,7 +409,11 @@ get_processed_files<-  function(x, p, v, s, ...) {
 #' @rdname get-set_database
 #' @examples
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' # get the databse used by navarre
 #' get_database(navarre)
@@ -689,7 +688,11 @@ setMethod(
 #' library(rsat)
 #'
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #'
 #' print(navarre)
 #'
@@ -793,7 +796,11 @@ setMethod("write_rtoi",
 #' library(rsat)
 #'
 #' # load example rtoi
-#' navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+#' file.copy(from=system.file("ex/Navarre",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 #' print(navarre)
 setGeneric("read_rtoi", function(path, ...) {
   standardGeneric("read_rtoi")
