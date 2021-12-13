@@ -32,7 +32,7 @@
 #'
 #' @references \insertRef{militino2019interpolation}{rsat}
 #'
-#' @param x \code{rtoi}, \code{RastespatRaster} or \code{RasterBrick} containing
+#' @param x \code{rtoi} or \code{RastespatRaster} containing
 #' a time series of satellite images.
 #' @param method character argument. Defines the method used
 #' for processing the images, e.a. "IMA".

@@ -23,7 +23,7 @@ rsat_smoothing_images(x, method, ...)
 \S4method{rsat_smoothing_images}{SpatRaster,character}(x, method, ...)
 }
 \arguments{
-\item{x}{\code{rtoi}, \code{RastespatRaster} or \code{RasterBrick} containing
+\item{x}{\code{rtoi} or \code{RastespatRaster} containing
 a time series of satellite images.}
 
 \item{method}{character argument. Defines the method used
