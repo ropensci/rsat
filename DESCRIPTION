@@ -1,7 +1,7 @@
 Package: rsat
 Type: Package
 Title: Dealing with Multiplatform Satellite Images
-Version: 0.1.16
+Version: 0.1.17
 Authors@R: 
   c(person(given = "Unai",
            family = "Pérez - Goya",
