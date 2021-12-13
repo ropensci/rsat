@@ -44,7 +44,10 @@ The showcase uses a time-series of $6$ *NDVI* images. *NDVI* stands for *Normali
 
 ```{r advanced_ima_data}
 library(rsat)
+library(terra)
+
 data("ex.ndvi.navarre")
+ex.ndvi.navarre <- rast(ex.ndvi.navarre)
 ```
 
 Let's display the series of images to spot the gaps of data:
@@ -62,9 +65,6 @@ The instruction below applies the *IMA* to the entire series. It uses a temporal
 
 ```{r advanced_ima}
 library(rsat)
-library(terra)
-ex.ndvi.navarre <- rast(ex.ndvi.navarre)
-
 ndvi.fill <- rsat_smoothing_images(method = "IMA",
                                    ex.ndvi.navarre,
                                    nDays = 2,

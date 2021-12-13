@@ -3,6 +3,7 @@ rsat 0.1.17 (2021-12-13)
 ### NEW FEATURES
   * Fixed minor bugs in the code
   * Corrected some examples from the manual
+  * Fixed vignettes
   
 rsat 0.1.16 (2021-10-06)
 =========================
