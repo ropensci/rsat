@@ -182,7 +182,7 @@ For every image in the `rtoi`, the `cloud_mask()` function generates a new image
 clds.msk <- rsat_get_raster(filomena, "mod09ga", "CloudMask")
 ```
 
-In MODIS, cloud-masks have a different resolution than the multispectral image. To adjust the resolution, *resample* the cloud mask to math the resolution of the *NDSI* images (`resample()`) using the nearest neighbor method (`"ngb"`):
+In MODIS, cloud-masks have a different resolution than the multispectral image. To adjust the resolution, *resample* the cloud mask to match the resolution of the *NDSI* images (`resample()`) using the nearest neighbor method (`"ngb"`):
 
 ```{r basic_mask_resample}
 clds.msk <- resample(clds.msk, ndsi.img, method = "ngb")
