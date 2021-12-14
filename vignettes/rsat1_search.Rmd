@@ -83,7 +83,7 @@ The function `rsat_search()` performs the search of satellite imagery. One way t
 
     -   Sentinel-3 mission: `"SY_2_SYN___"`
 
-More details about other products and their names can be found [here](https://www.usgs.gov/core-science-systems/nli/landsat/product-information), [here](https://modis.gsfc.nasa.gov/data/dataprod/), and [here](https://sentinel.esa.int/web/sentinel/missions) for Landsat, MODIS, and Sentinel respectively. The package can search and download other data than multispectral images (e.g., radar) although this goes beyond the scope of the current status of the package.
+More details about other products and their names can be found [here](https://www.usgs.gov/landsat-missions/product-information), [here](https://modis.gsfc.nasa.gov/data/dataprod/), and [here](https://sentinel.esa.int/web/sentinel/missions) for Landsat, MODIS, and Sentinel respectively. The package can search and download other data than multispectral images (e.g., radar) although this goes beyond the scope of the current status of the package.
 
 The following code looks for satellite images (*surface reflectance*) of a region in norther Spain captured during the first half of January $2021$, captured by MODIS:
 
