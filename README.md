@@ -51,7 +51,7 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 
 <!-- -->
 
-    sudo dnf install gdal gdal_devel proj_devel xml2 libxml2_devel libcurl_devel openssl_devel ImageMagick-c++\_devel
+    sudo dnf install gdal gdal-devel proj-devel xml2 libxml2-devel libcurl-devel openssl-devel ImageMagick-c++-devel R-devel udunits2-devel sqlite-devel geos-devel pandoc
 
 ## Log-in profiles
 
