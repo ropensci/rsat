@@ -266,7 +266,12 @@ setMethod("get_mosaic_dir",
 #' \dontrun{
 #' library(rsat)
 #' # load example rtoi
-#' pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
+#' file.copy(from=system.file("ex/PamplonaDerived",package="rsat"),
+#'          to=tempdir(),
+#'          recursive = TRUE)
+#'
+#' # load example rtoi
+#' pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
 #'
 #' # print available variables
 #' rsat_list_data(pamplona.derived)

@@ -27,7 +27,7 @@
 #' Landsat images are accessed via the
 #' \href{https://m2m.cr.usgs.gov/}{Machine-to-Machine API}.
 #' Details about the Landsat products can be found
-#' \href{https://www.usgs.gov/core-science-systems/nli/landsat/product-information}{here}.
+#' \href{https://www.usgs.gov/landsat-missions/product-information}{here}.
 #' The names of Landsat products are `LANDSAT_TM_C1', `LANDSAT_ETM_C1', and
 #' `LANDSAT_8_C1' for missions 4-5, 7, and 8.
 #'

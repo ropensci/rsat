@@ -23,14 +23,25 @@ Displays the existing products, bands,
 and processing levels for a given \code{rtoi}
 }
 \examples{
-navarre <- read_rtoi(system.file("ex/Navarre",package="rsat"))
+file.copy(from=system.file("ex/Navarre",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+# load example rtoi
+navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 
 print(navarre)
 
 # print empty rtoi
 rsat_list_data(navarre)
 
-pamplona <- read_rtoi(system.file("ex/Pamplona",package="rsat"))
+file.copy(from=system.file("ex/Pamplona",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+# load example rtoi
+pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
+
 print(pamplona)
 
 rtoi.data <- rsat_list_data(pamplona)
@@ -38,6 +49,11 @@ rtoi.data <- rsat_list_data(pamplona)
 print(rtoi.data)
 
 # print mosaicked bands + derived NDVI
-pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
+file.copy(from=system.file("ex/PamplonaDerived",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+
+# load example rtoi
+pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
 rsat_list_data(pamplona.derived)
 }

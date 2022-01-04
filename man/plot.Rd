@@ -101,8 +101,11 @@ records(navarre) <- rcds
 
 plot(navarre, "preview")
 
+file.copy(from=system.file("ex/Pamplona",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
 # plot already mosaicked rtoi ("view" mode)
-pamplona <- read_rtoi(system.file("ex/Pamplona",package="rsat"))
+pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
 
 rsat_list_data(pamplona)
 
@@ -114,7 +117,12 @@ plot(pamplona, "view",
      product = "mod09ga",
      band_name = c("nir", "red", "green"))
 
-pamplona.derived <- read_rtoi(system.file("ex/PamplonaDerived",package="rsat"))
+file.copy(from=system.file("ex/PamplonaDerived",package="rsat"),
+         to=tempdir(),
+         recursive = TRUE)
+# plot already mosaicked rtoi ("view" mode)
+pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
+
 rsat_list_data(pamplona.derived)
 
 # plot derived variables
