@@ -29,6 +29,7 @@ a set of records in x rtoi
 returns the object records from an rtoi.
 }
 \examples{
+\dontrun{
 #' library(rsat)
 # create a copy of navarre
 file.copy(from=system.file("ex/Navarre",package="rsat"),
@@ -46,4 +47,5 @@ print(navarre)
 records(navarre) <- rcrds
 print(navarre)
 unlink(file.path(tempdir(),"Navarre"),recursive=TRUE)
+}
 }

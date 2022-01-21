@@ -24,6 +24,7 @@ the name of the satellite
 Get the name of the satellite(s) from a \code{records} or an \code{rtoi}
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -34,4 +35,5 @@ navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 rcds <- records(navarre)
 # coerce the records to dataframe
 sat_name(rcds)
+}
 }

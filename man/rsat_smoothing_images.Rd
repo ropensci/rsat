@@ -118,6 +118,7 @@ interpolate the values at the original resolution, and (6) the output
 is the sum of the interpolated anomalies and the average image.
 }
 \examples{
+\dontrun{
 ## Smooth data in rtoi
 library(rsat)
 require(terra)
@@ -165,6 +166,7 @@ tiles.mod.ndvi.comp <- c(
   ex.ndvi.navarre[[2]], tiles.mod.ndvi.filled[[2]]
 )
 plot(tiles.mod.ndvi.comp)
+}
 }
 \references{
 \insertRef{militino2019interpolation}{rsat}

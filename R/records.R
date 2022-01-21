@@ -109,6 +109,7 @@ setClass(
 #' @return records object
 #'
 #' @examples
+#' \dontrun{
 #' # create a new record from scrach
 #' rcds <- new_record(
 #'   sat = "modis",
@@ -125,7 +126,7 @@ setClass(
 #'   order = FALSE
 #' )
 #' rcds
-#'
+#' }
 #' @export
 setGeneric("new_record", function(sat,
                                   name,
@@ -307,6 +308,7 @@ setMethod(
 #' @param object Any R object
 #' @returns show returns an invisible NULL.
 #' @examples
+#' \dontrun{
 #' ## load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -322,6 +324,7 @@ setMethod(
 #'
 ## The method will now be used for automatic printing of rcds
 #' rcds
+#' }
 #' @rdname show
 #' @export
 setMethod(
@@ -340,6 +343,7 @@ setMethod(
 #' @rdname as.data.frame
 #' @returns returns a data frame, normally with all row names
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -353,6 +357,7 @@ setMethod(
 #' df <- as.data.frame(rcds)
 #' # print the dataframe
 #' print(df)
+#' }
 #' @export
 setMethod(
   "as.data.frame",
@@ -453,6 +458,7 @@ setReplaceMethod(
 #' @param x a \code{records} object to compute its length.
 #'
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -464,6 +470,7 @@ setReplaceMethod(
 #' rcds <- records(navarre)
 #'
 #' length(rcds)
+#' }
 #' @return Length currently returns a non-negative integer of length 1
 #' @export
 #' @rdname length
@@ -483,6 +490,7 @@ setMethod(
 #' @returns returns a records objects with the columns values in \code{x}
 #' @export
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -501,6 +509,7 @@ setMethod(
 #' rcds2 <- as.records(df)
 #' # check the conversion
 #' identical(rcds,rcds2)
+#' }
 setGeneric("as.records", function(x) {
   standardGeneric("as.records")
 })
@@ -576,6 +585,7 @@ setMethod(
 #' @export
 #' @return the name of the satellite
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -586,6 +596,7 @@ setMethod(
 #' rcds <- records(navarre)
 #' # coerce the records to dataframe
 #' sat_name(rcds)
+#' }
 setGeneric("sat_name", function(x) standardGeneric("sat_name"))
 #' @rdname sat_name
 #' @aliases sat_name,records
@@ -605,6 +616,7 @@ setMethod(
 #' @return returns a vector of \code{Date} class
 #' @export
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -620,6 +632,7 @@ setMethod(
 #'
 #' # coerce the records to dataframr
 #' dates(rcds)
+#' }
 setGeneric("dates", function(x) standardGeneric("dates"))
 
 #' @rdname dates
@@ -674,6 +687,7 @@ setMethod(
 #' @return the file path in the records
 #' @export
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -689,6 +703,7 @@ setMethod(
 #'
 #' # gets the relative path to store records data
 #' get_dir(rcds)
+#' }
 setGeneric("get_dir", function(x) standardGeneric("get_dir"))
 #' @rdname get_dir
 #' @aliases get_dir,records
@@ -728,6 +743,7 @@ setMethod(
 #' @return the value of called order
 #' @export
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -740,6 +756,7 @@ setMethod(
 #'
 #' # gets a boolean
 #' get_order(rcds)
+#' }
 setGeneric("get_order", function(x) {
   standardGeneric("get_order")
 })
@@ -804,6 +821,7 @@ setMethod(
 #' @param x a \code{records} object.
 #' @return unique elements in records class
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -820,6 +838,7 @@ setMethod(
 #' single.record <- unique(duplicate.records)
 #' length(single.record)
 #' print(single.record)
+#' }
 #' @rdname unique
 #' @export
 #' @aliases unique
@@ -838,6 +857,7 @@ setMethod(
 #' @param x a \code{records} object.
 #' @return preview url of a records
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -850,6 +870,7 @@ setMethod(
 #'
 #' # get a vector with the preview url of each record
 #' get_api_name(rcds)
+#' }
 #' @export
 setGeneric("get_preview", function(x) {
   standardGeneric("get_preview")
@@ -871,6 +892,7 @@ setMethod(
 #' @param x a \code{records} object.
 #' @return download url of a records
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -882,7 +904,7 @@ setMethod(
 #' rcds <- records(navarre)
 #' # coerce the records to rtoi
 #' get_download(rcds)
-#'
+#' }
 #' @export
 setGeneric("get_download", function(x) {
   standardGeneric("get_download")
@@ -910,6 +932,7 @@ setMethod(
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -924,6 +947,7 @@ setMethod(
 #' rcrds <- records(navarre)
 #'
 #' names(rcrds)
+#' }
 #' @rdname names
 setMethod(
   f = "names",
@@ -969,6 +993,7 @@ setMethod(
 #' elements in \code{x}.
 #' @export
 #' @examples
+#' \dontrun{
 #' # load example rtoi
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
@@ -981,6 +1006,7 @@ setMethod(
 #'
 #' # get a vector with the api name of each records
 #' get_api_name(rcds)
+#' }
 setGeneric("get_api_name", function(x) {
   standardGeneric("get_api_name")
 })

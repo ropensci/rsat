@@ -23,6 +23,7 @@ preview url of a records
 It returns a character vector of urls to preview the data records.
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -35,4 +36,5 @@ rcds <- records(navarre)
 
 # get a vector with the preview url of each record
 get_api_name(rcds)
+}
 }

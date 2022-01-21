@@ -21,6 +21,7 @@ returns a records objects with the columns values in \code{x}
 Create records object from data frame
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -39,4 +40,5 @@ print(df)
 rcds2 <- as.records(df)
 # check the conversion
 identical(rcds,rcds2)
+}
 }

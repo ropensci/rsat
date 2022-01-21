@@ -34,6 +34,7 @@
 #' @include rtoi.R
 #' @export
 #' @examples
+#' \dontrun{
 #' library(rsat)
 #'
 #' # create a copy of pamplona in temp file
@@ -60,6 +61,7 @@
 #' # now NDVI is processed
 #' rsat_list_data(pamplona)
 #' plot(pamplona, product="mod09ga",variable="NDSI")
+#' }
 setGeneric("rsat_derive", function(x,
                               variable,
                               ...) {

@@ -11,6 +11,7 @@
 #' @importFrom utils unzip
 #'
 #' @examples
+#' \dontrun{
 #' file.copy(from=system.file("ex/Navarre",package="rsat"),
 #'          to=tempdir(),
 #'          recursive = TRUE)
@@ -44,6 +45,7 @@
 #' # load example rtoi
 #' pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
 #' rsat_list_data(pamplona.derived)
+#' }
 setGeneric("rsat_list_data", function(x,
                                  ...) {
   standardGeneric("rsat_list_data")

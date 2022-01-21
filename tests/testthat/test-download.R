@@ -51,7 +51,7 @@ test_that("download test", {
       verbose=TRUE
     )
     records(navarre)<-c(records(navarre),r[1])
-    rsat_download(r[1],out.dir=file.path(tempdir(),"Database"))
+    #rsat_download(r[1],out.dir=file.path(tempdir(),"Database"))
   }, error = function(e) {
     print(e)
   })

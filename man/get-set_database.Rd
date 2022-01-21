@@ -39,6 +39,7 @@ If both, environment and rtoi database are defined the rtoi
 database is used.
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -57,4 +58,5 @@ get_database()
 
 # set the a new database path for the entire environment
 set_database("new_path")
+}
 }

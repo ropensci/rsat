@@ -31,6 +31,7 @@ function exists to be specialized by methods.
 The default method calls showDefault.
 }
 \examples{
+\dontrun{
 ## load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -45,4 +46,5 @@ navarre
 rcds <- records(navarre)
 
 rcds
+}
 }

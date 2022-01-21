@@ -46,8 +46,8 @@ toi <- seq(as.Date("2021-01-10"),as.Date("2021-01-15"),1)
 The folders for the database and dataset can be created programmatically as follows:
 
 ```{r}
-db.path <- "C:/database"
-ds.path <- "C:/datasets"
+db.path <- file.path(tempdir(),"database")
+ds.path <- file.path(tempdir(),"datasets")
 dir.create(db.path)
 dir.create(ds.path)
 ```

@@ -20,6 +20,7 @@ Get or set the length of vectors (including lists) and factors,
 and of any other R object for which a method has been defined.
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -31,4 +32,5 @@ navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 rcds <- records(navarre)
 
 length(rcds)
+}
 }

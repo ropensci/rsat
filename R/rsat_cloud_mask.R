@@ -16,6 +16,7 @@
 #' @include rtoi.R
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Smooth data in rtoi
 #' library(rsat)
 #'
@@ -30,6 +31,7 @@
 #' rsat_cloudMask(pamplona)
 #'
 #' rsat_list_data(pamplona)
+#' }
 #' @importFrom zip zip_list
 setGeneric("rsat_cloudMask", function(x, ...) {
   standardGeneric("rsat_cloudMask")

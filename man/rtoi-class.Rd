@@ -38,6 +38,7 @@ your region and time of interest.}
 
 
 \examples{
+\dontrun{
 data(ex.navarre)
 ## Create an rtoi with database
 # path where the region is stored
@@ -62,4 +63,5 @@ navarre2 <- new_rtoi(
 )
 
 print(navarre2)
+}
 }

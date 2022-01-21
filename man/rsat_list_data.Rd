@@ -23,6 +23,7 @@ Displays the existing products, bands,
 and processing levels for a given \code{rtoi}
 }
 \examples{
+\dontrun{
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
          recursive = TRUE)
@@ -56,4 +57,5 @@ file.copy(from=system.file("ex/PamplonaDerived",package="rsat"),
 # load example rtoi
 pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
 rsat_list_data(pamplona.derived)
+}
 }

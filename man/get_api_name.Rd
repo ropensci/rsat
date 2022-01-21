@@ -21,6 +21,7 @@ elements in \code{x}.
 A function to get or set the api names of an object.
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -33,4 +34,5 @@ rcds <- records(navarre)
 
 # get a vector with the api name of each records
 get_api_name(rcds)
+}
 }

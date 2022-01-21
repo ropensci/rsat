@@ -34,6 +34,7 @@ the sf class with the region of an rtoi
 gets the sf that specifies the region of an rtoi.
 }
 \examples{
+\dontrun{
 library(rsat)
 # create a copy of navarre
 file.copy(from=system.file("ex/Navarre",package="rsat"),
@@ -51,4 +52,5 @@ plot(sf.obj)
 region(navarre)<-NULL
 
 region(navarre)<-sf.obj
+}
 }

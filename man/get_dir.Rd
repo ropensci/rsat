@@ -27,6 +27,7 @@ the file path in the records
 Get the file path of a \code{records} or an \code{rtoi}
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -42,4 +43,5 @@ rcds <- records(navarre)
 
 # gets the relative path to store records data
 get_dir(rcds)
+}
 }

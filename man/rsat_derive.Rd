@@ -64,6 +64,7 @@ return(ndsi)
 }
 }
 \examples{
+\dontrun{
 library(rsat)
 
 # create a copy of pamplona in temp file
@@ -90,4 +91,5 @@ rsat_derive(pamplona, "NDSI", product = "mod09ga",fun=NDSI)
 # now NDVI is processed
 rsat_list_data(pamplona)
 plot(pamplona, product="mod09ga",variable="NDSI")
+}
 }

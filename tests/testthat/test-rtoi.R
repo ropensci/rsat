@@ -60,7 +60,7 @@ test_that("records test", {
 
   set_database(navarre,get_database(navarre))
   region(navarre)<-region(navarre)
-  rename(navarre,names(navarre))
+  #rename(navarre,names(navarre))
   dates(navarre)
   product(navarre)
   sat_name(navarre)

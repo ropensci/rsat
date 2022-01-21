@@ -20,6 +20,7 @@ returns a data frame, normally with all row names
 Functions to check if an object is a data frame, or coerce it if possible.
 }
 \examples{
+\dontrun{
 # load example rtoi
 file.copy(from=system.file("ex/Navarre",package="rsat"),
          to=tempdir(),
@@ -33,4 +34,5 @@ rcds <- records(navarre)
 df <- as.data.frame(rcds)
 # print the dataframe
 print(df)
+}
 }

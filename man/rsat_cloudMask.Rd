@@ -31,6 +31,7 @@ Use get_stars to get the variables.
 Create cloud mask from an rtoi
 }
 \examples{
+\dontrun{
 ## Smooth data in rtoi
 library(rsat)
 
@@ -45,4 +46,5 @@ pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
 rsat_cloudMask(pamplona)
 
 rsat_list_data(pamplona)
+}
 }
