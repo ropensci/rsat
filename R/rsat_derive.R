@@ -255,6 +255,20 @@ deriveVariables <- function(bands,
     band <- gsub("\\", "/", band, fixed = TRUE)
     if (verbose) message(paste0("Reading band: ",
                                 paste0(arg, "<-rast('", band, "')")))
+
+
+    #Check if band filename contains .xml for compatibility with opening in qgis
+    xmls <- band[endsWith(band, ".xml")]
+    if (verbose && length(xmls) > 0) message(paste0("Ignoring file: ", xmls))
+
+    band <- band[!endsWith(band, ".xml")]
+
+    if (length(band) == 0) {
+      if (verbose) message(paste0("No valid band: ", xmls))
+      next
+    }
+
+
     # eval(parse( text=paste0(arg, "<-read_stars('",
     #                         band,
     #                         "',normalize_path = FALSE)")))
