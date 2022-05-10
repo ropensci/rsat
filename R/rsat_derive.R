@@ -131,7 +131,7 @@ setMethod("rsat_derive",
 
       for (size in additional.sizes) {
         file.name <- paste0(variable, "_",
-                            format(genGetDates(i), "%Y%j"),
+                            format(genGetDates(basename(i)), "%Y%j"),
                             size,
                             ".tif")
         out.file <- file.path(out.dir, file.name)
