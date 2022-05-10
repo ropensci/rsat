@@ -92,7 +92,7 @@ setMethod(
            extent,
            resType,
            ...) {
-    stopifnot(class(extent(extent)) == "Extent")
+    stopifnot(inherits(extent(extent),"Extent"))
     return(paste0(
       server,
       "?product=", product,
@@ -124,7 +124,7 @@ setMethod(
            extent,
            resType,
            ...) {
-    stopifnot(class(extent(extent)) == "Extent")
+    stopifnot(inherits(extent(extent),"Extent"))
     return(paste0(
       server,
       "?product=", product,

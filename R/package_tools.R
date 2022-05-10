@@ -80,7 +80,7 @@ toEspaJSON <- function(json_list, is.array = c("products", "inputs")) {
   for (n in seq_len(length(nam))) {
     resjson <- paste0(resjson, '"', nam[n], '":')
     nlist <- json_list[[n]]
-    if (class(nlist) == "list") {
+    if (inherits(nlist,"list")) {
       resjson <- paste0(resjson, toEspaJSON(nlist))
     } else if (length(nlist) > 1 | nam[n] %in% is.array) {
       resjson <- paste0(resjson, "[")

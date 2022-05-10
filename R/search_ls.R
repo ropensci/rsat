@@ -41,7 +41,7 @@ setMethod(
       )
     )
     if ("cloudCover" %in% names(args)) {
-      if (length(args$cloudCover) == 2 && class(args$cloudCover) == "numeric"){
+      if (length(args$cloudCover) == 2 && inherits(args$cloudCover,"numeric")){
         lsquery$sceneFilter$cloudCoverFilter <- NULL
         lsquery$sceneFilter$cloudCoverFilter$min <- min(args$cloudCover)
         lsquery$sceneFilter$cloudCoverFilter$max <- max(args$cloudCover)

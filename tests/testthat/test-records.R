@@ -12,7 +12,7 @@ test_that("records test", {
   credentials<-print_credentials()
 
   print(credentials)
-
+  tryCatch({
   rcds<-rsat_search(
     region = ex.navarre,
     product = c("mod09ga", "LANDSAT_8_C1","S2MSI2A"),
@@ -39,4 +39,7 @@ test_that("records test", {
 
   rsat_preview(rcds.subset,1)
   rsat_preview(rcds.subset,dates(rcds.subset[1]))
+  }, error = function(e) {
+    print(e)
+  })
 })

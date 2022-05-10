@@ -694,7 +694,7 @@ genPlotGIS <- function(r,
       }
     }
   } else {
-    if ((class(zlim) != "numeric") & (length(zlim) != 0)) {
+    if ((!inherits(zlim,"numeric")) & (length(zlim) != 0)) {
       stop(paste0("zlim must be a vector of length 2 specifying",
                   " the upper and lower boundaries of the legend."))
     }

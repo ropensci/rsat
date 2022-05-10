@@ -33,7 +33,7 @@ setMethod(
       query <- paste0(query, " AND platformname:", arg$platform)
     }
     if ("extent" %in% names(arg)) {
-      stopifnot(class(extent(arg$extent)) == "Extent")
+      stopifnot(inherits(extent(arg$extent),"Extent"))
       if (arg$verbose) {
         message("Adding query extent.")
       }

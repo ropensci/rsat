@@ -4,7 +4,6 @@ test_that("smoothing IMA", {
   data(ex.ndvi.navarre)
 
   # smoothin and fill all the time series
-  require(terra)
   tiles.mod.ndvi.filled <- rsat_smoothing_images(rast(ex.ndvi.navarre),
                                             method = "IMA",
                                             only.na = TRUE,
@@ -19,7 +18,6 @@ test_that("smoothing IMA", {
                                                              only.na = TRUE,
                                                              predictSE = TRUE
   ))
-
 
 
 })
