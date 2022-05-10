@@ -67,8 +67,7 @@ jobs:
       - name: Install mac dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install gdal --HEAD
-          brew install gdal
+          conda install -c conda-forge gdal
 
       - name: Install dependencies
         run: |
