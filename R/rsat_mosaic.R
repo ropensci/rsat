@@ -16,6 +16,7 @@
 #' images with the same name.
 #' @param warp character. If equal to "extent", it also crops the images
 #' around the \code{rtoi}. Use "" otherwise.
+#' @param verbose boolean. If TRUE show verbose output. Default FALSE
 #' @param ... additional arguments.
 #' @return nothing. Mosaics the downloaded images and stored them on the hard disk
 #' @importFrom terra rast
@@ -103,6 +104,7 @@ setMethod(
            warp = "extent",
            region,
            overwrite = FALSE,
+           verbose = FALSE,
            ...) {
     args <- list(...)
     if ("dates" %in% names(args)) {
@@ -195,7 +197,8 @@ setMethod(
             typechunks = chunks,
             temp = tmpfile,
             nodata = defineNodata(chunks, bnds),
-            out.name = cmpfile
+            out.name = cmpfile,
+            verbose = verbose
           )
 
           tryCatch(
@@ -219,7 +222,8 @@ setMethod(
                     options = c(
                       "-te", ext$xmin, ext$ymin, ext$xmax, ext$ymax,
                       "-te_srs", st_crs(region)$proj4string
-                    )
+                    ),
+                    quiet = !verbose
                   )
 
                   gc()
