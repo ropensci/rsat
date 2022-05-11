@@ -67,8 +67,7 @@ jobs:
       - name: Install mac dependencies
         if: runner.os == 'macOS'
         run: |
-          brew tap osgeo/osgeo4mac
-          brew install osgeo-gdal
+          brew install gdal
           gdal-config --version
 
       - name: Install dependencies
