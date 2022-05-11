@@ -67,7 +67,8 @@ jobs:
       - name: Install mac dependencies
         if: runner.os == 'macOS'
         run: |
-          conda install -c conda-forge gdal
+          brew tap osgeo/osgeo4mac
+          brew install osgeo-gdal
           gdal-config --version
 
       - name: Install dependencies
