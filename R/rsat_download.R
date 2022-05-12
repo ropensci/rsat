@@ -89,7 +89,7 @@ setMethod(
     message("Checking records for long term access data.")
     for (i in rev(seq_len(length(x)))) {
       out.name <- file.path(out.dir, get_file_path(x[i]))
-      if (get_order(x[i]) & !file.exists(out.name)) {
+      if (get_order(x[i]) & (!file.exists(out.name) || file.size(out.name) == 0)) {
         if (grepl("^Landsat", sat_name(x[i]))&!test.mode) {
           # ls order petition
           if("product"%in%names(args)){
@@ -133,7 +133,7 @@ setMethod(
     for (i in seq_len(length(x))) {
       out.name <- file.path(out.dir, get_file_path(x[i]))
       dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
-      if (!file.exists(out.name)) {
+      if (!file.exists(out.name) || file.size(out.name) == 0) {
         if (!test.mode) {
           con <- connection$getApi(api_name = get_api_name(x[i]))
           message(paste0("Downloading ", names(x[i]), " image."))
@@ -157,7 +157,7 @@ setMethod(
         dir.create(dirname(out.name),
                    showWarnings = FALSE,
                    recursive = TRUE)
-        if (!file.exists(out.name)) {
+        if (!file.exists(out.name) || file.size(out.name) == 0) {
           if (grepl("^Landsat", sat_name(ordered.list[i]))) {
             con <- connection$getApi(api_name = get_api_name(ordered.list[i]))
             con$espaGetOrders(verbose = verbose)
