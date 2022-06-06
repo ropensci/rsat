@@ -77,7 +77,7 @@ setRefClass(
     secureHandle = function() {
       c.handle <- new_handle()
       if (.self$username == "" | .self$password == "") {
-        stop("Check your credentials.")
+        stop("Username or password empty. Check your credentials.")
       }
       handle_setopt(c.handle,
         referer = .self$server,
@@ -483,8 +483,8 @@ setRefClass(
       if (length(.self$username) == 0) {
         stop("Username must be defined.")
       }
-      if (length(.self$username) == 0) {
-        stop("Username must be defined.")
+      if (length(.self$password) == 0) {
+        stop("Password must be defined.")
       }
     },
     request = function(request) {
