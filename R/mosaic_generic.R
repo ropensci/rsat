@@ -68,18 +68,35 @@ genMosaicGdalUtils <- function(typechunks,
                   driverOptions <- c("-if", "JP2OpenJPEG",
                                      "-of", "JP2OpenJPEG")
                 }
-
-
-                gdal_utils(
-                  util = "warp",
-                  source = typechunks[ni],
-                  destination = destemp,
-                  quiet = !verbose,
-                  options = c("-t_srs", proj,
-                              "-overwrite",
-                              driverOptions,
-                              "-dstnodata", -9999)
-                )
+                clampedNodata <- 0
+                #tryCatch(
+                  #{
+                    gdal_utils(
+                      util = "warp",
+                      source = typechunks[ni],
+                      destination = destemp,
+                      quiet = !verbose,
+                      options = c("-t_srs", proj,
+                                  "-overwrite",
+                                  driverOptions,
+                                  "-dstnodata", clampedNodata)
+                    )
+                  #}
+                #   ,warning = function(warn){
+                #     clampedNodata <- 0
+                #     print(paste0("Warning thrown, using nodata-> ", clampedNodata))
+                #     gdal_utils(
+                #       util = "warp",
+                #       source = typechunks[ni],
+                #       destination = destemp,
+                #       quiet = !verbose,
+                #       options = c("-t_srs", proj,
+                #                   "-overwrite",
+                #                   driverOptions,
+                #                   "-dstnodata", clampedNodata)
+                #     )
+                #   }
+                # )
                 newchunks <- c(newchunks, destemp)
               }
               if (is.null(nodata)) {
@@ -87,7 +104,7 @@ genMosaicGdalUtils <- function(typechunks,
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
-                  options = c("-srcnodata", -9999, "-vrtnodata", -9999),
+                  options = c("-srcnodata", clampedNodata, "-vrtnodata", clampedNodata),
                   quiet = !verbose
                 )
               } else {
@@ -95,7 +112,8 @@ genMosaicGdalUtils <- function(typechunks,
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
-                  options = c("-srcnodata", paste0("\"", nodata, "-9999\""), "-vrtnodata", paste0("\"", nodata, "-9999\"")),
+                  options = c("-srcnodata", paste0("\"", nodata, " ", clampedNodata, "\""),
+                              "-vrtnodata", paste0("\"", nodata, " ", clampedNodata, "\"")),
                   quiet = !verbose
                 )
               }
