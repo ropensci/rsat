@@ -54,6 +54,7 @@ genMosaicGdalUtils <- function(typechunks,
               diffproj <- TRUE
               suppressWarnings(file.remove(temp))
               proj <- gdal_crs(typechunks[1])$input
+              if(verbose) print(paste0("Projection-> ", proj))
               newchunks <- c(typechunks[1])
               for (ni in 2:length(typechunks)) {
                 destemp <- file.path(tempdir(), basename(typechunks[ni]))
@@ -76,7 +77,8 @@ genMosaicGdalUtils <- function(typechunks,
                   quiet = !verbose,
                   options = c("-t_srs", proj,
                               "-overwrite",
-                              driverOptions)
+                              driverOptions,
+                              "-dstnodata", -9999)
                 )
                 newchunks <- c(newchunks, destemp)
               }
@@ -85,6 +87,7 @@ genMosaicGdalUtils <- function(typechunks,
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
+                  options = c("-srcnodata", -9999, "-vrtnodata", -9999),
                   quiet = !verbose
                 )
               } else {
@@ -92,7 +95,7 @@ genMosaicGdalUtils <- function(typechunks,
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
-                  options = c("-srcnodata", nodata, "-vrtnodata", nodata),
+                  options = c("-srcnodata", paste0("\"", nodata, "-9999\""), "-vrtnodata", paste0("\"", nodata, "-9999\"")),
                   quiet = !verbose
                 )
               }
@@ -136,6 +139,7 @@ genMosaicGdalUtils <- function(typechunks,
     options = c("-of", "GTiff"),
     quiet = !verbose
   )
+
   file.remove(temp)
   return(TRUE)
 }
