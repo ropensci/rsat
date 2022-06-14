@@ -64,6 +64,9 @@ setMethod(
         all_files <- all_files[grepl("BQA", all_files) |
                                grepl("pixel_qa", all_files)]
         fun_clkmsk <- lsCloudMask
+        if(grepl("c2_l2", p)){ #if landsat 8 c2_l2 use other function
+          fun_clkmsk <- ls8c2CloudMask
+        }
         if (grepl("8", p)) {
           cldcl <- c(322, 386, 834, 898, 1346, 324, 388, 836, 900, 1348)
         } else {
@@ -130,6 +133,31 @@ modCloudMask <- function(infile,
     return(FALSE)
   }
   return(TRUE)
+}
+
+ls8c2CloudMask <- function(infile,
+                           outfile,
+                        overwrite = FALSE, ...) {
+  if ((!file.exists(outfile)) | overwrite) {
+    ras.cloud <- rast(infile)
+
+    QA_val <- unique(na.omit(values(ras.cloud)))
+    rcl.mat <- matrix(nrow = length(QA_val), ncol = 2)
+
+    for (j in 1:length(QA_val)) {
+      rcl.mat[j,1] = QA_val[j]
+      rcl.mat[j,2] = obtainCMvalue(QA_val[j])
+    }
+    terra::classify(ras.cloud,rcl.mat,filename=outfile,overwrite=T)
+    add2rtoi(outfile, paste0(dirname(outfile), ".zip"))
+  }
+  return(TRUE)
+}
+
+obtainCMvalue = function(x) {
+  bits <- as.numeric(intToBits(x))
+  cloud <- ifelse(sum(bits[2:5]) >= 1, NA, 1)
+  return(cloud)
 }
 
 lsCloudMask <- function(infile,
