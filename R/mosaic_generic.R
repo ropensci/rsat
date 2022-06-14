@@ -3,7 +3,7 @@ genMosaicGdalUtils <- function(typechunks,
                                temp = "temp.vrt",
                                nodata, out.name,
                                verbose = FALSE) {
-  newchunks <- NULL
+  newchunks <- c()
   tryCatch(
     {
       if(verbose){
@@ -55,56 +55,38 @@ genMosaicGdalUtils <- function(typechunks,
               suppressWarnings(file.remove(temp))
               proj <- gdal_crs(typechunks[1])$input
               if(verbose) print(paste0("Projection-> ", proj))
-              newchunks <- c(typechunks[1])
-              for (ni in 2:length(typechunks)) {
+              newchunks <<- c()
+              for (ni in 1:length(typechunks)) {
                 destemp <- file.path(tempdir(), basename(typechunks[ni]))
 
                 #gdal can have more than 1 driver for jp2 file format
                 #gdal_utils throws a warning notifying that it chooses the default
                 #the process would continue normally, but the warning forces the warp process to stop
                 #if we force the default driver it works fine
-                driverOptions <- c()
+                jp2Driver <- c()
                 if(endsWith(typechunks[ni], ".jp2")){
-                  driverOptions <- c("-if", "JP2OpenJPEG",
-                                     "-of", "JP2OpenJPEG")
+                  jp2Driver <- c("-if", "JP2OpenJPEG")
                 }
-                clampedNodata <- 0
-                #tryCatch(
-                  #{
-                    gdal_utils(
-                      util = "warp",
-                      source = typechunks[ni],
-                      destination = destemp,
-                      quiet = !verbose,
-                      options = c("-t_srs", proj,
-                                  "-overwrite",
-                                  driverOptions,
-                                  "-dstnodata", clampedNodata)
-                    )
-                  #}
-                #   ,warning = function(warn){
-                #     clampedNodata <- 0
-                #     print(paste0("Warning thrown, using nodata-> ", clampedNodata))
-                #     gdal_utils(
-                #       util = "warp",
-                #       source = typechunks[ni],
-                #       destination = destemp,
-                #       quiet = !verbose,
-                #       options = c("-t_srs", proj,
-                #                   "-overwrite",
-                #                   driverOptions,
-                #                   "-dstnodata", clampedNodata)
-                #     )
-                #   }
-                # )
-                newchunks <- c(newchunks, destemp)
+                gdal_utils(
+                  util = "warp",
+                  source = typechunks[ni],
+                  destination = destemp,
+                  quiet = !verbose,
+                  options = c("-t_srs", proj,
+                              "-overwrite",
+                              jp2Driver,
+                              "-of", "GTiff", #output to tiff to prevent weird jpeg artifacts
+                              "-dstalpha") #add an alpha layer for nodata
+                )
+                #Use the variable defined at the begginind of the function so that we can latter
+                #erase the temporal files once the mosaic is created
+                newchunks <<- c(newchunks, destemp)
               }
               if (is.null(nodata)) {
                 gdal_utils(
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
-                  options = c("-srcnodata", clampedNodata, "-vrtnodata", clampedNodata),
                   quiet = !verbose
                 )
               } else {
@@ -112,8 +94,9 @@ genMosaicGdalUtils <- function(typechunks,
                   util = "buildvrt",
                   source = newchunks,
                   destination = temp,
-                  options = c("-srcnodata", paste0("\"", nodata, " ", clampedNodata, "\""),
-                              "-vrtnodata", paste0("\"", nodata, " ", clampedNodata, "\"")),
+                  options = c("-srcnodata", paste0("\"", nodata, "\""),
+                              "-vrtnodata", paste0("\"", nodata, "\""),
+                              "-addalpha"),
                   quiet = !verbose
                 )
               }
@@ -159,5 +142,6 @@ genMosaicGdalUtils <- function(typechunks,
   )
 
   file.remove(temp)
+  suppressWarnings(file.remove(newchunks))
   return(TRUE)
 }
