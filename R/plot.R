@@ -503,8 +503,14 @@ read_rgb <- function(files.p,
   green[[1]] <- as.matrix(stretch(rast(green[[1]])))
   blue[[1]] <- as.matrix(stretch(rast(blue[[1]])))
 
+  red[[1]] <- as.matrix(stretch(rast(red[[1]])))
+  green[[1]] <- as.matrix(stretch(rast(green[[1]])))
+  blue[[1]] <- as.matrix(stretch(rast(blue[[1]])))
   aux <- merge(c(red, green, blue))
+
   # aux<-as(aux,"Raster")
+  #aux<-c(red, green, blue)
+  #aux<-as(aux,"Raster")
   names(aux) <- paste0(product, "_", date)
   return(aux)
 }

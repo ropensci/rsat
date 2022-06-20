@@ -350,6 +350,9 @@ setMethod(
 )
 
 get_processed_files<-  function(x, p, v, s, ...) {
+  args<-list(...)
+
+
   # layers<-file.path("/vsizip",i,utils::unzip(i,list=T)$Name)
   dirs <- list.files(list.files(get_dir(x), full.names = TRUE),
                      pattern = p, full.names = TRUE)
@@ -398,6 +401,12 @@ get_processed_files<-  function(x, p, v, s, ...) {
                            files, utils::unzip(files, list = TRUE)$Name)
     }
   }
+  if(!is.null(args$grepl))
+    for(x in args$grepl){
+      mos.zip<-mos.zip[grepl(x,mos.zip)]
+    }
+
+
   return(mos.zip)
 }
 
