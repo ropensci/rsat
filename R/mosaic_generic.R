@@ -58,7 +58,8 @@ genMosaicGdalUtils <- function(typechunks,
               if(verbose) print(paste0("Projection-> ", proj))
               newchunks <- c()
               for (ni in 1:length(typechunks)) {
-                destemp <- file.path(tempdir(), basename(typechunks[ni]))
+                path.files <- unlist(strsplit(typechunks[ni],"/"))
+                destemp <- file.path(tempdir(), path.files[length(path.files)])#basename(typechunks[ni]))
 
                 #gdal can have more than 1 driver for jp2 file format
                 #gdal_utils throws a warning notifying that it chooses the default
