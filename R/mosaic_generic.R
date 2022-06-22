@@ -4,6 +4,7 @@ genMosaicGdalUtils <- function(typechunks,
                                nodata, out.name,
                                verbose = FALSE) {
   newchunks <- c()
+  chunksFile <- file.path(tempdir(), "chunksFile")
   tryCatch(
     {
       if(verbose){
@@ -55,7 +56,7 @@ genMosaicGdalUtils <- function(typechunks,
               suppressWarnings(file.remove(temp))
               proj <- gdal_crs(typechunks[1])$input
               if(verbose) print(paste0("Projection-> ", proj))
-              newchunks <<- c()
+              newchunks <- c()
               for (ni in 1:length(typechunks)) {
                 destemp <- file.path(tempdir(), basename(typechunks[ni]))
 
@@ -78,9 +79,10 @@ genMosaicGdalUtils <- function(typechunks,
                               "-of", "GTiff", #output to tiff to prevent weird jpeg artifacts
                               "-dstalpha") #add an alpha layer for nodata
                 )
-                #Use the variable defined at the begginind of the function so that we can latter
+                newchunks <- c(newchunks, destemp)
+                #Add the reprojected files to a temporal text file so that we can
                 #erase the temporal files once the mosaic is created
-                newchunks <<- c(newchunks, destemp)
+                cat(destemp, file=chunksFile, append=TRUE, sep="\n")
               }
               if (is.null(nodata)) {
                 gdal_utils(
@@ -142,6 +144,7 @@ genMosaicGdalUtils <- function(typechunks,
   )
 
   file.remove(temp)
-  suppressWarnings(file.remove(newchunks))
+  suppressWarnings(file.remove(readLines(chunksFile, warn=FALSE)))
+  suppressWarnings(file.remove(chunksFile))
   return(TRUE)
 }

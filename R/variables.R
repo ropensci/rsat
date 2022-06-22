@@ -237,7 +237,7 @@ setMethod(
 #' List the variables and satellites supported by \code{rsat}
 #'
 #' Displays the satellites and variable method
-#' @param ... arguments for nestering functions
+#' @param ... arguments for nesting functions
 #'
 #' @return prints supported satellites and derived variables information.
 #' @export
