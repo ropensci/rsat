@@ -139,7 +139,8 @@ genMosaicGdalUtils <- function(typechunks,
     util = "translate",
     source = temp,
     destination = out.name,
-    options = c("-of", "GTiff"),
+    options = c("-of", "GTiff",
+                "-b", "1"),
     quiet = !verbose
   )
 

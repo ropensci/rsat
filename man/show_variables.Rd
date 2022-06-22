@@ -11,7 +11,7 @@ show_variables(...)
 \S4method{show_variables}{ANY}()
 }
 \arguments{
-\item{...}{arguments for nestering functions}
+\item{...}{arguments for nesting functions}
 }
 \value{
 prints supported satellites and derived variables information.

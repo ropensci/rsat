@@ -16,7 +16,7 @@ rsat_mosaic(x, ...)
   x,
   out_path,
   db_path,
-  bfilter,
+  bfilter = c(),
   warp = "extent",
   region,
   overwrite = FALSE,
