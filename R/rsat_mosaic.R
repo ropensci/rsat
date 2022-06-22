@@ -100,7 +100,7 @@ setMethod(
   function(x,
            out_path,
            db_path,
-           bfilter,
+           bfilter = c(),
            warp = "extent",
            region,
            overwrite = FALSE,
@@ -179,6 +179,11 @@ setMethod(
       ######################################
       message(paste0("Mosaicking bands for period ", d))
       for (bnds in bands) {
+        #Use bfilter list to choose which bands to process,
+        #if the band is not in the list jump to the next one
+        if(length(bfilter) != 0 & !(bnds %in% bfilter)){
+          next
+        }
         chunks <- filterchunks(allfiles, bnds)
         if (length(chunks) > 0) {
           bname <- gsub(":", "_", bnds)
