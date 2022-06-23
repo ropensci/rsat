@@ -116,7 +116,9 @@ setMethod("rsat_list_data",
       message("There is no processed images in the rtoi.")
       return(NULL)
     }
-    as.data.frame(do.call(rbind, allvariables))
+    #as.data.frame(do.call(rbind, allvariables))
+    #TODO change this and make it work well
+    as.data.frame(sapply(as.data.frame(do.call(rbind, allvariables)), function(x) unlist(x)))
   }
 )
 
