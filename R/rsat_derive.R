@@ -249,8 +249,8 @@ deriveVariables <- function(bands,
       band <- layers[grepl(band, layers, ignore.case = TRUE)]
     }
     if (length(band) == 0) {
-      if (verbose) warning(paste0("Error reading band ", arg))
-      next
+      if (verbose) message(paste0("Error reading band ", arg))
+      return(result)
     }
     band <- gsub("\\", "/", band, fixed = TRUE)
     if (verbose) message(paste0("Reading band: ",
@@ -294,7 +294,8 @@ deriveVariables <- function(bands,
     },
     error = function(e) {
       if (verbose) {
-        message(e)
+        message(paste0("Error: ", e))
+        message(paste0("Function: ", funString))
         message(paste0("Band not found for image ",
                        i,
                        ". Check the mosaic of this image."))

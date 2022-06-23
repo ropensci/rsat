@@ -146,7 +146,9 @@ genMosaicGdalUtils <- function(typechunks,
   )
 
   file.remove(temp)
-  suppressWarnings(file.remove(readLines(chunksFile, warn=FALSE)))
-  suppressWarnings(file.remove(chunksFile))
+  if(file.exists(chunksFile)){
+    suppressWarnings(file.remove(readLines(chunksFile, warn=FALSE)))
+    suppressWarnings(file.remove(chunksFile))
+  }
   return(TRUE)
 }
