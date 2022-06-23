@@ -118,7 +118,11 @@ setMethod("rsat_list_data",
     }
     #as.data.frame(do.call(rbind, allvariables))
     #TODO change this and make it work well
-    as.data.frame(sapply(as.data.frame(do.call(rbind, allvariables)), function(x) unlist(x)))
+    tmp <- sapply(as.data.frame(do.call(rbind, allvariables)), function(x) unlist(x))
+    rownames(tmp) <- NULL
+    df <- as.data.frame(tmp)
+    row.names(df) <- NULL
+    df
   }
 )
 
