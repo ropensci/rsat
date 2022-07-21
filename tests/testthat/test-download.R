@@ -41,7 +41,7 @@ test_that("download test", {
       dates = as.Date("2021-03-01") + seq(1, 2),
       verbose=TRUE
     )
-    rsat_download(navarre,test.mode=T)
+    #rsat_download(navarre,test.mode=T)
   }, error = function(e) {
     print(e)
   })
