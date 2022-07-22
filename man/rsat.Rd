@@ -29,7 +29,7 @@ can be found \href{https://www.usgs.gov}{Here}.
 \item \href{https://urs.earthdata.nasa.gov}{EarthData}: A repository
 of NASA's earth observation data-sets. More information about
 EarthData can be found
-\href{https://earthdata.nasa.gov/earth-observation-data}{here}.
+\href{https://www.earthdata.nasa.gov/learn}{here}.
 \item \href{https://scihub.copernicus.eu/dhus/#/self-registration}{SciHub},
 a web service giving access to Copernicus' scientific data hub.
 Please go \href{https://scihub.copernicus.eu}{here} to find more

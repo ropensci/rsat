@@ -85,7 +85,9 @@ setRefClass(
         followlocation = TRUE,
         autoreferer = TRUE,
         username = .self$username,
-        password = .self$password
+        password = .self$password,
+        ssl_verifyhost = 0,
+        ssl_verifypeer=0
       )
       return(c.handle)
     },

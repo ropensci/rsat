@@ -5,7 +5,7 @@ citEntry(entry = "Manual",
                    as.person("A F Militino"),
                    as.person("M D Ugarte")),
   year         = "2022",
-  note = "R package version 0.1.18",
+  note = "R package version 0.1.19",
   url = "https://CRAN.R-project.org/package=rsat",
   textVersion  =
   paste("U Pérez-Goya, M Montesino-SanMartin, A F Militino, M D Ugarte (2022).",
