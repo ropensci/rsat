@@ -49,10 +49,8 @@ LazyData: true
 RoxygenNote: 7.2.3
 Collate: 
     'add2rtoi.R'
-    'api.R'
     'api_dataspace.R'
     'api_lpdaac.R'
-    'api_scihub.R'
     'api_usgs.R'
     'connections.R'
     'data.R'

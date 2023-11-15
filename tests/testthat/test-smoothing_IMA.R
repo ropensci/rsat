@@ -1,5 +1,6 @@
 test_that("smoothing IMA", {
   if(require(terra)){
+    library(rsat)
     # load an example of NDVI time series in Navarre
     data(ex.ndvi.navarre)
 
