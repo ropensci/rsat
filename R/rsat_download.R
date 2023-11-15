@@ -6,11 +6,10 @@
 #' @param x a \code{records} or an \code{rtoi} object.
 #' @param db_path path to the database. By default, the path
 #' is defined by the \code{rtoi}.
-#' @param out.dir path where the outputs are stored when using a \code{records}.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param test.mode logical argument. If \code{TRUE}, the function gets test
-#' data from github.
+#' @param parallel logical argument. If \code{TRUE}, the function downloads from
+#' multiples APIs in parallel.
 #' @param ... additional arguments.
 #' @return nothing. Downloads the images into your database
 #' @include rtoi.R records.R
@@ -44,153 +43,81 @@ setGeneric("rsat_download", function(x, ...) {
 setMethod(
   f = "rsat_download",
   signature = c("rtoi"),
-  function(x, db_path, verbose = FALSE, test.mode = FALSE, ...) {
-    if (missing(db_path)) {
-      if (get_database(x) == "") {
-        stop(paste0("db_path not defined in rtoi. Define db_path or",
-                    " use records with out.dir argument."))
-      } else {
-        rsat_download(x = records(x),
-                 out.dir = get_database(x),
-                 test.mode = test.mode,
-                 verbose = verbose,...)
-      }
-    } else {
-      set_database(x,db_path)
-      rsat_download(x = records(x),
-               out.dir = get_database(x),
-               test.mode = test.mode,
-               verbose = verbose,
-               ...)
+  function(x, db_path, verbose = FALSE, ...) {
+    if (missing(db_path)){
+      db_path <- get_database(x)
     }
+
+    rsat_download(x = records(x),
+                  db_path = db_path,
+                  verbose = verbose,
+                  ...)
   }
 )
 
 #' @rdname rsat_download
 #' @aliases rsat_download,records
+#' @importFrom parallel mclapply
 setMethod(
   f = "rsat_download",
   signature = c("records"),
-  function(x, out.dir, verbose = FALSE, test.mode = FALSE, ...) {
-    # dates<-as.Date("2016-01-25")
-    # out.dir<-"E:/testnewpackage"
+  function(x, db_path, verbose = FALSE,parallel=FALSE, ...) {
     args <- list(...)
 
-    ordered <- FALSE
-    ordered.list <- new("records")
-    if (missing(out.dir)){
-      if(get_database()==""){
-        stop("out.dir or global environment database needed for image downloading.")
-      }else{
-        out.dir<-get_database()
-      }
-    }
-    # petitions for order images
-    message("Checking records for long term access data.")
-    for (i in rev(seq_len(length(x)))) {
-      out.name <- file.path(out.dir, get_file_path(x[i]))
-      if (get_order(x[i]) & (!file.exists(out.name) || file.size(out.name) == 0)) {
-        if (grepl("^Landsat", sat_name(x[i]))&!test.mode) {
-          # ls order petition
-          if("product"%in%names(args)){
-            product<-args$product
-          }else{
-            product<-"sr"
-          }
-          con <- connection$getApi(api_name = get_api_name(x[i]))
-          if (i == length(x)) {
-            con$espaOrderImage(names(x[i]), verbose = verbose,product=product)
-          } else {
-
-            con$espaOrderImage(names(x[i]),
-                               update.orders = FALSE,
-                               verbose = verbose,
-                               product=product)
-          }
-          ordered.list <- c(ordered.list, x[i])
-          x <- x[-i]
-        } else if (grepl("^Sentinel", sat_name(x[i]))&!test.mode) {
-          # sentinel petition
-          # con<-connection$getApi(api_name = get_api_name(x[i]))
-          # if(con$scihubIsLTA(get_download(x[i]))){#is lta?
-          #   message(paste0("Ordering ",names(x[i])," image."))
-          #   if((con$secureDownload(get_download(x[i]),
-          #                          file.path(tempdir(),
-          #                                    "tmpImg")))%in%c(500,403,500)){
-          #     message("Error ordering the image, try in other moment.")
-          #   }else{
-          #     ordered.list<-c(ordered.list,x[i])
-          #     x<-x[-i]
-          #   }
-          # }else{
-          #   get_order(x)[i]<-FALSE
-          # }
+    if (missing(db_path)){
+        db_path <- get_database(x)
+        if(db_path==""){
+          stop("db_path or global environment database needed for image downloading.")
         }
-      }
     }
-    # download images without orders
-
-    for (i in seq_len(length(x))) {
-      out.name <- file.path(out.dir, get_file_path(x[i]))
-      dir.create(dirname(out.name), showWarnings = FALSE, recursive = TRUE)
-      if (!file.exists(out.name) || file.size(out.name) == 0) {
-        if (!test.mode) {
-          con <- connection$getApi(api_name = get_api_name(x[i]))
-          message(paste0("Downloading ", names(x[i]), " image."))
-          con$secureDownload(get_download(x[i]), out.name)
-        }else{
-          con <- connection$getApi(api_name = get_api_name(x[i]))
-          message(paste0("Downloading ", names(x[i]), " image."))
-          con$pictureDownload(get_download(x[i]), out.name)
-        }
-      } else {
-        message(paste0(names(x[i]), " already in your database."))
+    #filter records
+    usgs <- x[get_api_name(x)%in%"usgs"]
+    x <- x[!(get_api_name(x)%in%"usgs")]
+    dataspace <- x[get_api_name(x)%in%"dataspace"]
+    x <- x[!(get_api_name(x)%in%"dataspace")]
+    lpdaac <- x[get_api_name(x)%in%"lpdaac"]
+    x <- x[!(get_api_name(x)%in%"lpdaac")]
+    # run download
+    if(parallel){
+      functions_list <- list(
+        list(func = connection$getApi("lpdaac")$download_lpdaac_records,
+             args = list(lpdaac_records=lpdaac,db_path=db_path,verbose=verbose,...)),
+        list(func = connection$getApi("dataspace")$dataspace_download_records,
+             args = list(records=dataspace,db_path=db_path,verbose=verbose,...)),
+        list(func = connection$getApi("usgs")$espa_order_and_download,
+             args = list(usgs=usgs,db_path=db_path,verbose=verbose,...))
+      )
+      mclapply(functions_list, function(entry) {
+        do.call(entry$func, entry$args)
+      }, mc.cores = 3)
+    }else{
+      if(length(usgs)>0){
+        espa.orders <- connection$getApi("usgs")$order_usgs_records(usgs,
+                                                                    db_path,
+                                                                    verbose,
+                                                                    ...)
       }
-    }
-
-
-
-    # after download all data without order check and download ordered data
-    while (length(ordered.list) > 0) {
-      for (i in rev(seq_len(length(ordered.list)))) {
-        out.name <- file.path(out.dir, get_file_path(ordered.list[i]))
-        dir.create(dirname(out.name),
-                   showWarnings = FALSE,
-                   recursive = TRUE)
-        if (!file.exists(out.name) || file.size(out.name) == 0) {
-          if (grepl("^Landsat", sat_name(ordered.list[i]))) {
-            con <- connection$getApi(api_name = get_api_name(ordered.list[i]))
-            con$espaGetOrders(verbose = verbose)
-            if (con$espaDownloadsOrders(names(ordered.list[i]),
-                                        out.name,
-                                        verbose = verbose)) {
-              ordered.list <- ordered.list[-i]
-            }
-          } else if (grepl("^Sentinel", sat_name(ordered.list[i]))) {
-            # sentinel petition
-            con <- connection$getApi(api_name = get_api_name(ordered.list[i]))
-            html <- con$secureCall(gsub("/$value", "",
-                                        get_download(ordered.list[i]),
-                                        fixed = TRUE))
-            html <- paste(html, collapse = "\n ")
-            if (gsub(".*d:Online>", "", gsub("</d:Online.*", "", html)) ==
-                "true"){ # is lta?
-              message(paste0("Downloading ",
-                             names(ordered.list[i]),
-                             " image."))
-              con$secureDownload(get_download(ordered.list[i]), out.name)
-              ordered.list <- c(ordered.list, ordered.list[i])
-            }
-          }
-        } else {
-          message(paste0(names(ordered.list[i]), " already in your database."))
-          ordered.list <- ordered.list[-i]
-        }
+      if(length(lpdaac)>0){
+        connection$getApi("lpdaac")$download_lpdaac_records(lpdaac,
+                                                            db_path,
+                                                            verbose,...)
       }
-      if (length(ordered.list) > 0) {
-        message("Waiting for ordered images.")
-        Sys.sleep(10)
+      if(length(dataspace)>0){
+        connection$getApi("dataspace")$dataspace_download_records(dataspace,
+                                                                  db_path,
+                                                                  verbose,...)
+      }
+      if(length(usgs)>0){
+        connection$getApi("usgs")$download_espa_orders(espa.orders,
+                                                       db_path,
+                                                       verbose,...)
       }
     }
   }
 )
+
+
+
+
+
+

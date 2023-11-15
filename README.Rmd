@@ -37,6 +37,8 @@ satellite images from Landsat, MODIS, and Sentinel for a region and time of inte
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
+install.packages(c('usethis', 'pkgdown', 'rcmdcheck', 'rversions', 'urlchecker'))
+
 # check and install devtools
 if(!require("devtools")){
    install.packages("devtools")
@@ -57,13 +59,13 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 
 <!-- -->
 
-    sudo apt update sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl openssl-dev xml2 libxml2-dev libmagick++-dev
+    sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libharfbuzz-dev libfribidi-dev
 
 -   **RedHat/Fedora**
 
 <!-- -->
 
-    sudo dnf install gdal gdal-devel proj-devel xml2 libxml2-devel libcurl-devel openssl-devel ImageMagick-c++-devel R-devel udunits2-devel sqlite-devel geos-devel pandoc
+    sudo dnf install gdal gdal-devel proj-devel xml2 libxml2-devel libcurl-devel openssl-devel ImageMagick-c++-devel R-devel udunits2-devel sqlite-devel geos-devel pandoc harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-devel
 
 ## Log-in profiles
 

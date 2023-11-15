@@ -41,7 +41,6 @@ test_that("download test", {
       dates = as.Date("2021-03-01") + seq(1, 2),
       verbose=TRUE
     )
-    #rsat_download(navarre,test.mode=T)
   }, error = function(e) {
     print(e)
   })
@@ -54,27 +53,11 @@ test_that("download test", {
       verbose=TRUE
     )
     records(navarre)<-c(records(navarre),r[1])
-    #rsat_download(r[1],out.dir=file.path(tempdir(),"Database"))
   }, error = function(e) {
     print(e)
   })
 
-  # tryCatch({
-  #   r<-sat_search(
-  #     region = ex.navarre,
-  #     product = c("S2MSI2A"),
-  #     dates = as.Date("2021-03-01") + seq(1, 20),
-  #     verbose=TRUE
-  #   )
-  #   records(navarre)<-c(records(navarre),r[1])
-  #   download(r[1],out.dir=file.path(tempdir(),"Database"))
-  # }, error = function(e) {
-  #   print(e)
-  # })
-
   records(navarre)<-rcds
-  #rsat_download(rcds[2:3],out.dir=file.path(tempdir(),"Database"),test.mode=T)
-  #records(navarre)<-rcds
 
   tryCatch({
     # load example rtoi
@@ -256,8 +239,6 @@ test_that("download test", {
   }, error = function(e) {
     print(e)
   })
-
-
 
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = T)
 })

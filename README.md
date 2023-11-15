@@ -5,8 +5,8 @@
 [![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://CRAN.R-project.org/package=rsat) 
 [![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/437_status.svg)](https://github.com/ropensci/software-review/issues/437) 
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
-[![Codecov test coverage](https://codecov.io/gh/ropensci/rsat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/rsat?branch=master)
-[![R build status](https://github.com/ropensci/rsat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/rsat/actions)
+<!--[![Codecov test coverage](https://codecov.io/gh/ropensci/rsat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/rsat?branch=master) -->
+<!--[![R build status](https://github.com/ropensci/rsat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/rsat/actions) -->
 [![Total downloads](https://cranlogs.r-pkg.org/badges/grand-total/rsat)](https://CRAN.R-project.org/package=rsat)
 <!-- badges: end -->
 
@@ -24,6 +24,8 @@ satellite images from Landsat, MODIS, and Sentinel for a region and time of inte
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
+install.packages(c('usethis', 'pkgdown', 'rcmdcheck', 'rversions', 'urlchecker'))
+
 # check and install devtools
 if(!require("devtools")){
    install.packages("devtools")
@@ -45,20 +47,22 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 <!-- -->
 
     sudo apt update 
-    sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev
+    sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libharfbuzz-dev libfribidi-dev
+
 
 -   **RedHat/Fedora**
 
 <!-- -->
 
-    sudo dnf install gdal gdal-devel proj-devel xml2 libxml2-devel libcurl-devel openssl-devel ImageMagick-c++-devel R-devel udunits2-devel sqlite-devel geos-devel pandoc
+    sudo dnf install gdal gdal-devel proj-devel xml2 libxml2-devel libcurl-devel openssl-devel ImageMagick-c++-devel R-devel udunits2-devel sqlite-devel geos-devel pandoc harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-devel
+
 
 ## Log-in profiles
 
 The registration in the following online portals is required to get a full access to satellite images with `rsat`;
 -   [USGS](https://ers.cr.usgs.gov/register/) USGS is the sole science agency for the Department of the Interior of United States. Provide access to Modis Images. More information about USGS can be found [Here](https://www.usgs.gov/).
 -   [EarthData](https://urs.earthdata.nasa.gov): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://www.earthdata.nasa.gov/learn).
--   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
+-   [DataSpace](https://identity.dataspace.copernicus.eu/), a web service giving access to Copernicus' scientific data hub. Please go [here](https://identity.dataspace.copernicus.eu/) to find more details about the data hub.
 
 For convenience, try to use the same username and password for all of them. To satisfy the criteria of all web services make sure that the username is $4$ characters long and includes a period, number or underscore. The password must be $12$ character long and should include characters with at least one capital letter, and numbers.
 

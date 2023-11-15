@@ -10,9 +10,9 @@
 \usage{
 rsat_download(x, ...)
 
-\S4method{rsat_download}{rtoi}(x, db_path, verbose = FALSE, test.mode = FALSE, ...)
+\S4method{rsat_download}{rtoi}(x, db_path, verbose = FALSE, ...)
 
-\S4method{rsat_download}{records}(x, out.dir, verbose = FALSE, test.mode = FALSE, ...)
+\S4method{rsat_download}{records}(x, db_path, verbose = FALSE, parallel = FALSE, ...)
 }
 \arguments{
 \item{x}{a \code{records} or an \code{rtoi} object.}
@@ -25,10 +25,8 @@ is defined by the \code{rtoi}.}
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
 
-\item{test.mode}{logical argument. If \code{TRUE}, the function gets test
-data from github.}
-
-\item{out.dir}{path where the outputs are stored when using a \code{records}.}
+\item{parallel}{logical argument. If \code{TRUE}, the function downloads from
+multiples APIs in parallel.}
 }
 \value{
 nothing. Downloads the images into your database

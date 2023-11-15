@@ -39,77 +39,58 @@ test_function<-function(){
   print(new_extent_crs(1,2,1,1,1))
   new_extent_crs(0,2,1,1,1)
 
-  mod_query(server="aa",
-            product="",
-            collection=6,
-            dates=as.Date("2021-11-01"),
-            lonlat=c(1,2),
-            resType="url")
 
-  mod_query(server="aa",
+
+  connection$getApi('lpdaac')$mod_query(server="aa",
             product="",
             collection=6,
             startDate=as.Date("2021-11-01"),
             endDate=as.Date("2021-11-01"),
             lonlat=c(1,2),
-            resType="url")
+            verbose=T)
 
-
-  mod_query(server="aa",
+  connection$getApi('lpdaac')$mod_query(server="aa",
             product="",
             collection=6,
             dates=as.Date("2021-11-01"),
             extent=extent(1,1,1,1),
-            resType="url")
+            verbose=T)
 
-  mod_query(server="aa",
+  connection$getApi('lpdaac')$mod_query(server="aa",
             product="",
             collection=6,
             startDate=as.Date("2021-11-01"),
             endDate=as.Date("2021-11-01"),
             extent=extent(1,1,1,1),
-            resType="url")
+            verbose=T)
 
-  mod_query(server="aa",
-            product="",
-            collection=6,
-            startDate=as.Date("2021-11-01"),
-            endDate=as.Date("2021-11-01"),
-            extent=extent(1,1,1,1),
-            resType="url")
 
-  mod_query(server="aa",
+  connection$getApi('lpdaac')$mod_query(server="aa",
             product="",
             collection=6,
             startDate=as.Date("2021-11-01"),
             endDate=as.Date("2021-11-01"),
             region=ex.navarre,
-            resType="url")
+            verbose=T)
 
-  mod_query(server="aa",
-            product="",
-            collection=6,
-            startDate=as.Date("2021-11-01"),
-            endDate=as.Date("2021-11-01"),
-            region=ex.navarre,
-            resType="url")
-  ls_query(server="a",
-           datasetName="a",
-           startDate=as.Date("2021-11-01"),
-           endDate=as.Date("2021-11-01"),
-           sf.obj=ex.navarre,
-           apiKey="a",
-           cloudCover=c(0,20))
-  sen_query("aa","aa",verbose=TRUE,
-            startDate=as.Date("2021-11-01"),
-            platform="a",
-            extent=extent(1,1,1,1),
-            lonlat=c(1,1),
-            relativeorbit="",
-            cloudCover=c(0,20),
-            qformat="json")
 
-  new("api")
+  # connection$getApi('usgs')$ls_query(server="a",
+  #          datasetName="a",
+  #          startDate=as.Date("2021-11-01"),
+  #          endDate=as.Date("2021-11-01"),
+  #          sf.obj=ex.navarre,
+  #          apiKey="a",
+  #          cloudCover=c(0,20),
+  #          verbose=T)
+  # connection$getApi('dataspace')$sen_query("aa","aa",verbose=TRUE,
+  #           startDate=as.Date("2021-11-01"),
+  #           platform="a",
+  #           extent=extent(1,1,1,1),
+  #           lonlat=c(1,1),
+  #           relativeorbit="",
+  #           cloudCover=c(20))
+
+
   new_record(sat = "character",
              name = "character",
              date = as.Date("2021-11-01"),

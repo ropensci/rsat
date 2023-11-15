@@ -7,7 +7,7 @@ test_that("records test", {
 
   set_credentials("username", "password")
 
-  set_credentials("username","password","scihub")
+  set_credentials("username","password","dataspace")
 
   credentials<-print_credentials()
 
@@ -17,8 +17,7 @@ test_that("records test", {
     region = ex.navarre,
     product = c("mod09ga", "LANDSAT_8_C1","S2MSI2A"),
     dates = as.Date("2021-03-01") + seq(1, 20),
-    verbose=TRUE,
-    test.mode=TRUE
+    verbose=TRUE
   )
 
   dates(rcds)

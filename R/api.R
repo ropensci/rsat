@@ -59,21 +59,6 @@ setRefClass(
       }
       return(html)
     },
-    autoCall = function(url) {
-      c.handle <- new_handle()
-      handle_setopt(c.handle,
-        referer = .self$server,
-        useragent = connection$useragent,
-        followlocation = TRUE,
-        autoreferer = TRUE
-      )
-      con <- curl(url,
-        handle = c.handle
-      )
-      html <- suppressWarnings(readLines(con))
-      close(con)
-      return(html)
-    },
     secureHandle = function() {
       c.handle <- new_handle()
       if (.self$username == "" | .self$password == "") {
@@ -155,10 +140,7 @@ setRefClass(
         }
         req <- curl_fetch_memory("https://ers.cr.usgs.gov/login/",
                                  handle = c.handle)
-        # if(verbose){
-        #   message(paste(parse_headers(req$headers),collapse="\n"))
-        # }
-      } else {
+      } else{
         c.handle <- .self$secureHandle()
       }
 
@@ -381,100 +363,7 @@ setRefClass(
         return(TRUE)
       }
     },
-    ###############################################################
-    # Login EarthExplorer API
-    ###############################################################
-    getApiKey = function() {
-      if (.self$api_key == "") {
-        .self$loginEEApiKey()
-      }
-      .self$api_key
-    },
-    loginEEApiKey = function(verbose = FALSE) {
-      jsonquery <- list(
-        "username" = .self$username,
-        "password" = .self$password,
-        "authType" = "EROS",
-        "catalogId" = "EE"
-      )
-      post.res <- POST(
-        url = paste0(.self$api_server, "/login"),
-        body = paste0(toJSON(jsonquery)),
-        content_type("application/x-www-form-urlencoded; charset=UTF-8")
-      )
-      res <- content(post.res)
-      if (!is.null(res$errorCode)) {
-        stop(res$errorMessage)
-      }
-      if (verbose) message("Logged into EE API.")
-      .self$api_key <- res$data
-    },
-    postApiEE = function(url, body, key) {
-      names(key) <- "X-Auth-Token"
-      post.res <- POST(
-        url = url,
-        body = body,
-        content_type("application/json"),
-        add_headers(key)
-      )
-      if (post.res$status_code == 200) {
-        return(content(post.res))
-      }
-      return(list(errorCode = paste0("Error in Earth Explorer api ",
-                                     "connection. HTTP ",
-                                     post.res$status_code, ".")))
-    },
-    getEEdatasetID = function(product, verbose = FALSE) {
-      url <- paste0(.self$api_server, "/dataset")
-      key <- .self$api_key
-      names(key) <- "X-Auth-Token"
-      body <- paste0('{"datasetName":"', product, '"}')
-      post.res <- POST(
-        url = url,
-        body = body,
-        content_type("application/json"),
-        add_headers(key) # ,
-        # authenticate(user="user",#change this
-        #             password="pass",
-        #             type = "basic")
-      )
-      return(content(post.res)$data)
-    },
-    postDownloadEE = function(url, verbose = FALSE) {
-      key <- .self$api_key
-      names(key) <- "X-Auth-Token"
-      body <- paste0("{}")
-      post.res <- POST(
-        url = url,
-        body = body,
-        content_type("application/json"),
-        add_headers(key) # ,
-        # authenticate(user="user",#change this
-        #             password="pass",
-        #             type = "basic")
-      )
-      return(content(post.res)$data)
-    },
-    logoutEEAPI = function() {
-      jsonquery <- list("apikey" = .self$api_key)
-      if (!is.null(jsonquery$apikey)) {
-        post.res <- POST(
-          url = paste0(.self$api_server, "/logout"),
-          body = URLencode(paste0("jsonRequest=", toJSON(jsonquery))),
-          content_type("application/x-www-form-urlencoded; charset=UTF-8")
-        )
-        res <- content(post.res)
-        if (res$error != "") {
-          message("Logged out from EE API.")
-          .self$api_key <- NULL
-        } else {
-          message("You are not logged in EE API.")
-          stop(res$error)
-        }
-      } else {
-        message("You are not logged in EE API.")
-      }
-    },
+
     ######################################################################
     # Generics
     #####################################################################
@@ -528,6 +417,6 @@ setMethod(
   "print",
   signature(x = "api"),
   function(x) {
-    cat("Api Name: ", x$api_Name, "\n", "Api Server: ", x$api_server)
+    cat("Api Name: ", x$api_name, "\n", "Api Server: ", x$api_server)
   }
 )

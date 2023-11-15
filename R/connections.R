@@ -1,4 +1,4 @@
-#' @include api.R
+#' @include api_dataspace.R api_lpdaac.R api_usgs.R
 connection <- setRefClass("connections",
   # Define the slots
   fields = list(
@@ -53,33 +53,28 @@ connection <- setRefClass("connections",
       }
       colnames(apis) <- c("Api_name", "Portal", "Username", "Password")
       apis
+    },
+    printProducts=function(){
+      print("-------------------------------------------------------------------------")
+      print("    rsat supported products")
+      for (api in .self$ApiList) {
+        print("-------------------------------------------------------------------------")
+        products <- api$getProducts()
+        for(x in seq(length(products))){
+          print(paste0(names(products)[x],": ",paste0(products[[x]],collapse=", ")))
+        }
+      }
+      print("-------------------------------------------------------------------------")
     }
   )
 )$new(
   ApiList = list(
-    eeapi = api("earthexplorer",
-                "https://earthexplorer.usgs.gov",
-                "https://m2m.cr.usgs.gov/api/api/json/stable",
-                "usgs"),
-    espa = api("ESPA",
-               "https://espa.cr.usgs.gov",
-               "https://espa.cr.usgs.gov/api/v1",
-               "earthdata"),
-    nasainv = api("nasa_inventory",
-                  "https://lpdaacsvc.cr.usgs.gov",
-                  "https://lpdaacsvc.cr.usgs.gov/services/inventory",
-                  "usgs"),
-    scihub = api("scihub",
-                 "https://apihub.copernicus.eu",
-                 "https://apihub.copernicus.eu/apihub",
-                 "scihub")
-    # scihubs5p=api("scihubs5p",
-    #               "https://s5phub.copernicus.eu",
-    #               "https://s5phub.copernicus.eu/apihub",
-    #               "scihubs5p")
+    lpdaac = api_lpdaac("lpdaac"),
+    usgs = api_usgs("usgs"),
+    dataspace = api_dataspace("dataspace")
   ),
-  useragent = paste0("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0)",
-                     " Gecko/20100101 Firefox/58.0")
+  useragent = paste0("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0)",
+                     " Gecko/20100101 Firefox/115.0")
 )
 
 
@@ -176,4 +171,26 @@ setMethod("print_credentials",
   function() {
     connection$getCredentials()
   }
+)
+
+
+
+#' Show the products accepted by the services
+#'
+#' @param ... additional arguments.
+#' @return prints a list of products
+#' @export
+#' @examples
+#' rsat_products()
+setGeneric("rsat_products", function(...) {
+  standardGeneric("rsat_products")
+})
+
+#' @rdname rsat_products
+#' @aliases rsat_products
+setMethod("rsat_products",
+          signature = c(),
+          function() {
+            connection$printProducts()
+          }
 )

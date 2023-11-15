@@ -36,12 +36,9 @@
 #' @param product a character vector of product names.
 #' @param verbose logical argument. If \code{TRUE}, the function prints the
 #' running steps and warnings.
-#' @param test.mode logical argument. If \code{TRUE}, the function gets test
-#' data from github.
 #' @param ... additional arguments for searching
 #' @return nothing if x is an rtoi, records class if you search a region.
 #' @export
-#' @include search_sen.R search_ls.R search_mod.R
 #' @examples
 #' \dontrun{
 #' library(rsat)
@@ -132,42 +129,12 @@ setGeneric("rsat_search", function(region, product, ...) {
 setMethod(
   f = "rsat_search",
   signature = c("rtoi", "character"),
-  function(region, product, verbose = FALSE, test.mode = FALSE,...) {
-    searchres <- new("records")
-    for (s in product) {
-      if (tolower(substr(s, 1, 3)) %in% c("mod", "myd", "mcd")) {
-        message(paste0("Searching scenes in the ", s, " product..."))
-        aux <- mod_search(region(region),
-                          product = s,
-                          verbose = verbose,
-                          test.mode = test.mode, ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
-      } else if (grepl("LANDSAT", s,ignore.case =TRUE)) {
-        message(paste0("Searching scenes in the ", s, " product..."))
-        aux <- ls_search(region(region),
-                         product = s,
-                         verbose = verbose,
-                         test.mode = test.mode, ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
-      } else if (s %in% unlist(SENPRODUCTS)) {
-        message(paste0("Searching scenes in the ", s, " product..."))
-        aux <- sen_search(region(region),
-                          product = s,
-                          verbose = verbose,
-                          test.mode = test.mode, ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
-      } else {
-        warning(paste0("Satellite not supported, only modis, ",
-                       "landsat and sentinel related products."))
-      }
-    }
+  function(region, product, verbose = FALSE,...) {
+    sf.region <- region(region)
+    searchres <- rsat_search(sf.region,product,verbose=verbose,...)
     if (length(searchres) != 0) {
       records(region) <- unique(c(records(region), searchres))
     }
-
   }
 )
 
@@ -176,37 +143,36 @@ setMethod(
 setMethod(
   f = "rsat_search",
   signature = c("sf", "character"),
-  function(region, product, verbose = FALSE, test.mode = FALSE,...) {
+  function(region, product, verbose = FALSE,...) {
     searchres <- new("records")
+    api.name<-NULL
+    not.product<-c()
     for (s in product) {
-      if (tolower(substr(s, 1, 3)) %in% c("mod", "myd")) {
-        aux <- mod_search(region,
-                          product = s,
-                          verbose = verbose,
-                          test.mode = test.mode,
-                          ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
-      } else if (grepl("LANDSAT", s,ignore.case =TRUE)) {
-        aux <- ls_search(region,
-                          product = s,
-                          verbose = verbose,
-                          test.mode = test.mode,
-                          ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
-      } else if (s %in% unlist(SENPRODUCTS)) {
-        aux <- sen_search(region,
-                          product = s,
-                          verbose = verbose,
-                          test.mode = test.mode,
-                          ...)
-        records.summary(aux)
-        searchres <- c(searchres,aux)
+      if (tolower(s) %in% tolower(unlist(connection$getApi("lpdaac")$getProducts()))) {
+        api.name <- "lpdaac"
+      } else if (tolower(s) %in% tolower(unlist(connection$getApi("usgs")$getProducts()))) {
+        api.name <- "usgs"
+      } else if (tolower(s) %in% tolower(unlist(connection$getApi("dataspace")$getProducts()))) {
+        api.name <- "dataspace"
       } else {
         warning(paste0("Satellite not supported, only modis, ",
                        "landsat and sentinel related products."))
+        not.product <- c(not.product, s)
+        next
       }
+      aux <- connection$getApi(api.name)$search(region,
+                                                product = s,
+                                                verbose = verbose,
+                                                ...)
+      records.summary(aux)
+      searchres <- c(searchres,aux)
+    }
+    if(!is.null(not.product)){
+      warning(paste0("Possible misspelling or unsupported product. ",
+                     "Use the rsat_products() function to display the list of ",
+                     "accepted products available for downloading. List ",
+                     "of products introduced incorrectly:",
+                     paste(not.product, collapse = " ")))
     }
     return(searchres)
   }

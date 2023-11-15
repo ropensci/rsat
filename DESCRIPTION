@@ -34,12 +34,11 @@ Authors@R:
 Maintainer: Unai Pérez - Goya <unai.perez@unavarra.es>
 Description: Downloading, customizing, and processing time series of satellite images for a region of interest. 'rsat' functions allow a unified access to multispectral images from Landsat, MODIS and Sentinel repositories. 'rsat' also offers capabilities for customizing satellite images, such as tile mosaicking, image cropping and new variables computation. Finally, 'rsat' covers the processing, including cloud masking, compositing and gap-filling/smoothing time series of images (Militino et al., 2018 <doi:10.3390/rs10030398> and Militino et al., 2019 <doi:10.1109/TGRS.2019.2904193>).
 Depends: R (>= 4.0.0)
-Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, sp, Rdpack, fields, calendR, raster, sf, stars, terra
+Imports: XML, curl, httr, leafem, leaflet, rjson, rvest, tmap, xml2, zip, methods, Rdpack, fields, calendR, sf, stars, terra, sp, raster
 URL: https://github.com/ropensci/rsat
 BugReports: https://github.com/ropensci/rsat/issues
 RdMacros: Rdpack
 Suggests: 
-    rgdal,
     knitr,
     rmarkdown,
     covr,
@@ -47,10 +46,14 @@ Suggests:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Collate: 
     'add2rtoi.R'
     'api.R'
+    'api_dataspace.R'
+    'api_lpdaac.R'
+    'api_scihub.R'
+    'api_usgs.R'
     'connections.R'
     'data.R'
     'extent_crs.R'
@@ -70,9 +73,6 @@ Collate:
     'rsat_list_data.R'
     'rsat_mosaic.R'
     'rsat_preview.R'
-    'search_mod.R'
-    'search_ls.R'
-    'search_sen.R'
     'rsat_search.R'
     'rsat_smoothing_images.R'
     'testing_function.R'

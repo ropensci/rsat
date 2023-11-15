@@ -10,9 +10,9 @@
 \usage{
 rsat_search(region, product, ...)
 
-\S4method{rsat_search}{rtoi,character}(region, product, verbose = FALSE, test.mode = FALSE, ...)
+\S4method{rsat_search}{rtoi,character}(region, product, verbose = FALSE, ...)
 
-\S4method{rsat_search}{sf,character}(region, product, verbose = FALSE, test.mode = FALSE, ...)
+\S4method{rsat_search}{sf,character}(region, product, verbose = FALSE, ...)
 }
 \arguments{
 \item{region}{a \code{Spatial*}, \code{Raster*}, \code{sf} or \code{rtoi}
@@ -24,9 +24,6 @@ class objects defining the region of interest.}
 
 \item{verbose}{logical argument. If \code{TRUE}, the function prints the
 running steps and warnings.}
-
-\item{test.mode}{logical argument. If \code{TRUE}, the function gets test
-data from github.}
 }
 \value{
 nothing if x is an rtoi, records class if you search a region.

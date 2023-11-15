@@ -166,8 +166,8 @@ setMethod(
             n,
             lpos,
             tmp_dir = get_database(x),
-            add.layer,
-            verbose,
+            add.layer=add.layer,
+            verbose=verbose,
             get.map = FALSE,
             ...)
     # plot sf
@@ -192,8 +192,8 @@ setMethod(
             dates(x)[1],
             lpos,
             tmp_dir = get_database(x),
-            add.layer,
-            verbose,
+            add.layer= add.layer,
+            verbose = verbose,
             get.map = FALSE,
             ...)
     # plot sf
@@ -221,8 +221,8 @@ setMethod(
               n,
               lpos,
               tmp_dir,
-              add.Layer = TRUE,
-              verbose,
+              add.layer = TRUE,
+              verbose=verbose,
               get.map = FALSE)
     }
     if (get.map) {
@@ -285,7 +285,7 @@ get_preview_file <- function(r, tmp_dir) {
   return(file.path(get_preview_path(r, tmp_dir), names(r)))
 }
 get_preview_proj <- function(r, tmp_dir) {
-  return(paste0(get_preview_file(r, tmp_dir), "_proj"))
+  return(paste0(get_preview_file(r, tmp_dir), "_proj.tif"))
 }
 #' @importFrom terra writeRaster ext ext<- crs<-
 #' @importFrom raster extent extent<- stack
@@ -297,7 +297,7 @@ download_preview <- function(r, tmp_dir, verbose = FALSE, ...) {
   if (!file.exists(pre.file)) {
     p.url <- get_preview(r)
     con <- connection$getApi(get_api_name(r))
-    con$pictureDownload(p.url, pre.file)
+    con$file_download(p.url, pre.file)
   }
   suppressWarnings(img <- rast(pre.file))
 
