@@ -5,8 +5,8 @@
 [![CRAN version](https://www.r-pkg.org/badges/version/rsat)](https://CRAN.R-project.org/package=rsat) 
 [![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/437_status.svg)](https://github.com/ropensci/software-review/issues/437) 
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
-<!--[![Codecov test coverage](https://codecov.io/gh/ropensci/rsat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/rsat?branch=master) -->
-<!--[![R build status](https://github.com/ropensci/rsat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/rsat/actions) -->
+[![Codecov test coverage](https://codecov.io/gh/ropensci/rsat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ropensci/rsat?branch=master) 
+[![R build status](https://github.com/ropensci/rsat/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/rsat/actions) 
 [![Total downloads](https://cranlogs.r-pkg.org/badges/grand-total/rsat)](https://CRAN.R-project.org/package=rsat)
 <!-- badges: end -->
 
