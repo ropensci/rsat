@@ -91,27 +91,40 @@ setMethod(
         do.call(entry$func, entry$args)
       }, mc.cores = 3)
     }else{
-      if(length(usgs)>0){
-        espa.orders <- connection$getApi("usgs")$order_usgs_records(usgs,
-                                                                    db_path,
-                                                                    verbose,
-                                                                    ...)
-      }
-      if(length(lpdaac)>0){
-        connection$getApi("lpdaac")$download_lpdaac_records(lpdaac,
-                                                            db_path,
-                                                            verbose,...)
-      }
-      if(length(dataspace)>0){
-        connection$getApi("dataspace")$dataspace_download_records(dataspace,
-                                                                  db_path,
-                                                                  verbose,...)
-      }
-      if(length(usgs)>0){
-        connection$getApi("usgs")$download_espa_orders(espa.orders,
-                                                       db_path,
-                                                       verbose,...)
-      }
+      functions_list <- list(
+        list(func = connection$getApi("usgs")$order_usgs_records,
+             args = list(lpdaac_records=usgs,db_path=db_path,verbose=verbose,...)),
+        list(func = connection$getApi("lpdaac")$download_lpdaac_records,
+             args = list(lpdaac_records=lpdaac,db_path=db_path,verbose=verbose,...)),
+        list(func = connection$getApi("dataspace")$dataspace_download_records,
+             args = list(records=dataspace,db_path=db_path,verbose=verbose,...)),
+        list(func = connection$getApi("usgs")$download_espa_orders,
+             args = list(usgs=usgs,db_path=db_path,verbose=verbose,...))
+      )
+      lapply(functions_list, function(entry) {
+        do.call(entry$func, entry$args)
+      })
+      # if(length(usgs)>0){
+      #   espa.orders <- connection$getApi("usgs")$order_usgs_records(usgs,
+      #                                                               db_path,
+      #                                                               verbose,
+      #                                                               ...)
+      # }
+      # if(length(lpdaac)>0){
+      #   connection$getApi("lpdaac")$download_lpdaac_records(lpdaac,
+      #                                                       db_path,
+      #                                                       verbose,...)
+      # }
+      # if(length(dataspace)>0){
+      #   connection$getApi("dataspace")$dataspace_download_records(dataspace,
+      #                                                             db_path,
+      #                                                             verbose,...)
+      # }
+      # if(length(usgs)>0){
+      #   connection$getApi("usgs")$download_espa_orders(espa.orders,
+      #                                                  db_path,
+      #                                                  verbose,...)
+      # }
     }
   }
 )

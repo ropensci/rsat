@@ -67,5 +67,23 @@ NULL
 #' @keywords data
 NULL
 
+#' Result of IMA test 1
+#'
+#' Filled image to test the package
+#'
+#' @name tiles.mod.ndvi.filled.1.res
+#' @docType data
+#' @keywords data
+NULL
+
+#' Result of IMA test 2
+#'
+#' Filled image to test the package
+#'
+#' @name tiles.mod.ndvi.filled.2.res
+#' @docType data
+#' @keywords data
+NULL
+
 #' @docType package
 #' @bibliography system.file("REFERENCES.bib", package = "rsat")

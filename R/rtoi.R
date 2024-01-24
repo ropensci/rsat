@@ -464,6 +464,8 @@ setMethod(
   "get_database",
   signature = c(x = "missing"),
   function() {
+    if(getRSATOpt("RSAT_DATABASE")=="")
+      warning("Database not defined, use the set_database function to define it.")
     return(getRSATOpt("RSAT_DATABASE"))
   }
 )

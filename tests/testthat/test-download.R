@@ -20,18 +20,17 @@ test_that("download test", {
   # path where downloads are stored
   db.path <- file.path(tempdir(),"Database")
   unlink(file.path(rtoi.path,"Navarre_download"),recursive = TRUE)
-  tryCatch({
-    navarre <- new_rtoi(
-      "Navarre_download",
-      ex.navarre,
-      rtoi.path,
-      db.path
-    )
-  }, error = function(e) {
-    print(e)
-  })
-  navarre <- read_rtoi(file.path(rtoi.path,"Navarre_download"))
+  navarre <- new_rtoi(
+    "Navarre_download",
+    ex.navarre,
+    rtoi.path,
+    db.path
+  )
+  testthat::expect_equal(dir.exists(file.path(rtoi.path,"Navarre_download")), TRUE)
 
+  #read rtoi
+  navarre.back <- read_rtoi(file.path(rtoi.path,"Navarre_download"))
+  testthat::expect_equivalent(navarre, navarre.back)
 
   set_credentials("rsat.package", "UpnaSSG.2021")
   tryCatch({
@@ -41,23 +40,29 @@ test_that("download test", {
       dates = as.Date("2021-03-01") + seq(1, 2),
       verbose=TRUE
     )
+    testthat::expect_equal(length(records(navarre)), 2)
   }, error = function(e) {
     print(e)
   })
 
+
   tryCatch({
     r<-rsat_search(
       region = ex.navarre,
-      product = c("LANDSAT_8_C1"),
+      product = c("landsat_ot_c2_l2"),
       dates = as.Date("2021-03-01") + seq(1, 20),
       verbose=TRUE
     )
+    testthat::expect_equal(length(r), 8)
     records(navarre)<-c(records(navarre),r[1])
+    testthat::expect_equal(length(records(navarre)), 3)
   }, error = function(e) {
     print(e)
   })
 
   records(navarre)<-rcds
+
+
 
   tryCatch({
     # load example rtoi
@@ -67,19 +72,18 @@ test_that("download test", {
 
     navarre <- read_rtoi(file.path(tempdir(),"Navarre"))
 
+    set_database(file.path(tempdir(),"Database"))
     print(navarre)
 
     # plot the calendar
     plot(navarre, "dates")
 
-
-
     # replace with your own "username" and "password"
-    set_credentials("username", "password")
+    set_credentials("rsat.package", "UpnaSSG.2021")
 
     # plot the quicklook images before the download
     # needs credentials to download preview images
-    plot(navarre, y = "preview")
+    plot(navarre,"preview",dates=as.Date("2020-01-24"))
 
     # select partially cloud free
     rcds <- records(navarre)
@@ -110,7 +114,32 @@ test_that("download test", {
     # plot already mosaicked rtoi ("view" mode)
     pamplona.derived <- read_rtoi(file.path(tempdir(),"PamplonaDerived"))
 
-    rsat_list_data(pamplona.derived)
+    data<-rsat_list_data(pamplona.derived)
+    res<- structure(list(satellite = c("Modis", "Modis", "Modis", "Modis",
+                                       "Modis", "Modis", "Modis", "Modis", "Modis", "Modis", "Modis",
+                                       "Modis", "Modis", "Modis", "Modis", "Modis", "Modis", "Modis",
+                                       "Modis", "Modis", "Modis", "Modis", "Modis"), product = c("mod09ga",
+                                                                                                 "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga",
+                                                                                                 "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga",
+                                                                                                 "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga", "mod09ga",
+                                                                                                 "mod09ga", "mod09ga", "mod09ga", "mod09ga"), stage = c("variables",
+                                                                                                                                                        "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic",
+                                                                                                                                                        "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic",
+                                                                                                                                                        "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic", "mosaic",
+                                                                                                                                                        "mosaic"), variable = c("NDVI", "MODIS_Grid_1km_2D_num_observations_1km",
+                                                                                                                                                                                "MODIS_Grid_1km_2D_state_1km_1", "MODIS_Grid_1km_2D_SensorZenith_1",
+                                                                                                                                                                                "MODIS_Grid_1km_2D_SensorAzimuth_1", "MODIS_Grid_1km_2D_Range_1",
+                                                                                                                                                                                "MODIS_Grid_1km_2D_SolarZenith_1", "MODIS_Grid_1km_2D_SolarAzimuth_1",
+                                                                                                                                                                                "MODIS_Grid_1km_2D_gflags_1", "MODIS_Grid_1km_2D_orbit_pnt_1",
+                                                                                                                                                                                "MODIS_Grid_1km_2D_granule_pnt_1", "MODIS_Grid_500m_2D_num_observations_500m",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_sur_refl_b01_1", "MODIS_Grid_500m_2D_sur_refl_b02_1",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_sur_refl_b03_1", "MODIS_Grid_500m_2D_sur_refl_b04_1",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_sur_refl_b05_1", "MODIS_Grid_500m_2D_sur_refl_b06_1",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_sur_refl_b07_1", "MODIS_Grid_500m_2D_QC_500m_1",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_obscov_500m_1", "MODIS_Grid_500m_2D_iobs_res_1",
+                                                                                                                                                                                "MODIS_Grid_500m_2D_q_scan_1")), class = "data.frame", row.names = c(NA,
+                                                                                                                                                                                                                                                     -23L))
+    testthat::expect_equal(data, res)
 
     # plot derived variables
     plot(pamplona.derived, "view",
@@ -124,66 +153,6 @@ test_that("download test", {
          zlim=c(0,1))
   }, error = function(e) {
 
-  })
-
-
-  print(navarre)
-  tryCatch({
-    rsat_list_data(navarre)
-    rsat_derive(navarre,product="LANDSAT_8_C1_lvl2",variable="NDVI")
-    rsat_derive(navarre,product="mod09ga",variable="NDVI")
-
-    rsat_derive(navarre, "NDVI", product = "S2MSI2A",fun= function(red, blue) {
-      ndvi <- (blue - red) / (blue + red)
-      return(ndvi)
-    })
-  }, error = function(e) {
-  })
-
-
-
-
-  tryCatch({
-    rsat_list_data(navarre)[rsat_list_data(navarre)$variable=="NDVI",]
-  }, error = function(e) {
-    print(e)
-  })
-
-  tryCatch({
-    # create a copy of pamplona in temp file
-    file.copy(from=system.file("ex/Pamplona",package="rsat"),
-              to=tempdir(),
-              recursive = TRUE)
-
-    # load example rtoi
-    pamplona <- read_rtoi(file.path(tempdir(),"Pamplona"))
-
-    rsat_list_data(pamplona)
-    # show prefedined varibles
-    show_variables()
-    rsat_derive(pamplona, "NDVI", product = "mod09ga")
-    # now NDVI is processed
-    rsat_list_data(pamplona)
-
-    # ad-hoc variable
-    NDSI = function(green, swir1){
-      ndsi <- (green - swir1)/(green + swir1)
-      return(ndsi)
-    }
-    rsat_derive(pamplona, "NDSI", product = "mod09ga",fun=NDSI)
-    # now NDVI is processed
-    rsat_list_data(pamplona)
-    plot(pamplona, product="mod09ga",variable="NDSI")
-  }, error = function(e) {
-    print(e)
-  })
-
-  #plot(navarre,"view",variable="NDVI",product = unique(product(navarre))[2])
-  navarre
-  tryCatch({
-    rsat_list_data(navarre)
-  }, error = function(e) {
-    print(e)
   })
 
   tryCatch({
@@ -205,12 +174,12 @@ test_that("download test", {
     # get spatraster from terra package
     mod.ndvi.rast <- rsat_get_SpatRaster(pamplona.derived, "mod09ga", "NDVI")
     plot(mod.ndvi.rast)
+    testthat::expect_equal(as.integer(sum(terra::values(mod.ndvi.rast))),as.integer(2667.518))
 
     # get stars from stars package
     suppressWarnings(mod.ndvi.stars <-
                        rsat_get_stars(pamplona.derived, "mod09ga", "NDVI"))
     plot(mod.ndvi.stars)
-
 
     ## get any band in rtoi
     # list available data
@@ -219,6 +188,7 @@ test_that("download test", {
     mod.ndvi.rast <- rsat_get_SpatRaster(pamplona.derived,
                                          "mod09ga",
                                          "MODIS_Grid_500m_2D_sur_refl_b01_1")
+    testthat::expect_equal(as.integer(sum(terra::values(mod.ndvi.rast))),80746650000)
     plot(mod.ndvi.rast)
   }, error = function(e) {
     print(e)
