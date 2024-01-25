@@ -59,10 +59,12 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          while read -r cmd
-          do
-            eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "latest"))')
+          sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libharfbuzz-dev libfribidi-dev
+        #  while read -r cmd
+        #  do
+        #    eval sudo $cmd
+        #  done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "latest"))')
+
 
       - name: Install mac dependencies
         if: runner.os == 'macOS'
