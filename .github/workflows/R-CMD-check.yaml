@@ -59,7 +59,7 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt install r-cran-rcpp gdal-bin libgdal-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libharfbuzz-dev libfribidi-dev
+          sudo apt install r-cran-rcpp gdal-bin libgdal-dev libudunits2-dev libgeos-dev libproj-dev openssl libssl-dev xml2 libxml2-dev libmagick++-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libharfbuzz-dev libfribidi-dev
         #  while read -r cmd
         #  do
         #    eval sudo $cmd
