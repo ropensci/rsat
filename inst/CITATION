@@ -1,4 +1,4 @@
-bibentry(entry = "Manual",
+bibentry(bibtype = "Manual",
   title        = "rsat: Dealing with Multiplatform Satellite Images from Landsat, MODIS, and Sentinel",
   author       = c(person("U P{\\'e}rez-Goya"),
                    person("M Montesino-SanMartin"),
@@ -14,7 +14,7 @@ bibentry(entry = "Manual",
   header = "To cite the package:"
 )
 
-bibentry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "Interpolation of the Mean Anomalies for Cloud-Filling in Land Surface Temperature and Normalized Difference Vegetation Index",
   author       = c(person("A F Militino"),
                    person("M D Ugarte"),
@@ -33,7 +33,7 @@ bibentry(entry = "Article",
   header = "To cite the gap filling method implemented in the function genSmoothingIMA:"
 )
 
-bibentry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "Improving the Quality of Satellite Imagery Based on Ground-Truth Data from Rain Gauge Stations",
   author       = c(person("A F Militino"),
                    person("M D Ugarte"),
