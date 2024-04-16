@@ -10,7 +10,7 @@
 \usage{
 rsat_download(x, ...)
 
-\S4method{rsat_download}{rtoi}(x, db_path, verbose = FALSE, ...)
+\S4method{rsat_download}{rtoi}(x, db_path, verbose = FALSE, parallel = FALSE, ...)
 
 \S4method{rsat_download}{records}(x, db_path, verbose = FALSE, parallel = FALSE, ...)
 }

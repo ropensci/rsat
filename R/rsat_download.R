@@ -43,7 +43,7 @@ setGeneric("rsat_download", function(x, ...) {
 setMethod(
   f = "rsat_download",
   signature = c("rtoi"),
-  function(x, db_path, verbose = FALSE, ...) {
+  function(x, db_path, verbose = FALSE, parallel=FALSE, ...) {
     if (missing(db_path)){
       db_path <- get_database(x)
     }
@@ -51,6 +51,7 @@ setMethod(
     rsat_download(x = records(x),
                   db_path = db_path,
                   verbose = verbose,
+                  parallel = parallel,
                   ...)
   }
 )
@@ -61,7 +62,7 @@ setMethod(
 setMethod(
   f = "rsat_download",
   signature = c("records"),
-  function(x, db_path, verbose = FALSE,parallel=FALSE, ...) {
+  function(x, db_path, verbose = FALSE, parallel=FALSE, ...) {
     args <- list(...)
 
     if (missing(db_path)){
@@ -87,21 +88,21 @@ setMethod(
         list(func = connection$getApi("usgs")$espa_order_and_download,
              args = list(usgs=usgs,db_path=db_path,verbose=verbose,...))
       )
-      mclapply(functions_list, function(entry) {
+      null.list <-mclapply(functions_list, function(entry) {
         do.call(entry$func, entry$args)
       }, mc.cores = 3)
     }else{
       functions_list <- list(
         list(func = connection$getApi("usgs")$order_usgs_records,
-             args = list(lpdaac_records=usgs,db_path=db_path,verbose=verbose,...)),
+             args = list(espa_orders=usgs,db_path=db_path,verbose=verbose,...)),
         list(func = connection$getApi("lpdaac")$download_lpdaac_records,
              args = list(lpdaac_records=lpdaac,db_path=db_path,verbose=verbose,...)),
         list(func = connection$getApi("dataspace")$dataspace_download_records,
              args = list(records=dataspace,db_path=db_path,verbose=verbose,...)),
         list(func = connection$getApi("usgs")$download_espa_orders,
-             args = list(usgs=usgs,db_path=db_path,verbose=verbose,...))
+             args = list(espa.orders=usgs,db_path=db_path,verbose=verbose,...))
       )
-      lapply(functions_list, function(entry) {
+      null.list <- lapply(functions_list, function(entry) {
         do.call(entry$func, entry$args)
       })
       # if(length(usgs)>0){

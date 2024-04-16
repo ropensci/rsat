@@ -4,12 +4,12 @@ bibentry(bibtype = "Manual",
                    person("M Montesino-SanMartin"),
                    person("A F Militino"),
                    person("M D Ugarte")),
-  year         = "2022",
-  note = "R package version 0.1.19",
+  year         = "2024",
+  note = "R package version 0.1.21",
   url = "https://CRAN.R-project.org/package=rsat",
   textVersion  =
-  paste("U Pérez-Goya, M Montesino-SanMartin, A F Militino, M D Ugarte (2022).",
-        "rsat: Dealing with Multiplatform Satellite Images from Landsat, MODIS, and Sentinel. R package version 0.1.18.",
+  paste("U Pérez-Goya, M Montesino-SanMartin, A F Militino, M D Ugarte (2024).",
+        "rsat: Dealing with Multiplatform Satellite Images from Landsat, MODIS, and Sentinel. R package version 0.1.21.",
         "https://CRAN.R-project.org/package=rsat."),
   header = "To cite the package:"
 )

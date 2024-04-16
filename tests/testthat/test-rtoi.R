@@ -98,6 +98,8 @@ test_that("records test", {
   # rsat_preview(navarre,dates(navarre)[2])
   # }, error = function(e) {
   #   print(e)
+  },error = function(e) {
+    print("Offline services...")
   })
   #unlink(file.path(rtoi.path,"Navarre_rtoi"),recursive = T)
 })

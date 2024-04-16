@@ -58,10 +58,10 @@ name of the bands as inputs (red, green, blue, nir, swir1, or swir2) and
 return a single element. For instance, the Normalized Difference Snow
 Index would be;
 
-NDSI = function(green, swir1){
-ndsi <- (green - swir1)/(green + swir1)
-return(ndsi)
-}
+NDSI = function(green, swir1)\{
+  ndsi <- (green - swir1)/(green + swir1)
+  return(ndsi)
+\}
 }
 \examples{
 \dontrun{
@@ -84,8 +84,8 @@ rsat_list_data(pamplona)
 
 # ad-hoc variable
 NDSI = function(green, swir1){
-ndsi <- (green - swir1)/(green + swir1)
-return(ndsi)
+  ndsi <- (green - swir1)/(green + swir1)
+  return(ndsi)
 }
 rsat_derive(pamplona, "NDSI", product = "mod09ga",fun=NDSI)
 # now NDVI is processed

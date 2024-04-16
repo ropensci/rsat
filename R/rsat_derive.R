@@ -11,10 +11,10 @@
 #' return a single element. For instance, the Normalized Difference Snow
 #' Index would be;
 #'
-#' NDSI = function(green, swir1){
-#' ndsi <- (green - swir1)/(green + swir1)
-#' return(ndsi)
-#' }
+#' NDSI = function(green, swir1)\{
+#'   ndsi <- (green - swir1)/(green + swir1)
+#'   return(ndsi)
+#' \}
 #'
 #' @param x an \code{rtoi} as the source of images.
 #' @param product the name of the product from which the index is computed.
@@ -54,8 +54,8 @@
 #'
 #' # ad-hoc variable
 #' NDSI = function(green, swir1){
-#' ndsi <- (green - swir1)/(green + swir1)
-#' return(ndsi)
+#'   ndsi <- (green - swir1)/(green + swir1)
+#'   return(ndsi)
 #' }
 #' rsat_derive(pamplona, "NDSI", product = "mod09ga",fun=NDSI)
 #' # now NDVI is processed

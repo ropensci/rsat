@@ -36,7 +36,7 @@ function returns nothing and the records are added to the \code{rtoi}.
 }
 \details{
 MODIS images are found through the
-\href{https://lpdaacsvc.cr.usgs.gov/services/inventory}{NASA Common
+\href{https://lpdaac.usgs.gov/}{NASA Common
  Metadata Repository}
 (CMR). The inventory of MODIS products can be found
 \href{https://modis.gsfc.nasa.gov/data/dataprod/}{here}.

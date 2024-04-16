@@ -1,3 +1,18 @@
+rsat 0.1.20 (2024-01-30)
+=========================
+### NEW FEATURES
+  * The package accept parallel downloads from 3 different sources
+  * API change for Sentinel images from scihub to dataspace
+  * API change for Modis images from nasa inventory to lpdaac
+  
+### IMPROVEMENTS
+  * Updated API connection code
+  
+### MINOR IMPROVEMENTS
+  * Fixed minor bugs in the code
+  * Code revision and cleaned
+  * Fixed subset incompatibility with terra package
+  
 rsat 0.1.17 (2021-12-13)
 =========================
 ### NEW FEATURES

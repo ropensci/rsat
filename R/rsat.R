@@ -23,9 +23,9 @@
 #' of NASA's earth observation data-sets. More information about
 #' EarthData can be found
 #' \href{https://www.earthdata.nasa.gov/learn}{here}.
-#' \item \href{https://scihub.copernicus.eu/dhus/#/self-registration}{SciHub},
+#' \item \href{https://dataspace.copernicus.eu/}{dataspace},
 #' a web service giving access to Copernicus' scientific data hub.
-#' Please go \href{https://scihub.copernicus.eu}{here} to find more
+#' Please go \href{https://dataspace.copernicus.eu/}{here} to find more
 #' details about the data hub.
 #' }
 #' For convenience, try to use the same username and password for all of them.

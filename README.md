@@ -62,7 +62,7 @@ In Linux, you need to install additional libraries before starting with `rsat`. 
 The registration in the following online portals is required to get a full access to satellite images with `rsat`;
 -   [USGS](https://ers.cr.usgs.gov/register/) USGS is the sole science agency for the Department of the Interior of United States. Provide access to Modis Images. More information about USGS can be found [Here](https://www.usgs.gov/).
 -   [EarthData](https://urs.earthdata.nasa.gov): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://www.earthdata.nasa.gov/learn).
--   [DataSpace](https://identity.dataspace.copernicus.eu/), a web service giving access to Copernicus' scientific data hub. Please go [here](https://identity.dataspace.copernicus.eu/) to find more details about the data hub.
+-   [DataSpace](https://dataspace.copernicus.eu/), a web service giving access to Copernicus' scientific data hub. Please go [here](https://dataspace.copernicus.eu/) to find more details about the data hub.
 
 For convenience, try to use the same username and password for all of them. To satisfy the criteria of all web services make sure that the username is $4$ characters long and includes a period, number or underscore. The password must be $12$ character long and should include characters with at least one capital letter, and numbers.
 
@@ -131,7 +131,7 @@ The last package dedicated to image downloading is `luna`.Searching and download
 
 -   [rLandsat](https://github.com/atlanhq/rLandsat)
 
--   [getLandsat](https://github.com/ropensci/getlandsat)
+-   [getLandsat](https://github.com/ropensci-archive/getlandsat)
 
 -   [sen2r](https://github.com/ranghetti/sen2r)
 

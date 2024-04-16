@@ -30,7 +30,7 @@ In `rsat`, **searching** means locating the satellite images of a desired data p
 
 -   [USGS](https://ers.cr.usgs.gov/register/) USGS is the sole science agency for the Department of the Interior of United States. Provide access to Modis Images. More information about USGS can be found [Here](https://www.usgs.gov/).
 -   [EarthData](https://urs.earthdata.nasa.gov): A repository of NASA's earth observation data-sets. More information about EarthData can be found [here](https://www.earthdata.nasa.gov/learn).
--   [SciHub](https://scihub.copernicus.eu/dhus/#/self-registration), a web service giving access to Copernicus' scientific data hub. Please go [here](https://scihub.copernicus.eu/) to find more details about the data hub.
+-   [Dataspace](https://dataspace.copernicus.eu/), a web service giving access to Copernicus' scientific data hub. Please go [here](https://dataspace.copernicus.eu/) to find more details about the data hub.
 
 For convenience, try to use the same *username* and *password* for all of them. To satisfy the criteria in both web services make sure that the [*username* is $4$ characters long and includes a period, number or underscore]{.ul}. The [*password* must be $12$ character long and should include characters with at least one capital letter, and numbers]{.ul}.
 
@@ -198,7 +198,7 @@ Sometimes, regions are located at the intersection of images or they are too lar
 4.  `rtoi_path`: the path to a dataset, i.e. a folder for customized/processed.
 5.  `records`: a vector of satellite records relevant for the study.
 
-As a showcase, we'll assess the effects of the [Storm Filomena](https://en.wikipedia.org/wiki/2020%E2%80%9321_European_windstorm_season#Storm_Filomena) over the Iberian peninsula in terms of snow coverage. The storm was an extreme meteorological event (largest since 1971, according to [*AEMET*](http://www.aemet.es/en/portada)). The storm swept the peninsula from January $6^{th}$ and $11^{th}$, $2021$. The code below generates a bounding box around the peninsula (`ip`) and limits the study period (`toi`) to the immediate dates after the storm:
+As a showcase, we'll assess the effects of the [Storm Filomena](https://en.wikipedia.org/wiki/2020%E2%80%9321_European_windstorm_season#Storm_Filomena) over the Iberian peninsula in terms of snow coverage. The storm was an extreme meteorological event (largest since 1971, according to [*AEMET*](https://www.aemet.es/en/portada)). The storm swept the peninsula from January $6^{th}$ and $11^{th}$, $2021$. The code below generates a bounding box around the peninsula (`ip`) and limits the study period (`toi`) to the immediate dates after the storm:
 
 ```{r roi_toi}
 ip <- st_sf(st_as_sfc(st_bbox(c(
