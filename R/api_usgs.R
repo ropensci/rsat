@@ -154,7 +154,7 @@ setRefClass(
         endDate <- max(dates)
       }
 
-      if (.self$api_key == "") {
+      if (.self$getApiKey() == "") {
         .self$loginUSGSApiKey(verbose = verbose)
       }
       attempts <- 5
@@ -170,7 +170,7 @@ setRefClass(
         )
         if(verbose) message(paste0("Landsat_query: ",query))
 
-        jsonres <- .self$postApiUSGS(query$url, query$json, .self$api_key)
+        jsonres <- .self$postApiUSGS(query$url, query$json, .self$getApiKey())
         attempts <- attempts - 1
         if (is.null(jsonres$errorCode)) {
           break
@@ -294,6 +294,13 @@ setRefClass(
       }
       .self$api_key
     },
+    setApiKey =function(api_key,verbose = FALSE){
+      if(is.null(api_key)){
+        .self$api_key<-""
+      }else{
+        .self$api_key<-api_key
+      }
+    },
     loginUSGSApiKey = function(verbose = FALSE) {
       jsonquery <- list(
         "username" = .self$username,
@@ -310,8 +317,9 @@ setRefClass(
       if (!is.null(res$errorCode)) {
         stop(res$errorMessage)
       }
-      if (verbose) message("Logged into EE API.")
-      .self$api_key <- res$data
+      if (verbose) message(paste0("Logged into EE API. Api key:",res$data))
+      .self$setApiKey(res$data,verbose)
+      if(is.null(res$data)) stop("API key is null.")
     },
     postApiUSGS = function(url, body, key) {
       names(key) <- "X-Auth-Token"
@@ -330,7 +338,7 @@ setRefClass(
     },
     getUSGSdatasetID = function(product, verbose = FALSE) {
       url <- paste0(.self$m2m_server, "/dataset")
-      key <- .self$api_key
+      key <-
       names(key) <- "X-Auth-Token"
       body <- paste0('{"datasetName":"', product, '"}')
       post.res <- POST(
@@ -345,7 +353,7 @@ setRefClass(
       return(content(post.res)$data)
     },
     postDownloadUSGS = function(url, verbose = FALSE) {
-      key <- .self$api_key
+      key <- .self$getApiKey()
       names(key) <- "X-Auth-Token"
       body <- paste0("{}")
       post.res <- POST(
@@ -360,7 +368,7 @@ setRefClass(
       return(content(post.res)$data)
     },
     logoutUSGSAPI = function() {
-      jsonquery <- list("apikey" = .self$api_key)
+      jsonquery <- list("apikey" = .self$getApiKey())
       if (!is.null(jsonquery$apikey)) {
         post.res <- POST(
           url = paste0(.self$m2m_server, "/logout"),
@@ -370,7 +378,7 @@ setRefClass(
         res <- content(post.res)
         if (res$error != "") {
           message("Logged out from USGS API.")
-          .self$api_key <- NULL
+          .self$setApiKey("",verbose)
         } else {
           message("You are not logged in USGS API.")
           stop(res$error)
