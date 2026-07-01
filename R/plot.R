@@ -516,7 +516,7 @@ read_rgb <- function(files.p,
 }
 
 
-#' @importFrom tmap tm_facets tm_graticules tm_grid tm_compass tm_scale_bar
+#' @importFrom tmap tm_facets tm_graticules tm_grid tm_compass tm_scalebar
 #' @importFrom tmap tm_fill tm_polygons tm_borders tm_shape tmap_arrange
 #' @importFrom terra project minmax
 genPlotGIS <- function(r,
@@ -835,17 +835,17 @@ create.compass<-function(...){
 
 create.scale.bar<-function(...){
   args<-list(...)
-  scale_bar_args <- names(formals(tm_scale_bar))
+  scale_bar_args <- names(formals(tm_scalebar))
   names(scale_bar_args) <- paste0("tm.scale.bar.", scale_bar_args)
-  tm_scale_bar_args <- args[names(args) %in% names(scale_bar_args)]
-  names(tm_scale_bar_args) <- scale_bar_args[names(tm_scale_bar_args)]
-  if (!("position" %in% names(tm_scale_bar_args))) {
-    tm_scale_bar_args$position <- c("left", "bottom")
+  tm_scalebar_args <- args[names(args) %in% names(scale_bar_args)]
+  names(tm_scalebar_args) <- scale_bar_args[names(tm_scalebar_args)]
+  if (!("position" %in% names(tm_scalebar_args))) {
+    tm_scalebar_args$position <- c("left", "bottom")
   }
-  if (!(any(c("text.size", "size") %in% names(tm_scale_bar_args)))) {
-    tm_scale_bar_args$text.size <- 0.8
+  if (!(any(c("text.size", "size") %in% names(tm_scalebar_args)))) {
+    tm_scalebar_args$text.size <- 0.8
   }
-  do.call(tm_scale_bar, tm_scale_bar_args)
+  do.call(tm_scalebar, tm_scalebar_args)
 }
 
 tm.add.region<-function(region,...){
